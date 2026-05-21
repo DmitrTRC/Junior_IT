@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node / build
+node_modules/
+dist/
+build/
+*.log
+
+# Env
+.env
+.env.local
+
+# Students work — приватное, у каждого своё
+students/*
+!students/.gitkeep
+
+# OS misc
+Thumbs.db
+desktop.ini

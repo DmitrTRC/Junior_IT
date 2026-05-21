@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soft vs Hard Skills — что это вообще такое?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0a0a14;
+    color: #fff;
+    font-family: 'Manrope', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { padding: 30px 16px 80px; min-height: 100vh; }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* HERO */
+  header {
+    background: linear-gradient(135deg, #1a1a2e, #16213e 60%, #0f3460);
+    padding: 50px 40px 60px;
+    border-radius: 28px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '?';
+    position: absolute;
+    right: -30px; top: -50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 320px;
+    opacity: 0.08;
+    line-height: 1;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: #ffd60a;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+  h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 18px;
+  }
+  h1 span { color: #ffd60a; }
+  header p {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: #c0c8d8;
+    max-width: 600px;
+  }
+
+  /* INTRO */
+  .intro {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 26px 30px;
+    margin-bottom: 30px;
+  }
+  .intro p {
+    font-size: 17px;
+    color: #d0d8e8;
+    margin-bottom: 12px;
+  }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro p strong { color: #ffd60a; }
+
+  /* TWO COLUMNS */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+  @media (min-width: 720px) {
+    .two-col { grid-template-columns: 1fr 1fr; }
+  }
+  .card {
+    padding: 32px 28px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+  }
+  .card:hover { transform: translateY(-4px); }
+
+  .card.hard {
+    background: linear-gradient(135deg, #ff5722, #ff8a50);
+    color: #fff;
+  }
+  .card.soft {
+    background: linear-gradient(135deg, #00e676, #00b04f);
+    color: #0a0a14;
+  }
+
+  .card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    opacity: 0.85;
+    font-weight: 700;
+  }
+  .card h2 {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+  .card .what {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+  .card .examples-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+    font-weight: 700;
+  }
+  .card ul {
+    list-style: none;
+  }
+  .card ul li {
+    padding: 8px 0;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .card.soft ul li {
+    border-bottom-color: rgba(0,0,0,0.15);
+  }
+  .card ul li:last-child { border: none; }
+  .card ul li::before {
+    content: '→';
+    flex-shrink: 0;
+    font-weight: 800;
+  }
+
+  .card .check {
+    margin-top: 22px;
+    padding: 14px 18px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .card.soft .check {
+    background: rgba(0,0,0,0.15);
+  }
+  .card .check strong {
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* COMPARISON TABLE */
+  .compare {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 32px 30px;
+    margin-bottom: 30px;
+  }
+  .compare h3 {
+    font-size: 22px;
+    margin-bottom: 22px;
+    color: #ffd60a;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+    font-size: 14px;
+  }
+  .row:last-child { border: none; }
+  .row.head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #888;
+    font-weight: 700;
+    padding-bottom: 14px;
+  }
+  .row .cell { padding: 0 6px; }
+  .row .q { font-weight: 700; color: #fff; }
+  .row .hard-cell { color: #ff8a50; }
+  .row .soft-cell { color: #00e676; }
+  @media (max-width: 600px) {
+    .row { grid-template-columns: 1fr; gap: 4px; padding: 12px 0; }
+    .row.head { display: none; }
+    .row .q { margin-bottom: 4px; font-size: 15px; }
+    .row .hard-cell::before {
+      content: 'HARD: ';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #888;
+    }
+    .row .soft-cell::before {
+      content: 'SOFT: ';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #888;
+    }
+  }
+
+  /* APPLY TO COURSE */
+  .apply {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    padding: 36px 30px;
+    border-radius: 22px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255,214,10,0.2);
+  }
+  .apply h3 {
+    color: #ffd60a;
+    font-size: 26px;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+  }
+  .apply p {
+    font-size: 16px;
+    color: #d0d8e8;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .apply p:last-child { margin-bottom: 0; }
+  .apply .quote {
+    background: rgba(255,214,10,0.08);
+    border-left: 4px solid #ffd60a;
+    padding: 18px 22px;
+    border-radius: 0 12px 12px 0;
+    margin: 20px 0;
+    font-style: italic;
+    color: #ffd60a;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .skill-tag {
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+  .skill-tag.hard {
+    background: rgba(255,87,34,0.15);
+    color: #ff8a50;
+    border: 1px solid rgba(255,87,34,0.4);
+  }
+  .skill-tag.soft {
+    background: rgba(0,230,118,0.12);
+    color: #00e676;
+    border: 1px solid rgba(0,230,118,0.4);
+  }
+
+  /* BOTTOM LINE */
+  .bottom {
+    background: #ffd60a;
+    color: #0a0a14;
+    padding: 36px 30px;
+    border-radius: 22px;
+    text-align: center;
+  }
+  .bottom h3 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+    line-height: 1.1;
+  }
+  .bottom p {
+    font-size: 17px;
+    max-width: 580px;
+    margin: 0 auto;
+    font-weight: 500;
+  }
+  .bottom .kbd {
+    background: #0a0a14;
+    color: #ffd60a;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-block;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 36px 24px 40px; }
+    .card { padding: 26px 22px; }
+    .card h2 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <div class="kicker">// junior_it · что нужно понимать</div>
+  <h1>Soft skills <span>vs</span><br>Hard skills</h1>
+  <p>Два слова, которые часто слышишь, но никто толком не объясняет. Сейчас объясню — за 3 минуты.</p>
+</header>
+
+<div class="intro">
+  <p>Когда говорят про «навыки» — обычно имеют в виду <strong>что-то одно из двух</strong>. И эти две штуки совершенно разные, хотя обе про тебя и твои умения.</p>
+  <p>Самое полезное — научиться их различать. Потому что качаются они тоже по-разному.</p>
+</div>
+
+<div class="two-col">
+
+  <!-- HARD SKILLS -->
+  <div class="card hard">
+    <div class="label">// hard skill</div>
+    <h2>Что я умею ДЕЛАТЬ</h2>
+    <div class="what">Конкретное умение. Включил — сделал. Можно показать пальцем и проверить за 2 минуты.</div>
+
+    <div class="examples-title">Примеры</div>
+    <ul>
+      <li>Решить квадратное уравнение</li>
+      <li>Забить штрафной с 11 метров</li>
+      <li>Сыграть «Кузнечика» на гитаре</li>
+      <li>Написать сайт на HTML</li>
+      <li>Сделать сальто назад</li>
+      <li>Разговаривать на английском</li>
+      <li>Собрать кубик Рубика за минуту</li>
+    </ul>
+
+    <div class="check">
+      <strong>как проверить</strong>
+      Дать задачу. Засечь время. Посмотреть на результат. Получилось / не получилось / насколько круто.
+    </div>
+  </div>
+
+  <!-- SOFT SKILLS -->
+  <div class="card soft">
+    <div class="label">// soft skill</div>
+    <h2>Какой я С СОБОЙ и С ЛЮДЬМИ</h2>
+    <div class="what">Привычки и качества характера. Их не покажешь за 2 минуты — они проявляются в долгую.</div>
+
+    <div class="examples-title">Примеры</div>
+    <ul>
+      <li>Не сдаваться, когда не получается с первого раза</li>
+      <li>Спрашивать, когда непонятно (а не молчать в кулак)</li>
+      <li>Договариваться, когда поссорились</li>
+      <li>Слушать, а не только говорить</li>
+      <li>Держать слово — обещал → сделал</li>
+      <li>Помочь другу, не ожидая ничего взамен</li>
+      <li>Признать, когда был неправ</li>
+    </ul>
+
+    <div class="check">
+      <strong>как проверить</strong>
+      Тестом не проверишь. Видно только в реальной ситуации — когда трудно, когда устал, когда давит время.
+    </div>
+  </div>
+
+</div>
+
+<div class="compare">
+  <h3>В лоб</h3>
+
+  <div class="row head">
+    <div class="cell">Вопрос</div>
+    <div class="cell">Hard</div>
+    <div class="cell">Soft</div>
+  </div>
+
+  <div class="row">
+    <div class="cell q">Можно проверить за 5 минут?</div>
+    <div class="cell hard-cell">Да. Дай задачу.</div>
+    <div class="cell soft-cell">Нет. Нужны недели.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell q">Видно на видео?</div>
+    <div class="cell hard-cell">Да. «Смотри как умею».</div>
+    <div class="cell soft-cell">Не очень. Это в поступках.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell q">Как качать?</div>
+    <div class="cell hard-cell">Повторять, тренироваться, читать.</div>
+    <div class="cell soft-cell">Замечать за собой, пробовать иначе.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell q">Если бросишь — забудешь?</div>
+    <div class="cell hard-cell">Да, без практики ржавеют.</div>
+    <div class="cell soft-cell">Нет. Это часть характера.</div>
+  </div>
+
+  <div class="row">
+    <div class="cell q">Что важнее во взрослой жизни?</div>
+    <div class="cell hard-cell">Помогает зарабатывать.</div>
+    <div class="cell soft-cell">Решает, с кем будут работать.</div>
+  </div>
+
+</div>
+
+<div class="apply">
+  <h3>А мы тут — про что качаем?</h3>
+  <p>Наш курс — это HTML, CSS, скоро JavaScript. Это всё <strong style="color:#ff8a50;">hard skills</strong>. Конкретные умения, которые можно показать: «вот, я сделал сайт». Хорошо, нужно.</p>
+
+  <div class="skill-tags">
+    <span class="skill-tag hard">// HTML</span>
+    <span class="skill-tag hard">// CSS</span>
+    <span class="skill-tag hard">// JavaScript</span>
+    <span class="skill-tag hard">// Git</span>
+    <span class="skill-tag hard">// деплой сайта</span>
+  </div>
+
+  <p style="margin-top: 22px;">Но! Пока ты учишься кодить — ты параллельно качаешь кучу <strong style="color:#00e676;">soft skills</strong>. И они вообще-то ценнее. Просто их не видно.</p>
+
+  <div class="skill-tags">
+    <span class="skill-tag soft">не сдаваться когда баг не находится</span>
+    <span class="skill-tag soft">читать чужой код</span>
+    <span class="skill-tag soft">задавать вопросы вместо угадывания</span>
+    <span class="skill-tag soft">разбивать большое на маленькое</span>
+    <span class="skill-tag soft">признавать ошибку</span>
+  </div>
+
+  <div class="quote">
+    Программирование само по себе — это тренажёр. Не только для пальцев, но и для головы и характера. Это его главный плюс.
+  </div>
+
+  <p>Когда у тебя 3 часа не работает один кусок кода, и ты не бросаешь, а ищешь — это soft. Когда наконец нашёл — это hard. Одно без другого не работает.</p>
+</div>
+
+<div class="bottom">
+  <h3>Главное</h3>
+  <p>Hard и soft — не противники. Они работают парой. Hard без soft — «умный, но с ним не сработаешься». Soft без hard — «хороший человек, но ничего не умеет».</p>
+  <p style="margin-top: 14px;">На каждом уроке ты качаешь и то, и другое. Замечай это. <span class="kbd">// you level up both</span></p>
+</div>
+
+</div>
+
+</body>
+</html>

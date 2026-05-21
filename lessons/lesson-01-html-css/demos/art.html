@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Лиза — рисует</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f5ede1;
+    color: #2a1f17;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 60px 24px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  header {
+    text-align: center;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #d9c9b3;
+    margin-bottom: 50px;
+    position: relative;
+  }
+  header::after {
+    content: '✦';
+    position: absolute;
+    bottom: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: #f5ede1;
+    padding: 0 14px;
+    color: #c9956d;
+    font-size: 18px;
+  }
+  .kicker {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: #c9956d;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 72px;
+    line-height: 1;
+    font-weight: 400;
+    color: #2a1f17;
+    margin-bottom: 18px;
+    letter-spacing: -1px;
+  }
+  h1 em {
+    font-style: italic;
+    color: #c9956d;
+    font-weight: 800;
+  }
+  .subtitle {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    color: #6e5a47;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .portrait {
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    overflow: hidden;
+    border: 6px solid #fff;
+    box-shadow: 0 16px 40px rgba(180,130,80,0.25);
+    transition: 0.5s;
+  }
+  .portrait:hover { transform: scale(1.05) rotate(-3deg); }
+  .portrait img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  section { margin-bottom: 60px; }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 400;
+    margin-bottom: 22px;
+    color: #2a1f17;
+    line-height: 1.1;
+  }
+  h2 em { color: #c9956d; font-style: italic; }
+
+  p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #4a3a2d;
+    margin-bottom: 16px;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 30px 0;
+  }
+  .gallery img {
+    width: 100%;
+    aspect-ratio: 1 / 1.2;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: 0.4s;
+    cursor: pointer;
+  }
+  .gallery img:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.2);
+  }
+  .gallery img:nth-child(odd) { transform: rotate(-1deg); }
+  .gallery img:nth-child(even) { transform: rotate(1deg); }
+  .gallery img:hover:nth-child(odd),
+  .gallery img:hover:nth-child(even) {
+    transform: translateY(-6px) rotate(0);
+  }
+
+  ul {
+    list-style: none;
+    margin: 20px 0;
+  }
+  ul li {
+    padding: 18px 0;
+    border-bottom: 1px dashed #d9c9b3;
+    font-size: 17px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  ul li::before {
+    content: counter(li, lower-roman) '.';
+    counter-increment: li;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: #c9956d;
+    font-size: 15px;
+    min-width: 30px;
+  }
+  ul { counter-reset: li; }
+  ul li strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: #2a1f17;
+  }
+
+  blockquote {
+    background: #fff;
+    border-left: 4px solid #c9956d;
+    padding: 30px 30px 30px 36px;
+    margin: 40px 0;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.5;
+    color: #4a3a2d;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    border-radius: 0 12px 12px 0;
+    position: relative;
+  }
+  blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -10px; left: 18px;
+    font-family: 'Fraunces', serif;
+    font-size: 80px;
+    color: #c9956d;
+    line-height: 1;
+    opacity: 0.3;
+  }
+  blockquote footer {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #c9956d;
+    font-style: normal;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .contact {
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 30px;
+    border-top: 1px solid #d9c9b3;
+  }
+  .contact-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: #c9956d;
+    margin-bottom: 18px;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .contact a {
+    display: inline-block;
+    color: #2a1f17;
+    text-decoration: none;
+    margin: 6px 12px;
+    padding: 12px 24px;
+    border: 1px solid #c9956d;
+    border-radius: 50px;
+    font-size: 14px;
+    transition: 0.3s;
+    background: transparent;
+  }
+  .contact a:hover {
+    background: #c9956d;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 52px; }
+    h2 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="kicker">illustrator · 14 y.o.</div>
+    <h1>Привет, я <em>Лиза</em>.</h1>
+    <p class="subtitle">Рисую с шести лет. Сейчас — каждый день, по два часа после школы.</p>
+  </header>
+
+  <div class="portrait">
+    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400" alt="Лиза">
+  </div>
+
+  <section>
+    <h2>Что я <em>рисую</em></h2>
+    <p>Больше всего люблю акварель — за то, что цвет живёт сам по себе и каждый раз получается немного по-разному. Уже три года занимаюсь в художественной школе, но дома рисую больше, чем там.</p>
+    <p>Иногда делаю цифровые работы в Procreate на айпаде. Это другое — там можно отменить ошибку. В акварели нельзя, и в этом её прелесть.</p>
+
+    <div class="gallery">
+      <img src="https://images.unsplash.com/photo-1490633874781-1c63cc424610?w=500" alt="">
+      <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500" alt="">
+      <img src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=500" alt="">
+      <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=500" alt="">
+    </div>
+  </section>
+
+  <section>
+    <h2>Мои <em>любимые</em> художники</h2>
+    <ul>
+      <li><strong>Билибин</strong> — за сказки и узоры, на которые можно смотреть часами.</li>
+      <li><strong>Климт</strong> — за золото и за то, как у него лица светятся.</li>
+      <li><strong>Хаяо Миядзаки</strong> — да, он мультипликатор, но его кадры — живопись.</li>
+      <li><strong>Лули Тонизо</strong> — современная, я слежу за ней в инстаграме.</li>
+    </ul>
+  </section>
+
+  <blockquote>
+    Рисунок — это место, где можно остаться одной, но не одиноко.
+    <footer>— моя бабушка, художница</footer>
+  </blockquote>
+
+  <section>
+    <h2>Что <em>дальше</em></h2>
+    <p>Хочу поступить в художественный колледж после девятого класса. И когда-нибудь иллюстрировать книги — настоящие, с обложкой, чтобы стояли в магазине.</p>
+    <p>А пока — конкурс «Юный иллюстратор-2026», подаю работы в марте.</p>
+  </section>
+
+  <div class="contact">
+    <div class="contact-label">Найти меня</div>
+    <a href="#">Instagram</a>
+    <a href="#">Behance</a>
+    <a href="#">Telegram</a>
+  </div>
+</div>
+
+</body>
+</html>

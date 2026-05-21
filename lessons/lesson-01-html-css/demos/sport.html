@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Ника — скейтер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #fff8e7;
+    color: #1a1a1a;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    background: #ff5722;
+    color: #fff8e7;
+    padding: 80px 20px 100px;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+  }
+  .hero::before {
+    content: 'SK8';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 400px;
+    opacity: 0.07;
+    letter-spacing: -20px;
+    pointer-events: none;
+  }
+  .container { max-width: 800px; margin: 0 auto; position: relative; }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 110px;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -3px;
+    margin-bottom: 16px;
+  }
+  .hero h1 span {
+    display: inline-block;
+    transform: rotate(-4deg);
+    background: #1a1a1a;
+    color: #fff5b8;
+    padding: 0 20px;
+    margin: 0 8px;
+  }
+  .hero-tag {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+  }
+  .hero-info {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    margin-top: 30px;
+  }
+  .info-pill {
+    background: rgba(255,248,231,0.15);
+    border: 2px solid #fff8e7;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  .photo-block {
+    margin: -40px auto 60px;
+    max-width: 600px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 5;
+  }
+  .photo-block img {
+    width: 100%;
+    border-radius: 24px;
+    border: 8px solid #1a1a1a;
+    box-shadow: 12px 12px 0 #ff5722;
+    display: block;
+    transform: rotate(-1deg);
+    transition: 0.4s;
+  }
+  .photo-block img:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
+  section { padding: 0 20px; margin-bottom: 50px; }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    line-height: 1;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+  h2 .accent {
+    background: #ff5722;
+    color: #fff8e7;
+    padding: 0 14px;
+    display: inline-block;
+    transform: rotate(-2deg);
+  }
+
+  .tricks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .trick {
+    background: #fff;
+    border: 3px solid #1a1a1a;
+    border-radius: 18px;
+    padding: 20px;
+    transition: 0.25s;
+    box-shadow: 6px 6px 0 #1a1a1a;
+  }
+  .trick:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 #ff5722;
+  }
+  .trick-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: #ff5722;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .trick-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .trick-desc { font-size: 14px; color: #555; line-height: 1.5; }
+
+  ul.spots {
+    list-style: none;
+  }
+  ul.spots li {
+    background: #1a1a1a;
+    color: #fff8e7;
+    padding: 18px 24px;
+    margin-bottom: 10px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  ul.spots li::before {
+    content: '→';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #ff5722;
+  }
+  ul.spots li:hover {
+    background: #ff5722;
+    transform: translateX(10px);
+  }
+  ul.spots li:hover::before { color: #1a1a1a; }
+
+  .quote {
+    background: #1a1a1a;
+    color: #fff8e7;
+    padding: 50px 30px;
+    margin: 0 0 50px;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    line-height: 1.1;
+  }
+  .quote span { color: #ff5722; }
+
+  .links { padding: 0 20px 60px; }
+  .links a {
+    display: block;
+    background: #ff5722;
+    color: #fff;
+    padding: 18px;
+    text-decoration: none;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 15px;
+    border: 3px solid #1a1a1a;
+    transition: 0.2s;
+    box-shadow: 5px 5px 0 #1a1a1a;
+  }
+  .links a:hover {
+    background: #1a1a1a;
+    color: #ff5722;
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 #ff5722;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 64px; }
+    h2 { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-tag">Skate · Bike · Tricks</div>
+    <h1>Я <span>НИКА</span>,<br>и я катаю.</h1>
+    <div class="hero-info">
+      <div class="info-pill">🎂 13 лет</div>
+      <div class="info-pill">📍 Москва</div>
+      <div class="info-pill">🛹 3 года в скейте</div>
+    </div>
+  </div>
+</div>
+
+<div class="photo-block">
+  <img src="https://images.unsplash.com/photo-1520975954732-35dd22299614?w=800" alt="скейт">
+</div>
+
+<div class="container">
+
+  <section>
+    <h2>Мои <span class="accent">трюки</span></h2>
+    <div class="tricks">
+      <div class="trick">
+        <div class="trick-num">// 01</div>
+        <div class="trick-name">Ollie</div>
+        <div class="trick-desc">Базовый прыжок. Делаю уже легко, через бордюр и выше.</div>
+      </div>
+      <div class="trick">
+        <div class="trick-num">// 02</div>
+        <div class="trick-name">Kickflip</div>
+        <div class="trick-desc">Учила полгода. Получается раз из трёх. Цель — раз из двух.</div>
+      </div>
+      <div class="trick">
+        <div class="trick-num">// 03</div>
+        <div class="trick-name">Grind</div>
+        <div class="trick-desc">Скольжение по перилам. Самый страшный, самый кайфовый.</div>
+      </div>
+      <div class="trick">
+        <div class="trick-num">// 04</div>
+        <div class="trick-name">Manual</div>
+        <div class="trick-desc">Еду на двух колёсах. Рекорд — 12 метров.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote">
+    «Падать <span>не страшно</span>.<br>Страшно — <span>не пробовать</span>.»
+  </div>
+
+  <section>
+    <h2>Мои <span class="accent">споты</span></h2>
+    <ul class="spots">
+      <li>Парк Горького — главное место, по средам и субботам</li>
+      <li>Скейт-плаза в Сокольниках — для трюков на перилах</li>
+      <li>Площадь у школы — когда лень ехать далеко</li>
+      <li>Зимой — крытый скейт-парк «РАМПА»</li>
+    </ul>
+  </section>
+
+</div>
+
+<div class="links container">
+  <a href="#">📸 Мой Instagram</a>
+  <a href="#">🎥 Видео трюков</a>
+  <a href="#">💬 Telegram-канал</a>
+</div>
+
+</body>
+</html>
