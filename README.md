@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://dmitrtrc.github.io/Junior_IT/">
-  <img src="./.github/assets/banner.svg" alt="Junior_IT — курс программирования для подростков 11–14 лет" width="100%">
+  <img src="https://github.com/DmitrTRC/Junior_IT/raw/refs/heads/main/.github/assets/banner.svg" alt="Junior_IT — курс программирования для подростков 11–14 лет" width="100%">
 </a>
 
 <br><br>
