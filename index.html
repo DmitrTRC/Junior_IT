@@ -96,38 +96,32 @@
   }
   .hero h1 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(48px, 10vw, 140px);
-    line-height: 0.92;
+    font-size: clamp(44px, 8vw, 110px);
+    line-height: 0.95;
     font-weight: 700;
     letter-spacing: -3px;
     margin-bottom: 24px;
   }
-  .hero h1 .accent {
-    background: linear-gradient(135deg, var(--yellow), var(--orange));
+  .hero h1 .brand {
+    background: linear-gradient(135deg, #ffd60a 0%, #ff8a50 50%, #ff5722 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-  }
-  .hero h1 .underline {
-    position: relative;
     display: inline-block;
   }
-  .hero h1 .underline::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0;
-    bottom: 8%;
-    height: 12px;
-    background: var(--yellow);
-    z-index: -1;
-    transform: skew(-12deg);
-    opacity: 0.85;
+  .hero h1 .tagline {
+    display: block;
+    margin-top: 14px;
+    font-size: 0.42em;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: var(--muted);
   }
-  .hero h1 .underline span {
-    position: relative;
-    color: var(--bg);
-    padding: 0 8px;
+  .hero h1 .tagline em {
+    color: var(--yellow);
+    font-style: normal;
+    font-weight: 700;
   }
   .hero-sub {
     font-size: clamp(16px, 2vw, 21px);
@@ -650,8 +644,8 @@
       <span>// курс активен · набор открыт</span>
     </div>
     <h1>
-      <span class="accent">Junior</span>_IT<br>
-      курс <span class="underline"><span>с нуля</span></span>
+      <span class="brand">Junior_IT</span>
+      <span class="tagline">курс программирования <em>с нуля</em></span>
     </h1>
     <p class="hero-sub">
       Программирование для подростков 11–14 лет. От первой строчки HTML до собственного сайта в интернете. Бесплатно, в формате вебинара.
