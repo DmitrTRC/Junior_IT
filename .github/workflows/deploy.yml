@@ -1,14 +1,13 @@
 name: Deploy to GitHub Pages
 
-# Когда понадобится — раскомментируй on: блок и push.
-# Это задеплоит весь репо как статический сайт.
-# Лекции, шпаргалки и демки станут доступны по адресу:
-#   https://<твой-username>.github.io/junior-it/
+# Деплоит весь репо как статический сайт на каждый push в main.
+# Лекции, шпаргалки и демки доступны по адресу:
+#   https://dmitrtrc.github.io/Junior_IT/
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
