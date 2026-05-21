@@ -1,13 +1,10 @@
 <div align="center">
 
 <a href="https://dmitrtrc.github.io/Junior_IT/">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,50:0f3460,100:ffd60a&height=180&section=header&text=Junior_IT&fontSize=72&fontColor=ffd60a&fontAlignY=38&desc=Курс%20программирования%20для%20подростков%2011–14%20лет&descSize=18&descAlignY=62&animation=fadeIn&fontAlign=50">
-    <img src="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,50:0f3460,100:ffd60a&height=180&section=header&text=Junior_IT&fontSize=72&fontColor=ffd60a&fontAlignY=38&desc=Курс%20программирования%20для%20подростков%2011–14%20лет&descSize=18&descAlignY=62&animation=fadeIn&fontAlign=50" alt="Junior_IT — курс программирования">
-  </picture>
+  <img src="./.github/assets/banner.svg" alt="Junior_IT — курс программирования для подростков 11–14 лет" width="100%">
 </a>
 
-<br>
+<br><br>
 
 **От первой строчки HTML до собственного сайта в интернете.**
 **Бесплатно. Без зубрёжки. С результатом за 75 минут.**
