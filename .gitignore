@@ -26,6 +26,12 @@ build/
 students/*
 !students/.gitkeep
 
+# Claude CLI — личные настройки (shared settings.json коммитим)
+.claude/settings.local.json
+
+# Graphify — генерируемый граф знаний
+graphify-out/
+
 # OS misc
 Thumbs.db
 desktop.ini
