@@ -1,0 +1,43 @@
+<!-- ДЕМКА «спорт» · урок 2.6. Чистый язык в консоли: спросить отжимания → решить зачёт/незачёт.
+     Эстетика: оранжевый, жирный, Bebas-вайб. Герой — Саня (не Ника!). Только prompt/alert + if/else, без DOM.
+     Шрифт Arial Black — намеренный системный Cyrillic-safe фолбэк под Bebas-вайб (Bebas Neue на Google Fonts без кириллицы, «Саня» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORT · консоль · решает</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:'Arial Black',Arial,sans-serif; text-align:center; padding:50px 20px; min-height:100vh; }
+  .label { color:#ff5722; letter-spacing:4px; font-size:14px; font-weight:bold; }
+  h1 { font-size:46px; text-transform:uppercase; letter-spacing:-1px; margin:6px 0 2px; }
+  .sub { color:#ff5722; font-size:15px; text-transform:uppercase; letter-spacing:2px; margin-bottom:26px; font-family:Arial,sans-serif; }
+  .console { background:#15151c; color:#f0f0f0; border-radius:12px; padding:20px 22px; max-width:600px; margin:0 auto;
+    text-align:left; font-family:'JetBrains Mono','Courier New',monospace; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#ff5722; font-weight:700; }
+  .console .l { display:block; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { color:#888; font-size:13px; margin-top:22px; font-family:Arial,sans-serif; }
+  .hint b { color:#ff5722; }
+</style></head>
+<body>
+  <div class="label">// SPORT MODE · CONSOLE</div>
+  <h1>Саня · зачёт</h1>
+  <div class="sub">отжимания: программа решает зачёт или нет</div>
+
+  <div class="console"><span class="com">// норматив — 20 раз. открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> otzh = Number(prompt(<span class="str">"Сколько отжиманий за подход?"</span>))</span><span class="l"><span class="kw">if</span> (otzh >= <span class="num">20</span>) { alert(<span class="str">"💪 ЗАЧЁТ! "</span> + otzh + <span class="str">" — это сила."</span>) }</span><span class="l"><span class="kw">else</span> { alert(<span class="str">"Ещё чуть: до зачёта "</span> + (<span class="num">20</span> - otzh)) }</span></div>
+
+  <div class="hint">Никаких кнопок. Сравнило с нормативом и <b>решило само</b> — прямо в консоли.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let otzh = Number(prompt("Сколько отжиманий за подход?"));
+        if (otzh >= 20) {
+          console.log("otzh =", otzh, "| зачёт");
+          alert("💪 ЗАЧЁТ! " + otzh + " — это сила.");
+        } else {
+          console.log("otzh =", otzh, "| не хватило", 20 - otzh);
+          alert("Ещё чуть: до зачёта " + (20 - otzh));
+        }
+      }, 400);
+    });
+  </script>
+</body></html>

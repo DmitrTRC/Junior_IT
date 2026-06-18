@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Шпаргалка по JavaScript</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '( )';
+    position: absolute;
+    right: 30px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 100px;
+    opacity: 0.08;
+    font-weight: 700;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #00e676; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #00e676;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #00e676;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #00e676;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .ex {
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #888;
+    background: #f5f1ea;
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .skeleton {
+    background: #1a1a1a;
+    color: #f0f0f0;
+    padding: 24px;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin-top: 12px;
+    white-space: pre;
+  }
+  .skeleton .tag { color: #ff79c6; }
+  .skeleton .attr { color: #50fa7b; }
+  .skeleton .kw { color: #8be9fd; }
+  .skeleton .text { color: #f1fa8c; }
+  .skeleton .com { color: #6272a4; font-style: italic; }
+
+  .tip {
+    background: linear-gradient(135deg, #00e676, #00bcd4);
+    color: #06251a;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  .err {
+    background: #ffe8e8;
+    border-left: 4px solid #ff3b30;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #c00; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="draft">⚠️ ЧЕРНОВИК (заготовка автозадачи, 6 июня 2026). Проверь код и формулировки, потом убери эту плашку — в печать она не идёт.</div>
+
+<header>
+  <h1>Шпаргалка<br>JavaScript</h1>
+  <p>Оживляем сайт · урок 2</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Три языка — три работы</h2>
+  <div class="item">
+    <code>HTML</code>
+    <div class="desc"><strong>Строит.</strong> Теги — что показать (заголовок, картинка, кнопка).</div>
+  </div>
+  <div class="item">
+    <code>CSS</code>
+    <div class="desc"><strong>Красит.</strong> Стили — какого цвета, размера, формы.</div>
+  </div>
+  <div class="item">
+    <code>JavaScript</code>
+    <div class="desc"><strong>Оживляет.</strong> Действия — что произойдёт, когда нажмёшь.</div>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div>JS пишется внутри тега <strong>&lt;script&gt;</strong>. Клади его в самый <strong>низ</strong> страницы, перед <strong>&lt;/body&gt;</strong> — иначе код не найдёт кнопки.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Живая кнопка</h2>
+  <p style="margin-bottom: 12px; color: #555;">Самое простое — кнопка, которая показывает сообщение.</p>
+  <div class="skeleton"><span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="text">"alert('Привет!')"</span><span class="tag">&gt;</span>Нажми меня<span class="tag">&lt;/button&gt;</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>&lt;button&gt;</code>
+    <div class="desc"><strong>Кнопка.</strong> Текст между тегами — надпись на ней.</div>
+  </div>
+  <div class="item">
+    <code>onclick</code>
+    <div class="desc"><strong>«При клике».</strong> Внутри кавычек — что сделать по нажатию.</div>
+  </div>
+  <div class="item">
+    <code>alert('...')</code>
+    <div class="desc"><strong>Всплывашка.</strong> Показывает окошко с текстом.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Счётчик (главное за урок)</h2>
+  <p style="margin-bottom: 12px; color: #555;">Считаем, сколько раз нажали на кнопку.</p>
+  <div class="skeleton"><span class="tag">&lt;h2</span> <span class="attr">id</span>=<span class="text">"score"</span><span class="tag">&gt;</span>0<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="text">"add()"</span><span class="tag">&gt;</span>+1<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">let</span> score = <span class="text">0</span>;
+  <span class="kw">function</span> add() {
+    score = score + <span class="text">1</span>;
+    document.getElementById(<span class="text">'score'</span>).textContent = score;
+  }
+<span class="tag">&lt;/script&gt;</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>id="score"</code>
+    <div class="desc"><strong>Имя элемента.</strong> Чтобы JS его нашёл. Имя придумываешь сам.</div>
+  </div>
+  <div class="item">
+    <code>let score = 0</code>
+    <div class="desc"><strong>Переменная</strong> — коробочка со значением. Здесь начинаем с нуля.</div>
+  </div>
+  <div class="item">
+    <code>function add()</code>
+    <div class="desc"><strong>Действие с именем.</strong> Кнопка зовёт его через <code style="white-space:normal">onclick="add()"</code>.</div>
+  </div>
+  <div class="item">
+    <code>getElementById</code>
+    <div class="desc"><strong>«Найди по имени».</strong> Берёт элемент с нужным <code>id</code>.</div>
+  </div>
+  <div class="item">
+    <code>.textContent</code>
+    <div class="desc"><strong>Поменять текст</strong> внутри элемента.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Меняем стиль по клику</h2>
+  <p style="margin-bottom: 12px; color: #555;">JS может трогать любой стиль — как CSS, только по нажатию.</p>
+  <div class="skeleton"><span class="com">// сменить фон страницы</span>
+<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="text">"document.body.style.background='#0f3460'"</span><span class="tag">&gt;</span>Тёмная<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="text">"document.body.style.background='#faf7f2'"</span><span class="tag">&gt;</span>Светлая<span class="tag">&lt;/button&gt;</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>document.body</code>
+    <div class="desc"><strong>Вся страница.</strong> Как <code>body</code> в CSS.</div>
+  </div>
+  <div class="item">
+    <code>.style.background</code>
+    <div class="desc"><strong>Меняем фон.</strong> Так же: <code>.style.color</code>, <code>.style.fontSize</code>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Топ-5 ошибок новичка</h2>
+  <div class="err">1. <strong>&lt;script&gt; наверху.</strong> Клади его ВНИЗ, перед <code style="background:#1a1a1a;color:#fff">&lt;/body&gt;</code>. Иначе кнопок ещё нет, и код их не находит.</div>
+  <div class="err">2. <strong>Разные имена.</strong> <code style="background:#1a1a1a;color:#fff">id="score"</code> и <code style="background:#1a1a1a;color:#fff">getElementById('score')</code> должны совпадать буква в букву.</div>
+  <div class="err">3. <strong>Кавычки.</strong> Только английские <code style="background:#1a1a1a;color:#fff">' '</code> или <code style="background:#1a1a1a;color:#fff">" "</code>, не «ёлочки».</div>
+  <div class="err">4. <strong>Забыл скобки у действия.</strong> Зовём <code style="background:#1a1a1a;color:#fff">add()</code> со скобками, не просто <code style="background:#1a1a1a;color:#fff">add</code>.</div>
+  <div class="err">5. <strong>Не сохранил / не обновил.</strong> Ctrl+S, потом F5 в браузере.</div>
+  <div class="tip">
+    <div class="tip-icon">🛠</div>
+    <div>Что-то не работает? Нажми <strong>F12</strong> → вкладка <strong>Console</strong>. Красная строка покажет, в какой строке ошибка.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Что дальше</h2>
+  <p>На следующем уроке: <strong>движение и мини-игры</strong> — клики по экрану, реакция, простая анимация.</p>
+  <p style="margin-top: 12px;">А ещё через пару — <strong>выложим твой сайт в интернет</strong> по реальной ссылке.</p>
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>Хочешь вперёд? <strong>developer.mozilla.org</strong> → раздел JavaScript. Самый честный учебник в мире, есть на русском.</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для второго занятия. Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

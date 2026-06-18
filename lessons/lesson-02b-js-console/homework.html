@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашка · Консоль-калькулятор (JS)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px 60px;
+    line-height: 1.6;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 50px 40px;
+    border-radius: 24px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '🧮';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 170px;
+    opacity: 0.18;
+    line-height: 1;
+  }
+  header .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+  header h1 {
+    font-size: 46px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+  header p { font-size: 18px; max-width: 520px; font-weight: 600; }
+
+  section {
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .step {
+    background: #ffd60a;
+    color: #1a1a1a;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  p { margin-bottom: 12px; font-size: 16px; color: #333; }
+  p strong { color: #1a1a1a; font-weight: 800; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+
+  /* блок «консоль» */
+  .console {
+    background: #15151c;
+    color: #f0f0f0;
+    padding: 20px 22px;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin: 14px 0;
+  }
+  .console .in { display: block; }
+  .console .in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+
+  .tasks { list-style: none; counter-reset: tsk; }
+  .tasks li {
+    counter-increment: tsk;
+    padding: 16px 16px 16px 60px;
+    margin-bottom: 10px;
+    background: #faf7f2;
+    border-radius: 12px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .tasks li::before {
+    content: counter(tsk);
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    width: 30px; height: 30px;
+    background: #1a1a1a;
+    color: #ffd60a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .tasks li code { background: #1a1a1a; }
+
+  .bonus {
+    background: linear-gradient(135deg, #00e676, #00ffc8);
+    color: #1a1a2e;
+    padding: 24px;
+    border-radius: 16px;
+    margin-top: 16px;
+  }
+  .bonus h3 { font-size: 18px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .bonus ul { list-style: none; }
+  .bonus ul li { padding: 6px 0 6px 24px; position: relative; font-weight: 600; }
+  .bonus ul li::before { content: '✦'; position: absolute; left: 0; }
+  .bonus code { background: rgba(0,0,0,0.25); color: #fff; }
+
+  .check {
+    background: #ffd60a;
+    color: #2a1a00;
+    padding: 20px 24px;
+    border-radius: 14px;
+    font-weight: 800;
+    margin-top: 16px;
+    font-size: 16px;
+  }
+  .check h3 { margin-bottom: 8px; font-size: 18px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    header h1 { font-size: 34px; }
+    section { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <div class="kicker">// домашнее задание · урок 2.5</div>
+  <h1>Калькулятор<br>в браузере</h1>
+  <p>Никаких файлов и кнопок. Только браузер, консоль и сам язык. Шпаргалка рядом — всё получится.</p>
+</header>
+
+<section>
+  <h2><span class="step">1</span>Открой консоль</h2>
+  <p>Открой любой сайт (хоть пустую вкладку) и нажми <strong>F12</strong> → вкладка <strong>Console</strong>. На Mac в Chrome — <code>Cmd + Opt + J</code>.</p>
+  <p>Печатаешь строку → <strong>Enter</strong> → браузер отвечает. Это и есть твой калькулятор.</p>
+</section>
+
+<section>
+  <h2><span class="step">2</span>Посчитай (просто Enter)</h2>
+  <p>Набери по очереди и посмотри ответы:</p>
+<div class="console"><span class="in"><span class="nNum">12</span> * <span class="nNum">8</span></span><span class="in">(<span class="nNum">100</span> - <span class="nNum">37</span>) / <span class="nNum">3</span></span><span class="com">// сколько минут в сутках?</span><span class="in"><span class="nNum">24</span> * <span class="nNum">60</span></span></div>
+  <p>Придумай <strong>свой пример</strong> и посчитай. Например: сколько секунд ты уже живёшь.</p>
+</section>
+
+<section>
+  <h2><span class="step">3</span>Заведи переменные и собери фразу</h2>
+  <p>Коробочки с именем — и склейка текста:</p>
+<div class="console"><span class="in"><span class="kw">let</span> imya = <span class="str">"сюда своё имя"</span></span><span class="in"><span class="kw">let</span> vozrast = <span class="nNum">12</span></span><span class="in">imya + <span class="str">", тебе "</span> + vozrast + <span class="str">" — это "</span> + (vozrast * <span class="nNum">12</span>) + <span class="str">" месяцев"</span></span></div>
+  <p>Поставь <strong>свои</strong> имя и возраст. Что ответит браузер?</p>
+</section>
+
+<section>
+  <h2><span class="step">4</span>Пусть программа спросит</h2>
+  <p>Три строки — и получился маленький диалог:</p>
+<div class="console"><span class="in"><span class="kw">let</span> name = prompt(<span class="str">"Как тебя зовут?"</span>)</span><span class="in">alert(<span class="str">"Привет, "</span> + name + <span class="str">"! Рад видеть."</span>)</span></div>
+  <p>Теперь — с числом. Не забудь <code>Number(...)</code>, иначе вместо счёта будет склейка:</p>
+<div class="console"><span class="in"><span class="kw">let</span> vozrast = Number(prompt(<span class="str">"Сколько тебе лет?"</span>))</span><span class="in">alert(<span class="str">"Через 10 лет тебе будет "</span> + (vozrast + <span class="nNum">10</span>))</span></div>
+</section>
+
+<section>
+  <h2><span class="step">5</span>Сделай это СВОИМ</h2>
+  <ol class="tasks">
+    <li>Поменяй вопросы в <code>prompt</code> на свои</li>
+    <li>Придумай, что посчитать именно у тебя: чаевые, средний балл, голы, дни до дня рождения</li>
+    <li>Собери фразу-ответ через <code>+</code> с переменными</li>
+    <li>Покажи результат через <code>alert</code></li>
+  </ol>
+
+  <div class="bonus">
+    <h3>✦ Идеи для прокачки</h3>
+    <ul>
+      <li>Калькулятор чаевых: <code>let summa = Number(prompt("Счёт?")); alert(summa * 0.1)</code></li>
+      <li>Среднее за 3 оценки: <code>(a + b + c) / 3</code></li>
+      <li>Переведи свой рост из см в метры: <code>rost / 100</code></li>
+      <li>Сколько дней до Нового года — посчитай в голове и проверь в консоли</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">6</span>Покажи и пришли</h2>
+  <ol class="tasks">
+    <li>Покажи родителям — пусть ответят на твой <code>prompt</code></li>
+    <li>Сделай скриншот <strong>консоли</strong> (Print Screen на Windows, Cmd+Shift+4 на Mac)</li>
+    <li>Пришли скриншот мне в чат — посмотрю, дам совет</li>
+  </ol>
+
+  <div class="check">
+    <h3>✓ Проверь себя</h3>
+    Если консоль посчитала твой пример, а <code>prompt</code> спросил и <code>alert</code> показал ответ — <strong>задача выполнена</strong>. Красава.
+  </div>
+</section>
+
+<section style="text-align: center; background: #1a1a1a; color: #fff;">
+  <h2 style="border-color: #ffd60a; justify-content: center; color:#fff;">Не работает?</h2>
+  <p style="color: #ccc;">Это нормально, у всех так бывает. Проверь по порядку:</p>
+  <p style="color: #ccc;">→ Кавычки английские <code style="background:#333">"</code>, не «ёлочки»?<br>
+  → Команды английскими буквами? <code style="background:#333">let</code>, не <code style="background:#333">лет</code><br>
+  → Считаешь число из <code style="background:#333">prompt</code> — обернул в <code style="background:#333">Number(...)</code>?<br>
+  → <code style="background:#333">let</code> пишешь только при создании коробочки?<br>
+  → Нажал <strong>Enter</strong> после строки?</p>
+  <p style="color: #ffd60a; margin-top: 20px;">Красная строка в консоли подсказывает, где ошибка. Совсем застрял — пиши мне.</p>
+</section>
+
+</div>
+
+</body>
+</html>

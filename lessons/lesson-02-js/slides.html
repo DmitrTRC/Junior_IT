@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Слайды · урок 2 — Оживляем сайт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: #0a0a14;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slides { width: 100vw; height: 100vh; position: relative; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6vh 6vw;
+    text-align: center;
+  }
+  .slide.active { display: flex; }
+
+  /* SLIDE 1: INTRO */
+  #s1 { background: radial-gradient(ellipse at 30% 20%, #16213e, #0a0a14 60%); }
+  #s1 .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: #00e676;
+    font-size: clamp(14px, 1.4vw, 22px);
+    letter-spacing: 8px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+  }
+  #s1 h1 {
+    font-size: clamp(46px, 8vw, 150px);
+    line-height: 0.92;
+    font-weight: 700;
+    letter-spacing: -3px;
+    margin-bottom: 30px;
+  }
+  #s1 h1 .y { color: #00e676; }
+  #s1 h1 .em {
+    background: #00e676;
+    color: #0a0a14;
+    padding: 0 20px;
+    display: inline-block;
+    transform: rotate(-2deg);
+    margin: 10px 0;
+  }
+  #s1 .meta { margin-top: 40px; display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+  #s1 .meta span {
+    background: rgba(0,230,118,0.1);
+    border: 1px solid rgba(0,230,118,0.3);
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: clamp(14px, 1.5vw, 20px);
+    font-weight: 700;
+  }
+
+  /* SLIDE 2: 3 IDEAS */
+  #s2 {
+    background: #0a0a14;
+    background-image:
+      linear-gradient(rgba(0,230,118,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,230,118,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  #s2 .top-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: #00e676;
+    font-size: clamp(12px, 1.2vw, 18px);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+  }
+  #s2 h2 {
+    font-size: clamp(36px, 5vw, 76px);
+    margin-bottom: 60px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -2px;
+  }
+  #s2 .points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1400px; width: 100%; }
+  #s2 .point {
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(0,230,118,0.3);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: left;
+  }
+  #s2 .point .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: #00e676;
+    font-size: clamp(36px, 4vw, 60px);
+    line-height: 1;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  #s2 .point h3 { font-size: clamp(20px, 2vw, 30px); margin-bottom: 12px; line-height: 1.1; }
+  #s2 .point p { color: #aaa; font-size: clamp(14px, 1.2vw, 18px); line-height: 1.5; }
+  #s2 .point code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #16213e;
+    color: #00e676;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: clamp(12px, 1.1vw, 16px);
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  /* SLIDE 3: THE COUNTER (live code) */
+  #s3 { background: radial-gradient(ellipse at 70% 80%, #16213e, #0a0a14 60%); }
+  #s3 .top-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: #00ffc8;
+    font-size: clamp(12px, 1.2vw, 18px);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  #s3 h2 { font-size: clamp(34px, 5vw, 70px); margin-bottom: 30px; font-weight: 700; letter-spacing: -2px; }
+  #s3 .code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #0a0a14;
+    border: 1px solid rgba(0,255,200,0.25);
+    border-radius: 16px;
+    padding: 30px 36px;
+    text-align: left;
+    font-size: clamp(13px, 1.5vw, 22px);
+    line-height: 1.7;
+    white-space: pre;
+    max-width: 900px;
+    overflow-x: auto;
+  }
+  #s3 .code .tag { color: #ff0096; }
+  #s3 .code .kw { color: #00ffc8; }
+  #s3 .code .txt { color: #ffd60a; }
+
+  /* SLIDE 4: HOMEWORK */
+  #s4 { background: linear-gradient(135deg, #00bcd4, #00e676); color: #06251a; }
+  #s4 .pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 1.2vw, 18px);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    opacity: 0.7;
+  }
+  #s4 h2 { font-size: clamp(52px, 10vw, 170px); line-height: 0.9; margin-bottom: 40px; letter-spacing: -4px; font-weight: 700; }
+  #s4 .todo { text-align: left; max-width: 760px; width: 100%; margin: 20px auto; }
+  #s4 .todo .row {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 16px 0;
+    border-bottom: 2px solid rgba(0,0,0,0.15);
+    font-size: clamp(17px, 1.7vw, 25px);
+    font-weight: 600;
+  }
+  #s4 .todo .row .n {
+    background: #06251a;
+    color: #00e676;
+    width: clamp(32px, 3vw, 48px);
+    height: clamp(32px, 3vw, 48px);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+    font-size: clamp(14px, 1.3vw, 20px);
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 12px; z-index: 100;
+    background: rgba(0,0,0,0.5); padding: 10px 16px; border-radius: 50px; backdrop-filter: blur(10px);
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1); color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 40px; height: 40px; border-radius: 50%;
+    font-size: 20px; cursor: pointer; transition: 0.2s;
+  }
+  .nav button:hover { background: #00e676; color: #0a0a14; }
+  .nav .indicator {
+    color: #00e676; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; padding: 0 16px; display: flex; align-items: center; font-weight: 700;
+  }
+  .keyhint {
+    position: fixed; bottom: 30px; right: 30px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; z-index: 100;
+  }
+  #s4 .keyhint { color: rgba(0,0,0,0.4); }
+</style>
+</head>
+<body>
+
+<div class="slides">
+
+  <div class="slide active" id="s1">
+    <div class="kicker">// второе занятие · IT</div>
+    <h1>
+      Сегодня <br>
+      <span class="em">оживляем</span><br>
+      <span class="y">свой сайт</span>
+    </h1>
+    <div class="meta">
+      <span>⚡ Живые кнопки</span>
+      <span>🔢 Счётчик</span>
+      <span>🎨 Смена темы</span>
+    </div>
+  </div>
+
+  <div class="slide" id="s2">
+    <div class="top-label">// три языка — три работы</div>
+    <h2>Знакомься: <span style="color:#00e676">JavaScript</span></h2>
+    <div class="points">
+      <div class="point">
+        <div class="num">01</div>
+        <h3>HTML строит</h3>
+        <p>Теги — что показать: заголовок, картинка, кнопка.</p>
+      </div>
+      <div class="point">
+        <div class="num">02</div>
+        <h3>CSS красит</h3>
+        <p>Стили — какого цвета, размера и формы.</p>
+      </div>
+      <div class="point">
+        <div class="num">03</div>
+        <h3>JS оживляет</h3>
+        <p>Действия — что произойдёт, когда нажмёшь.</p>
+        <code>&lt;script&gt; ... &lt;/script&gt;</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s3">
+    <div class="top-label">// главное за урок — счётчик</div>
+    <h2>Кнопка, которая <span style="color:#00ffc8">считает</span></h2>
+    <div class="code"><span class="tag">&lt;h2 id=<span class="txt">"score"</span>&gt;</span>0<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;button onclick=<span class="txt">"add()"</span>&gt;</span>+1<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">let</span> score = <span class="txt">0</span>;
+  <span class="kw">function</span> add() {
+    score = score + <span class="txt">1</span>;
+    document.getElementById(<span class="txt">'score'</span>).textContent = score;
+  }
+<span class="tag">&lt;/script&gt;</span></div>
+  </div>
+
+  <div class="slide" id="s4">
+    <div class="pre">// домашка · до следующего урока</div>
+    <h2>Оживи<br>свой сайт</h2>
+    <div class="todo">
+      <div class="row"><div class="n">1</div><div>Открой свою страничку с прошлого урока</div></div>
+      <div class="row"><div class="n">2</div><div>Добавь счётчик с кнопкой «+1»</div></div>
+      <div class="row"><div class="n">3</div><div>Добавь кнопку, которая меняет фон</div></div>
+      <div class="row"><div class="n">4</div><div>Сделай это своим: цвета, надписи, что считать</div></div>
+      <div class="row"><div class="n">5</div><div>Пришли скриншот мне в чат</div></div>
+    </div>
+    <div class="keyhint">← / → переключение</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">‹</button>
+  <span class="indicator"><span id="cur">1</span> / 4</span>
+  <button onclick="next()">›</button>
+</div>
+
+<div class="keyhint">← / → переключение слайдов</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.getElementById('cur').textContent = cur + 1;
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока 2.6. Если живой кодинг в консоли сломался —
+     открываешь этот файл и ведёшь по нему: тут все строки урока с ответами.
+     Это НЕ страница с DOM — урок целиком в консоли, тут просто шпаргалка ведущего. -->
+<title>Консоль урока 2.6 — рабочий конспект</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 28px; }
+  .step { margin-bottom: 22px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .console {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 18px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto;
+  }
+  .console .in { display: block; color: #f0f0f0; }
+  .console .in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { display: block; color: #7fd0ff; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { display: block; color: #6272a4; font-style: italic; }
+  .console .kw { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  footer { margin-top: 30px; color: #6a6a78; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Консоль урока 2.6 · <span class="y">рабочий конспект</span></h1>
+  <div class="sub">// резерв ведущего · открываешь, если живой кодинг встал · F12 → Console</div>
+
+  <div class="step">
+    <h2><span class="n">1</span>Сравнение → да/нет</h2>
+    <div class="console"><span class="in"><span class="nNum">10</span> > <span class="nNum">5</span></span><span class="out"><span class="bool">true</span></span><span class="in"><span class="nNum">3</span> > <span class="nNum">8</span></span><span class="out"><span class="bool">false</span></span><span class="com">// «равно?» — три знака равно</span><span class="in"><span class="nNum">7</span> === <span class="nNum">7</span></span><span class="out"><span class="bool">true</span></span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span>= положить · === сравнить (главная ловушка)</h2>
+    <div class="console"><span class="com">// один = кладёт в коробочку</span><span class="in"><span class="kw">let</span> ochki = <span class="nNum">5</span></span><span class="com">// три === спрашивает</span><span class="in">ochki === <span class="nNum">5</span></span><span class="out"><span class="bool">true</span></span><span class="in">ochki === <span class="nNum">10</span></span><span class="out"><span class="bool">false</span></span></div>
+    <div class="note"><strong>=</strong> «стало», <strong>===</strong> «равно ли?». Внутри <code>if</code> — три равно.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span>if — сделать, только если да</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> ball = <span class="nNum">80</span></span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт!"</span>)</span><span class="in">}</span><span class="com">// 80 >= 50 → true → выскочит. ball = 30 → тишина.</span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span>if / else — две дороги</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> ball = <span class="nNum">30</span></span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт! 🎉"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Почти — нужно 50"</span>)</span><span class="in">}</span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span>Спроси и реши (кульминация)</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> ball = Number(prompt(<span class="str">"Сколько баллов набрал?"</span>))</span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт! 🎉"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Почти. Нужно 50, у тебя "</span> + ball)</span><span class="in">}</span></div>
+    <div class="note"><strong>Number</strong> обязателен: <code>"100" > "9"</code> → <span style="color:#ff79c6">false</span> (текст по буквам). Спросили → сравнили → решили.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span>else if — несколько веток</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> xp = Number(prompt(<span class="str">"Сколько у тебя XP?"</span>))</span><span class="in"><span class="kw">if</span> (xp >= <span class="nNum">1000</span>) { alert(<span class="str">"🥇 Золото"</span>) }</span><span class="in"><span class="kw">else if</span> (xp >= <span class="nNum">500</span>) { alert(<span class="str">"🥈 Серебро"</span>) }</span><span class="in"><span class="kw">else</span> { alert(<span class="str">"🥉 Бронза — качайся дальше"</span>) }</span></div>
+    <div class="note">Сверху вниз, по <strong>первой</strong> подошедшей ветке: 1500 → золото, 700 → серебро, 100 → бронза.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">7</span>Бонус: и / или</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> age = Number(prompt(<span class="str">"Сколько тебе лет?"</span>))</span><span class="in"><span class="kw">if</span> (age >= <span class="nNum">11</span> && age <= <span class="nNum">14</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Ты как раз наш Junior!"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Курс для 11–14, но заходи :)"</span>)</span><span class="in">}</span></div>
+  </div>
+
+  <footer>// конец конспекта · следующий урок — этот же if на кнопках страницы</footer>
+
+</div>
+</body>
+</html>

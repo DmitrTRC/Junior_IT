@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Программа решает (if/else)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: 'if';
+    position: absolute;
+    right: 38px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 96px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .desc code {
+    background: #faf7f2; color: #1a1a1a; white-space: normal;
+    padding: 2px 6px; font-size: 12px;
+  }
+
+  /* блок «консоль браузера» */
+  .console {
+    background: #15151c;
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .console .in  { color: #f0f0f0; display: block; }
+  .console .in::before  { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { color: #7fd0ff; display: block; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw  { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  .err {
+    background: rgba(255,87,34,0.08);
+    border-left: 4px solid #ff5722;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #ff5722; }
+  .err code { background: #1a1a1a; color: #fff; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Программа<br>решает</h1>
+  <p>условия · if / else · урок 2.6</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Сравнение: ответ «да» или «нет»</h2>
+  <p class="lead">Браузер умеет не только считать, но и сравнивать. В ответ — <strong>true</strong> (да) или <strong>false</strong> (нет). Это новый вид значения: не число и не текст.</p>
+  <div class="console"><span class="in"><span class="nNum">10</span> > <span class="nNum">5</span></span><span class="out"><span class="bool">true</span></span><span class="in"><span class="nNum">3</span> > <span class="nNum">8</span></span><span class="out"><span class="bool">false</span></span><span class="com">// «равно?» — это ТРИ знака равно</span><span class="in"><span class="nNum">7</span> === <span class="nNum">7</span></span><span class="out"><span class="bool">true</span></span></div>
+  <div class="item" style="margin-top:14px">
+    <code>&gt;  &lt;  &gt;=  &lt;=</code>
+    <div class="desc"><strong>Больше, меньше, больше-или-равно, меньше-или-равно.</strong></div>
+  </div>
+  <div class="item">
+    <code>===   !==</code>
+    <div class="desc"><strong>Равно ли</strong> / <strong>не равно ли</strong>. Ответ всегда <code>true</code> или <code>false</code>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">⚠️</span>Главная ловушка: = и === — РАЗНОЕ</h2>
+  <p class="lead">Один знак равно <strong>кладёт</strong> в коробочку. Три знака равно <strong>сравнивают</strong>. Внутри <code>if</code> почти всегда нужно <code>===</code>.</p>
+  <div class="console"><span class="com">// один = положить (это НЕ вопрос)</span><span class="in"><span class="kw">let</span> ochki = <span class="nNum">5</span></span><span class="com">// три === сравнить (это вопрос)</span><span class="in">ochki === <span class="nNum">5</span></span><span class="out"><span class="bool">true</span></span><span class="in">ochki === <span class="nNum">10</span></span><span class="out"><span class="bool">false</span></span></div>
+  <div class="tip">
+    <div class="tip-icon">🔑</div>
+    <div>Запомни так: <strong>=</strong> это «стало» (положили), <strong>===</strong> это «равно ли?» (спросили). Перепутаешь в <code>if</code> — программа не спросит, а перезапишет коробочку.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>if — сделать, только если «да»</h2>
+  <p class="lead">В круглых скобках — вопрос (условие). В фигурных — что делать, если ответ <code>true</code>. Если <code>false</code> — браузер просто пропустит.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> ball = <span class="nNum">80</span></span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт!"</span>)</span><span class="in">}</span><span class="com">// 80 >= 50 → true → выскочит «Зачёт!»</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>if ( условие )</code>
+    <div class="desc"><strong>Круглые скобки</strong> — вопрос с ответом да/нет.</div>
+  </div>
+  <div class="item">
+    <code>{ ... }</code>
+    <div class="desc"><strong>Фигурные скобки</strong> — что делать, когда условие <code>true</code>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>else — а иначе</h2>
+  <p class="lead">Вторая дорога: что делать, если условие <code>false</code>. Программа всегда пойдёт ровно по одной из дорог.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> ball = <span class="nNum">30</span></span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт! 🎉"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Почти — нужно 50"</span>)</span><span class="in">}</span></div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>else if — ещё ветка</h2>
+  <p class="lead">Дорог может быть больше двух. Браузер проверяет сверху вниз и идёт по <strong>первой</strong> подошедшей.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> xp = <span class="nNum">700</span></span><span class="in"><span class="kw">if</span> (xp >= <span class="nNum">1000</span>) { alert(<span class="str">"🥇 Золото"</span>) }</span><span class="in"><span class="kw">else if</span> (xp >= <span class="nNum">500</span>) { alert(<span class="str">"🥈 Серебро"</span>) }</span><span class="in"><span class="kw">else</span> { alert(<span class="str">"🥉 Бронза"</span>) }</span><span class="com">// 700 → серебро</span></div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Спроси и реши</h2>
+  <p class="lead">Соединяем с прошлым уроком: спросить через <code>prompt</code>, превратить в число через <code>Number</code>, сравнить и решить.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> ball = Number(prompt(<span class="str">"Сколько баллов набрал?"</span>))</span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт! 🎉"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Почти. Нужно 50, у тебя "</span> + ball)</span><span class="in">}</span></div>
+  <div class="tip">
+    <div class="tip-icon">🧮</div>
+    <div>Так решается <strong>что угодно своё</strong>: ранг по очкам, зачёт по нормативу, успеешь ли до дедлайна. Программа сама выбирает ответ по твоим данным.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>И / ИЛИ (для сильных)</h2>
+  <p class="lead">Можно проверить сразу два условия.</p>
+  <div class="console"><span class="com">// && — «и» (оба верны)</span><span class="in"><span class="kw">if</span> (age >= <span class="nNum">11</span> && age <= <span class="nNum">14</span>) { alert(<span class="str">"Наш Junior!"</span>) }</span><span class="com">// || — «или» (хватит одного)</span><span class="in"><span class="kw">if</span> (den === <span class="str">"сб"</span> || den === <span class="str">"вс"</span>) { alert(<span class="str">"Выходной"</span>) }</span></div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Топ-5 ошибок новичка</h2>
+  <div class="err">1. <strong>= вместо ===.</strong> Внутри <code>if</code> нужно три равно. Один <code>=</code> не спросит, а перезапишет коробочку.</div>
+  <div class="err">2. <strong>Сравнил текст.</strong> Забыл <code>Number(prompt(...))</code> → <code>"100" > "9"</code> даёт <code>false</code> (сравнило по буквам).</div>
+  <div class="err">3. <strong>Забыл фигурные скобки.</strong> После <code>if (...)</code> идёт <code>{ ... }</code> с действием.</div>
+  <div class="err">4. <strong>Кавычки-«ёлочки».</strong> Только английские <code>"</code> или <code>'</code>, не <code>«</code> и не <code>»</code>.</div>
+  <div class="err">5. <strong>Русская раскладка.</strong> <code>if</code>, <code>else</code> — английскими буквами. <code>иф</code> ≠ <code>if</code>.</div>
+  <div class="tip">
+    <div class="tip-icon">🛠</div>
+    <div>Если <strong>ничего не происходит</strong> — первым делом проверь <code>=</code> / <code>===</code> внутри <code>if</code>. Это причина №1.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Что дальше</h2>
+  <p>Ты уже умеешь заставить программу <strong>выбирать</strong>: сравнить и решить, что делать. На следующем уроке этот же <code>if</code> мы повесим на <strong>клик кнопки</strong> — и получится настоящая реакция и мини-игра.</p>
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>Хочешь вперёд? Собери в консоли свой мини-тест: спроси ответ и через <code>if/else</code> скажи «верно» или «мимо». Честный учебник — <strong>developer.mozilla.org</strong>, раздел JavaScript.</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для занятия 2.6 · «Программа решает». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

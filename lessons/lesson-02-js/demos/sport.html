@@ -1,0 +1,62 @@
+<!-- ДЕМКА «спорт» · урок 2. Живая механика: счётчик отжиманий + сброс.
+     Эстетика: оранжевый, жирный, Bebas-вайб. Герой — Саня (не Ника!). -->
+<style>
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Arial Black', Arial, sans-serif;
+    text-align: center;
+    padding: 50px 20px;
+    min-height: 100vh;
+  }
+  .label { color: #ff5722; letter-spacing: 4px; font-size: 14px; font-weight: bold; }
+  h1 {
+    font-size: 48px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin: 6px 0 0;
+  }
+  #count {
+    font-size: 130px;
+    color: #ff5722;
+    line-height: 1;
+    margin: 16px 0;
+  }
+  .unit { font-size: 22px; text-transform: uppercase; color: #888; letter-spacing: 3px; }
+  button {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    border: none;
+    padding: 18px 36px;
+    border-radius: 50px;
+    margin: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .go { background: #ff5722; color: #fff; }
+  .go:hover { transform: scale(1.08); }
+  .rst { background: #1a1a1a; color: #fff; }
+  .rst:hover { transform: scale(1.08); }
+</style>
+
+<div class="label">// SPORT MODE</div>
+<h1>Саня · отжимания</h1>
+<div id="count">0</div>
+<div class="unit">раз</div>
+<div>
+  <button class="go" onclick="rep()">+1 ОТЖИМАНИЕ</button>
+  <button class="rst" onclick="reset()">Сброс</button>
+</div>
+
+<script>
+  let count = 0;
+  function rep() {
+    count = count + 1;
+    document.getElementById('count').textContent = count;
+  }
+  function reset() {
+    count = 0;
+    document.getElementById('count').textContent = count;
+  }
+</script>

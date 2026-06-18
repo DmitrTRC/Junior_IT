@@ -1,0 +1,40 @@
+<!-- ДЕМКА «спорт» · урок 2.5. Чистый язык в консоли: спросить три подхода → посчитать среднее.
+     Эстетика: оранжевый, жирный, Bebas-вайб. Герой — Саня (не Ника!). Только prompt/alert, без DOM.
+     Шрифт Arial Black — намеренный системный Cyrillic-safe фолбэк под Bebas-вайб (Bebas Neue на Google Fonts без кириллицы, «Саня» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORT · консоль</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:'Arial Black',Arial,sans-serif; text-align:center; padding:50px 20px; min-height:100vh; }
+  .label { color:#ff5722; letter-spacing:4px; font-size:14px; font-weight:bold; }
+  h1 { font-size:46px; text-transform:uppercase; letter-spacing:-1px; margin:6px 0 2px; }
+  .sub { color:#ff5722; font-size:15px; text-transform:uppercase; letter-spacing:2px; margin-bottom:26px; font-family:Arial,sans-serif; }
+  .console { background:#15151c; color:#f0f0f0; border-radius:12px; padding:20px 22px; max-width:580px; margin:0 auto;
+    text-align:left; font-family:'JetBrains Mono','Courier New',monospace; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#ff5722; font-weight:700; }
+  .console .l { display:block; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { color:#888; font-size:13px; margin-top:22px; font-family:Arial,sans-serif; }
+  .hint b { color:#ff5722; }
+</style></head>
+<body>
+  <div class="label">// SPORT MODE · CONSOLE</div>
+  <h1>Саня · отжимания</h1>
+  <div class="sub">среднее за три подхода — сам язык</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> a = Number(prompt(<span class="str">"Подход 1 — сколько раз?"</span>))</span><span class="l"><span class="kw">let</span> b = Number(prompt(<span class="str">"Подход 2?"</span>))</span><span class="l"><span class="kw">let</span> c = Number(prompt(<span class="str">"Подход 3?"</span>))</span><span class="l">alert(<span class="str">"Всего: "</span> + (a + b + c) + <span class="str">", в среднем "</span> + (a + b + c) / <span class="num">3</span>)</span></div>
+
+  <div class="hint">Никаких кнопок. Считает <b>сам язык</b> прямо в консоли.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let a = Number(prompt("Подход 1 — сколько раз?"));
+        let b = Number(prompt("Подход 2?"));
+        let c = Number(prompt("Подход 3?"));
+        console.log("подходы:", a, b, c);
+        alert("Всего: " + (a + b + c) + ", в среднем " + (a + b + c) / 3);
+      }, 400);
+    });
+  </script>
+</body></html>
