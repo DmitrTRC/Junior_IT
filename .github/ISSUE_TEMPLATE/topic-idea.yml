@@ -1,0 +1,31 @@
+name: "💡 Идея темы или улучшения"
+description: "Предложить новую тему урока, демку или улучшить существующий материал"
+title: "Идея: "
+labels: ["идея"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Любая идея — повод подумать. Расскажи, что хочется добавить или улучшить.
+  - type: textarea
+    id: idea
+    attributes:
+      label: "Идея"
+      description: "Что предлагаешь? Новая тема, демка, объяснение получше?"
+      placeholder: "Было бы здорово урок про ..., потому что ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: who
+    attributes:
+      label: "Для кого это?"
+      options:
+        - "Для учеников (детей)"
+        - "Для родителей"
+        - "Для преподавателей"
+        - "Не знаю / для всех"
+  - type: textarea
+    id: why
+    attributes:
+      label: "Зачем это нужно? (необязательно)"
+      placeholder: "Это поможет, потому что ..."

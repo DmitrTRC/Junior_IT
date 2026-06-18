@@ -1,0 +1,42 @@
+name: "🐞 Опечатка или ошибка в уроке"
+description: "Нашёл(ла) опечатку, неработающий пример или ошибку в материалах"
+title: "[урок]: "
+labels: ["ошибка-в-уроке"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо, что помогаешь! Это видят сотни детей — любая правка ценна.
+        Опиши словами, технические детали не обязательны.
+  - type: dropdown
+    id: lesson
+    attributes:
+      label: "Какой урок или страница?"
+      options:
+        - "lesson-01-html-css"
+        - "lesson-02-js"
+        - "lesson-02b-js-console"
+        - "lesson-02c-js-conditions"
+        - "Лендинг (главная страница)"
+        - "docs/ (гайд, soft-vs-hard)"
+        - "Другое / не знаю"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: "Что не так?"
+      description: "Что написано или работает неправильно?"
+      placeholder: "На странице ... написано ..., а должно быть ..."
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: "Где именно? (ссылка или файл, если знаешь)"
+      placeholder: "https://dmitrtrc.github.io/Junior_IT/... или lessons/.../cheatsheet.html"
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Что ожидал(а) увидеть? (необязательно)"
+      placeholder: "Думаю, тут должно быть ..."

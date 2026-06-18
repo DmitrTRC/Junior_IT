@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🌐 Лендинг курса
+    url: https://dmitrtrc.github.io/Junior_IT/
+    about: Все материалы и информация о курсе в одном месте
+  - name: ⚙️ Гайд подготовки устройства
+    url: https://dmitrtrc.github.io/Junior_IT/docs/setup-guide.html
+    about: Как подготовить компьютер или телефон к занятию (iOS / Android / Windows / Mac)
+  - name: 🔒 Приватность и безопасность
+    url: https://github.com/DmitrTRC/Junior_IT/blob/main/SECURITY.md
+    about: Нашли личные данные ребёнка или уязвимость? Пишите сюда, не открывая публичный issue
