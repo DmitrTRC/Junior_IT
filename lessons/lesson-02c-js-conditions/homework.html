@@ -145,6 +145,21 @@
   }
   .tasks li code { background: #1a1a1a; }
 
+  /* мягкая пояснительная плашка */
+  .soft {
+    background: #16213e;
+    color: rgba(255,255,255,0.82);
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-top: 14px;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .soft .ic { font-size: 20px; flex-shrink: 0; }
+  .soft strong { color: #fff; }
+
   .bonus {
     background: linear-gradient(135deg, #00e676, #00ffc8);
     color: #1a1a2e;
@@ -197,80 +212,78 @@
 
 <header>
   <div class="kicker">// домашнее задание · урок 2.6</div>
-  <h1>Научи программу<br>решать</h1>
-  <p>Никаких файлов и кнопок. Только браузер, консоль и слово <code style="background:rgba(0,0,0,0.2);color:#2a1a00">if</code>. Шпаргалка рядом — всё получится.</p>
+  <h1>Два калькулятора,<br>которые решают</h1>
+  <p>Сегодня соберёшь два настоящих калькулятора в консоли. Главное в обоих — <code style="background:rgba(0,0,0,0.2);color:#2a1a00">if / else</code>. Шпаргалка рядом.</p>
 </header>
 
 <section>
   <h2><span class="step">1</span>Открой консоль</h2>
   <p>Открой любой сайт (хоть пустую вкладку) и нажми <strong>F12</strong> → вкладка <strong>Console</strong>. На Mac в Chrome — <code>Cmd + Opt + J</code>.</p>
-  <p>Печатаешь строку → <strong>Enter</strong> → браузер отвечает. Сегодня он будет ещё и решать.</p>
+  <p>Печатаешь строку → <strong>Enter</strong> → браузер отвечает. Сегодня он будет считать и решать.</p>
 </section>
 
 <section>
-  <h2><span class="step">2</span>Сравни (ответ — true или false)</h2>
-  <p>Набери по очереди и посмотри ответы:</p>
-<div class="console"><span class="in"><span class="nNum">10</span> > <span class="nNum">5</span></span><span class="in"><span class="nNum">2</span> === <span class="nNum">2</span></span><span class="com">// а это — ловушка, угадай ответ до Enter</span><span class="in"><span class="str">"100"</span> > <span class="str">"9"</span></span></div>
-  <p>Последняя строка даёт <strong>false</strong>: текст сравнивается по буквам, не по величине. Вот зачем нужен <code>Number</code>.</p>
+  <h2><span class="step">2</span>Калькулятор ИМТ (вес и рост)</h2>
+  <p>ИМТ — индекс массы тела. Его считают по простой формуле: вес поделить на рост в квадрате. А дальше программа сама скажет, в какую «полку» попало число.</p>
+  <p><strong>Формула:</strong> <code>ИМТ = вес / (рост × рост)</code>, где рост — в метрах.</p>
+  <div class="soft">
+    <div class="ic">💛</div>
+    <div>Сначала прочитай, потом запускай. Это <strong>тренажёр для <code style="color:#ffd60a;background:#0a0a14">if/else</code></strong>, а не приговор. У растущих ребят 11–14 лет ИМТ врачи смотрят по <strong>возрастным таблицам</strong> — взрослые цифры тут не работают. Считай для себя <strong>или для выдуманного героя/спортсмена</strong> — для тренировки кода без разницы. И не пугайся длинного хвоста после точки: <strong>округлять</strong> научимся позже.</div>
+  </div>
+<div class="console"><span class="com">// рост спросим в сантиметрах и поделим на 100 — получим метры</span><span class="in"><span class="kw">let</span> ves = Number(prompt(<span class="str">"Вес в кг?"</span>))</span><span class="in"><span class="kw">let</span> rost = Number(prompt(<span class="str">"Рост в сантиметрах? (например 155)"</span>)) / <span class="nNum">100</span></span><span class="in"><span class="kw">let</span> bmi = ves / (rost * rost)</span><span class="in"><span class="kw">if</span> (bmi < <span class="nNum">18.5</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"ИМТ "</span> + bmi + <span class="str">" — ниже нормы"</span>)</span><span class="in">} <span class="kw">else if</span> (bmi < <span class="nNum">25</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"ИМТ "</span> + bmi + <span class="str">" — норма 👍"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"ИМТ "</span> + bmi + <span class="str">" — выше нормы"</span>)</span><span class="in">}</span></div>
+  <p>Здесь три ветки через <code>if</code> → <code>else if</code> → <code>else</code>. Программа проверяет сверху вниз и идёт по первой подошедшей.</p>
 </section>
 
 <section>
-  <h2><span class="step">3</span>Первое решение: if / else</h2>
-  <p>Заведи коробочку и пусть программа выберет ответ:</p>
-<div class="console"><span class="in"><span class="kw">let</span> ball = <span class="nNum">42</span></span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт!"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Почти — нужно 50"</span>)</span><span class="in">}</span></div>
-  <p>Поменяй <code>42</code> на <code>77</code> и запусти ещё раз. Ответ изменился?</p>
+  <h2><span class="step">3</span>Хватит ли денег на покупку</h2>
+  <p>Второй калькулятор — из обычной жизни. Спросим, сколько денег есть и сколько стоит вещь, и программа решит: брать или копить.</p>
+<div class="console"><span class="in"><span class="kw">let</span> deneg = Number(prompt(<span class="str">"Сколько денег у тебя есть?"</span>))</span><span class="in"><span class="kw">let</span> cena = Number(prompt(<span class="str">"Сколько стоит вещь?"</span>))</span><span class="in"><span class="kw">if</span> (deneg >= cena) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Бери! Сдача останется "</span> + (deneg - cena))</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Не хватает "</span> + (cena - deneg) + <span class="str">" — надо подкопить"</span>)</span><span class="in">}</span></div>
+  <p>Две дороги через <code>if</code> / <code>else</code>. И там и там программа ещё и <strong>считает</strong>: сдачу или нехватку.</p>
 </section>
 
 <section>
-  <h2><span class="step">4</span>Пусть программа спросит и решит</h2>
-  <p>Соедини с прошлым уроком — <code>prompt</code> + <code>Number</code> + <code>if</code>:</p>
-<div class="console"><span class="in"><span class="kw">let</span> ball = Number(prompt(<span class="str">"Сколько баллов набрал?"</span>))</span><span class="in"><span class="kw">if</span> (ball >= <span class="nNum">50</span>) {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Зачёт! 🎉"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;alert(<span class="str">"Почти. Нужно 50, у тебя "</span> + ball)</span><span class="in">}</span></div>
-  <p>Не забудь <code>Number(...)</code> — иначе сравниваешь текст, и программа решит неправильно.</p>
-</section>
-
-<section>
-  <h2><span class="step">5</span>Сделай это СВОИМ</h2>
+  <h2><span class="step">4</span>Сделай это СВОИМ</h2>
   <ol class="tasks">
-    <li>Придумай, что твоя программа будет решать: зачёт, ранг, «успею/не успею», «хватит денег?»</li>
-    <li>Поставь свой порог в <code>if (... >= ...)</code></li>
-    <li>Напиши свои сообщения в <code>alert</code> для «да» и для «иначе»</li>
+    <li>Запусти оба калькулятора и проверь на разных числах — ответы меняются?</li>
+    <li>В калькуляторе денег поставь свою вещь и цену (самокат, игра, подарок)</li>
+    <li>Поменяй сообщения в <code>alert</code> на свои слова</li>
     <li>Добавь третью ветку через <code>else if</code> — если осилишь</li>
   </ol>
 
   <div class="bonus">
     <h3>✦ Идеи для прокачки</h3>
     <ul>
-      <li>Ранг по очкам: <code>if (xp >= 1000) {...} else if (xp >= 500) {...} else {...}</code></li>
-      <li>Оценка словом: спроси 1–5, выведи «отлично / хорошо / норм / подтянись»</li>
-      <li>Хватит ли денег: <code>if (deneg >= cena) alert("Бери!")</code></li>
-      <li>Два условия через <code>&&</code>: «возраст 11–14 — наш Junior»</li>
+      <li>Скидка: <code>if (summa >= 1000) alert("Скидка 10%: " + summa * 0.1)</code></li>
+      <li>Пора спать: спроси час, <code>if (chas >= 22) alert("Спать!") else alert("Ещё можно")</code></li>
+      <li>Оценка словом: спроси 1–5 и выведи «отлично / хорошо / норм / подтянись»</li>
+      <li>Хватит ли времени: <code>if (est >= nado) alert("Успеешь")</code></li>
     </ul>
   </div>
 </section>
 
 <section>
-  <h2><span class="step">6</span>Покажи и пришли</h2>
+  <h2><span class="step">5</span>Покажи и пришли</h2>
   <ol class="tasks">
-    <li>Покажи родителям — пусть ответят на твой <code>prompt</code> и проверят оба ответа</li>
+    <li>Покажи родителям — пусть ответят на твои <code>prompt</code> и проверят оба ответа</li>
     <li>Сделай скриншот <strong>консоли</strong> (Print Screen на Windows, Cmd+Shift+4 на Mac)</li>
     <li>Пришли скриншот мне в чат — посмотрю, дам совет</li>
   </ol>
 
   <div class="check">
     <h3>✓ Проверь себя</h3>
-    Если на один ответ программа говорит одно, а на другой — другое, значит <code>if</code> работает и <strong>задача выполнена</strong>. Красава.
+    Если калькулятор на одни числа отвечает одно, а на другие — другое, значит <code>if</code> работает и <strong>задача выполнена</strong>. Красава.
   </div>
 </section>
 
 <section style="text-align: center; background: #1a1a1a; color: #fff;">
   <h2 style="border-color: #ffd60a; justify-content: center; color:#fff;">Не работает?</h2>
   <p style="color: #ccc;">Это нормально, у всех так бывает. Проверь по порядку:</p>
-  <p style="color: #ccc;">→ Внутри <code style="background:#333">if</code> стоит <code style="background:#333">===</code> (три равно), а не <code style="background:#333">=</code>?<br>
-  → Считаешь число из <code style="background:#333">prompt</code> — обернул в <code style="background:#333">Number(...)</code>?<br>
-  → После <code style="background:#333">if (...)</code> есть фигурные <code style="background:#333">{ }</code>?<br>
+  <p style="color: #ccc;">→ Внутри <code style="background:#333">if</code> стоит <code style="background:#333">>=</code> или <code style="background:#333">&lt;</code>, а сравнение чисел — не текста?<br>
+  → Каждое число из <code style="background:#333">prompt</code> обернул в <code style="background:#333">Number(...)</code>?<br>
+  → После <code style="background:#333">if (...)</code> и <code style="background:#333">else</code> есть фигурные <code style="background:#333">{ }</code>?<br>
   → Кавычки английские <code style="background:#333">"</code>, не «ёлочки»?<br>
   → Команды английскими буквами? <code style="background:#333">if</code>, не <code style="background:#333">иф</code></p>
-  <p style="color: #ffd60a; margin-top: 20px;">Если ничего не выскакивает — почти всегда виноват <code style="background:#333">=</code> вместо <code style="background:#333">===</code>. Совсем застрял — пиши мне.</p>
+  <p style="color: #ffd60a; margin-top: 20px;">Если сравнение «врёт» — почти всегда забыт <code style="background:#333">Number(...)</code> вокруг <code style="background:#333">prompt</code>. Совсем застрял — пиши мне.</p>
 </section>
 
 </div>
