@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Программа повторяет (циклы)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: 'for';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .desc code {
+    background: #faf7f2; color: #1a1a1a; white-space: normal;
+    padding: 2px 6px; font-size: 12px;
+  }
+
+  /* блок «консоль браузера» */
+  .console {
+    background: #15151c;
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .console .in  { color: #f0f0f0; display: block; }
+  .console .in::before  { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { color: #7fd0ff; display: block; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw  { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  .err {
+    background: rgba(255,87,34,0.08);
+    border-left: 4px solid #ff5722;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #ff5722; }
+  .err code { background: #1a1a1a; color: #fff; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Программа<br>повторяет</h1>
+  <p>циклы · while / for · урок 2.7</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Цикл: повтори несколько раз</h2>
+  <p class="lead">Цикл — команда «повтори то, что в фигурных скобках, нужное число раз». Компьютер не устаёт: что 5 раз, что 5000. Считает повторы коробочка-<strong>счётчик</strong> <code>i</code>.</p>
+  <div class="console"><span class="com">// руками — скучно и тупо</span><span class="in">console.log(<span class="str">"Привет 1"</span>)</span><span class="in">console.log(<span class="str">"Привет 2"</span>)</span><span class="com">// …а если тысячу раз? нужен цикл</span></div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>while — повторяй, пока…</h2>
+  <p class="lead">В круглых скобках — условие (как у <code>if</code>, только повторяется). В фигурных — что повторять. Счётчик <code>i</code> ведём руками: завести, проверить, увеличить.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> i = <span class="nNum">1</span></span><span class="in"><span class="kw">while</span> (i <= <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Привет "</span> + i)</span><span class="in">&nbsp;&nbsp;i = i + <span class="nNum">1</span></span><span class="in">}</span><span class="com">// напечатает Привет 1 … Привет 5</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>let i = 1</code>
+    <div class="desc"><strong>Завести счётчик</strong> — с какого числа считаем.</div>
+  </div>
+  <div class="item">
+    <code>i = i + 1</code>
+    <div class="desc"><strong>Увеличить счётчик</strong>. Без этой строки цикл не закончится!</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">⚠️</span>Главная ловушка: бесконечный цикл</h2>
+  <p class="lead">Если забыть увеличить счётчик, <code>i</code> навсегда останется <code>1</code>, условие всегда <code>true</code> — и цикл крутится без конца. Вкладка виснет.</p>
+  <div class="console"><span class="com">// НЕ запускай — для понимания!</span><span class="in"><span class="kw">let</span> i = <span class="nNum">1</span></span><span class="in"><span class="kw">while</span> (i <= <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"застрял на "</span> + i)</span><span class="com">&nbsp;&nbsp;// забыли i = i + 1 → беда</span><span class="in">}</span></div>
+  <div class="tip">
+    <div class="tip-icon">🔑</div>
+    <div>Внутри цикла <strong>всегда</strong> меняй счётчик. Завис? Закрой вкладку. У <code>for</code> шаг встроен в скобки — поэтому забыть его сложнее.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Цикл умеет считать</h2>
+  <p class="lead">Внутри можно не только печатать, но и копить. Две коробочки: <code>i</code> считает повторы, <code>sum</code> копит результат.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> i = <span class="nNum">1</span></span><span class="in"><span class="kw">let</span> sum = <span class="nNum">0</span></span><span class="in"><span class="kw">while</span> (i <= <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;sum = sum + i</span><span class="in">&nbsp;&nbsp;i = i + <span class="nNum">1</span></span><span class="in">}</span><span class="in">console.log(<span class="str">"Сумма: "</span> + sum)</span><span class="out">Сумма: <span class="nNum">15</span></span></div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>for — та же тройка в одну строку</h2>
+  <p class="lead">В круглых скобках через <code>;</code> сразу три части: <strong>старт</strong>; <strong>условие</strong>; <strong>шаг</strong>. То же, что в <code>while</code>, только собрано в строку — и забыть про шаг уже сложно.</p>
+  <div class="console"><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i <= <span class="nNum">5</span>; i++) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Привет "</span> + i)</span><span class="in">}</span><span class="com">// тот же результат, что у while</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>i++</code>
+    <div class="desc"><strong>Шаг</strong>: короткая запись <code>i = i + 1</code> — «увеличь на один».</div>
+  </div>
+  <div class="item">
+    <code>i--</code>
+    <div class="desc"><strong>Уменьши на один</strong> — для обратного отсчёта.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Спроси и повтори</h2>
+  <p class="lead">Соединяем с прошлыми уроками: спросить число через <code>prompt</code> + <code>Number</code> и прогнать цикл. Программа сама печатает таблицу умножения.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> n = Number(prompt(<span class="str">"Какое число умножаем?"</span>))</span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i <= <span class="nNum">10</span>; i++) {</span><span class="in">&nbsp;&nbsp;console.log(n + <span class="str">" × "</span> + i + <span class="str">" = "</span> + (n * i))</span><span class="in">}</span><span class="com">// ввёл 7 → вся таблица на семь</span></div>
+  <div class="tip">
+    <div class="tip-icon">🧮</div>
+    <div>Скобки вокруг <code>(n * i)</code> нужны: сначала <strong>посчитай</strong>, потом приклеивай к тексту. Без них браузер склеит по буквам.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Обратный отсчёт и узор (для сильных)</h2>
+  <p class="lead">Счётчик можно гнать вниз (<code>i--</code>) или копить строку.</p>
+  <div class="console"><span class="com">// обратный отсчёт 5 → 1</span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">5</span>; i >= <span class="nNum">1</span>; i--) { console.log(i) }</span><span class="com">// узор: лесенка из звёзд</span><span class="in"><span class="kw">let</span> uzor = <span class="str">""</span></span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i <= <span class="nNum">5</span>; i++) { uzor = uzor + <span class="str">"⭐"</span>; console.log(uzor) }</span></div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Топ-5 ошибок новичка</h2>
+  <div class="err">1. <strong>Забыл шаг счётчика.</strong> Нет <code>i = i + 1</code> / <code>i++</code> → бесконечный цикл, вкладка виснет.</div>
+  <div class="err">2. <strong>Условие через <code>=</code>.</strong> Нужно <code>i &lt;= 5</code> (сравнить), а не <code>i = 5</code> (положить).</div>
+  <div class="err">3. <strong>Запятые в <code>for</code>.</strong> Между тремя частями — <code>;</code> (точка с запятой), не запятая.</div>
+  <div class="err">4. <strong>Кавычки-«ёлочки».</strong> Только английские <code>"</code> или <code>'</code>, не <code>«</code> и не <code>»</code>.</div>
+  <div class="err">5. <strong>Русская раскладка.</strong> <code>while</code>, <code>for</code> — английскими буквами.</div>
+  <div class="tip">
+    <div class="tip-icon">🛠</div>
+    <div>Если <strong>вкладка зависла</strong> — почти всегда забыт шаг счётчика. Закрой вкладку и добавь <code>i++</code>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Что дальше</h2>
+  <p>Теперь у тебя весь чистый язык: программа <strong>хранит</strong> (переменные), <strong>выбирает</strong> (<code>if</code>) и <strong>повторяет</strong> (циклы). На следующем уроке вернём кнопки — и всё это оживёт на клике: реакции и мини-игры.</p>
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>Хочешь вперёд? Напечатай в консоли только чётные числа от 2 до 20 (<code>i += 2</code>). Честный учебник — <strong>developer.mozilla.org</strong>, раздел JavaScript.</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для занятия 2.7 · «Программа повторяет». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

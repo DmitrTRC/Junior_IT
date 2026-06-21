@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Слайды · урок 2.7 — Программа повторяет (циклы)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: #0a0a14; color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .slides { width: 100vw; height: 100vh; position: relative; }
+  .slide {
+    position: absolute; inset: 0; display: none;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 6vh 6vw; text-align: center;
+  }
+  .slide.active { display: flex; }
+
+  /* SLIDE 1: INTRO */
+  #s1 { background: radial-gradient(ellipse at 30% 20%, #16213e, #0a0a14 60%); }
+  #s1 .kicker {
+    font-family: 'JetBrains Mono', monospace; color: #ffd60a;
+    font-size: clamp(14px, 1.4vw, 22px); letter-spacing: 8px;
+    margin-bottom: 30px; text-transform: uppercase;
+  }
+  #s1 h1 {
+    font-size: clamp(46px, 8vw, 150px); line-height: 0.92;
+    font-weight: 700; letter-spacing: -3px; margin-bottom: 30px;
+  }
+  #s1 h1 .y { color: #ffd60a; }
+  #s1 h1 .em {
+    background: #ffd60a; color: #0a0a14; padding: 0 20px;
+    display: inline-block; transform: rotate(-2deg); margin: 10px 0;
+  }
+  #s1 .meta { margin-top: 40px; display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+  #s1 .meta span {
+    background: rgba(255,214,10,0.1); border: 1px solid rgba(255,214,10,0.3);
+    padding: 14px 28px; border-radius: 50px;
+    font-size: clamp(14px, 1.5vw, 20px); font-weight: 700;
+  }
+
+  /* SLIDE 2: 3 IDEAS */
+  #s2 {
+    background: #0a0a14;
+    background-image:
+      linear-gradient(rgba(255,214,10,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,214,10,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  #s2 .top-label {
+    font-family: 'JetBrains Mono', monospace; color: #ffd60a;
+    font-size: clamp(12px, 1.2vw, 18px); letter-spacing: 6px;
+    text-transform: uppercase; margin-bottom: 50px;
+  }
+  #s2 h2 { font-size: clamp(36px, 5vw, 76px); margin-bottom: 60px; line-height: 1; font-weight: 700; letter-spacing: -2px; }
+  #s2 .points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1400px; width: 100%; }
+  #s2 .point {
+    background: rgba(255,255,255,0.03); border: 2px solid rgba(255,214,10,0.3);
+    border-radius: 24px; padding: 40px 30px; text-align: left;
+  }
+  #s2 .point .num {
+    font-family: 'JetBrains Mono', monospace; color: #ffd60a;
+    font-size: clamp(36px, 4vw, 60px); line-height: 1; font-weight: 700; margin-bottom: 16px;
+  }
+  #s2 .point h3 { font-size: clamp(20px, 2vw, 30px); margin-bottom: 12px; line-height: 1.1; }
+  #s2 .point p { color: #aaa; font-size: clamp(14px, 1.2vw, 18px); line-height: 1.5; }
+  #s2 .point code {
+    font-family: 'JetBrains Mono', monospace; background: #16213e; color: #ffd60a;
+    padding: 6px 12px; border-radius: 6px; font-size: clamp(12px, 1.1vw, 16px);
+    display: inline-block; margin-top: 10px;
+  }
+
+  /* SLIDE 3 & 4: CONSOLE CODE */
+  #s3 { background: radial-gradient(ellipse at 70% 80%, #16213e, #0a0a14 60%); }
+  #s4 { background: radial-gradient(ellipse at 30% 70%, #16213e, #0a0a14 60%); }
+  .codeslide .top-label {
+    font-family: 'JetBrains Mono', monospace; color: #ffd60a;
+    font-size: clamp(12px, 1.2vw, 18px); letter-spacing: 6px;
+    text-transform: uppercase; margin-bottom: 30px;
+  }
+  .codeslide h2 { font-size: clamp(30px, 4.6vw, 64px); margin-bottom: 30px; font-weight: 700; letter-spacing: -2px; }
+  .codeslide h2 .hl { color: #ffd60a; }
+  .codeslide .code {
+    font-family: 'JetBrains Mono', monospace; background: #0c0c11;
+    border: 1px solid rgba(255,214,10,0.25); border-radius: 16px;
+    padding: 28px 34px; text-align: left;
+    font-size: clamp(13px, 1.5vw, 22px); line-height: 1.85;
+    max-width: 920px; overflow-x: auto;
+  }
+  .codeslide .code .l { display: block; }
+  .codeslide .code .l.in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .codeslide .code .l.out { color: #7fd0ff; }
+  .codeslide .code .l.out::before { content: '\2039 '; color: #5a6b7a; }
+  .codeslide .code .kw { color: #8be9fd; }
+  .codeslide .code .str { color: #f1fa8c; }
+  .codeslide .code .num { color: #ffb86c; }
+  .codeslide .code .bool { color: #ff79c6; font-weight: 700; }
+  .codeslide .code .com { color: #6272a4; font-style: italic; display: block; }
+
+  /* SLIDE 5: HOMEWORK */
+  #s5 { background: linear-gradient(135deg, #ffd60a, #ff9100); color: #2a1a00; }
+  #s5 .pre {
+    font-family: 'JetBrains Mono', monospace; font-size: clamp(12px, 1.2vw, 18px);
+    letter-spacing: 6px; text-transform: uppercase; margin-bottom: 30px; opacity: 0.7;
+  }
+  #s5 h2 { font-size: clamp(48px, 9vw, 150px); line-height: 0.9; margin-bottom: 40px; letter-spacing: -4px; font-weight: 700; }
+  #s5 .todo { text-align: left; max-width: 780px; width: 100%; margin: 20px auto; }
+  #s5 .todo .row {
+    display: flex; align-items: flex-start; gap: 20px; padding: 16px 0;
+    border-bottom: 2px solid rgba(0,0,0,0.15);
+    font-size: clamp(17px, 1.7vw, 25px); font-weight: 600;
+  }
+  #s5 .todo .row .n {
+    background: #2a1a00; color: #ffd60a;
+    width: clamp(32px, 3vw, 48px); height: clamp(32px, 3vw, 48px); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; flex-shrink: 0; font-size: clamp(14px, 1.3vw, 20px);
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 12px; z-index: 100;
+    background: rgba(0,0,0,0.5); padding: 10px 16px; border-radius: 50px; backdrop-filter: blur(10px);
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+    width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; transition: 0.2s;
+  }
+  .nav button:hover { background: #ffd60a; color: #0a0a14; }
+  .nav .indicator {
+    color: #ffd60a; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; padding: 0 16px; display: flex; align-items: center; font-weight: 700;
+  }
+  .keyhint {
+    position: fixed; bottom: 30px; right: 30px; color: rgba(255,255,255,0.4);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; z-index: 100;
+  }
+  #s5 .keyhint { color: rgba(0,0,0,0.4); }
+</style>
+</head>
+<body>
+
+<div class="slides">
+
+  <div class="slide active" id="s1">
+    <div class="kicker">// занятие 2.7 · IT</div>
+    <h1>
+      Сегодня —<br>
+      <span class="em">программа</span><br>
+      <span class="y">повторяет</span>
+    </h1>
+    <div class="meta">
+      <span>🔁 while</span>
+      <span>🔢 счётчик i</span>
+      <span>⚡ for</span>
+    </div>
+  </div>
+
+  <div class="slide" id="s2">
+    <div class="top-label">// что нового умеет язык</div>
+    <h2>Программа <span style="color:#ffd60a">не устаёт повторять</span></h2>
+    <div class="points">
+      <div class="point">
+        <div class="num">01</div>
+        <h3>Повторяет</h3>
+        <p>while — повторяй, пока условие верно. Хоть 5, хоть 5000 раз.</p>
+        <code>while (i &lt;= 5) { }</code>
+      </div>
+      <div class="point">
+        <div class="num">02</div>
+        <h3>Считает повторы</h3>
+        <p>Счётчик i: завести, проверить, увеличить. Забыл шаг — зависнет.</p>
+        <code>i = i + 1</code>
+      </div>
+      <div class="point">
+        <div class="num">03</div>
+        <h3>Короче — for</h3>
+        <p>Та же тройка в одну строку: старт; условие; шаг.</p>
+        <code>for (let i = 1; i &lt;= 5; i++)</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide codeslide" id="s3">
+    <div class="top-label">// главное за урок — повторяй, пока…</div>
+    <h2>while + <span class="hl">счётчик</span></h2>
+    <div class="code"><span class="l in"><span class="kw">let</span> i = <span class="num">1</span></span><span class="l in"><span class="kw">while</span> (i <= <span class="num">5</span>) {</span><span class="l in">&nbsp;&nbsp;console.log(<span class="str">"Привет "</span> + i)</span><span class="l in">&nbsp;&nbsp;i = i + <span class="num">1</span></span><span class="l in">}</span><span class="com">// без i = i + 1 → бесконечный цикл!</span></div>
+  </div>
+
+  <div class="slide codeslide" id="s4">
+    <div class="top-label">// та же тройка в одну строку</div>
+    <h2>for — спроси и <span class="hl">повтори</span></h2>
+    <div class="code"><span class="l in"><span class="kw">let</span> n = Number(prompt(<span class="str">"Какое число?"</span>))</span><span class="l in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i <= <span class="num">10</span>; i++) {</span><span class="l in">&nbsp;&nbsp;console.log(n + <span class="str">" × "</span> + i + <span class="str">" = "</span> + (n * i))</span><span class="l in">}</span><span class="com">// вся таблица умножения — одной командой</span></div>
+  </div>
+
+  <div class="slide" id="s5">
+    <div class="pre">// домашка · до следующего урока</div>
+    <h2>Научи<br>повторять</h2>
+    <div class="todo">
+      <div class="row"><div class="n">1</div><div>Открой консоль: F12 → Console</div></div>
+      <div class="row"><div class="n">2</div><div>Собери while со счётчиком i</div></div>
+      <div class="row"><div class="n">3</div><div>Сверни его в for — та же тройка</div></div>
+      <div class="row"><div class="n">4</div><div>Обратный отсчёт + таблица умножения</div></div>
+      <div class="row"><div class="n">5</div><div>Скриншот консоли — мне в чат</div></div>
+    </div>
+    <div class="keyhint">← / → переключение</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">‹</button>
+  <span class="indicator"><span id="cur">1</span> / <span id="total">5</span></span>
+  <button onclick="next()">›</button>
+</div>
+
+<div class="keyhint">← / → переключение слайдов</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  document.getElementById('total').textContent = slides.length;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.getElementById('cur').textContent = cur + 1;
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+
+</body>
+</html>

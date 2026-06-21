@@ -1,0 +1,19 @@
+name: junior-it
+title: junior-it
+type: unknown
+stage: idea
+priority: medium
+tags: []
+deadlines: []
+progress:
+  mode: auto
+  percent: null
+  plan: null
+graphify:
+  required: false
+  disabled: false
+commands: {}
+session:
+  launch: null
+dashboard:
+  show_on_wall: true

@@ -1,0 +1,43 @@
+<!-- ДЕМКА «арт» · урок 2.7. Чистый язык в консоли: спросить число рядов → нарисовать узор ряд за рядом циклом.
+     Эстетика: тёплая, Fraunces-вайб. Героиня — Лиза, рисует. Только prompt/console.log/alert + for, без DOM.
+     Шрифт Georgia — намеренный системный Cyrillic-safe фолбэк под Fraunces-вайб (Fraunces на Google Fonts без кириллицы, «Лиза» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ART · консоль · повторяет</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:Georgia,'Times New Roman',serif; text-align:center; padding:56px 20px; min-height:100vh; }
+  .label { letter-spacing:4px; font-size:13px; font-family:monospace; opacity:0.6; }
+  h1 { font-size:50px; font-style:italic; margin:10px 0 2px; }
+  .sub { font-size:16px; opacity:0.7; margin-bottom:28px; }
+  .console { background:#15151c; color:#f0f0f0; border-radius:14px; padding:20px 22px; max-width:620px; margin:0 auto;
+    text-align:left; font-family:'JetBrains Mono','Courier New',monospace; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#ff9100; font-weight:700; }
+  .console .l { display:block; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { font-size:14px; opacity:0.65; margin-top:24px; }
+  .hint b { color:#ff9100; font-style:italic; }
+</style></head>
+<body>
+  <div class="label">// ART MODE · CONSOLE</div>
+  <h1>Лиза · узор</h1>
+  <div class="sub">узор растёт ряд за рядом — повторяет цикл</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> ryadov = Number(prompt(<span class="str">"Сколько рядов в узоре?"</span>))</span><span class="l"><span class="kw">let</span> uzor = <span class="str">""</span></span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i <= ryadov; i++) {</span><span class="l">&nbsp;&nbsp;uzor = uzor + <span class="str">"✦"</span></span><span class="l">&nbsp;&nbsp;console.log(uzor)</span><span class="l">}</span><span class="l">alert(<span class="str">"🎨 Узор из "</span> + ryadov + <span class="str">" рядов готов!"</span>)</span></div>
+
+  <div class="hint">Каждый ряд — на один значок длиннее. Цикл <b>сам нарисовал лесенку</b>. Без единой кнопки.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let ryadov = Number(prompt("Сколько рядов в узоре?"));
+        let uzor = "";
+        for (let i = 1; i <= ryadov; i++) {
+          uzor = uzor + "✦";
+          console.log(uzor);
+        }
+        console.log("🎨 Узор из " + ryadov + " рядов готов!");
+        alert("🎨 Узор из " + ryadov + " рядов готов!");
+      }, 400);
+    });
+  </script>
+</body></html>
