@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашка · Паспорт моего компьютера (урок cs-01)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: 'ID';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  /* анкета-паспорт */
+  .field {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+  }
+  .field:last-child { border-bottom: none; }
+  .field .label { font-weight: 600; font-size: 15px; color: #1a1a1a; }
+  .field .label span { display: block; font-weight: 400; font-size: 12px; color: #999; margin-top: 2px; }
+  .field .blank {
+    border: 2px solid #e5e0d6;
+    border-radius: 8px;
+    background: #faf7f2;
+    min-height: 40px;
+  }
+
+  /* инструкции где смотреть */
+  .where {
+    background: #faf7f2;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .where:last-child { margin-bottom: 0; }
+  .where h3 { font-size: 16px; margin-bottom: 6px; }
+  .where .path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #1a1a1a;
+    font-weight: 700;
+    background: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e5e0d6;
+    display: inline-block;
+    margin: 4px 0;
+  }
+  .where p { font-size: 14px; color: #555; margin-top: 6px; }
+
+  .bonus {
+    background: #fff8e6;
+    border: 2px dashed #e0a800;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .bonus h2 { border-bottom-color: #e0a800; }
+  .bonus h2 .num { background: #e0a800; color: #fff; }
+  .warn {
+    background: #ff5722;
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .warn .warn-icon { font-size: 22px; flex-shrink: 0; }
+
+  .finish {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 22px 26px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    header, section, .bonus { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .field { grid-template-columns: 1fr; gap: 8px; }
+    .field .blank { min-height: 44px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Паспорт моего<br>компьютера</h1>
+  <p>домашка · без кода · урок cs-01</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Заполни паспорт</h2>
+  <p class="lead">Заведи своему компьютеру «паспорт». Распечатай эту страницу и впиши характеристики в пустые поля — или просто перепиши таблицу в тетрадь. Где всё это посмотреть — в следующей секции.</p>
+
+  <div class="field"><div class="label">Процессор <span>какой CPU стоит, модель</span></div><div class="blank"></div></div>
+  <div class="field"><div class="label">Частота <span>в ГГц — сколько тиков в секунду</span></div><div class="blank"></div></div>
+  <div class="field"><div class="label">Количество ядер <span>сколько «мозгов» у процессора</span></div><div class="blank"></div></div>
+  <div class="field"><div class="label">RAM <span>оперативная память, в ГБ</span></div><div class="blank"></div></div>
+  <div class="field"><div class="label">Диск <span>в ГБ, и что это — SSD или HDD</span></div><div class="blank"></div></div>
+  <div class="field"><div class="label">Операционная система <span>Windows / macOS / Linux и версия</span></div><div class="blank"></div></div>
+  <div class="field"><div class="label">ОС телефона <span>Android или iOS и версия</span></div><div class="blank"></div></div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Где это смотреть</h2>
+  <p class="lead">Ничего скачивать не нужно — всё уже есть в настройках. Тип диска (SSD или HDD) на новых компьютерах почти всегда SSD; если не нашёл — спроси у родителей или оставь прочерк.</p>
+
+  <div class="where">
+    <h3>💻 Windows 11</h3>
+    <span class="path">Пуск → Параметры → Система → О системе</span>
+    <p>Там сразу видно процессор, объём RAM и разрядность. Модель ОС — в строке «Характеристики Windows».</p>
+  </div>
+
+  <div class="where">
+    <h3>🍎 Mac (macOS)</h3>
+    <span class="path">меню  (яблоко, слева вверху) → Об этом Mac</span>
+    <p>В окне будет чип/процессор, объём памяти и версия macOS.</p>
+  </div>
+
+  <div class="where">
+    <h3>📱 Телефон</h3>
+    <span class="path">Android: Настройки → О телефоне</span><br>
+    <span class="path">iPhone: Настройки → Основные → Об этом устройстве</span>
+    <p>Смотри строку «Версия Android» или «Версия iOS» — это и есть ОС телефона.</p>
+  </div>
+</section>
+
+<div class="bonus">
+  <h2><span class="num">★</span>Бонус со звёздочкой</h2>
+  <p class="lead">Найди на своём компьютере, как зайти в <strong>BIOS/UEFI</strong>. Обычно для этого сразу после нажатия кнопки включения много раз жмут одну клавишу — чаще всего <strong>F2</strong>, <strong>Delete</strong> или <strong>Esc</strong> (у каждого компьютера своя). Появится синий или чёрный экран настроек — это она и есть.</p>
+  <div class="warn">
+    <div class="warn-icon">⛔</div>
+    <div>НЕ меняй там ничего! Просто посмотри, как выглядит, и сразу выйди без сохранения (обычно клавиша Esc или пункт «Exit without saving»). Здесь живут настройки самого железа — их трогать не надо.</div>
+  </div>
+  <p class="lead" style="margin-top:14px; margin-bottom:0;">Не получилось зайти или страшно — ничего страшного, это задание со звёздочкой. Достаточно рассказать на следующем занятии, что ты попробовал.</p>
+</div>
+
+<div class="finish">
+  Принеси заполненный паспорт на следующее занятие — сравним, у кого какая машина.
+</div>
+
+<footer>
+  Домашка к уроку cs-01 · «Компьютер изнутри». Сегодня без кода — сегодня знакомимся со своей машиной.
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Компьютер изнутри (карта компьютера)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '01';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  /* SVG карта */
+  .map { width: 100%; border-radius: 12px; background: #faf7f2; padding: 10px; }
+  .map svg { width: 100%; height: auto; display: block; }
+
+  /* путь включения — вертикальная цепочка шагов */
+  .flow { list-style: none; counter-reset: step; }
+  .flow li {
+    position: relative;
+    padding: 12px 16px 12px 54px;
+    border-bottom: 1px dashed #e5e0d6;
+    font-size: 15px;
+    color: #333;
+  }
+  .flow li:last-child { border-bottom: none; }
+  .flow li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 14px; top: 12px;
+    width: 26px; height: 26px;
+    background: #ffd60a; color: #1a1a1a;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .flow li strong { color: #1a1a1a; }
+  .flow code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #faf7f2; color: #1a1a1a;
+    padding: 2px 6px; border-radius: 4px; font-size: 12px;
+  }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+    .map { background: #fff; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Компьютер<br>изнутри</h1>
+  <p>карта компьютера · путь включения · урок cs-01</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Карта компьютера</h2>
+  <p class="lead">Компьютер — это стопка деталей на одной <strong>материнской плате</strong>. CPU считает по тикам, RAM и SSD хранят данные, а между ними по <strong>шине</strong> бегут нули и единицы.</p>
+  <div class="map">
+    <svg viewBox="0 0 800 480" role="img" aria-label="Схема компьютера: материнская плата с CPU, RAM, шиной, SSD и вводом-выводом">
+      <!-- материнская плата -->
+      <rect x="18" y="18" width="694" height="444" rx="20" fill="#fbf4d8" stroke="#1a1a1a" stroke-width="2.5"/>
+      <text x="40" y="50" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#1a1a1a">материнская плата</text>
+
+      <!-- CPU -->
+      <rect x="55" y="90" width="180" height="160" rx="12" fill="#1a1a1a"/>
+      <text x="145" y="140" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#ffd60a">CPU</text>
+      <text x="145" y="168" text-anchor="middle" font-family="Manrope, sans-serif" font-size="15" fill="#fff">процессор</text>
+      <text x="145" y="210" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#ffd60a">часики: тик — команда</text>
+      <text x="145" y="230" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#ffd60a">тик — следующая</text>
+
+      <!-- шина CPU <-> RAM -->
+      <g stroke="#1a1a1a" stroke-width="2">
+        <line x1="235" y1="130" x2="430" y2="130"/>
+        <line x1="235" y1="150" x2="430" y2="150"/>
+        <line x1="235" y1="170" x2="430" y2="170"/>
+        <line x1="235" y1="190" x2="430" y2="190"/>
+      </g>
+      <text x="332" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" font-weight="700" fill="#1a1a1a">шина ×64</text>
+      <text x="332" y="215" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#c26a00">0 1 0 1 → →</text>
+
+      <!-- RAM -->
+      <rect x="430" y="90" width="252" height="160" rx="12" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+      <text x="556" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" fill="#1a1a1a">RAM · оперативка</text>
+      <g font-family="JetBrains Mono, monospace" font-size="14" font-weight="700" fill="#1a1a1a" text-anchor="middle">
+        <rect x="450" y="140" width="46" height="40" rx="6" fill="#faf7f2" stroke="#1a1a1a" stroke-width="1.5"/><text x="473" y="166">0</text>
+        <rect x="504" y="140" width="46" height="40" rx="6" fill="#faf7f2" stroke="#1a1a1a" stroke-width="1.5"/><text x="527" y="166">1</text>
+        <rect x="558" y="140" width="46" height="40" rx="6" fill="#faf7f2" stroke="#1a1a1a" stroke-width="1.5"/><text x="581" y="166">2</text>
+        <rect x="612" y="140" width="46" height="40" rx="6" fill="#faf7f2" stroke="#1a1a1a" stroke-width="1.5"/><text x="635" y="166">3</text>
+      </g>
+      <text x="556" y="212" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#555">быстрая, но при выключении забывает всё</text>
+
+      <!-- SSD -->
+      <rect x="55" y="300" width="252" height="130" rx="12" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+      <text x="181" y="340" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#1a1a1a">SSD · диск</text>
+      <text x="181" y="370" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#555">файлы, фото, программы</text>
+      <text x="181" y="392" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#555">медленнее, зато помнит после выключения</text>
+
+      <!-- ввод-вывод -->
+      <rect x="360" y="300" width="322" height="130" rx="12" fill="#0f3460"/>
+      <text x="521" y="340" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" fill="#ffd60a">ввод-вывод (I/O)</text>
+      <text x="521" y="368" text-anchor="middle" font-family="Manrope, sans-serif" font-size="14" fill="#fff">клавиатура · монитор · USB</text>
+      <text x="521" y="392" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#bcd3ee">окна и двери в компьютер</text>
+
+      <!-- пользователь снаружи -->
+      <line x1="682" y1="365" x2="745" y2="365" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="5 4"/>
+      <circle cx="762" cy="345" r="14" fill="#ff5722"/>
+      <rect x="748" y="362" width="28" height="34" rx="10" fill="#ff5722"/>
+      <text x="762" y="418" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" font-weight="700" fill="#1a1a1a">ты</text>
+    </svg>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Путь включения</h2>
+  <p class="lead">Что происходит от кнопки Power до рабочего стола. У настоящего компьютера вся цепочка занимает пару секунд.</p>
+  <ol class="flow">
+    <li><strong>Power</strong> — нажал кнопку, пошло питание.</li>
+    <li><strong>POST</strong> — самопроверка: CPU на месте, память отвечает, диск виден (как в микроволновке).</li>
+    <li><strong>BIOS/UEFI</strong> — маленькая программа из ROM просыпается первой и готовит компьютер.</li>
+    <li><strong>Загрузочная запись</strong> на диске — «вот как запускать систему».</li>
+    <li><strong>Загрузчик</strong> — переносит операционную систему с диска в RAM и запускает её.</li>
+    <li><strong>ОС</strong> — рабочий стол, файлы, окна. Готово.</li>
+  </ol>
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div><strong>BIOS/UEFI — это не Windows.</strong> Это отдельная маленькая программа внутри самого компьютера. Она только передаёт эстафету операционной системе и уходит.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Мини-словарик</h2>
+  <p class="lead">Восемь слов, которые стоит запомнить с этого урока.</p>
+  <div class="item">
+    <code>CPU</code>
+    <div class="desc"><strong>Процессор.</strong> Главная думающая деталь — выполняет команды одну за другой, по тикам.</div>
+  </div>
+  <div class="item">
+    <code>частота</code>
+    <div class="desc">Сколько тиков в секунду. Чем больше — тем быстрее. 3,5 ГГц = 3,5 млрд тиков в секунду.</div>
+  </div>
+  <div class="item">
+    <code>RAM</code>
+    <div class="desc"><strong>Оперативная память.</strong> «Рабочий стол» компьютера — быстрая, но при выключении забывает всё.</div>
+  </div>
+  <div class="item">
+    <code>SSD</code>
+    <div class="desc"><strong>Диск, хранилище.</strong> Файлы, фото, программы. Медленнее RAM, зато помнит всё после выключения.</div>
+  </div>
+  <div class="item">
+    <code>шина</code>
+    <div class="desc">Дорога из проводов между CPU и RAM. По каждому проводу в один момент бежит 0 или 1.</div>
+  </div>
+  <div class="item">
+    <code>бит</code>
+    <div class="desc">Самая маленькая единица информации: 0 или 1 — есть напряжение на проводе или нет.</div>
+  </div>
+  <div class="item">
+    <code>BIOS/UEFI</code>
+    <div class="desc">Маленькая программа из ROM — запускается первой и готовит компьютер к загрузке. UEFI — современная замена BIOS.</div>
+  </div>
+  <div class="item">
+    <code>ОС</code>
+    <div class="desc"><strong>Операционная система.</strong> Даёт рабочий стол, файлы и окна. Windows, macOS, Linux, Android.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Кто есть кто среди ОС</h2>
+  <p class="lead">Операционные системы — родственники: почти все выросли из Unix.</p>
+  <div class="item">
+    <code>Windows</code>
+    <div class="desc">Выросла из MS-DOS. Стоит на большинстве настольных компьютеров и ноутбуков.</div>
+  </div>
+  <div class="item">
+    <code>macOS</code>
+    <div class="desc">Родственник Unix. Операционная система компьютеров Apple.</div>
+  </div>
+  <div class="item">
+    <code>Linux</code>
+    <div class="desc">Вырос из Unix. Серверы, умные устройства — и почти всё вокруг незаметно работает на нём.</div>
+  </div>
+  <div class="item">
+    <code>Android</code>
+    <div class="desc"><strong>Это тоже Linux.</strong> Операционная система большинства телефонов в мире.</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для урока cs-01 · «Компьютер изнутри». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока cs-01. Если слайды не открылись — ведёшь по этому файлу:
+     тут все 8 шагов живой схемы с номерами слайдов, ключевыми репликами и пингами.
+     Это НЕ страница с интерактивом — урок целиком по слайдам, тут шпаргалка ведущего.
+     Вместо консольных сниппетов — текстовые плашки со схемой словами. -->
+<title>Конспект урока cs-01 — резерв ведущего</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 20px; }
+  .intro { background: #1d1d28; border-left: 3px solid #ffd60a; border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 28px; color: #b8b8c4; font-size: 14px; }
+  .intro strong { color: #ffd60a; }
+  .step { margin-bottom: 24px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .step h2 .slide {
+    background: #0f3460; color: #7fd0ff; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 6px; letter-spacing: 1px;
+  }
+  .plate {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 16px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto; color: #dcdce6;
+  }
+  .plate .a { color: #ffd60a; font-weight: 700; }
+  .plate .c { color: #6272a4; font-style: italic; }
+  .plate b { color: #8be9fd; font-weight: 700; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  .ping { color: #00e676; font-size: 14px; margin-top: 8px; }
+  .ping::before { content: '💬 '; }
+  .warn { color: #ff8a65; font-size: 13.5px; margin-top: 8px; }
+  .warn::before { content: '⚠️ '; }
+  footer { margin-top: 30px; color: #6a6a78; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Конспект урока cs-01 · <span class="y">резерв ведущего</span></h1>
+  <div class="sub">// открываешь, если слайды не открылись · ведёшь по 8 шагам ниже</div>
+
+  <div class="intro">
+    <strong>S1–S2</strong> (титул «Компьютер изнутри» и «зачем заглядывать внутрь») идут по сценарию
+    <em>до</em> старта схемы. Ниже — 8 шагов сборки: одна деталь на слайде, между шагами — пинг, теория ≤2 минут.
+  </div>
+
+  <div class="step">
+    <h2><span class="n">1</span><span class="slide">S3</span>Пустая материнка</h2>
+    <div class="plate"><span class="c">// с чего начинается любой компьютер</span>
+[ <span class="a">материнская плата</span> ] — пустой стол
+сама не считает и не думает → на ней будут жить все детали, как дома на одной улице</div>
+    <div class="note">Реплики: плата — платформа, а не сам компьютер и не процессор. Пока пустая — детали появятся дальше.</div>
+    <div class="ping">Пинг: «Как думаете, что появится на плате первым?»</div>
+    <div class="warn">Грабля: дети думают, что материнка — это и есть весь компьютер. Сними сразу: «плата — стол, а не мозг».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span><span class="slide">S4</span>CPU и часики</h2>
+    <div class="plate">[ <span class="a">CPU</span> · процессор ] ⏱ <b>тик</b> → команда, <b>тик</b> → следующая
+частота = сколько тиков в секунду
+<span class="a">3,5 ГГц</span> = 3,5 млрд тиков каждую секунду</div>
+    <div class="note">Реплики: первый и главный жилец — процессор. Выполняет команды по тикам-«часикам». ГГц — это только про скорость тиков.</div>
+    <div class="ping">Пинг: «Сколько ГГц у твоего компьютера?»</div>
+    <div class="warn">Грабля: ГГц путают с объёмом памяти. «Гигагерцы — про скорость, не про то, сколько влезет».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span><span class="slide">S5</span>Нули и единицы</h2>
+    <div class="plate">провод с напряжением = <span class="a">1</span>
+провод без напряжения = <span class="a">0</span>
+вся речь компьютера, любая программа = только <span class="a">0</span> и <span class="a">1</span></div>
+    <div class="note">Реплики: главный секрет всего компьютера. Есть ток — 1, нет — 0. Больше процессор ничего не понимает.</div>
+    <div class="ping">Пинг: «А буквы и картинки — тоже из нулей и единиц?» (да, просто закодированы)</div>
+    <div class="warn">Грабля: 0 и 1 «написаны» на проводе. Сними: это не цифры, а состояние — ток есть или нет.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span><span class="slide">S6–S7</span>RAM-полка (и SSD рядом)</h2>
+    <div class="plate">[ <span class="a">RAM</span> ] = полка ячеек с адресами <b>0 1 2 3 …</b> (с нуля!)
+<span class="a">RAM</span>: быстрая, но при выключении забывает всё
+<span class="a">SSD</span>: медленнее, зато помнит всё после выключения</div>
+    <div class="note">Реплики: адреса «как дома на улице, только с нуля». Программа во время работы живёт в RAM, на SSD лежит выключенной.</div>
+    <div class="ping">Пинг: «У кого сколько RAM? 8, 16, 32 ГБ?»</div>
+    <div class="warn">Грабля: RAM и SSD путают. «Фотку хранишь на SSD, а редактируешь — в RAM. Выключил без сохранения → RAM забыла».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span><span class="slide">S8</span>Шина и Instruction Pointer</h2>
+    <div class="plate"><span class="a">CPU</span> ←──── <span class="a">шина ×64</span> ────→ <span class="a">RAM</span>
+64 проводочка, по каждому в один момент: <span class="a">0</span> или <span class="a">1</span> = разрядность
+<span class="a">IP</span> (Instruction Pointer) = палец на строке: держит адрес текущей команды, потом шагает дальше</div>
+    <div class="note">Реплики: шина — дорога из проводов. IP помнит, какой «дом на улице» открыть следующим, и после тика идёт к следующему адресу.</div>
+    <div class="ping">Пинг: «Что будет, если проводов сделать 8 вместо 64?» (данные в несколько заходов, медленнее)</div>
+    <div class="warn">Грабля: 64 бита путают с 64 ГБ. И IP — это НЕ «IP-адрес» из интернета, буквы те же — смысл разный.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span><span class="slide">S9</span>Полная схема с пользователем</h2>
+    <div class="plate">[ <span class="a">CPU</span> · <span class="a">RAM</span> · шина · <span class="a">SSD</span> ] ──→ [ <span class="a">ввод-вывод</span> ] ──→ 🧑 <span class="a">ты</span>
+через I/O подключены: клавиатура, монитор, USB
+монитор и клава = окна и двери, НЕ сам компьютер</div>
+    <div class="note">Реплики: процессор с диском напрямую не говорит — только через ввод-вывод. Тут появляется пользователь. Схема собрана целиком.</div>
+    <div class="ping">Пинг: «Какое устройство ввода-вывода у тебя самое необычное?»</div>
+    <div class="warn">Грабля: монитор считают «самим компьютером». «Настоящий компьютер — то, что мы собрали внутри».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">7</span><span class="slide">S10–S11</span>Включение: POST и эстафета</h2>
+    <div class="plate"><span class="a">Power</span> → <span class="a">POST</span> (самопроверка: CPU, память, диск) → <span class="a">BIOS/UEFI</span> из ROM
+→ загрузочная запись на диске → <span class="a">загрузчик</span> → <span class="a">ОС</span> в RAM
+<span class="c">// POST есть даже в микроволновке и стиралке</span></div>
+    <div class="note">Реплики: нажали Power → самопроверка → BIOS/UEFI передаёт эстафету загрузочной записи, та — загрузчику, он поднимает ОС.</div>
+    <div class="note"><strong>Демка:</strong> переключись на <code>demos/boot.html</code> — нажми Power вживую, пройди ленту до рабочего стола. Потом тумблер «вытащить RAM» → POST останавливается с ошибкой.</div>
+    <div class="ping">Пинг: «Кто видел чёрный экран BIOS?»</div>
+    <div class="warn">Грабля: BIOS/UEFI путают с самой ОС. «Это отдельная программа-проверяющая, она просто передаёт эстафету Windows/macOS/Linux».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">8</span><span class="slide">S12–S14</span>Карта ОС и итог</h2>
+    <div class="plate">MS-DOS → <span class="a">Windows</span>
+Unix → <span class="a">Linux</span> → <span class="a">Android</span>
+Unix → <span class="a">macOS</span> / iOS
+<span class="a">85%</span> всех устройств планеты = Unix или Linux · даже Windows встроил Linux (<b>WSL</b>)</div>
+    <div class="note">Реплики: ОС — родственники. Итог: полная схема компьютера и путь загрузки теперь в голове. Дальше — слои и язык машины.</div>
+    <div class="ping">Пинг: «Какая ОС на твоём телефоне?»</div>
+    <div class="warn">Грабля: Linux считают «редким, для программистов». Сними цифрой: 85% устройств вокруг уже на Linux/Unix.</div>
+  </div>
+
+  <footer>// конец конспекта · шпаргалка и домашка — в чат в КОНЦЕ урока · следующий урок cs-02 — слои и язык машины</footer>
+
+</div>
+</body>
+</html>
