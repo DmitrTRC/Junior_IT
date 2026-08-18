@@ -243,10 +243,11 @@
   table.num td.alpha { color: var(--yellow); font-weight: 700; }
 
   /* S9 hex */
-  .hex-wrap { display: flex; gap: 40px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .hex-wrap { display: flex; gap: 44px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .hx-aside { display: flex; flex-direction: column; align-items: center; gap: 20px; }
   .swatch {
-    width: min(30vw, 220px);
-    height: min(30vw, 220px);
+    width: min(26vw, 190px);
+    height: min(26vw, 190px);
     border-radius: 20px;
     background: var(--yellow);
     color: #0a0a14;
@@ -258,16 +259,22 @@
     font-size: clamp(18px, 2vw, 28px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   }
-  .breakdown { display: flex; flex-direction: column; gap: 14px; }
-  .hx-part {
+  .hx-plates { display: flex; flex-direction: column; gap: 16px; }
+  .hx-plate {
+    background: var(--yellow);
+    color: #0a0a14;
+    border-radius: 16px;
+    padding: 16px 26px;
+    font-family: 'JetBrains Mono', monospace;
     display: flex;
     align-items: baseline;
-    gap: 18px;
-    font-family: 'JetBrains Mono', monospace;
+    gap: 16px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.4);
   }
-  .hx-part .pair { color: var(--yellow); font-size: clamp(24px, 3vw, 44px); font-weight: 700; width: 62px; text-align: right; }
-  .hx-part .val  { color: #dfe3f5; font-size: clamp(18px, 2vw, 30px); }
-  .hx-part .val b { color: #fff; }
+  .hx-plate .pair   { font-size: clamp(22px, 2.8vw, 42px); font-weight: 700; width: 58px; }
+  .hx-plate .arw    { font-size: clamp(16px, 1.6vw, 24px); font-weight: 700; opacity: .6; }
+  .hx-plate .amount { font-size: clamp(22px, 2.8vw, 42px); font-weight: 700; }
+  .hx-plate .chan   { font-size: clamp(15px, 1.6vw, 22px); font-weight: 600; }
   .chips { display: flex; gap: 22px; justify-content: center; }
   .chip { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: clamp(12px, 1.2vw, 16px); color: #aeb4cc; }
   .chip .dot { width: 60px; height: 60px; border-radius: 14px; }
@@ -579,15 +586,17 @@
     <div class="top-label">// hex-цвет</div>
     <h2>Ты уже писал это — в CSS</h2>
     <div class="hex-wrap">
-      <div class="swatch">#ffd60a</div>
-      <div class="breakdown">
-        <div class="hx-part"><span class="pair">ff</span><span class="val">= <b>255</b> · красный</span></div>
-        <div class="hx-part"><span class="pair">d6</span><span class="val">= <b>214</b> · зелёный</span></div>
-        <div class="hx-part"><span class="pair">0a</span><span class="val">= <b>10</b> · синий</span></div>
+      <div class="hx-aside">
+        <div class="swatch">#ffd60a</div>
+        <div class="chips">
+          <div class="chip"><div class="dot" style="background:#00ffc8"></div>#00ffc8</div>
+          <div class="chip"><div class="dot" style="background:#ff0096"></div>#ff0096</div>
+        </div>
       </div>
-      <div class="chips">
-        <div class="chip"><div class="dot" style="background:#00ffc8"></div>#00ffc8</div>
-        <div class="chip"><div class="dot" style="background:#ff0096"></div>#ff0096</div>
+      <div class="hx-plates">
+        <div class="hx-plate"><span class="pair">ff</span><span class="arw">→</span><span class="amount">255</span><span class="chan">красного</span></div>
+        <div class="hx-plate"><span class="pair">d6</span><span class="arw">→</span><span class="amount">214</span><span class="chan">зелёного</span></div>
+        <div class="hx-plate"><span class="pair">0a</span><span class="arw">→</span><span class="amount">10</span><span class="chan">синего</span></div>
       </div>
     </div>
     <p class="sub">Три пары 16-ричных цифр — это просто три числа от 0 до 255: сколько красного, зелёного, синего.</p>
