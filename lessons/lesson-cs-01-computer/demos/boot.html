@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Симулятор включения компьютера · cs-01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+    --yellow: #ffd60a; --orange: #ff5722; --green: #00e676; --cyan: #00ffc8; --magenta: #ff0096;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: #eef; font-family: 'Manrope', sans-serif;
+    margin: 0; padding: 32px 16px; min-height: 100vh; display: flex;
+    flex-direction: column; align-items: center;
+  }
+  .label { color: var(--cyan); letter-spacing: 4px; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+  h1 { font-size: clamp(24px, 5vw, 34px); margin: 6px 0 4px; text-align: center; }
+  .sub { color: #9aa; font-size: 15px; margin: 0 0 26px; text-align: center; }
+
+  .box { width: 100%; max-width: 640px; }
+
+  .rig {
+    background: var(--card); border: 1px solid #2a2a44; border-radius: 18px;
+    padding: 26px 22px; display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: center; gap: 22px 34px; margin-bottom: 22px;
+  }
+  .power {
+    width: 108px; height: 108px; border-radius: 50%; border: none; cursor: pointer;
+    background: radial-gradient(circle at 50% 40%, #00ff9a, var(--green));
+    color: #063; box-shadow: 0 0 0 6px rgba(0,230,118,0.15), 0 0 28px rgba(0,230,118,0.45);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; transition: transform .12s, box-shadow .2s;
+  }
+  .power:hover { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(0,230,118,0.22), 0 0 40px rgba(0,230,118,0.6); }
+  .power:active { transform: scale(0.97); }
+  .power svg { width: 40px; height: 40px; }
+  .power span { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; letter-spacing: 1px; }
+
+  .ram { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .ram input { position: absolute; opacity: 0; pointer-events: none; }
+  .switch {
+    width: 58px; height: 30px; border-radius: 999px; background: var(--card-2);
+    border: 1px solid #33395c; position: relative; transition: background .2s; flex: none;
+  }
+  .switch::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px;
+    border-radius: 50%; background: #cfe; transition: transform .2s;
+  }
+  .ram input:checked + .switch { background: var(--orange); }
+  .ram input:checked + .switch::after { transform: translateX(28px); }
+  .ram .cap { font-size: 14px; color: #cdd; }
+  .ram .cap b { color: var(--orange); }
+
+  .next {
+    width: 100%; max-width: 640px; padding: 15px; margin-bottom: 22px; border: none;
+    border-radius: 12px; background: var(--deep); color: #fff; font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 17px; cursor: pointer; transition: background .18s, opacity .18s;
+  }
+  .next:hover:not(:disabled) { background: #14498a; }
+  .next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .list { display: flex; flex-direction: column; gap: 12px; }
+  .row {
+    background: var(--card-2); border-left: 4px solid var(--green); border-radius: 10px;
+    padding: 14px 16px; animation: pop .32s ease;
+  }
+  .row.fail { border-left-color: var(--orange); }
+  @keyframes pop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  .row .t { font-weight: 700; font-size: 16px; }
+  .row .x { color: #aab; font-size: 14px; margin-top: 3px; }
+  .row.fail .t, .row.fail .x { color: var(--orange); }
+  .checks { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 14px; font-family: 'JetBrains Mono', monospace; color: var(--green); font-size: 14px; font-weight: 700; }
+
+  .desktop {
+    margin-top: 16px; border-radius: 14px; padding: 26px 20px; text-align: center;
+    background: linear-gradient(135deg, var(--deep), var(--card-2) 55%, var(--magenta));
+    animation: pop .4s ease;
+  }
+  .desktop svg { width: 46px; height: 46px; color: var(--cyan); }
+  .desktop .d1 { font-weight: 700; font-size: 19px; margin: 8px 0 4px; }
+  .desktop .d2 { color: #cde; font-size: 14px; }
+</style></head>
+<body>
+  <div class="label">// cs-01 · компьютер изнутри</div>
+  <h1>Что происходит, когда ты жмёшь Power</h1>
+  <p class="sub">Нажимай кнопку и шагай по цепочке включения. Попробуй «вытащить планку RAM».</p>
+
+  <div class="box">
+    <div class="rig">
+      <button class="power" onclick="powerOn()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="12" y1="3" x2="12" y2="12"></line>
+          <path d="M6.2 6.2a8 8 0 1 0 11.6 0"></path>
+        </svg>
+        <span>POWER</span>
+      </button>
+      <label class="ram" for="ramOut">
+        <input type="checkbox" id="ramOut">
+        <span class="switch"></span>
+        <span class="cap">Вытащить <b>планку RAM</b></span>
+      </label>
+    </div>
+
+    <button class="next" id="nextBtn" onclick="nextStep()" disabled>Дальше →</button>
+
+    <div class="list" id="list"></div>
+    <div id="desktopSlot"></div>
+  </div>
+
+  <script>
+    const steps = [
+      { id: 'power',  title: 'Кнопка Power',        text: 'Питание пошло на материнскую плату.' },
+      { id: 'post',   title: 'POST — самопроверка',  text: 'Процессор на месте? Память отвечает? Диск виден?' },
+      { id: 'bios',   title: 'BIOS / UEFI',          text: 'Маленькая программа из ПЗУ: читает настройки, ищет загрузочный диск.' },
+      { id: 'mbr',    title: 'Загрузочная запись',   text: 'Первый кусочек диска: «вот как запускать систему».' },
+      { id: 'loader', title: 'Загрузчик ОС',         text: 'Переносит операционную систему с диска в оперативную память.' },
+      { id: 'os',     title: 'Операционная система', text: 'Рабочий стол загружен. Компьютер готов!' },
+    ];
+
+    const ramOut = document.getElementById('ramOut');
+    const list = document.getElementById('list');
+    const nextBtn = document.getElementById('nextBtn');
+    const desktopSlot = document.getElementById('desktopSlot');
+
+    let current = -1;
+    let failed = false;
+
+    function powerOn() {
+      current = -1;
+      failed = false;
+      clearList();
+      nextStep();
+    }
+
+    function nextStep() {
+      current++;
+      const step = steps[current];
+      if (step.id === 'post' && ramOut.checked) {
+        addRow(step.title, 'БИП-БИП! Память не найдена — загрузка остановлена.', 'fail');
+        failed = true;
+        updateNext();
+        return;
+      }
+      if (step.id === 'post') {
+        addRow(step.title, step.text, 'ok', true);
+      } else {
+        addRow(step.title, step.text, 'ok');
+      }
+      if (current === steps.length - 1) markDone();
+      updateNext();
+    }
+
+    function addRow(title, text, kind, showChecks) {
+      const row = document.createElement('div');
+      row.className = 'row ' + kind;
+      const checks = showChecks ? '<div class="checks"><span>CPU ✓</span><span>RAM ✓</span><span>Диск ✓</span></div>' : '';
+      row.innerHTML = '<div class="t">' + title + '</div><div class="x">' + text + '</div>' + checks;
+      list.appendChild(row);
+    }
+
+    function markDone() {
+      desktopSlot.innerHTML =
+        '<div class="desktop">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>' +
+        '<div class="d1">Рабочий стол загружен</div>' +
+        '<div class="d2">Всё это заняло у настоящего компьютера пару секунд.</div>' +
+        '</div>';
+    }
+
+    function clearList() {
+      list.innerHTML = '';
+      desktopSlot.innerHTML = '';
+    }
+
+    function updateNext() {
+      const hasNext = current >= 0 && current < steps.length - 1;
+      nextBtn.disabled = failed || !hasNext;
+    }
+  </script>
+</body></html>
