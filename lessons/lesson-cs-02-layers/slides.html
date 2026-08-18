@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Слайды · Слои: от железа до твоей программы (cs-02)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14;
+    --card: #1a1a2e;
+    --card-2: #16213e;
+    --deep: #0f3460;
+    --yellow: #ffd60a;
+    --orange: #ff5722;
+    --green: #00e676;
+    --cyan: #00ffc8;
+    --magenta: #ff0096;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck {
+    width: 100vw; height: 100vh;
+    position: relative;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw 10vh;
+    text-align: center;
+    gap: 2vh;
+  }
+  .slide.active { display: flex; }
+
+  /* shared heading kit */
+  .top-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(11px, 1.1vw, 16px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+  .slide h2 {
+    font-size: clamp(30px, 4.4vw, 66px);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -2px;
+  }
+  .slide h2 .y { color: var(--yellow); }
+  .slide h2.quote { font-size: clamp(24px, 3.4vw, 52px); line-height: 1.14; }
+  .sub {
+    color: #aeb4cc;
+    font-size: clamp(15px, 1.6vw, 24px);
+    line-height: 1.4;
+    max-width: 900px;
+  }
+
+  /* SVG text defaults */
+  svg text { font-family: 'JetBrains Mono', monospace; fill: #dfe3f5; }
+  .cap { font-size: 15px; letter-spacing: 1px; }
+  .big { font-size: 34px; font-weight: 700; }
+  .mid { font-size: 22px; font-weight: 700; }
+  .sm  { font-size: 15px; }
+  .xs  { font-size: 13px; fill: #9aa3c0; }
+
+  .rig {
+    width: min(92vw, 1080px);
+    height: auto;
+    max-height: 56vh;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+  }
+  .mini {
+    width: min(82vw, 780px);
+    height: auto;
+    max-height: 44vh;
+  }
+
+  /* S1: intro */
+  #s1 { background: radial-gradient(ellipse at 30% 20%, #1a1a3e, var(--bg) 60%); }
+  #s1 .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(13px, 1.4vw, 22px);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  #s1 h1 {
+    font-size: clamp(48px, 9vw, 150px);
+    line-height: 0.92;
+    font-weight: 700;
+    letter-spacing: -3px;
+  }
+  #s1 h1 .em {
+    background: var(--yellow);
+    color: var(--bg);
+    padding: 0 18px;
+    display: inline-block;
+    transform: rotate(-2deg);
+    margin: 8px 0;
+  }
+  #s1 .tagline {
+    font-size: clamp(20px, 3vw, 44px);
+    font-weight: 700;
+    color: #dfe3f5;
+    letter-spacing: -1px;
+    margin-top: 6px;
+  }
+  #s1 .meta {
+    margin-top: 24px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  #s1 .meta span {
+    background: rgba(255,214,10,0.1);
+    border: 1px solid rgba(255,214,10,0.3);
+    padding: 12px 26px;
+    border-radius: 50px;
+    font-size: clamp(14px, 1.5vw, 20px);
+    font-weight: 700;
+  }
+
+  /* compare cards (S4) */
+  .points {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .point {
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(255,214,10,0.3);
+    border-radius: 24px;
+    padding: 34px 30px;
+    text-align: left;
+  }
+  .point .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(20px, 2.2vw, 32px);
+    line-height: 1;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .point h3 {
+    font-size: clamp(22px, 2.2vw, 34px);
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+  .point p {
+    color: #aeb4cc;
+    font-size: clamp(14px, 1.3vw, 19px);
+    line-height: 1.5;
+  }
+
+  /* chain plates (S2 recap) */
+  .chain {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 1150px;
+  }
+  .plate {
+    background: var(--card);
+    border: 2px solid var(--deep);
+    border-radius: 16px;
+    padding: 20px 22px;
+    min-width: 150px;
+    font-weight: 700;
+    font-size: clamp(15px, 1.5vw, 21px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+  }
+  .chain.recap .plate { opacity: .5; color: #aeb4cc; font-weight: 600; }
+  .chain.recap .plate.hot { opacity: 1; border-color: var(--yellow); color: var(--yellow); }
+  .chain .ar {
+    color: var(--yellow);
+    font-size: clamp(22px, 3vw, 40px);
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    opacity: .55;
+  }
+
+  /* S7 binary count */
+  .bin-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1050px;
+  }
+  .bin {
+    background: rgba(255,255,255,0.03);
+    border: 2px solid var(--deep);
+    border-radius: 16px;
+    padding: 16px 20px;
+    min-width: 96px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .bin .dec { color: #9aa3c0; font-size: clamp(13px, 1.3vw, 18px); }
+  .bin .b   { color: var(--yellow); font-size: clamp(22px, 2.6vw, 36px); font-weight: 700; margin-top: 4px; }
+  .bin.carry { border-color: var(--yellow); }
+
+  /* S8 table */
+  .tables { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
+  table.num { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; }
+  table.num th, table.num td {
+    padding: 5px 22px;
+    text-align: right;
+    font-size: clamp(15px, 1.6vw, 23px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  table.num th {
+    color: var(--yellow);
+    font-size: clamp(12px, 1.2vw, 16px);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--deep);
+  }
+  table.num td { color: #dfe3f5; }
+  table.num td.alpha { color: var(--yellow); font-weight: 700; }
+
+  /* S9 hex */
+  .hex-wrap { display: flex; gap: 40px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .swatch {
+    width: min(30vw, 220px);
+    height: min(30vw, 220px);
+    border-radius: 20px;
+    background: var(--yellow);
+    color: #0a0a14;
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(18px, 2vw, 28px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .breakdown { display: flex; flex-direction: column; gap: 14px; }
+  .hx-part {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hx-part .pair { color: var(--yellow); font-size: clamp(24px, 3vw, 44px); font-weight: 700; width: 62px; text-align: right; }
+  .hx-part .val  { color: #dfe3f5; font-size: clamp(18px, 2vw, 30px); }
+  .hx-part .val b { color: #fff; }
+  .chips { display: flex; gap: 22px; justify-content: center; }
+  .chip { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: clamp(12px, 1.2vw, 16px); color: #aeb4cc; }
+  .chip .dot { width: 60px; height: 60px; border-radius: 14px; }
+
+  /* S11 asm vs JS */
+  .hello { display: flex; gap: 30px; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 1150px; }
+  .asm-card {
+    background: #0c0c11;
+    border: 2px solid var(--deep);
+    border-radius: 16px;
+    padding: 22px 26px;
+    text-align: left;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .asm-card pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(11px, 1.15vw, 16px);
+    line-height: 1.55;
+    color: #c8d0f0;
+    white-space: pre;
+  }
+  .eq { color: var(--yellow); font-size: clamp(30px, 4vw, 62px); font-weight: 700; }
+  .js-side { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .js-big {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(18px, 2.4vw, 36px);
+    font-weight: 700;
+    color: var(--green);
+    background: #0c0c11;
+    border: 2px solid var(--green);
+    border-radius: 14px;
+    padding: 24px 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .js-side .tag { font-family: 'JetBrains Mono', monospace; color: #9aa3c0; font-size: clamp(13px, 1.3vw, 18px); letter-spacing: 2px; }
+
+  /* S13 bridge */
+  .row-13 { display: flex; align-items: center; justify-content: center; gap: 44px; flex-wrap: wrap; }
+  .bridge {
+    border: 2px solid var(--yellow);
+    border-radius: 16px;
+    padding: 22px 28px;
+    max-width: 440px;
+    text-align: left;
+    font-size: clamp(15px, 1.6vw, 22px);
+    line-height: 1.45;
+    color: #dfe3f5;
+  }
+  .bridge b { color: var(--yellow); }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 16px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .nav button:hover { background: var(--yellow); color: var(--bg); }
+  .nav .indicator {
+    color: var(--yellow);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  .keyhint {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- S1: титул -->
+  <div class="slide active" id="s1">
+    <div class="kicker">// блок «компьютер изнутри» · урок 2</div>
+    <h1><span class="em">Слои</span></h1>
+    <div class="tagline">от железа до твоей программы</div>
+    <div class="meta">
+      <span>🧱 слои</span>
+      <span>💡 биты</span>
+      <span>🔢 16-ричная</span>
+    </div>
+  </div>
+
+  <!-- S2: повтор cs-01 — эстафета включения -->
+  <div class="slide" id="s2">
+    <div class="top-label">// повтор прошлого урока</div>
+    <h2>Компьютер уже включён</h2>
+    <div class="chain recap">
+      <div class="plate">кнопка<br>Power</div>
+      <span class="ar">→</span>
+      <div class="plate">POST</div>
+      <span class="ar">→</span>
+      <div class="plate">BIOS /<br>UEFI</div>
+      <span class="ar">→</span>
+      <div class="plate">загрузчик</div>
+      <span class="ar">→</span>
+      <div class="plate hot">операционная<br>система</div>
+    </div>
+    <p class="sub">Это всё уже случилось на прошлом уроке. Сегодня идём выше — до твоей программы.</p>
+  </div>
+
+  <!-- S3: пирамида слоёв -->
+  <div class="slide" id="s3">
+    <div class="top-label">// от железа до приложения</div>
+    <h2>Пирамида слоёв</h2>
+    <svg class="rig" viewBox="0 0 1000 480" role="img" aria-label="Пирамида из четырёх слоёв: железо, BIOS/UEFI, операционная система, приложение">
+      <rect x="50"  y="366" width="900" height="90" rx="12" fill="#0f3460" stroke="#0f3460" stroke-width="2"/>
+      <text x="500" y="422" class="big" text-anchor="middle">железо</text>
+
+      <rect x="130" y="264" width="740" height="90" rx="12" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+      <text x="500" y="320" class="mid" text-anchor="middle">BIOS / UEFI</text>
+
+      <rect x="220" y="162" width="560" height="90" rx="12" fill="#1a1a2e" stroke="#0f3460" stroke-width="2"/>
+      <text x="500" y="218" class="mid" text-anchor="middle">операционная система</text>
+
+      <rect x="310" y="60"  width="380" height="90" rx="12" fill="#1a1a2e" stroke="#ffd60a" stroke-width="4"/>
+      <text x="500" y="116" class="mid" text-anchor="middle" fill="#ffd60a">твоё приложение</text>
+    </svg>
+    <p class="sub">Каждый этаж говорит только с соседним. Внизу — нули и единицы, наверху — твой код.</p>
+  </div>
+
+  <!-- S4: программа vs приложение -->
+  <div class="slide" id="s4">
+    <div class="top-label">// важное различие</div>
+    <h2>Программа <span class="y">≠</span> приложение</h2>
+    <div class="points">
+      <div class="point">
+        <div class="num">код</div>
+        <h3>Программа</h3>
+        <p>То, что ты пишешь в редакторе. Строчки, которые печатаешь сам.</p>
+      </div>
+      <div class="point">
+        <div class="num">файл</div>
+        <h3>Приложение</h3>
+        <p>Готовая штука после сборки. Её запускает пользователь двойным кликом.</p>
+      </div>
+    </div>
+    <p class="sub">Написал программу → собрали и упаковали → получилось приложение.</p>
+  </div>
+
+  <!-- S5: перфокарта — машина понимает только 0/1 -->
+  <div class="slide" id="s5">
+    <div class="top-label">// самый нижний этаж</div>
+    <h2>Машина понимает <span class="y">0</span> и <span class="y">1</span></h2>
+    <svg class="mini" viewBox="0 0 900 460" role="img" aria-label="Перфокарта: пробитые дырки — единицы, целые места — нули">
+      <path d="M210 80 H750 V400 H150 V140 Z" fill="#16213e" stroke="#ffd60a" stroke-width="4"/>
+
+      <circle cx="200" cy="180" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="266" cy="180" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="332" cy="180" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="398" cy="180" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="464" cy="180" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="530" cy="180" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="596" cy="180" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="662" cy="180" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+
+      <circle cx="200" cy="240" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="266" cy="240" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="332" cy="240" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="398" cy="240" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="464" cy="240" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="530" cy="240" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="596" cy="240" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="662" cy="240" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+
+      <circle cx="200" cy="300" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="266" cy="300" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="332" cy="300" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="398" cy="300" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="464" cy="300" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="530" cy="300" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="596" cy="300" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="662" cy="300" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+
+      <circle cx="200" cy="360" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="266" cy="360" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="332" cy="360" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="398" cy="360" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="464" cy="360" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="530" cy="360" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="596" cy="360" r="14" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <circle cx="662" cy="360" r="14" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+
+      <circle cx="792" cy="180" r="13" fill="#0a0a14" stroke="#0f3460" stroke-width="2"/>
+      <text x="815" y="185" class="sm" text-anchor="start" fill="#ffd60a">= 1</text>
+      <circle cx="792" cy="230" r="13" fill="none" stroke="#0f3460" stroke-width="2"/>
+      <text x="815" y="235" class="sm" text-anchor="start" fill="#9aa3c0">= 0</text>
+    </svg>
+    <p class="sub">Первые программы пробивали дырками в картоне. Внутри процессора — те же 0 и 1.</p>
+  </div>
+
+  <!-- S6: восемь лампочек — бит и байт -->
+  <div class="slide" id="s6">
+    <div class="top-label">// восемь лампочек</div>
+    <h2>Бит и байт</h2>
+    <svg class="mini" viewBox="0 0 900 300" role="img" aria-label="Восемь лампочек-битов: горят третья, пятая и седьмая, получается 00101010 равно 42">
+      <defs>
+        <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="9" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <circle cx="100" cy="110" r="36" fill="#16213e" stroke="#0f3460" stroke-width="3"/>
+      <text x="100" y="200" class="mid" text-anchor="middle" fill="#9aa3c0">0</text>
+
+      <circle cx="200" cy="110" r="36" fill="#16213e" stroke="#0f3460" stroke-width="3"/>
+      <text x="200" y="200" class="mid" text-anchor="middle" fill="#9aa3c0">0</text>
+
+      <circle cx="300" cy="110" r="36" fill="#ffd60a" filter="url(#glow)"/>
+      <text x="300" y="200" class="mid" text-anchor="middle" fill="#ffd60a">1</text>
+
+      <circle cx="400" cy="110" r="36" fill="#16213e" stroke="#0f3460" stroke-width="3"/>
+      <text x="400" y="200" class="mid" text-anchor="middle" fill="#9aa3c0">0</text>
+
+      <circle cx="500" cy="110" r="36" fill="#ffd60a" filter="url(#glow)"/>
+      <text x="500" y="200" class="mid" text-anchor="middle" fill="#ffd60a">1</text>
+
+      <circle cx="600" cy="110" r="36" fill="#16213e" stroke="#0f3460" stroke-width="3"/>
+      <text x="600" y="200" class="mid" text-anchor="middle" fill="#9aa3c0">0</text>
+
+      <circle cx="700" cy="110" r="36" fill="#ffd60a" filter="url(#glow)"/>
+      <text x="700" y="200" class="mid" text-anchor="middle" fill="#ffd60a">1</text>
+
+      <circle cx="800" cy="110" r="36" fill="#16213e" stroke="#0f3460" stroke-width="3"/>
+      <text x="800" y="200" class="mid" text-anchor="middle" fill="#9aa3c0">0</text>
+
+      <text x="450" y="272" text-anchor="middle" font-size="34" font-weight="700" fill="#dfe3f5">00101010 = <tspan fill="#ffd60a">42</tspan></text>
+    </svg>
+    <p class="sub">Лампочка — это бит: горит 1, не горит 0. Восемь битов подряд — байт.</p>
+  </div>
+
+  <!-- S7: двоичный счёт -->
+  <div class="slide" id="s7">
+    <div class="top-label">// перенос разряда</div>
+    <h2>Двоичный счёт</h2>
+    <div class="bin-row">
+      <div class="bin"><div class="dec">0</div><div class="b">0</div></div>
+      <div class="bin"><div class="dec">1</div><div class="b">1</div></div>
+      <div class="bin carry"><div class="dec">2</div><div class="b">10</div></div>
+      <div class="bin"><div class="dec">3</div><div class="b">11</div></div>
+      <div class="bin carry"><div class="dec">4</div><div class="b">100</div></div>
+      <div class="bin"><div class="dec">5</div><div class="b">101</div></div>
+    </div>
+    <p class="sub">Цифры кончаются сразу после 1 — переносим разряд. Тот же перенос, что 9&nbsp;+&nbsp;1&nbsp;=&nbsp;10.</p>
+  </div>
+
+  <!-- S8: таблица 0-15 в трёх системах -->
+  <div class="slide" id="s8">
+    <div class="top-label">// компактнее двоичной</div>
+    <h2>16-ричная система</h2>
+    <div class="tables">
+      <table class="num">
+        <tr><th>дес</th><th>дв</th><th>16</th></tr>
+        <tr><td>0</td><td>0000</td><td>0</td></tr>
+        <tr><td>1</td><td>0001</td><td>1</td></tr>
+        <tr><td>2</td><td>0010</td><td>2</td></tr>
+        <tr><td>3</td><td>0011</td><td>3</td></tr>
+        <tr><td>4</td><td>0100</td><td>4</td></tr>
+        <tr><td>5</td><td>0101</td><td>5</td></tr>
+        <tr><td>6</td><td>0110</td><td>6</td></tr>
+        <tr><td>7</td><td>0111</td><td>7</td></tr>
+      </table>
+      <table class="num">
+        <tr><th>дес</th><th>дв</th><th>16</th></tr>
+        <tr><td>8</td><td>1000</td><td>8</td></tr>
+        <tr><td>9</td><td>1001</td><td>9</td></tr>
+        <tr><td>10</td><td>1010</td><td class="alpha">A</td></tr>
+        <tr><td>11</td><td>1011</td><td class="alpha">B</td></tr>
+        <tr><td>12</td><td>1100</td><td class="alpha">C</td></tr>
+        <tr><td>13</td><td>1101</td><td class="alpha">D</td></tr>
+        <tr><td>14</td><td>1110</td><td class="alpha">E</td></tr>
+        <tr><td>15</td><td>1111</td><td class="alpha">F</td></tr>
+      </table>
+    </div>
+    <p class="sub">16 цифр: 0–9, дальше A–F. После F снова перенос: F&nbsp;+&nbsp;1&nbsp;=&nbsp;10.</p>
+  </div>
+
+  <!-- S9: hex-цвет #ffd60a -->
+  <div class="slide" id="s9">
+    <div class="top-label">// hex-цвет</div>
+    <h2>Ты уже писал это — в CSS</h2>
+    <div class="hex-wrap">
+      <div class="swatch">#ffd60a</div>
+      <div class="breakdown">
+        <div class="hx-part"><span class="pair">ff</span><span class="val">= <b>255</b> · красный</span></div>
+        <div class="hx-part"><span class="pair">d6</span><span class="val">= <b>214</b> · зелёный</span></div>
+        <div class="hx-part"><span class="pair">0a</span><span class="val">= <b>10</b> · синий</span></div>
+      </div>
+      <div class="chips">
+        <div class="chip"><div class="dot" style="background:#00ffc8"></div>#00ffc8</div>
+        <div class="chip"><div class="dot" style="background:#ff0096"></div>#ff0096</div>
+      </div>
+    </div>
+    <p class="sub">Три пары 16-ричных цифр — это просто три числа от 0 до 255: сколько красного, зелёного, синего.</p>
+  </div>
+
+  <!-- S10: лестница языков -->
+  <div class="slide" id="s10">
+    <div class="top-label">// от железа к человеку</div>
+    <h2>Лестница языков</h2>
+    <svg class="rig" viewBox="0 0 1000 500" role="img" aria-label="Лестница языков: машинный код, ассемблер, C, JS и Python — снизу вверх">
+      <rect x="70"  y="310" width="200" height="120" rx="10" fill="#0f3460" stroke="#0f3460" stroke-width="2"/>
+      <text x="170" y="356" class="sm" text-anchor="middle">машинный код</text>
+      <text x="170" y="384" class="sm" text-anchor="middle" fill="#9aa3c0">0 1</text>
+
+      <rect x="290" y="250" width="200" height="180" rx="10" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+      <text x="390" y="296" class="mid" text-anchor="middle">ассемблер</text>
+
+      <rect x="510" y="190" width="200" height="240" rx="10" fill="#1a1a2e" stroke="#0f3460" stroke-width="2"/>
+      <text x="610" y="236" class="big" text-anchor="middle">C</text>
+
+      <rect x="730" y="130" width="200" height="300" rx="10" fill="#1a1a2e" stroke="#ffd60a" stroke-width="4"/>
+      <text x="830" y="170" class="mid" text-anchor="middle" fill="#ffd60a">JS · Python</text>
+
+      <text x="170" y="470" class="sm" text-anchor="middle" fill="#ffd60a">↓ ближе к железу</text>
+      <text x="830" y="105" class="sm" text-anchor="middle" fill="#ffd60a">ближе к человеку ↑</text>
+    </svg>
+    <p class="sub">Чем ниже — тем ближе к железу и быстрее. Чем выше — тем понятнее человеку.</p>
+  </div>
+
+  <!-- S11: один Привет — два языка -->
+  <div class="slide" id="s11">
+    <div class="top-label">// hello world</div>
+    <h2>Один «Привет!» — два языка</h2>
+    <div class="hello">
+      <div class="asm-card">
+<pre>section .data
+  msg db "Привет!", 10
+  len equ $ - msg
+section .text
+  global _start
+_start:
+  mov rax, 1        ; системный вызов write
+  mov rdi, 1        ; куда: на экран
+  mov rsi, msg      ; что: адрес текста
+  mov rdx, len      ; сколько байт
+  syscall
+  mov rax, 60       ; системный вызов exit
+  xor rdi, rdi
+  syscall</pre>
+      </div>
+      <span class="eq">=</span>
+      <div class="js-side">
+        <div class="js-big">console.log("Привет!")</div>
+        <div class="tag">JavaScript</div>
+      </div>
+    </div>
+    <p class="sub">Обе программы делают одно и то же — просто на JS не видно всей кухни внутри.</p>
+  </div>
+
+  <!-- S12: драйвер — разговорник -->
+  <div class="slide" id="s12">
+    <div class="top-label">// как ОС понимает железо</div>
+    <h2>Драйвер — разговорник</h2>
+    <svg class="mini" viewBox="0 0 1000 320" role="img" aria-label="Драйвер как переводчик между операционной системой и устройством">
+      <rect x="60" y="110" width="240" height="110" rx="16" fill="#1a1a2e" stroke="#0f3460" stroke-width="3"/>
+      <text x="180" y="172" class="mid" text-anchor="middle">ОС</text>
+
+      <rect x="380" y="110" width="240" height="110" rx="16" fill="#0f3460" stroke="#ffd60a" stroke-width="4"/>
+      <text x="500" y="165" class="mid" text-anchor="middle" fill="#ffd60a">драйвер</text>
+      <text x="500" y="195" class="xs" text-anchor="middle" fill="#ffd60a">переводчик</text>
+
+      <rect x="700" y="110" width="240" height="110" rx="16" fill="#1a1a2e" stroke="#0f3460" stroke-width="3"/>
+      <text x="820" y="165" class="sm" text-anchor="middle">видеокарта</text>
+      <text x="820" y="193" class="xs" text-anchor="middle">устройство</text>
+
+      <text x="340" y="152" text-anchor="middle" fill="#ffd60a" font-size="30" font-weight="700">↔</text>
+      <text x="660" y="152" text-anchor="middle" fill="#ffd60a" font-size="30" font-weight="700">↔</text>
+    </svg>
+    <p class="sub">Без драйвера ОС видит устройство, но не умеет с ним разговаривать. Драйверы пишут на ассемблере и C.</p>
+  </div>
+
+  <!-- S13: мост к cs-03 -->
+  <div class="slide" id="s13">
+    <div class="top-label">// мост к следующему уроку</div>
+    <h2>Языков — <span class="y">больше 200</span></h2>
+    <div class="row-13">
+      <svg class="mini" viewBox="0 0 1000 480" role="img" aria-label="Приглушённая пирамида слоёв">
+        <g opacity=".4">
+          <rect x="50"  y="366" width="900" height="90" rx="12" fill="#0f3460" stroke="#0f3460" stroke-width="2"/>
+          <text x="500" y="422" class="big" text-anchor="middle">железо</text>
+          <rect x="130" y="264" width="740" height="90" rx="12" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+          <text x="500" y="320" class="mid" text-anchor="middle">BIOS / UEFI</text>
+          <rect x="220" y="162" width="560" height="90" rx="12" fill="#1a1a2e" stroke="#0f3460" stroke-width="2"/>
+          <text x="500" y="218" class="mid" text-anchor="middle">операционная система</text>
+          <rect x="310" y="60"  width="380" height="90" rx="12" fill="#1a1a2e" stroke="#ffd60a" stroke-width="4"/>
+          <text x="500" y="116" class="mid" text-anchor="middle" fill="#ffd60a">твоё приложение</text>
+        </g>
+      </svg>
+      <div class="bridge">Сегодня видели контраст всего двух — ассемблер и JS. А их <b>больше двухсот</b>.<br>В следующий раз возьмём 5–7 главных и разберёмся, зачем нужен каждый.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">‹</button>
+  <span class="indicator"><span id="cur">1</span> / 13</span>
+  <button onclick="next()">›</button>
+</div>
+
+<div class="keyhint">← / → переключение слайдов</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.getElementById('cur').textContent = cur + 1;
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+
+</body>
+</html>
