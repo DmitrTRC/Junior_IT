@@ -50,7 +50,7 @@
   .lamp:active { transform: scale(0.94); }
   .lamp.on {
     border-color: transparent;
-    background: radial-gradient(circle at 50% 38%, #fff2a8, var(--yellow));
+    background: radial-gradient(circle at 50% 38%, rgba(255,255,255,0.45), rgba(255,255,255,0) 55%), var(--yellow);
     box-shadow: 0 0 0 4px rgba(255,214,10,0.18), 0 0 30px rgba(255,214,10,0.6);
   }
   .bit .digit { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 20px; color: #9aa3c0; }
@@ -71,7 +71,7 @@
   }
   .hexline {
     text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 700;
-    font-size: clamp(30px, 9vw, 48px); color: #fff; margin-bottom: 22px; letter-spacing: 2px;
+    font-size: clamp(30px, 9vw, 48px); color: #eef; margin-bottom: 22px; letter-spacing: 2px;
   }
   .sliders {
     background: var(--card); border: 1px solid #2a2a44; border-radius: 18px;
@@ -122,9 +122,9 @@
       <div class="swatch-big" id="swatch"></div>
       <div class="hexline" id="hexLabel">#000000</div>
       <div class="sliders">
-        <div class="channel ch-r"><span class="name">красный</span><input type="range" id="r" min="0" max="255" value="0"><span class="pair" id="pair-r">00</span></div>
-        <div class="channel ch-g"><span class="name">зелёный</span><input type="range" id="g" min="0" max="255" value="0"><span class="pair" id="pair-g">00</span></div>
-        <div class="channel ch-b"><span class="name">синий</span><input type="range" id="b" min="0" max="255" value="0"><span class="pair" id="pair-b">00</span></div>
+        <div class="channel ch-r"><label class="name" for="r">красный</label><input type="range" id="r" min="0" max="255" value="0"><span class="pair" id="pair-r">00</span></div>
+        <div class="channel ch-g"><label class="name" for="g">зелёный</label><input type="range" id="g" min="0" max="255" value="0"><span class="pair" id="pair-g">00</span></div>
+        <div class="channel ch-b"><label class="name" for="b">синий</label><input type="range" id="b" min="0" max="255" value="0"><span class="pair" id="pair-b">00</span></div>
       </div>
       <div class="presets" id="presets"></div>
     </section>
@@ -148,6 +148,7 @@
       const lamp = document.createElement('button');
       lamp.className = 'lamp';
       lamp.setAttribute('aria-label', 'бит ' + (i + 1));
+      lamp.setAttribute('aria-pressed', 'false');
       lamp.addEventListener('click', () => toggle(i));
       const digit = document.createElement('div');
       digit.className = 'digit';
@@ -168,6 +169,7 @@
       const val = bits.reduce((acc, b) => acc * 2 + b, 0);
       bits.forEach((b, i) => {
         lampEls[i].classList.toggle('on', b === 1);
+        lampEls[i].setAttribute('aria-pressed', b === 1 ? 'true' : 'false');
         digitEls[i].textContent = b;
         digitEls[i].classList.toggle('on', b === 1);
       });
