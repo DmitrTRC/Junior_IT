@@ -26,6 +26,9 @@ build/
 students/*
 !students/.gitkeep
 
+# Записи занятий и их расшифровки — голоса и имена детей, не коммитим
+recordings/
+
 # Claude CLI — личные настройки (shared settings.json коммитим)
 .claude/settings.local.json
 
@@ -36,3 +39,8 @@ graphify-out/
 Thumbs.db
 desktop.ini
 .aos/state/
+
+# print booklet build
+print/node_modules/
+print/.book.html
+print/.shot*

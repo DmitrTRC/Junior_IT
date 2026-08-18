@@ -390,6 +390,131 @@
     margin-top: 2px;
   }
 
+  /* ============ JS BLOCK ============ */
+  .js-lessons {
+    display: grid;
+    gap: 16px;
+    margin-top: 30px;
+  }
+  .js-lesson {
+    background: linear-gradient(135deg, var(--card) 0%, var(--card-2) 100%);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 26px 28px;
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 22px;
+    align-items: start;
+    transition: 0.2s;
+  }
+  .js-lesson:hover { border-color: rgba(255,214,10,0.28); }
+  .js-lesson.next { border-color: rgba(0,230,118,0.35); }
+  .js-lesson .jn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--yellow);
+    line-height: 1;
+  }
+  .js-lesson .jn small {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 8px;
+  }
+  .js-lesson h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .js-lesson .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    background: rgba(0,230,118,0.1);
+    border: 1px solid rgba(0,230,118,0.4);
+    padding: 3px 9px;
+    border-radius: 50px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+  .js-lesson p {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .js-lesson p code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--yellow);
+    background: rgba(255,214,10,0.08);
+    padding: 2px 6px;
+    border-radius: 5px;
+  }
+  .js-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .js-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text-on-dark);
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+  .js-links a:hover {
+    background: rgba(255,214,10,0.08);
+    border-color: rgba(255,214,10,0.35);
+  }
+  .js-links .sep {
+    width: 1px;
+    height: 22px;
+    background: rgba(255,255,255,0.1);
+    margin: 0 4px;
+  }
+  .js-links a.chip { padding: 9px 12px; font-size: 15px; }
+  .js-links a.chip.g:hover { border-color: rgba(0,255,200,0.5); background: rgba(0,255,200,0.08); }
+  .js-links a.chip.s:hover { border-color: rgba(255,87,34,0.5); background: rgba(255,87,34,0.08); }
+  .js-links a.chip.a:hover { border-color: rgba(255,214,10,0.5); }
+  .js-links a.repo {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .js-links .soon {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding-left: 4px;
+  }
+  .js-links .grp {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
   /* ============ DEMOS ============ */
   .demos-section { background: rgba(255,255,255,0.015); }
   .demos {
@@ -631,6 +756,9 @@
     section { padding: 70px 20px; }
     .hero { padding: 60px 20px 80px; }
     .lesson-card { padding: 32px 24px; }
+    .js-lesson { grid-template-columns: 1fr; gap: 10px; padding: 24px 20px; }
+    .js-lesson .jn { font-size: 26px; }
+    .js-lesson .jn small { display: inline; margin: 0 0 0 10px; }
   }
 </style>
 </head>
@@ -701,7 +829,7 @@
 <!-- CURRENT LESSON -->
 <section id="lesson">
   <div class="container">
-    <div class="section-label">// текущий урок</div>
+    <div class="section-label">// базовый урок</div>
     <h2>Lesson <em>01</em>: первый сайт за 75 минут</h2>
     <p class="section-lead">
       Всё для проведения занятия и для домашки. Открывай прямо в браузере — ничего скачивать не нужно.
@@ -745,6 +873,157 @@
           <span class="lbl">Живой код<small>8 шагов в эфире</small></span>
         </a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- JS BLOCK -->
+<section id="js">
+  <div class="container">
+    <div class="section-label">// блок javascript</div>
+    <h2>Дальше — <em>сам язык</em></h2>
+    <p class="section-lead">
+      Семь занятий: от первой кнопки до своего файла в настоящем редакторе. Шпаргалки и домашки открываются прямо в браузере — скачивать ничего не нужно.
+    </p>
+
+    <div class="js-lessons">
+
+      <div class="js-lesson">
+        <div class="jn">2<small>первые кнопки</small></div>
+        <div>
+          <h4>Оживляем сайт</h4>
+          <p>Страница начинает отвечать: кнопка меняет текст, считает клики, показывает всплывашку. Первое знакомство с JS прямо на своём сайте.</p>
+          <div class="js-links">
+            <a href="lessons/lesson-02-js/cheatsheet.html">📖 Шпаргалка</a>
+            <a href="lessons/lesson-02-js/homework.html">📝 Домашка</a>
+            <a href="lessons/lesson-02-js/slides.html">🎬 Слайды</a>
+            <span class="sep"></span>
+            <span class="grp">демки</span>
+            <a class="chip g" href="lessons/lesson-02-js/demos/gamer.html" title="демка для геймеров">🎮</a>
+            <a class="chip s" href="lessons/lesson-02-js/demos/sport.html" title="демка для спортсменов">🏀</a>
+            <a class="chip a" href="lessons/lesson-02-js/demos/art.html" title="демка для творческих">🎨</a>
+            <span class="sep"></span>
+            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02-js">материалы →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="js-lesson">
+        <div class="jn">2.5<small>консоль</small></div>
+        <div>
+          <h4>Сам язык: консоль-калькулятор</h4>
+          <p>Уходим от кнопок к чистому языку. Консоль браузера как калькулятор: числа, переменные-коробочки, текст, вопрос человеку через <code>prompt</code>.</p>
+          <div class="js-links">
+            <a href="lessons/lesson-02b-js-console/cheatsheet.html">📖 Шпаргалка</a>
+            <a href="lessons/lesson-02b-js-console/homework.html">📝 Домашка</a>
+            <a href="lessons/lesson-02b-js-console/slides.html">🎬 Слайды</a>
+            <span class="sep"></span>
+            <span class="grp">демки</span>
+            <a class="chip g" href="lessons/lesson-02b-js-console/demos/gamer.html" title="демка для геймеров">🎮</a>
+            <a class="chip s" href="lessons/lesson-02b-js-console/demos/sport.html" title="демка для спортсменов">🏀</a>
+            <a class="chip a" href="lessons/lesson-02b-js-console/demos/art.html" title="демка для творческих">🎨</a>
+            <span class="sep"></span>
+            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02b-js-console">материалы →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="js-lesson">
+        <div class="jn">2.6<small>условия</small></div>
+        <div>
+          <h4>Программа решает: если…то</h4>
+          <p>Программа перестаёт идти по прямой и начинает выбирать дорогу: сравнения, <code>if</code>, <code>else</code>, <code>else if</code>. Калькулятор ИМТ и бюджета.</p>
+          <div class="js-links">
+            <a href="lessons/lesson-02c-js-conditions/cheatsheet.html">📖 Шпаргалка</a>
+            <a href="lessons/lesson-02c-js-conditions/homework.html">📝 Домашка</a>
+            <a href="lessons/lesson-02c-js-conditions/slides.html">🎬 Слайды</a>
+            <span class="sep"></span>
+            <span class="grp">демки</span>
+            <a class="chip g" href="lessons/lesson-02c-js-conditions/demos/gamer.html" title="демка для геймеров">🎮</a>
+            <a class="chip s" href="lessons/lesson-02c-js-conditions/demos/sport.html" title="демка для спортсменов">🏀</a>
+            <a class="chip a" href="lessons/lesson-02c-js-conditions/demos/art.html" title="демка для творческих">🎨</a>
+            <span class="sep"></span>
+            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02c-js-conditions">материалы →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="js-lesson">
+        <div class="jn">2.7<small>циклы</small></div>
+        <div>
+          <h4>Программа повторяет</h4>
+          <p>Компьютер не устаёт: <code>while</code>, счётчик, <code>for</code>. Обратный отсчёт, таблица умножения и растущий узор — одной командой.</p>
+          <div class="js-links">
+            <a href="lessons/lesson-02d-js-loops/cheatsheet.html">📖 Шпаргалка</a>
+            <a href="lessons/lesson-02d-js-loops/homework.html">📝 Домашка</a>
+            <a href="lessons/lesson-02d-js-loops/slides.html">🎬 Слайды</a>
+            <span class="sep"></span>
+            <span class="grp">демки</span>
+            <a class="chip g" href="lessons/lesson-02d-js-loops/demos/gamer.html" title="демка для геймеров">🎮</a>
+            <a class="chip s" href="lessons/lesson-02d-js-loops/demos/sport.html" title="демка для спортсменов">🏀</a>
+            <a class="chip a" href="lessons/lesson-02d-js-loops/demos/art.html" title="демка для творческих">🎨</a>
+            <span class="sep"></span>
+            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02d-js-loops">материалы →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="js-lesson next">
+        <div class="jn">2.8<small>разминка</small></div>
+        <div>
+          <h4>Собираем тренажёр<span class="badge">● следующий</span></h4>
+          <p>Ни одного нового слова — но переменные, <code>if</code> и цикл впервые работают вместе. Из трёх знакомых кирпичей собирается тренажёр устного счёта со счётом очков.</p>
+          <div class="js-links">
+            <a href="lessons/lesson-02e-js-recap/cheatsheet.html">📖 Шпаргалка</a>
+            <a href="lessons/lesson-02e-js-recap/homework.html">📝 Домашка</a>
+            <a href="lessons/lesson-02e-js-recap/slides.html">🎬 Слайды</a>
+            <span class="sep"></span>
+            <span class="grp">демки</span>
+            <a class="chip g" href="lessons/lesson-02e-js-recap/demos/gamer.html" title="демка для геймеров">🎮</a>
+            <a class="chip s" href="lessons/lesson-02e-js-recap/demos/sport.html" title="демка для спортсменов">🏀</a>
+            <a class="chip a" href="lessons/lesson-02e-js-recap/demos/art.html" title="демка для творческих">🎨</a>
+            <span class="sep"></span>
+            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02e-js-recap">материалы →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="js-lesson">
+        <div class="jn">2.9<small>функции</small></div>
+        <div>
+          <h4>Своя команда</h4>
+          <p>Последний шаг чистого языка: упаковать свой кусок кода в команду с именем и звать её, когда надо. Как <code>console.log</code>, только твоя собственная.</p>
+          <div class="js-links">
+            <a href="lessons/lesson-02f-js-functions/cheatsheet.html">📖 Шпаргалка</a>
+            <a href="lessons/lesson-02f-js-functions/homework.html">📝 Домашка</a>
+            <a href="lessons/lesson-02f-js-functions/slides.html">🎬 Слайды</a>
+            <span class="sep"></span>
+            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02f-js-functions">материалы →</a>
+            <span class="soon">демки в работе</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="js-lesson">
+        <div class="jn">2.10<small>редактор</small></div>
+        <div>
+          <h4>Свой дом для кода: VS Code</h4>
+          <p>Код переезжает из консоли в настоящий файл. Ставим редактор, заводим папку проекта и <code>trenajer.js</code> — тренажёр с разминки больше не пропадает вместе с вкладкой.</p>
+          <div class="js-links">
+            <a href="lessons/lesson-02g-vscode/cheatsheet.html">📖 Шпаргалка</a>
+            <a href="lessons/lesson-02g-vscode/homework.html">📝 Домашка</a>
+            <a href="lessons/lesson-02g-vscode/slides.html">🎬 Слайды</a>
+            <span class="sep"></span>
+            <span class="grp">демки</span>
+            <a class="chip g" href="lessons/lesson-02g-vscode/demos/gamer.html" title="демка для геймеров">🎮</a>
+            <a class="chip s" href="lessons/lesson-02g-vscode/demos/sport.html" title="демка для спортсменов">🏀</a>
+            <a class="chip a" href="lessons/lesson-02g-vscode/demos/art.html" title="демка для творческих">🎨</a>
+            <span class="sep"></span>
+            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02g-vscode">материалы →</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -825,20 +1104,20 @@
     </p>
 
     <div class="roadmap">
-      <div class="rm-item current">
+      <div class="rm-item done">
         <div class="rm-num">01</div>
         <div class="rm-body">
-          <div class="rm-status">сейчас идём</div>
+          <div class="rm-status">пройдено</div>
           <h4>HTML + CSS · первый сайт</h4>
           <p>Личная страничка. Теги, цвета, картинки, hover, градиенты.</p>
         </div>
       </div>
-      <div class="rm-item future">
+      <div class="rm-item current">
         <div class="rm-num">02</div>
         <div class="rm-body">
-          <div class="rm-status">скоро</div>
-          <h4>JavaScript · оживляем сайт</h4>
-          <p>Кнопки, которые что-то делают. Счётчики, всплывашки, простая интерактивность.</p>
+          <div class="rm-status">сейчас идём</div>
+          <h4>JavaScript · сам язык</h4>
+          <p>Семь занятий: кнопки, консоль, условия, циклы, разминка, функции, редактор. От первой кнопки до своего файла в VS Code.</p>
         </div>
       </div>
       <div class="rm-item future">
