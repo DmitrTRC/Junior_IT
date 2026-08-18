@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Слои и язык машины (урок cs-02)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '02';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  /* пирамида */
+  .pyramid { width: 100%; border-radius: 12px; background: #faf7f2; padding: 10px; }
+  .pyramid svg { width: 100%; height: auto; display: block; }
+  .cap { font-size: 14px; color: #555; margin-top: 12px; }
+  .cap strong { color: #1a1a1a; }
+
+  /* таблица счёта */
+  .count {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    text-align: center;
+  }
+  .count th {
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 10px 6px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .count th:first-child { border-radius: 8px 0 0 0; }
+  .count th:last-child { border-radius: 0 8px 0 0; }
+  .count td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #eee;
+    font-weight: 700;
+  }
+  .count tr:nth-child(even) td { background: #faf7f2; }
+  .count tr.hi td { background: #fff5cc; }
+  .count td:last-child { color: #c26a00; }
+  .count .lbl { color: #999; font-weight: 400; font-size: 12px; }
+
+  /* hex-цвет */
+  .hexrow {
+    display: grid;
+    grid-template-columns: 90px 70px 1fr 46px;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #e5e0d6;
+  }
+  .hexrow:last-child { border-bottom: none; }
+  .hexrow .pair {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 20px;
+    background: #1a1a1a;
+    color: #ffd60a;
+    border-radius: 8px;
+    padding: 8px 0;
+    text-align: center;
+  }
+  .hexrow .val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 18px; }
+  .hexrow .what { font-size: 15px; color: #333; }
+  .hexrow .sw { width: 40px; height: 40px; border-radius: 8px; border: 2px solid #1a1a1a; justify-self: end; }
+  .hexresult {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #faf7f2;
+    border-radius: 12px;
+    padding: 14px 18px;
+  }
+  .hexresult .big {
+    width: 56px; height: 56px; border-radius: 10px;
+    border: 2px solid #1a1a1a; background: #ffd60a; flex-shrink: 0;
+  }
+  .hexresult code {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 20px; color: #1a1a1a;
+  }
+  .hexresult span { font-size: 14px; color: #555; display: block; margin-top: 4px; }
+
+  /* лестница языков */
+  .ladder { display: flex; flex-direction: column; gap: 8px; }
+  .rung {
+    background: #faf7f2;
+    border-left: 5px solid #ffd60a;
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .rung .name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    color: #1a1a1a;
+    min-width: 130px;
+  }
+  .rung .desc { font-size: 14px; color: #444; }
+  .ladder .r1 { margin-left: 0; }
+  .ladder .r2 { margin-left: 22px; }
+  .ladder .r3 { margin-left: 44px; }
+  .ladder .r4 { margin-left: 66px; }
+
+  /* запомни — три факта */
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .fact {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .fact .ic { font-size: 26px; }
+  .fact h3 { font-size: 16px; margin: 8px 0 4px; font-weight: 800; }
+  .fact p { font-size: 14px; font-weight: 600; }
+  .fact code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(0,0,0,0.12);
+    padding: 1px 6px; border-radius: 5px; font-weight: 700;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+    .pyramid { background: #fff; }
+  }
+  @media (max-width: 600px) {
+    .facts { grid-template-columns: 1fr; }
+    .hexrow { grid-template-columns: 70px 60px 1fr; }
+    .hexrow .sw { display: none; }
+    .rung { flex-direction: column; gap: 2px; }
+    .rung .name { min-width: 0; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Слои и<br>язык машины</h1>
+  <p>пирамида · биты · hex-цвета · урок cs-02</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Пирамида: этажи компьютера</h2>
+  <p class="lead">Компьютер живёт этажами. Каждый этаж говорит только с соседним: снизу железо и его нули-единицы, сверху — твоё приложение.</p>
+  <div class="pyramid">
+    <svg viewBox="0 0 800 372" role="img" aria-label="Пирамида из четырёх этажей: железо, BIOS/UEFI, ОС, приложение">
+      <!-- приложение (вершина) -->
+      <rect x="250" y="18" width="300" height="72" rx="12" fill="#ffd60a"/>
+      <text x="400" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#1a1a1a">приложение</text>
+      <text x="400" y="74" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#5a4600">запускаешь двойным кликом</text>
+
+      <!-- ОС -->
+      <rect x="185" y="104" width="430" height="72" rx="12" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+      <text x="400" y="136" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#1a1a1a">ОС</text>
+      <text x="400" y="160" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#555">раздаёт окна и файлы, берёт 0/1 на себя</text>
+
+      <!-- BIOS/UEFI -->
+      <rect x="115" y="190" width="570" height="72" rx="12" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+      <text x="400" y="222" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#1a1a1a">BIOS/UEFI</text>
+      <text x="400" y="246" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#555">будит железо и передаёт эстафету ОС</text>
+
+      <!-- железо (основание) -->
+      <rect x="45" y="276" width="710" height="72" rx="12" fill="#1a1a1a"/>
+      <text x="400" y="308" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#ffd60a">железо</text>
+      <text x="400" y="332" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" fill="#fff">понимает только 0 и 1</text>
+    </svg>
+  </div>
+  <p class="cap"><strong>Программа</strong> — код, который ты пишешь. <strong>Приложение</strong> — готовая штука после сборки, её запускает пользователь.</p>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Таблица счёта: 0–15</h2>
+  <p class="lead">Одно и то же число в трёх системах. После девятки в 16-ричной идут буквы A–F — это просто цифры 10, 11, 12, 13, 14, 15.</p>
+  <table class="count">
+    <thead>
+      <tr>
+        <th>десятичная <span class="lbl">10 цифр</span></th>
+        <th>двоичная <span class="lbl">0 и 1</span></th>
+        <th>16-ричная <span class="lbl">0–9, A–F</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td>0000</td><td>0</td></tr>
+      <tr><td>1</td><td>0001</td><td>1</td></tr>
+      <tr><td>2</td><td>0010</td><td>2</td></tr>
+      <tr><td>3</td><td>0011</td><td>3</td></tr>
+      <tr><td>4</td><td>0100</td><td>4</td></tr>
+      <tr><td>5</td><td>0101</td><td>5</td></tr>
+      <tr><td>6</td><td>0110</td><td>6</td></tr>
+      <tr><td>7</td><td>0111</td><td>7</td></tr>
+      <tr><td>8</td><td>1000</td><td>8</td></tr>
+      <tr><td>9</td><td>1001</td><td>9</td></tr>
+      <tr class="hi"><td>10</td><td>1010</td><td>A</td></tr>
+      <tr class="hi"><td>11</td><td>1011</td><td>B</td></tr>
+      <tr class="hi"><td>12</td><td>1100</td><td>C</td></tr>
+      <tr class="hi"><td>13</td><td>1101</td><td>D</td></tr>
+      <tr class="hi"><td>14</td><td>1110</td><td>E</td></tr>
+      <tr class="hi"><td>15</td><td>1111</td><td>F</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Как прочитать hex-цвет</h2>
+  <p class="lead">Цвет вида <code>#ffd60a</code> — это три пары 16-ричных цифр подряд: сколько красного, зелёного и синего. Каждая пара — число от 0 до 255.</p>
+  <div class="hexrow">
+    <div class="pair">ff</div>
+    <div class="val">255</div>
+    <div class="what">красного — по самому максимуму</div>
+    <div class="sw" style="background:#ff0000"></div>
+  </div>
+  <div class="hexrow">
+    <div class="pair">d6</div>
+    <div class="val">214</div>
+    <div class="what">зелёного — почти полный</div>
+    <div class="sw" style="background:#00d600"></div>
+  </div>
+  <div class="hexrow">
+    <div class="pair">0a</div>
+    <div class="val">10</div>
+    <div class="what">синего — совсем чуть-чуть</div>
+    <div class="sw" style="background:#0000ff"></div>
+  </div>
+  <div class="hexresult">
+    <div class="big"></div>
+    <div>
+      <code>#ffd60a</code>
+      <span>много красного + много зелёного + капля синего = жёлтый цвет курса</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Лестница языков</h2>
+  <p class="lead">Одну и ту же команду можно записать на разных языках. Чем ниже — тем ближе к железу, чем выше — тем ближе к человеку.</p>
+  <div class="ladder">
+    <div class="rung r4"><span class="name">JS / Python</span><span class="desc">совсем по-человечески — то, что пишешь ты</span></div>
+    <div class="rung r3"><span class="name">C</span><span class="desc">мостик посередине: и человеку понятно, и к железу близко</span></div>
+    <div class="rung r2"><span class="name">ассемблер</span><span class="desc">те же команды процессору, но словами — <code style="font-family:'JetBrains Mono',monospace">mov</code>, <code style="font-family:'JetBrains Mono',monospace">syscall</code></span></div>
+    <div class="rung r1"><span class="name">машинный код</span><span class="desc">только 0 и 1, без единой буквы — родной язык железа</span></div>
+  </div>
+  <p class="cap" style="margin-top:14px;">↑ выше по лестнице — ближе к тебе &nbsp;·&nbsp; ↓ ниже — ближе к железу</p>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Запомни</h2>
+  <div class="facts">
+    <div class="fact">
+      <div class="ic">💡</div>
+      <h3>Бит — это лампочка</h3>
+      <p>Горит — <code>1</code>, не горит — <code>0</code>. Больше в бите ничего нет.</p>
+    </div>
+    <div class="fact">
+      <div class="ic">🔦</div>
+      <h3>Байт — 8 лампочек</h3>
+      <p>Восемь битов подряд. В них влезает число от <code>0</code> до <code>255</code>.</p>
+    </div>
+    <div class="fact">
+      <div class="ic">🔢</div>
+      <h3>F + 1 = 10</h3>
+      <p>В 16-ричной «десятка» наступает сразу после <code>F</code>, как <code>9 + 1 = 10</code> у нас.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Сделано для урока cs-02 · «Слои: от железа до твоей программы». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

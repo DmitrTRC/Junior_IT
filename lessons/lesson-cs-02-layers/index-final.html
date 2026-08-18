@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока cs-02. Если слайды не открылись — ведёшь по этому файлу:
+     тут все 8 шагов живой схемы с номерами слайдов, ключевыми репликами и пингами.
+     Это НЕ страница с интерактивом — урок целиком по слайдам, тут шпаргалка ведущего.
+     Вместо слайдов — текстовые плашки со схемой словами; таблица 0-15 вшита в шаг 6. -->
+<title>Конспект урока cs-02 — резерв ведущего</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 20px; }
+  .intro { background: #1d1d28; border-left: 3px solid #ffd60a; border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 28px; color: #b8b8c4; font-size: 14px; }
+  .intro strong { color: #ffd60a; }
+  .step { margin-bottom: 24px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .step h2 .slide {
+    background: #0f3460; color: #7fd0ff; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 6px; letter-spacing: 1px;
+  }
+  .plate {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 16px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto; color: #dcdce6;
+  }
+  .plate .a { color: #ffd60a; font-weight: 700; }
+  .plate .c { color: #6272a4; font-style: italic; }
+  .plate b { color: #8be9fd; font-weight: 700; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  .ping { color: #00e676; font-size: 14px; margin-top: 8px; }
+  .ping::before { content: '💬 '; }
+  .warn { color: #ff8a65; font-size: 13.5px; margin-top: 8px; }
+  .warn::before { content: '⚠️ '; }
+
+  /* таблица 0-15 прямо в конспекте */
+  .tbl {
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    margin-top: 4px;
+    width: 100%;
+    max-width: 420px;
+  }
+  .tbl th { color: #7fd0ff; text-align: center; padding: 4px 8px; border-bottom: 1px solid #2a2a38; font-size: 12px; }
+  .tbl td { text-align: center; padding: 3px 8px; color: #dcdce6; }
+  .tbl td:last-child { color: #ffd60a; font-weight: 700; }
+  .tbl tr:nth-child(even) td { background: #12121a; }
+
+  footer { margin-top: 30px; color: #6a6a78; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Конспект урока cs-02 · <span class="y">резерв ведущего</span></h1>
+  <div class="sub">// открываешь, если слайды не открылись · ведёшь по 8 шагам ниже</div>
+
+  <div class="intro">
+    <strong>S1</strong> (титул «Слои: от железа до твоей программы») идёт по сценарию
+    <em>до</em> старта схемы. Ниже — 8 шагов: один слой / одна деталь на слайде, между шагами — пинг, теория ≤2 минут.
+    Демка сегодня одна — <strong>demos/bits.html</strong> (вкладки «Лампочки» и «Собери цвет»).
+  </div>
+
+  <div class="step">
+    <h2><span class="n">1</span><span class="slide">S2</span>Эстафета-повтор из cs-01</h2>
+    <div class="plate"><span class="c">// повтор одной картинкой, не новая тема</span>
+<span class="a">Power</span> → <span class="a">POST</span> → <span class="a">BIOS/UEFI</span> → загрузчик → <span class="a">ОС</span>
+сегодня идём выше: что между «включился» и «твоя программа заработала»</div>
+    <div class="note">Реплики: в прошлый раз собрали железо и включили компьютер. Сегодня поднимаемся от железа до собственной программы и разбираем, на каком языке всё это говорит.</div>
+    <div class="ping">Пинг: «Кто помнит, что идёт сразу после кнопки Power?»</div>
+    <div class="warn">Грабля: дети думают, что это новая тема, и лезут заново разбирать cs-01. Сними: «это напоминание одной картинкой, дальше идём выше».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span><span class="slide">S3–S4</span>Пирамида + программа vs приложение</h2>
+    <div class="plate"><span class="c">// 4 этажа снизу вверх, каждый говорит только с соседним</span>
+[ <span class="a">приложение</span> ] запускаешь двойным кликом
+[ <span class="a">ОС</span> ]         окна, файлы, берёт 0/1 на себя
+[ <span class="a">BIOS/UEFI</span> ]  будит железо, передаёт эстафету
+[ <span class="a">железо</span> ]     понимает только <b>0</b> и <b>1</b>
+<span class="c">// программа = код, что ты пишешь · приложение = готовое после сборки</span></div>
+    <div class="note">Реплики: каждый этаж говорит только с соседним. Поэтому одна Windows не встанет на любое железо без разбора — под каждую деталь нужен свой переводчик.</div>
+    <div class="ping">Пинг: «Что на дне пирамиды?»</div>
+    <div class="warn">Грабля: программу и приложение путают как синонимы. Сними: «программа — то, что печатаешь; приложение — то, что получается после сборки и запускается двойным кликом».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span><span class="slide">S5</span>Перфокарта и 0/1</h2>
+    <div class="plate"><span class="c">// самый нижний этаж — железо, понимает только 0 и 1</span>
+есть дырочка = <span class="a">1</span> · нет дырочки = <span class="a">0</span>
+первые программы писали буквально дырками в картоне</div>
+    <div class="note">Реплики: внутри современного процессора те же 0 и 1 — просто сейчас их вводит клавиатура и компилятор, а не рука с дыроколом.</div>
+    <div class="ping">Пинг: «Как думаете, долго собирать программу таким способом?»</div>
+    <div class="warn">Грабля: перфокарты кажутся далёкой фантастикой, не связанной с их кодом. Сними: «внутри процессора те же самые 0 и 1».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span><span class="slide">S6</span>Лампочки: бит и байт</h2>
+    <div class="plate">1 лампочка = <span class="a">1 бит</span> (горит — <b>1</b>, не горит — <b>0</b>)
+8 лампочек подряд = <span class="a">1 байт</span> → число от <b>0</b> до <b>255</b>
+<span class="c">// 8 лампочек = 256 разных комбинаций</span></div>
+    <div class="note">Реплики: <strong>переключись на demos/bits.html, вкладка «Лампочки»</strong> — кликай лампочки вживую, под ними меняются двоичное, десятичное и 16-ричное значения.</div>
+    <div class="ping">Пинг: «Сколько влезет в 8 лампочек?»</div>
+    <div class="warn">Грабля: думают, что в байт влезает «до 8» или «до 100». Сними числом: «256 комбинаций — от 0 до 255».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span><span class="slide">S7</span>Двоичный счёт на демке</h2>
+    <div class="plate">0, 1 <span class="c">// цифры кончились — перенос разряда</span>
+10, 11 <span class="c">// снова перенос</span>
+100, 101 …
+<span class="a">111 → 1000</span> (после 111 — снова перенос)</div>
+    <div class="note">Реплики: продолжай щёлкать лампочки на bits.html, считая вслух. Перенос — тот же, что 9 + 1 = 10, просто в двоичной «девятка» наступает уже после единицы.</div>
+    <div class="ping">Пинг: «Какое двоичное идёт сразу после 111?» (ответ: 1000 — снова перенос разряда)</div>
+    <div class="warn">Грабля: перенос кажется уникальной штукой двоичной. Сними: «это тот же перенос, что 9 + 1 = 10».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span><span class="slide">S8</span>A–F и 16-ричная система</h2>
+    <div class="plate"><span class="c">// после девятки идут буквы — это цифры 10..15</span>
+16 цифр: 0–9, дальше <span class="a">A B C D E F</span>
+правило: <span class="a">F + 1 = 10</span> (как 9 + 1 = 10, только раньше)
+десятичное 16 = <span class="a">10</span> в 16-ричной</div>
+    <table class="tbl">
+      <tr><th>дес.</th><th>двоичн.</th><th>16-рич.</th></tr>
+      <tr><td>0</td><td>0000</td><td>0</td></tr>
+      <tr><td>1</td><td>0001</td><td>1</td></tr>
+      <tr><td>2</td><td>0010</td><td>2</td></tr>
+      <tr><td>3</td><td>0011</td><td>3</td></tr>
+      <tr><td>4</td><td>0100</td><td>4</td></tr>
+      <tr><td>5</td><td>0101</td><td>5</td></tr>
+      <tr><td>6</td><td>0110</td><td>6</td></tr>
+      <tr><td>7</td><td>0111</td><td>7</td></tr>
+      <tr><td>8</td><td>1000</td><td>8</td></tr>
+      <tr><td>9</td><td>1001</td><td>9</td></tr>
+      <tr><td>10</td><td>1010</td><td>A</td></tr>
+      <tr><td>11</td><td>1011</td><td>B</td></tr>
+      <tr><td>12</td><td>1100</td><td>C</td></tr>
+      <tr><td>13</td><td>1101</td><td>D</td></tr>
+      <tr><td>14</td><td>1110</td><td>E</td></tr>
+      <tr><td>15</td><td>1111</td><td>F</td></tr>
+    </table>
+    <div class="ping">Пинг: «Что больше — FF или 100?» (ответ: 100 — в 16-ричной FF = 255, а 100 = 256, следующее число после FF)</div>
+    <div class="warn">Грабля: буквы A–F кажутся случайными значками. Сними: «A значит 10, B — 11, и так до F — это 15».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">7</span><span class="slide">S9</span>Hex-цвет: вкладка «Собери цвет»</h2>
+    <div class="plate"><span class="a">#ffd60a</span> = три пары 16-ричных цифр подряд
+<span class="a">ff</span> = <b>255</b> красного · <span class="a">d6</span> = <b>214</b> зелёного · <span class="a">0a</span> = <b>10</b> синего
+<span class="c">// каждая пара — число от 0 до 255</span></div>
+    <div class="note">Реплики: сюрприз — 16-ричные числа вы уже писали в CSS. <strong>Переключись на demos/bits.html, вкладка «Собери цвет»</strong> — двигай ползунки R/G/B, показывай, как меняются hex-код и образец.</div>
+    <div class="ping">Пинг: «Какого цвета #ff0000?»</div>
+    <div class="warn">Грабля: hex-цвет кажется случайным набором букв. Сними: «это ровно три числа от 0 до 255, просто записанные в 16-ричной, чтобы короче».</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">8</span><span class="slide">S10–S13</span>Лестница языков, драйвер, мост к cs-03</h2>
+    <div class="plate"><span class="c">// чем выше — ближе к человеку, чем ниже — ближе к железу</span>
+<span class="a">JS / Python</span>   совсем по-человечески
+<span class="a">C</span>            мостик посередине
+<span class="a">ассемблер</span>    команды процессору словами (<b>mov</b>, <b>syscall</b>)
+<span class="a">машинный код</span> только 0 и 1
+<span class="c">// «Привет!»: слева ассемблер ~10 строк, справа 1 строчка JS — итог один</span>
+<span class="a">драйвер</span> = программа-переводчик между ОС и устройством (пишут на ассемблере и C)</div>
+    <div class="note">Реплики: языков программирования больше двухсот, сегодня видели контраст двух. В следующий раз возьмём 5–7 главных. Шпаргалка и домашка — в чат.</div>
+    <div class="ping">Пинг: «Какой язык программирования, кроме JS, ты уже слышал?»</div>
+    <div class="warn">Грабля: кажется, что ОС «сама» знает все устройства. Сними: «без драйвера ОС видит устройство, но не умеет с ним разговаривать — драйвер и есть разговорник».</div>
+  </div>
+
+  <footer>// конец конспекта · шпаргалка и домашка — в чат в КОНЦЕ урока · следующий урок cs-03 — языки программирования</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашка · Задания на листочке (урок cs-02)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '10';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  /* проверка в демке */
+  .check {
+    background: #0f3460;
+    color: #fff;
+    border-radius: 16px;
+    padding: 22px 26px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .check .ic { font-size: 34px; flex-shrink: 0; }
+  .check h3 { font-size: 18px; margin-bottom: 4px; }
+  .check p { font-size: 14px; color: #bcd3ee; }
+  .check code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.14);
+    color: #ffd60a;
+    padding: 2px 8px; border-radius: 6px; font-weight: 700;
+  }
+
+  /* строки-задания с лампочками */
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    gap: 20px;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px dashed #e5e0d6;
+  }
+  .row:last-child { border-bottom: none; }
+  .bits {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  .lamp-row { display: flex; gap: 6px; }
+  .lamp {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid #1a1a1a;
+    background: #fff;
+  }
+  .lamp.on { background: #ffd60a; }
+  .answer {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 18px;
+  }
+  .answer .blank {
+    flex: 1;
+    border: 2px solid #e5e0d6;
+    border-radius: 8px;
+    background: #faf7f2;
+    height: 40px;
+  }
+
+  /* возраст лампочками */
+  .draw {
+    background: #faf7f2;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+  }
+  .draw .lamp { width: 34px; height: 34px; }
+  .draw .eq { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 18px; }
+  .draw .blank {
+    width: 150px; height: 40px;
+    border: 2px solid #e5e0d6; border-radius: 8px; background: #fff;
+  }
+
+  /* угадай цвет */
+  .guess {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+  }
+  .guess:last-child { border-bottom: none; }
+  .guess code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a; color: #ffd60a;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 18px; font-weight: 700;
+    text-align: center;
+  }
+  .guess .blank {
+    border: 2px solid #e5e0d6; border-radius: 8px;
+    background: #faf7f2; height: 44px;
+  }
+
+  .bonus {
+    background: #fff8e6;
+    border: 2px dashed #e0a800;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .bonus h2 { border-bottom-color: #e0a800; }
+  .bonus h2 .num { background: #e0a800; color: #fff; }
+  .bonus .big {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 26px;
+    text-align: center;
+    margin: 8px 0 16px;
+  }
+  .bonus .big .vs { color: #e0a800; margin: 0 14px; font-size: 18px; }
+  .bonus .blank {
+    border: 2px solid #e0a800; border-radius: 8px;
+    background: #fff; height: 48px;
+  }
+
+  .finish {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 22px 26px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    header, section, .bonus, .check { box-shadow: none; page-break-inside: avoid; }
+    .check { background: #fff; color: #1a1a1a; border: 2px solid #0f3460; }
+    .check p { color: #555; }
+    .check code { background: #eee; color: #1a1a1a; }
+  }
+  @media (max-width: 600px) {
+    .row, .guess { grid-template-columns: 1fr; gap: 10px; }
+    .check { flex-direction: column; text-align: center; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Задания на<br>листочке</h1>
+  <p>домашка · без компьютера · урок cs-02</p>
+</header>
+
+<div class="check">
+  <div class="ic">💡</div>
+  <div>
+    <h3>Всё решаем на бумаге — без компьютера</h3>
+    <p>Реши ручкой, а потом проверь себя в демке-лампочках <code>demos/bits.html</code>: вкладка «Лампочки» для чисел, вкладка «Собери цвет» для цветов.</p>
+  </div>
+</div>
+
+<section>
+  <h2><span class="num">01</span>Переведи лампочки в число</h2>
+  <p class="lead">Горящая лампочка — это <strong>1</strong>, погасшая — <strong>0</strong>. Посчитай, какое десятичное число спрятано в каждом ряду, и впиши в пустое поле. Ответы не подсматривай — проверь себя в демке-лампочках.</p>
+
+  <div class="row">
+    <div>
+      <div class="bits">00000011</div>
+      <div class="lamp-row">
+        <div class="lamp"></div><div class="lamp"></div><div class="lamp"></div><div class="lamp"></div>
+        <div class="lamp"></div><div class="lamp"></div><div class="lamp on"></div><div class="lamp on"></div>
+      </div>
+    </div>
+    <div class="answer">= <div class="blank"></div></div>
+  </div>
+
+  <div class="row">
+    <div>
+      <div class="bits">00001010</div>
+      <div class="lamp-row">
+        <div class="lamp"></div><div class="lamp"></div><div class="lamp"></div><div class="lamp"></div>
+        <div class="lamp on"></div><div class="lamp"></div><div class="lamp on"></div><div class="lamp"></div>
+      </div>
+    </div>
+    <div class="answer">= <div class="blank"></div></div>
+  </div>
+
+  <div class="row">
+    <div>
+      <div class="bits">00100000</div>
+      <div class="lamp-row">
+        <div class="lamp"></div><div class="lamp"></div><div class="lamp on"></div><div class="lamp"></div>
+        <div class="lamp"></div><div class="lamp"></div><div class="lamp"></div><div class="lamp"></div>
+      </div>
+    </div>
+    <div class="answer">= <div class="blank"></div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Запиши свой возраст лампочками</h2>
+  <p class="lead">Возьми число своих лет и запиши его в двоичной системе — какие лампочки должны гореть. Закрась кружки, которые горят (это 1), пустые оставь погасшими (это 0). Свериться поможет таблица 0–15 из шпаргалки или та же демка-лампочки.</p>
+  <div class="draw">
+    <div class="lamp-row">
+      <div class="lamp"></div><div class="lamp"></div><div class="lamp"></div><div class="lamp"></div>
+      <div class="lamp"></div><div class="lamp"></div><div class="lamp"></div><div class="lamp"></div>
+    </div>
+    <div class="eq">= <span style="color:#999;font-weight:400;">мой возраст</span></div>
+    <div class="blank"></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Угадай цвет по коду</h2>
+  <p class="lead">Каждый код — это сколько красного, зелёного и синего. Сначала угадай цвет и впиши словом, а потом проверь во вкладке «Собери цвет» в демке.</p>
+
+  <div class="guess">
+    <code>#ff0000</code>
+    <div class="blank"></div>
+  </div>
+  <div class="guess">
+    <code>#00ff00</code>
+    <div class="blank"></div>
+  </div>
+  <div class="guess">
+    <code>#ffffff</code>
+    <div class="blank"></div>
+  </div>
+</section>
+
+<div class="bonus">
+  <h2><span class="num">★</span>Бонус со звёздочкой</h2>
+  <p class="lead">Что больше — <strong>FF</strong> или <strong>100</strong>? Внимание: числа записаны в <strong>16-ричной</strong> системе, а не в привычной десятичной! Впиши ответ и в одну строку объясни, почему так. Проверим на следующем занятии.</p>
+  <div class="big">FF <span class="vs">или</span> 100 <span class="vs">?</span></div>
+  <div class="blank"></div>
+</div>
+
+<div class="finish">
+  Принеси листочек с ответами на следующее занятие — разберём вместе.
+</div>
+
+<footer>
+  Домашка к уроку cs-02 · «Слои: от железа до твоей программы». Считаем на бумаге, проверяем в демке-лампочках.
+</footer>
+
+</div>
+</body>
+</html>
