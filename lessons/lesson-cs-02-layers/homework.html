@@ -88,12 +88,13 @@
   .check .ic { font-size: 34px; flex-shrink: 0; }
   .check h3 { font-size: 18px; margin-bottom: 4px; }
   .check p { font-size: 14px; color: #bcd3ee; }
-  .check code {
+  .check code, .check a {
     font-family: 'JetBrains Mono', monospace;
     background: rgba(255,255,255,0.14);
     color: #ffd60a;
     padding: 2px 8px; border-radius: 6px; font-weight: 700;
   }
+  .check a { text-decoration: underline; }
 
   /* строки-задания с лампочками */
   .row {
@@ -216,7 +217,7 @@
     header, section, .bonus, .check { box-shadow: none; page-break-inside: avoid; }
     .check { background: #fff; color: #1a1a1a; border: 2px solid #0f3460; }
     .check p { color: #555; }
-    .check code { background: #eee; color: #1a1a1a; }
+    .check code, .check a { background: #eee; color: #1a1a1a; }
   }
   @media (max-width: 600px) {
     .row, .guess { grid-template-columns: 1fr; gap: 10px; }
@@ -237,7 +238,7 @@
   <div class="ic">💡</div>
   <div>
     <h3>Всё решаем на бумаге — без компьютера</h3>
-    <p>Реши ручкой, а потом проверь себя в демке-лампочках <code>demos/bits.html</code>: вкладка «Лампочки» для чисел, вкладка «Собери цвет» для цветов.</p>
+    <p>Реши ручкой, а потом проверь себя в демке-лампочках <a href="demos/bits.html">demos/bits.html</a>: вкладка «Лампочки» для чисел, вкладка «Собери цвет» для цветов.</p>
   </div>
 </div>
 
