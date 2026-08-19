@@ -37,12 +37,12 @@
   /* Лампочки */
   .lamps {
     background: var(--card); border: 1px solid #2a2a44; border-radius: 18px;
-    padding: 28px 20px; display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 18px 14px; margin-bottom: 22px;
+    padding: 28px 16px; display: grid; grid-template-columns: repeat(8, 1fr);
+    gap: 10px; margin-bottom: 22px;
   }
-  .bit { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .bit { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
   .lamp {
-    width: 66px; height: 66px; border-radius: 50%; cursor: pointer; padding: 0;
+    width: 100%; max-width: 66px; aspect-ratio: 1; border-radius: 50%; cursor: pointer; padding: 0;
     background: var(--card-2); border: 3px solid var(--deep);
     transition: background .15s, box-shadow .2s, transform .1s;
   }
@@ -53,7 +53,7 @@
     background: radial-gradient(circle at 50% 38%, rgba(255,255,255,0.45), rgba(255,255,255,0) 55%), var(--yellow);
     box-shadow: 0 0 0 4px rgba(255,214,10,0.18), 0 0 30px rgba(255,214,10,0.6);
   }
-  .bit .digit { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 20px; color: #9aa3c0; }
+  .bit .digit { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: clamp(14px, 3.5vw, 20px); color: #9aa3c0; }
   .bit .digit.on { color: var(--yellow); }
 
   .readout { background: var(--card-2); border-radius: 16px; padding: 8px 4px; }
@@ -97,6 +97,11 @@
   }
   .preset:hover { transform: translateY(-2px); border-color: var(--deep); }
   .preset .dot { width: 22px; height: 22px; border-radius: 6px; flex: none; }
+
+  @media (max-width: 480px) {
+    .lamps { padding: 20px 10px; gap: 6px; }
+    .lamp { border-width: 2px; }
+  }
 </style></head>
 <body>
   <div class="label">// cs-02 · биты и цвет</div>
