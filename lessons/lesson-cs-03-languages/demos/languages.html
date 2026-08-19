@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Одна задача — пять языков · cs-03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+    --yellow: #ffd60a; --orange: #ff5722; --green: #00e676; --cyan: #00ffc8; --magenta: #ff0096;
+    --kw: #8be9fd; --str: #f1fa8c; --num: #ffb86c; --com: #6272a4; --out: #7fd0ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: #eef; font-family: 'Manrope', sans-serif;
+    margin: 0; padding: 32px 16px; min-height: 100vh; display: flex;
+    flex-direction: column; align-items: center;
+  }
+  .label { color: var(--cyan); letter-spacing: 4px; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+  h1 { font-size: clamp(24px, 5vw, 34px); margin: 6px 0 4px; text-align: center; }
+  .sub { color: #9aa; font-size: 15px; margin: 0 0 26px; text-align: center; max-width: 620px; }
+
+  .box { width: 100%; max-width: 1000px; }
+
+  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+  .tab {
+    padding: 14px 10px; border: 1px solid #2a2a44; border-radius: 12px;
+    background: var(--card); color: #cdd; font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 15px; cursor: pointer;
+    transition: background .18s, color .18s, border-color .18s;
+  }
+  .tab:hover { border-color: var(--deep); }
+  .tab.active { background: var(--yellow); color: var(--bg); border-color: var(--yellow); }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: pop .3s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+  /* --- вкладка 1: одна задача — пять языков --- */
+  .work { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 18px; }
+  .tasklist { display: flex; flex-direction: column; gap: 10px; }
+  .tasklist .cap {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;
+    color: #6b7395; text-transform: uppercase; margin-bottom: 2px;
+  }
+  .task {
+    text-align: left; padding: 14px 16px; border-radius: 12px; cursor: pointer;
+    background: var(--card); border: 1px solid #2a2a44; color: #cdd;
+    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 15px;
+    transition: border-color .18s, color .18s;
+  }
+  .task:hover { border-color: var(--deep); }
+  .task.active { border-color: var(--yellow); color: var(--yellow); }
+
+  .langs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 14px; }
+  .lang {
+    padding: 11px 6px; border-radius: 10px; cursor: pointer;
+    background: var(--card-2); border: 1px solid #2a2a44; color: #cdd;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px;
+    transition: background .18s, color .18s, border-color .18s;
+  }
+  .lang:hover { border-color: var(--deep); }
+  .lang.active { background: var(--cyan); color: var(--bg); border-color: var(--cyan); }
+
+  .code {
+    background: #0c0c11; border: 1px solid #23233c; border-radius: 14px;
+    padding: 18px 20px; overflow-x: auto; margin: 0;
+  }
+  .code pre {
+    margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    line-height: 1.6; color: #c8d0f0; white-space: pre;
+  }
+  .kw { color: var(--kw); } .str { color: var(--str); } .num { color: var(--num); } .com { color: var(--com); }
+  .cut {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.5;
+    color: var(--com); padding: 10px 20px 0; display: none;
+  }
+  .cut.on { display: block; }
+
+  .metrics {
+    display: flex; flex-wrap: wrap; gap: 10px 26px; padding: 14px 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #9aa3c0;
+  }
+  .metrics b { color: var(--yellow); font-weight: 700; }
+
+  .inputs { display: flex; flex-wrap: wrap; gap: 12px; margin: 4px 0 14px; }
+  .field { display: flex; align-items: center; gap: 8px; }
+  .field label { font-size: 13px; color: #9aa3c0; font-family: 'JetBrains Mono', monospace; }
+  .field input {
+    background: var(--card-2); border: 1px solid #2a2a44; border-radius: 8px;
+    color: #eef; font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    padding: 8px 10px; width: 110px;
+  }
+  .field input.mini { width: 64px; }
+  .field input:focus { outline: none; border-color: var(--cyan); }
+
+  .console {
+    background: #15151c; border: 1px solid #23233c; border-radius: 14px;
+    padding: 16px 20px; min-height: 118px;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.65; color: var(--out);
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .console .caret { color: var(--yellow); }
+  .console-cap {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;
+    color: #6b7395; text-transform: uppercase; margin: 16px 0 8px;
+  }
+
+  /* --- вкладка 2: конвейер --- */
+  .track {
+    background: var(--card); border: 1px solid #2a2a44; border-radius: 16px;
+    padding: 18px 20px; margin-bottom: 14px;
+  }
+  .track .head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+  .track .who { font-weight: 700; font-size: 17px; color: var(--cyan); font-family: 'JetBrains Mono', monospace; }
+  .track .note { font-size: 13px; color: #9aa3c0; }
+  .run {
+    background: var(--card-2); border: 1px solid var(--deep); border-radius: 10px;
+    color: var(--yellow); font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px;
+    padding: 9px 16px; cursor: pointer; transition: background .18s, color .18s; flex: none;
+  }
+  .run:hover { background: var(--yellow); color: var(--bg); }
+  .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    background: var(--card-2); border: 1px solid #2a2a44; border-radius: 10px;
+    padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #cdd;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .chip.lit { background: var(--yellow); color: var(--bg); border-color: var(--yellow); }
+  .chip.hot.lit { animation: pulse 1s ease-in-out 2; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,214,10,0.5); } 50% { box-shadow: 0 0 0 10px rgba(255,214,10,0); } }
+  .flow .arr { color: var(--yellow); opacity: .5; font-weight: 700; }
+
+  /* --- вкладка 3: браузер vs консоль --- */
+  .envs { display: grid; grid-template-columns: minmax(0, 1fr) 92px 92px; gap: 0 10px; align-items: center; }
+  .envs .h {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px;
+    color: #6b7395; text-transform: uppercase; padding-bottom: 10px; text-align: center;
+  }
+  .envs .h.first { text-align: left; }
+  .envs .line {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #c8d0f0;
+    padding: 13px 14px; background: #0c0c11; border: 1px solid #23233c;
+    border-radius: 10px; margin-bottom: 8px; overflow-x: auto; white-space: pre;
+  }
+  .envs .line.active { border-color: var(--yellow); }
+  .envs .mark {
+    text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .envs .mark.yes { color: var(--green); }
+  .envs .mark.no { color: var(--orange); }
+  .why { grid-column: 1 / -1; font-size: 12px; color: var(--com); font-family: 'JetBrains Mono', monospace; margin: -4px 0 10px; }
+  .outs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+  .out-box { background: #15151c; border: 1px solid #23233c; border-radius: 14px; padding: 14px 16px; min-height: 112px; }
+  .out-box .cap { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .out-box.browser .cap { color: var(--cyan); }
+  .out-box.node .cap { color: var(--green); }
+  .out-box pre { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; color: var(--out); white-space: pre-wrap; }
+  .out-box .err { color: var(--orange); }
+  .verdict {
+    border: 1px solid var(--yellow); border-radius: 14px; padding: 16px 20px;
+    margin-top: 16px; font-size: 15px; line-height: 1.5; color: #dfe3f5;
+  }
+  .verdict b { color: var(--yellow); }
+  .verdict code { font-family: 'JetBrains Mono', monospace; color: var(--cyan); }
+
+  @media (max-width: 760px) {
+    .work { grid-template-columns: 1fr; }
+    .tasklist { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .tasklist .cap { grid-column: 1 / -1; }
+    .langs { grid-template-columns: repeat(3, 1fr); }
+    .outs { grid-template-columns: 1fr; }
+    .envs { grid-template-columns: minmax(0, 1fr) 64px 64px; }
+  }
+</style></head>
+<body>
+  <div class="label">// cs-03 · языки и переводчики</div>
+  <h1>Одна задача — пять языков</h1>
+  <p class="sub">Выбери задачу и переключай языки. Задача одна и та же, результат один и тот же — смотри, чем отличается путь до него.</p>
+
+  <div class="box">
+    <div class="tabs">
+      <button class="tab active" data-tab="work">Одна задача</button>
+      <button class="tab" data-tab="pipe">Как это запускается</button>
+      <button class="tab" data-tab="envs">JS: консоль vs браузер</button>
+    </div>
+
+    <section class="panel active" id="panel-work">
+      <div class="work">
+        <div class="tasklist" id="tasklist"><div class="cap">задачи</div></div>
+        <div>
+          <div class="langs" id="langs"></div>
+          <div class="code"><pre id="code"></pre></div>
+          <div class="cut" id="cut"></div>
+          <div class="metrics" id="metrics"></div>
+          <div class="inputs">
+            <div class="field"><label for="in-name">твоё имя</label><input id="in-name" value="Лиза" maxlength="14"></div>
+            <div class="field"><label for="in-a">первое число</label><input id="in-a" class="mini" value="7" maxlength="4"></div>
+            <div class="field"><label for="in-b">второе число</label><input id="in-b" class="mini" value="5" maxlength="4"></div>
+          </div>
+          <div class="console-cap">вывод программы</div>
+          <div class="console" id="out"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-pipe">
+      <div id="tracks"></div>
+      <div class="verdict">Компилятор переводит <b>до запуска</b> и один раз. Интерпретатор — <b>во время работы</b> и каждый раз заново. JIT делает <b>и так, и так</b>: начинает быстро, а горячий кусок доводит до машинного кода на ходу.</div>
+    </section>
+
+    <section class="panel" id="panel-envs">
+      <div class="envs" id="envs">
+        <div class="h first">один и тот же код</div>
+        <div class="h">браузер</div>
+        <div class="h">консоль</div>
+      </div>
+      <button class="run" id="run-envs">Запустить в обоих</button>
+      <div class="outs">
+        <div class="out-box browser"><div class="cap">браузер</div><pre id="out-browser"></pre></div>
+        <div class="out-box node"><div class="cap">консоль (Node)</div><pre id="out-node"></pre></div>
+      </div>
+      <div class="verdict">Язык один, движок один. Разные среды выдают ему разные руки: браузеру — страницу и окошки, консоли — файлы. А <b>переменные, циклы, функции</b> и <code>console.log</code> работают везде — это сам язык.</div>
+    </section>
+  </div>
+
+  <script>
+    const LANGS = [
+      { id: 'asm', name: 'asm', how: 'ассемблер + линкер', need: 'nasm и ld, Linux x86-64' },
+      { id: 'c',   name: 'C',   how: 'компилятор',         need: 'gcc — один раз, дальше только готовый файл' },
+      { id: 'cpp', name: 'C++', how: 'компилятор',         need: 'g++ — один раз, дальше только готовый файл' },
+      { id: 'py',  name: 'Python', how: 'интерпретатор',   need: 'установленный Python' },
+      { id: 'js',  name: 'JS',  how: 'JIT',                need: 'браузер или Node' },
+    ];
+
+    const TASKS = [
+      { id: 'hello', title: 'Привет, мир!',    out: () => ['Привет, мир!'] },
+      { id: 'name',  title: 'Спроси имя',      out: (s) => ['Как тебя зовут? ' + s.name, 'Привет, ' + s.name + '!'] },
+      { id: 'sum',   title: 'Сложи два числа', out: (s) => ['Первое число: ' + s.a, 'Второе число: ' + s.b, s.a + ' + ' + s.b + ' = ' + (s.a + s.b)] },
+      { id: 'count', title: 'Посчитай до 5',   out: () => ['1', '2', '3', '4', '5'] },
+    ];
+
+    const CODE = {
+      hello: {
+        asm: String.raw`section .data
+  msg db "Привет, мир!", 10
+  len equ $ - msg
+
+section .text
+  global _start
+_start:
+  mov rax, 1          ; системный вызов write
+  mov rdi, 1          ; куда: на экран
+  mov rsi, msg        ; что: адрес текста
+  mov rdx, len        ; сколько байт
+  syscall
+  mov rax, 60         ; системный вызов exit
+  xor rdi, rdi
+  syscall`,
+        c: String.raw`#include <stdio.h>
+
+int main(void) {
+  printf("Привет, мир!\n");
+  return 0;
+}`,
+        cpp: String.raw`#include <iostream>
+
+int main() {
+  std::cout << "Привет, мир!" << std::endl;
+  return 0;
+}`,
+        py: String.raw`print("Привет, мир!")`,
+        js: String.raw`console.log("Привет, мир!");`,
+      },
+      name: {
+        asm: String.raw`section .data
+  ask db "Как тебя зовут? "
+  askLen equ $ - ask
+
+section .bss
+  name resb 64
+
+section .text
+  global _start
+_start:
+  mov rax, 1          ; спрашиваем
+  mov rdi, 1
+  mov rsi, ask
+  mov rdx, askLen
+  syscall
+
+  mov rax, 0          ; читаем с клавиатуры
+  mov rdi, 0
+  mov rsi, name
+  mov rdx, 64
+  syscall`,
+        c: String.raw`#include <stdio.h>
+
+int main(void) {
+  char name[64];
+  printf("Как тебя зовут? ");
+  scanf("%63s", name);
+  printf("Привет, %s!\n", name);
+  return 0;
+}`,
+        cpp: String.raw`#include <iostream>
+#include <string>
+
+int main() {
+  std::string name;
+  std::cout << "Как тебя зовут? ";
+  std::cin >> name;
+  std::cout << "Привет, " << name << "!" << std::endl;
+  return 0;
+}`,
+        py: String.raw`name = input("Как тебя зовут? ")
+print("Привет, " + name + "!")`,
+        js: String.raw`const name = prompt("Как тебя зовут?");
+console.log("Привет, " + name + "!");`,
+      },
+      sum: {
+        asm: String.raw`section .data
+  ask db "Первое число: "
+  askLen equ $ - ask
+
+section .bss
+  buf resb 16
+
+section .text
+  global _start
+_start:
+  mov rax, 1
+  mov rdi, 1
+  mov rsi, ask
+  mov rdx, askLen
+  syscall
+
+  mov rax, 0          ; придёт текст, а не число
+  mov rdi, 0
+  mov rsi, buf
+  mov rdx, 16
+  syscall`,
+        c: String.raw`#include <stdio.h>
+
+int main(void) {
+  int a, b;
+  printf("Два числа: ");
+  scanf("%d %d", &a, &b);
+  printf("%d + %d = %d\n", a, b, a + b);
+  return 0;
+}`,
+        cpp: String.raw`#include <iostream>
+
+int main() {
+  int a, b;
+  std::cout << "Два числа: ";
+  std::cin >> a >> b;
+  std::cout << a << " + " << b << " = " << a + b << std::endl;
+  return 0;
+}`,
+        py: String.raw`a = int(input("Первое число: "))
+b = int(input("Второе число: "))
+print(a, "+", b, "=", a + b)`,
+        js: String.raw`const a = Number(prompt("Первое число:"));
+const b = Number(prompt("Второе число:"));
+console.log(a + " + " + b + " = " + (a + b));`,
+      },
+      count: {
+        asm: String.raw`section .bss
+  digit resb 2
+
+section .text
+  global _start
+_start:
+  mov r12, 1
+loop_start:
+  mov rax, r12
+  add rax, 48         ; цифра превращается в символ
+  mov [digit], al
+  mov byte [digit + 1], 10
+
+  mov rax, 1
+  mov rdi, 1
+  mov rsi, digit
+  mov rdx, 2
+  syscall
+
+  inc r12
+  cmp r12, 6
+  jl loop_start
+
+  mov rax, 60
+  xor rdi, rdi
+  syscall`,
+        c: String.raw`#include <stdio.h>
+
+int main(void) {
+  for (int i = 1; i <= 5; i++) {
+    printf("%d\n", i);
+  }
+  return 0;
+}`,
+        cpp: String.raw`#include <iostream>
+
+int main() {
+  for (int i = 1; i <= 5; i++) {
+    std::cout << i << std::endl;
+  }
+  return 0;
+}`,
+        py: String.raw`for i in range(1, 6):
+    print(i)`,
+        js: String.raw`for (let i = 1; i <= 5; i++) {
+  console.log(i);
+}`,
+      },
+    };
+
+    const CUT = {
+      name: 'и ещё около 20 строк: длину имени надо посчитать самому, лишний перевод строки — убрать вручную',
+      sum: 'и ещё около 40 строк: число с клавиатуры приходит текстом — символ "7" это байт 55 — его надо вручную превратить в число, а результат обратно в текст',
+    };
+    const NEED_OVERRIDE = { 'name:js': 'браузер — в консоли Node prompt не существует', 'sum:js': 'браузер — в консоли Node prompt не существует' };
+
+    const KEYWORDS = {
+      asm: ['section', 'global', 'db', 'equ', 'resb', 'byte', 'mov', 'add', 'inc', 'cmp', 'jl', 'xor', 'syscall'],
+      c:   ['include', 'int', 'char', 'void', 'return', 'for', 'printf', 'scanf', 'main'],
+      cpp: ['include', 'int', 'void', 'return', 'for', 'std', 'string', 'cout', 'cin', 'endl', 'main'],
+      py:  ['for', 'in', 'range', 'print', 'input', 'int'],
+      js:  ['const', 'let', 'for', 'console', 'log', 'prompt', 'Number'],
+    };
+    const COMMENT = { asm: ';[^\n]*', c: '//[^\n]*', cpp: '//[^\n]*', py: '#[^\n]*', js: '//[^\n]*' };
+
+    function highlight(code, langId) {
+      const esc = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const re = new RegExp(
+        '("[^"\n]*")|(' + COMMENT[langId] + ')|(\\b(?:' + KEYWORDS[langId].join('|') + ')\\b)|(\\b\\d+\\b)', 'g');
+      return esc.replace(re, (m, str, com, kw) =>
+        '<span class="' + (str ? 'str' : com ? 'com' : kw ? 'kw' : 'num') + '">' + m + '</span>');
+    }
+
+    let taskId = 'hello';
+    let langId = 'asm';
+    let runToken = 0;
+
+    const taskListEl = document.getElementById('tasklist');
+    const langsEl = document.getElementById('langs');
+    const codeEl = document.getElementById('code');
+    const cutEl = document.getElementById('cut');
+    const metricsEl = document.getElementById('metrics');
+    const outEl = document.getElementById('out');
+    const nameEl = document.getElementById('in-name');
+    const aEl = document.getElementById('in-a');
+    const bEl = document.getElementById('in-b');
+
+    TASKS.forEach(task => {
+      const btn = document.createElement('button');
+      btn.className = 'task' + (task.id === taskId ? ' active' : '');
+      btn.textContent = task.title;
+      btn.addEventListener('click', () => { taskId = task.id; renderAll(); });
+      taskListEl.appendChild(btn);
+    });
+
+    LANGS.forEach(lang => {
+      const btn = document.createElement('button');
+      btn.className = 'lang' + (lang.id === langId ? ' active' : '');
+      btn.textContent = lang.name;
+      btn.addEventListener('click', () => { langId = lang.id; renderAll(); });
+      langsEl.appendChild(btn);
+    });
+
+    function values() {
+      const name = nameEl.value.trim() || 'Лиза';
+      const a = parseInt(aEl.value, 10);
+      const b = parseInt(bEl.value, 10);
+      return { name: name, a: isNaN(a) ? 0 : a, b: isNaN(b) ? 0 : b };
+    }
+
+    function metrics(lang) {
+      const code = CODE[taskId][lang.id];
+      const lines = code.trim().split('\n').filter(l => l.trim()).length;
+      const cut = lang.id === 'asm' && CUT[taskId] ? ' + обрезано' : '';
+      const need = NEED_OVERRIDE[taskId + ':' + lang.id] || lang.need;
+      return [
+        'строк: <b>' + lines + cut + '</b>',
+        'перевод: <b>' + lang.how + '</b>',
+        'чтобы запустить: <b>' + need + '</b>',
+      ].join(' · ');
+    }
+
+    function typeOut(lines) {
+      const token = ++runToken;
+      const text = lines.join('\n');
+      let i = 0;
+      outEl.textContent = '';
+      (function step() {
+        if (token !== runToken) return;
+        outEl.textContent = text.slice(0, i);
+        if (i < text.length) { i++; setTimeout(step, 18); }
+      })();
+    }
+
+    function renderAll() {
+      const lang = LANGS.find(l => l.id === langId);
+      const task = TASKS.find(t => t.id === taskId);
+
+      document.querySelectorAll('.task').forEach((btn, i) => btn.classList.toggle('active', TASKS[i].id === taskId));
+      document.querySelectorAll('.lang').forEach((btn, i) => btn.classList.toggle('active', LANGS[i].id === langId));
+
+      codeEl.innerHTML = highlight(CODE[taskId][langId], langId);
+
+      const cutText = langId === 'asm' ? CUT[taskId] : null;
+      cutEl.textContent = cutText || '';
+      cutEl.classList.toggle('on', Boolean(cutText));
+
+      metricsEl.innerHTML = metrics(lang);
+      typeOut(task.out(values()));
+    }
+
+    [nameEl, aEl, bEl].forEach(input => input.addEventListener('input', () => {
+      const task = TASKS.find(t => t.id === taskId);
+      typeOut(task.out(values()));
+    }));
+
+    renderAll();
+
+    /* --- вкладка 2: конвейер --- */
+    const TRACKS = [
+      { who: 'asm', note: 'перевод до запуска', chips: ['исходник.asm', 'ассемблер', 'линкер', 'машинный код', 'CPU'] },
+      { who: 'C / C++', note: 'один раз, дальше только готовый файл', chips: ['исходник.c', 'компилятор', 'линкер', 'готовый файл', 'CPU'] },
+      { who: 'Python', note: 'каждый запуск заново', chips: ['исходник.py', 'интерпретатор: строка за строкой', 'CPU'] },
+      { who: 'JavaScript', note: 'и так, и так', chips: ['исходник.js', 'движок: интерпретирует', 'горячий кусок компилируется', 'CPU'], hot: 2 },
+    ];
+
+    const tracksEl = document.getElementById('tracks');
+    TRACKS.forEach(track => {
+      const box = document.createElement('div');
+      box.className = 'track';
+
+      const head = document.createElement('div');
+      head.className = 'head';
+      const who = document.createElement('div');
+      who.className = 'who';
+      who.textContent = track.who;
+      const note = document.createElement('div');
+      note.className = 'note';
+      note.textContent = track.note;
+      const btn = document.createElement('button');
+      btn.className = 'run';
+      btn.textContent = 'Прогнать';
+      head.appendChild(who);
+      head.appendChild(note);
+      head.appendChild(btn);
+
+      const flow = document.createElement('div');
+      flow.className = 'flow';
+      track.chips.forEach((text, i) => {
+        if (i > 0) {
+          const arr = document.createElement('span');
+          arr.className = 'arr';
+          arr.textContent = '→';
+          flow.appendChild(arr);
+        }
+        const chip = document.createElement('div');
+        chip.className = 'chip' + (track.hot === i ? ' hot' : '');
+        chip.textContent = text;
+        flow.appendChild(chip);
+      });
+
+      btn.addEventListener('click', () => runTrack(flow));
+      box.appendChild(head);
+      box.appendChild(flow);
+      tracksEl.appendChild(box);
+    });
+
+    function runTrack(flow) {
+      const chips = flow.querySelectorAll('.chip');
+      chips.forEach(chip => chip.classList.remove('lit'));
+      chips.forEach((chip, i) => setTimeout(() => chip.classList.add('lit'), i * 420));
+    }
+
+    /* --- вкладка 3: браузер vs консоль --- */
+    const JS_LINES = [
+      { code: 'const name = "Лиза";', browser: true, node: true, why: '',
+        bOut: '', nOut: '' },
+      { code: 'console.log("Привет, " + name);', browser: true, node: true, why: '',
+        bOut: 'Привет, Лиза', nOut: 'Привет, Лиза' },
+      { code: 'alert("Привет, " + name);', browser: true, node: false, why: 'окошко умеет показать только браузер',
+        bOut: '[окошко] Привет, Лиза', nOut: 'ошибка: alert is not defined' },
+      { code: 'document.title = "Привет!";', browser: true, node: false, why: 'страница есть только в браузере',
+        bOut: '[заголовок вкладки] Привет!', nOut: 'ошибка: document is not defined' },
+      { code: 'const fs = require("node:fs");', browser: false, node: true, why: 'сайт не должен лазить по твоим файлам',
+        bOut: 'ошибка: require is not defined', nOut: '[файлы доступны]' },
+    ];
+
+    const envsEl = document.getElementById('envs');
+    const outBrowser = document.getElementById('out-browser');
+    const outNode = document.getElementById('out-node');
+
+    JS_LINES.forEach(item => {
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.textContent = item.code;
+      const b = document.createElement('div');
+      b.className = 'mark ' + (item.browser ? 'yes' : 'no');
+      b.textContent = item.browser ? '✓' : '✕';
+      const n = document.createElement('div');
+      n.className = 'mark ' + (item.node ? 'yes' : 'no');
+      n.textContent = item.node ? '✓' : '✕';
+      envsEl.appendChild(line);
+      envsEl.appendChild(b);
+      envsEl.appendChild(n);
+      if (item.why) {
+        const why = document.createElement('div');
+        why.className = 'why';
+        why.textContent = '// ' + item.why;
+        envsEl.appendChild(why);
+      }
+    });
+
+    document.getElementById('run-envs').addEventListener('click', () => {
+      const lines = envsEl.querySelectorAll('.line');
+      lines.forEach(line => line.classList.remove('active'));
+      outBrowser.innerHTML = '';
+      outNode.innerHTML = '';
+      JS_LINES.forEach((item, i) => setTimeout(() => {
+        lines.forEach(line => line.classList.remove('active'));
+        lines[i].classList.add('active');
+        appendOut(outBrowser, item.bOut, !item.browser);
+        appendOut(outNode, item.nOut, !item.node);
+        if (i === JS_LINES.length - 1) setTimeout(() => lines[i].classList.remove('active'), 700);
+      }, i * 700));
+    });
+
+    function appendOut(box, text, isError) {
+      if (!text) return;
+      const row = document.createElement('div');
+      if (isError) row.className = 'err';
+      row.textContent = text;
+      box.appendChild(row);
+    }
+
+    /* --- табы --- */
+    const tabs = document.querySelectorAll('.tab');
+    const panels = {
+      work: document.getElementById('panel-work'),
+      pipe: document.getElementById('panel-pipe'),
+      envs: document.getElementById('panel-envs'),
+    };
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+      Object.keys(panels).forEach(name => panels[name].classList.toggle('active', name === tab.dataset.tab));
+    }));
+  </script>
+</body></html>
