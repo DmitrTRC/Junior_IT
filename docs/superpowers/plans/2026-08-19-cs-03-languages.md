@@ -546,7 +546,7 @@ function highlight(code, langId) {
 ```js
 function metrics(taskId, lang) {
   const code = CODE[taskId][lang.id];
-  const lines = code.trim().split('\n').length;
+  const lines = code.trim().split('\n').filter(l => l.trim()).length;   // пустые строки не считаем — так же, как на слайде S11
   const cut = lang.id === 'asm' && CUT[taskId] ? ' + обрезано' : '';
   const need = NEED_OVERRIDE[taskId + ':' + lang.id] || lang.need;
   return 'строк: ' + lines + cut + '  ·  перевод: ' + lang.how + '  ·  чтобы запустить: ' + need;

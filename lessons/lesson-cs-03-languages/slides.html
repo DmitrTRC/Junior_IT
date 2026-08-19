@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Слайды · Языки программирования: кто переводит твой код (cs-03)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14;
+    --card: #1a1a2e;
+    --card-2: #16213e;
+    --deep: #0f3460;
+    --yellow: #ffd60a;
+    --orange: #ff5722;
+    --green: #00e676;
+    --cyan: #00ffc8;
+    --magenta: #ff0096;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck { width: 100vw; height: 100vh; position: relative; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw 10vh;
+    text-align: center;
+    gap: 2vh;
+  }
+  .slide.active { display: flex; }
+
+  /* shared heading kit */
+  .top-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(11px, 1.1vw, 16px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+  .slide h2 {
+    font-size: clamp(30px, 4.4vw, 66px);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -2px;
+  }
+  .slide h2 .y { color: var(--yellow); }
+  .sub {
+    color: #aeb4cc;
+    font-size: clamp(15px, 1.6vw, 24px);
+    line-height: 1.4;
+    max-width: 900px;
+  }
+
+  /* SVG text defaults */
+  svg text { font-family: 'JetBrains Mono', monospace; fill: #dfe3f5; }
+  .cap { font-size: 15px; letter-spacing: 1px; }
+  .big { font-size: 34px; font-weight: 700; }
+  .mid { font-size: 22px; font-weight: 700; }
+  .sm  { font-size: 15px; }
+  .xs  { font-size: 13px; fill: #9aa3c0; }
+
+  .rig {
+    width: min(92vw, 1080px);
+    height: auto;
+    max-height: 50vh;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+  }
+  .mini { width: min(82vw, 780px); height: auto; max-height: 40vh; }
+
+  /* S1: intro */
+  #s1 { background: radial-gradient(ellipse at 30% 20%, #1a1a3e, var(--bg) 60%); }
+  #s1 .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(13px, 1.4vw, 22px);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  #s1 h1 {
+    font-size: clamp(48px, 9vw, 150px);
+    line-height: 0.92;
+    font-weight: 700;
+    letter-spacing: -3px;
+  }
+  #s1 h1 .em {
+    background: var(--yellow);
+    color: var(--bg);
+    padding: 0 18px;
+    display: inline-block;
+    transform: rotate(-2deg);
+    margin: 8px 0;
+  }
+  #s1 .tagline {
+    font-size: clamp(20px, 3vw, 44px);
+    font-weight: 700;
+    color: #dfe3f5;
+    letter-spacing: -1px;
+    margin-top: 6px;
+  }
+  #s1 .meta { margin-top: 24px; display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+  #s1 .meta span {
+    background: rgba(255,214,10,0.1);
+    border: 1px solid rgba(255,214,10,0.3);
+    padding: 12px 26px;
+    border-radius: 50px;
+    font-size: clamp(14px, 1.5vw, 20px);
+    font-weight: 700;
+  }
+
+  /* compare cards */
+  .points {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .point {
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(255,214,10,0.3);
+    border-radius: 24px;
+    padding: 34px 30px;
+    text-align: left;
+  }
+  .point .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(20px, 2.2vw, 32px);
+    line-height: 1;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .point h3 { font-size: clamp(22px, 2.2vw, 34px); margin-bottom: 12px; line-height: 1.1; }
+  .point p { color: #aeb4cc; font-size: clamp(14px, 1.3vw, 19px); line-height: 1.5; }
+
+  /* pipeline chain (S5-S9) */
+  .chain {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+  }
+  .plate {
+    background: var(--card);
+    border: 2px solid var(--deep);
+    border-radius: 16px;
+    padding: 20px 22px;
+    min-width: 150px;
+    font-weight: 700;
+    font-size: clamp(15px, 1.5vw, 21px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    line-height: 1.2;
+  }
+  .plate .note {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    font-size: clamp(11px, 1.05vw, 14px);
+    color: #9aa3c0;
+  }
+  .plate.src { border-color: var(--cyan); color: var(--cyan); }
+  .plate.cpu { border-color: var(--green); color: var(--green); }
+  .plate.slot {
+    border-style: dashed;
+    border-color: var(--yellow);
+    color: var(--yellow);
+    font-size: clamp(20px, 2.4vw, 34px);
+  }
+  .plate.hot {
+    background: var(--yellow);
+    color: var(--bg);
+    border-color: var(--yellow);
+    box-shadow: 0 16px 34px rgba(255,214,10,0.25);
+  }
+  .plate.hot .note { color: rgba(10,10,20,0.7); }
+  .chain .ar {
+    color: var(--yellow);
+    font-size: clamp(22px, 3vw, 40px);
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    opacity: .55;
+  }
+  .when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(14px, 1.5vw, 21px);
+    color: var(--yellow);
+    letter-spacing: 1px;
+  }
+
+  /* S10 table */
+  table.langs { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; max-width: 1200px; }
+  table.langs th, table.langs td {
+    padding: 12px 20px;
+    text-align: left;
+    font-size: clamp(12px, 1.35vw, 20px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  table.langs th {
+    color: var(--yellow);
+    font-size: clamp(11px, 1.1vw, 15px);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--deep);
+  }
+  table.langs td { color: #dfe3f5; }
+  table.langs td.lang { color: var(--cyan); font-weight: 700; }
+  table.langs td.how { color: var(--yellow); }
+
+  /* S11 five listings */
+  .five { display: flex; gap: 24px; align-items: stretch; justify-content: center; flex-wrap: wrap; max-width: 1250px; }
+  .code-card {
+    background: #0c0c11;
+    border: 2px solid var(--deep);
+    border-radius: 16px;
+    padding: 18px 22px;
+    text-align: left;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .code-card .name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 1.2vw, 17px);
+    color: var(--cyan);
+    letter-spacing: 2px;
+  }
+  .code-card pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(9px, 0.95vw, 14px);
+    line-height: 1.5;
+    color: #c8d0f0;
+    white-space: pre;
+    flex: 1;
+  }
+  .code-card .lines {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 1.3vw, 18px);
+    font-weight: 700;
+    color: var(--yellow);
+  }
+  .code-card.small pre { font-size: clamp(10px, 1.05vw, 15px); }
+  .grid4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+
+  /* S12 browser vs console */
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; max-width: 1150px; width: 100%; }
+  .env {
+    background: rgba(255,255,255,0.03);
+    border: 2px solid var(--deep);
+    border-radius: 20px;
+    padding: 26px 28px;
+    text-align: left;
+  }
+  .env.browser { border-color: var(--cyan); }
+  .env.node { border-color: var(--green); }
+  .env h3 { font-size: clamp(19px, 2vw, 30px); margin-bottom: 14px; }
+  .env.browser h3 { color: var(--cyan); }
+  .env.node h3 { color: var(--green); }
+  .env li {
+    list-style: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 1.25vw, 18px);
+    color: #dfe3f5;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .env li:last-child { border-bottom: none; }
+  .shared {
+    border: 2px solid var(--yellow);
+    border-radius: 16px;
+    padding: 18px 26px;
+    max-width: 1150px;
+    font-size: clamp(14px, 1.5vw, 21px);
+    color: #dfe3f5;
+    line-height: 1.45;
+  }
+  .shared b { color: var(--yellow); }
+  .shared code { font-family: 'JetBrains Mono', monospace; color: var(--cyan); }
+
+  /* S13 summary */
+  .ways { display: flex; flex-direction: column; gap: 14px; max-width: 1150px; width: 100%; }
+  .way {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 2px solid var(--deep);
+    border-radius: 16px;
+    padding: 16px 22px;
+    text-align: left;
+  }
+  .way .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--yellow);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: clamp(13px, 1.3vw, 19px);
+    min-width: 160px;
+    text-align: center;
+  }
+  .way p { color: #dfe3f5; font-size: clamp(13px, 1.4vw, 20px); line-height: 1.4; }
+  .way p b { color: var(--yellow); }
+  .bridge {
+    border: 2px solid var(--yellow);
+    border-radius: 16px;
+    padding: 20px 26px;
+    max-width: 900px;
+    font-size: clamp(14px, 1.5vw, 21px);
+    line-height: 1.45;
+    color: #dfe3f5;
+  }
+  .bridge b { color: var(--yellow); }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 16px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .nav button:hover { background: var(--yellow); color: var(--bg); }
+  .nav .indicator {
+    color: var(--yellow);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  .keyhint {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- S1: титул -->
+  <div class="slide active" id="s1">
+    <div class="kicker">// блок «компьютер изнутри» · урок 3</div>
+    <h1><span class="em">Языки</span></h1>
+    <div class="tagline">кто переводит твой код</div>
+    <div class="meta">
+      <span>⚙️ компилятор</span>
+      <span>🐍 интерпретатор</span>
+      <span>⚡ JIT</span>
+    </div>
+  </div>
+
+  <!-- S2: повтор cs-02, лестница языков -->
+  <div class="slide" id="s2">
+    <div class="top-label">// что было в прошлый раз</div>
+    <h2>Лестница языков</h2>
+    <svg class="rig" viewBox="0 0 1000 460" role="img" aria-label="Лестница языков: машинный код, ассемблер, C, JS и Python снизу вверх">
+      <rect x="70"  y="280" width="200" height="120" rx="10" fill="#0f3460" stroke="#0f3460" stroke-width="2"/>
+      <text x="170" y="326" class="sm" text-anchor="middle">машинный код</text>
+      <text x="170" y="354" class="sm" text-anchor="middle" fill="#9aa3c0">0 1</text>
+
+      <rect x="290" y="220" width="200" height="180" rx="10" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+      <text x="390" y="266" class="mid" text-anchor="middle">ассемблер</text>
+
+      <rect x="510" y="160" width="200" height="240" rx="10" fill="#1a1a2e" stroke="#0f3460" stroke-width="2"/>
+      <text x="610" y="206" class="big" text-anchor="middle">C</text>
+
+      <rect x="730" y="100" width="200" height="300" rx="10" fill="#1a1a2e" stroke="#ffd60a" stroke-width="4"/>
+      <text x="830" y="140" class="mid" text-anchor="middle" fill="#ffd60a">JS · Python</text>
+
+      <text x="170" y="440" class="sm" text-anchor="middle" fill="#ffd60a">↓ ближе к железу</text>
+      <text x="830" y="75" class="sm" text-anchor="middle" fill="#ffd60a">ближе к человеку ↑</text>
+    </svg>
+    <p class="sub">Языков программирования <b>больше двухсот</b>: Java, Go, Rust, C# — и это только начало списка.<br>А способов запустить программу — всего три.</p>
+  </div>
+
+  <!-- S3: код это просто текст -->
+  <div class="slide" id="s3">
+    <div class="top-label">// главное недоразумение</div>
+    <h2>Код — просто <span class="y">текст</span></h2>
+    <svg class="rig" viewBox="0 0 1000 380" role="img" aria-label="Файл с программой в блокноте, стрелка к процессору перечёркнута">
+      <rect x="60" y="60" width="360" height="260" rx="14" fill="#0c0c11" stroke="#0f3460" stroke-width="2"/>
+      <rect x="60" y="60" width="360" height="44" rx="14" fill="#16213e"/>
+      <text x="84" y="90" class="sm" text-anchor="start" fill="#9aa3c0">hello.py</text>
+      <text x="90" y="160" class="sm" text-anchor="start" fill="#f1fa8c">print("Привет, мир!")</text>
+      <text x="90" y="230" class="xs" text-anchor="start">обычные буквы</text>
+      <text x="90" y="258" class="xs" text-anchor="start">в обычном файле</text>
+
+      <line x1="440" y1="190" x2="640" y2="190" stroke="#ff5722" stroke-width="6"/>
+      <line x1="510" y1="140" x2="570" y2="240" stroke="#ff5722" stroke-width="8"/>
+      <line x1="570" y1="140" x2="510" y2="240" stroke="#ff5722" stroke-width="8"/>
+
+      <rect x="660" y="110" width="280" height="160" rx="14" fill="#1a1a2e" stroke="#00e676" stroke-width="3"/>
+      <text x="800" y="180" class="big" text-anchor="middle" fill="#00e676">CPU</text>
+      <text x="800" y="215" class="sm" text-anchor="middle">понимает только 0 и 1</text>
+    </svg>
+    <p class="sub">Процессор не понимает ни одной буквы. Значит, между твоим текстом и процессором обязан стоять кто-то ещё.</p>
+  </div>
+
+  <!-- S4: среда исполнения -->
+  <div class="slide" id="s4">
+    <div class="top-label">// кто этот «кто-то ещё»</div>
+    <h2>Среда <span class="y">исполнения</span></h2>
+    <div class="points">
+      <div class="point">
+        <div class="num">📄</div>
+        <h3>Рецепт</h3>
+        <p>В нём написано, что делать. Но сам он ничего не делает — это бумажка с буквами. Твой код — это рецепт.</p>
+      </div>
+      <div class="point">
+        <div class="num">👨‍🍳</div>
+        <h3>Повар</h3>
+        <p>Читает рецепт и делает торт. Без него рецепт бесполезен. Тот, кто читает и выполняет твой код, и есть среда исполнения.</p>
+      </div>
+    </div>
+    <p class="sub">Взрослые называют её «рантайм» — это то же самое слово, просто по-английски.</p>
+  </div>
+
+  <!-- S5: три способа, схема-основа -->
+  <div class="slide" id="s5">
+    <div class="top-label">// схема на весь урок</div>
+    <h2>Между текстом и процессором</h2>
+    <div class="chain">
+      <div class="plate src">исходник<span class="note">твой текст</span></div>
+      <div class="ar">→</div>
+      <div class="plate slot">?</div>
+      <div class="ar">→</div>
+      <div class="plate">машинный код<span class="note">0 и 1</span></div>
+      <div class="ar">→</div>
+      <div class="plate cpu">CPU<span class="note">выполняет</span></div>
+    </div>
+    <p class="sub">Слева твой текст, справа процессор, посередине дырка. Сейчас поставим туда по очереди трёх разных переводчиков — меняться будет только середина.</p>
+  </div>
+
+  <!-- S6: компилятор -->
+  <div class="slide" id="s6">
+    <div class="top-label">// способ первый</div>
+    <h2><span class="y">Компилятор</span></h2>
+    <div class="chain">
+      <div class="plate src">исходник.c<span class="note">C, C++</span></div>
+      <div class="ar">→</div>
+      <div class="plate hot">компилятор<span class="note">переводит всё целиком</span></div>
+      <div class="ar">→</div>
+      <div class="plate">готовый файл<span class="note">машинный код</span></div>
+      <div class="ar">→</div>
+      <div class="plate cpu">CPU</div>
+    </div>
+    <div class="when">перевод ДО запуска · один раз · дальше исходник не нужен</div>
+    <p class="sub">Поэтому игру ты качаешь гигабайтами готового файла, а не текстом программы: перевод уже сделали за тебя.</p>
+  </div>
+
+  <!-- S7: ассемблер и линкер -->
+  <div class="slide" id="s7">
+    <div class="top-label">// предельный случай</div>
+    <h2>Ассемблер и <span class="y">линкер</span></h2>
+    <div class="chain">
+      <div class="plate src">исходник.asm<span class="note">mov, add, syscall</span></div>
+      <div class="ar">→</div>
+      <div class="plate hot">ассемблер<span class="note">почти один-в-один</span></div>
+      <div class="ar">→</div>
+      <div class="plate hot">линкер<span class="note">сшивает куски</span></div>
+      <div class="ar">→</div>
+      <div class="plate">готовый файл</div>
+      <div class="ar">→</div>
+      <div class="plate cpu">CPU</div>
+    </div>
+    <p class="sub">Ассемблер — это почти машинный код, только словами. Линкер сшивает переведённые куски в один файл, иначе вместо программы получится набор запчастей. Так пишут драйверы и куски операционных систем.</p>
+  </div>
+
+  <!-- S8: интерпретатор -->
+  <div class="slide" id="s8">
+    <div class="top-label">// способ второй</div>
+    <h2><span class="y">Интерпретатор</span></h2>
+    <div class="chain">
+      <div class="plate src">исходник.py<span class="note">Python</span></div>
+      <div class="ar">→</div>
+      <div class="plate hot">интерпретатор<span class="note">строку прочитал — выполнил</span></div>
+      <div class="ar">→</div>
+      <div class="plate cpu">CPU</div>
+    </div>
+    <div class="when">перевод ВО ВРЕМЯ работы · каждый запуск заново</div>
+    <div class="points">
+      <div class="point">
+        <div class="num">+</div>
+        <h3>Поменял — запустил</h3>
+        <p>Ничего собирать не надо: исправил строчку и сразу видишь результат.</p>
+      </div>
+      <div class="point">
+        <div class="num">−</div>
+        <h3>Нужен сам Python</h3>
+        <p>Без установленного Python переводить некому. И переводить приходится заново при каждом запуске.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S9: JIT -->
+  <div class="slide" id="s9">
+    <div class="top-label">// способ третий</div>
+    <h2><span class="y">JIT</span> — прямо вовремя</h2>
+    <div class="chain">
+      <div class="plate src">исходник.js<span class="note">JavaScript</span></div>
+      <div class="ar">→</div>
+      <div class="plate hot">движок<span class="note">интерпретирует, горячее компилирует на лету</span></div>
+      <div class="ar">→</div>
+      <div class="plate cpu">CPU</div>
+    </div>
+    <div class="when">и так, и так · горячий кусок доводится до машинного кода на ходу</div>
+    <p class="sub">Браузер не может ждать: страница должна открыться сейчас, а не через полминуты компиляции. Но и тормозить она не имеет права. Вот и придумали начинать быстро, а самое частое доводить до машинного кода прямо во время работы.</p>
+  </div>
+
+  <!-- S10: таблица пяти языков -->
+  <div class="slide" id="s10">
+    <div class="top-label">// пять языков разом</div>
+    <h2>Кто кого переводит</h2>
+    <table class="langs">
+      <tr><th>язык</th><th>кто переводит</th><th>что нужно, чтобы запустить</th><th>что на нём пишут</th></tr>
+      <tr><td class="lang">asm</td><td class="how">ассемблер + линкер</td><td>nasm и ld</td><td>драйверы, куски систем</td></tr>
+      <tr><td class="lang">C</td><td class="how">компилятор</td><td>gcc — один раз, дальше только файл</td><td>операционные системы</td></tr>
+      <tr><td class="lang">C++</td><td class="how">компилятор</td><td>g++ — один раз, дальше только файл</td><td>игры, движки, браузеры</td></tr>
+      <tr><td class="lang">Python</td><td class="how">интерпретатор</td><td>установленный Python</td><td>искусственный интеллект, наука</td></tr>
+      <tr><td class="lang">JavaScript</td><td class="how">JIT</td><td>браузер или Node</td><td>сайты и всё, что в браузере</td></tr>
+    </table>
+    <p class="sub">Лучшего языка нет — есть подходящий для задачи.</p>
+  </div>
+
+  <!-- S11: Привет впятером -->
+  <div class="slide" id="s11">
+    <div class="top-label">// одна задача, пять языков</div>
+    <h2>Один «Привет» — <span class="y">пять способов</span></h2>
+    <div class="five">
+      <div class="code-card">
+        <div class="name">asm x86-64</div>
+        <pre>section .data
+  msg db "Привет, мир!", 10
+  len equ $ - msg
+
+section .text
+  global _start
+_start:
+  mov rax, 1
+  mov rdi, 1
+  mov rsi, msg
+  mov rdx, len
+  syscall
+  mov rax, 60
+  xor rdi, rdi
+  syscall</pre>
+        <div class="lines">14 строк</div>
+      </div>
+      <div class="grid4">
+        <div class="code-card small">
+          <div class="name">C</div>
+          <pre>#include &lt;stdio.h&gt;
+
+int main(void) {
+  printf("Привет, мир!\n");
+  return 0;
+}</pre>
+          <div class="lines">5 строк</div>
+        </div>
+        <div class="code-card small">
+          <div class="name">C++</div>
+          <pre>#include &lt;iostream&gt;
+
+int main() {
+  std::cout &lt;&lt; "Привет, мир!" &lt;&lt; std::endl;
+  return 0;
+}</pre>
+          <div class="lines">5 строк</div>
+        </div>
+        <div class="code-card small">
+          <div class="name">Python</div>
+          <pre>print("Привет, мир!")</pre>
+          <div class="lines">1 строка</div>
+        </div>
+        <div class="code-card small">
+          <div class="name">JavaScript</div>
+          <pre>console.log("Привет, мир!");</pre>
+          <div class="lines">1 строка</div>
+        </div>
+      </div>
+    </div>
+    <p class="sub">Результат одинаковый. Разница — в том, сколько ты обязан объяснить машине сам.</p>
+  </div>
+
+  <!-- S12: браузер vs консоль -->
+  <div class="slide" id="s12">
+    <div class="top-label">// твой собственный JS</div>
+    <h2>Один язык, <span class="y">две среды</span></h2>
+    <div class="two">
+      <div class="env browser">
+        <h3>В браузере</h3>
+        <ul>
+          <li>alert("Привет!")</li>
+          <li>дотягивается до страницы</li>
+          <li>к файлам не пускают</li>
+        </ul>
+      </div>
+      <div class="env node">
+        <h3>В консоли (Node)</h3>
+        <ul>
+          <li>читает и пишет файлы</li>
+          <li>берёт то, что напечатали в консоли</li>
+          <li>никакой страницы и alert</li>
+        </ul>
+      </div>
+    </div>
+    <div class="shared">Везде одинаково работают <b>переменные, циклы, функции</b> и <code>console.log</code> — это сам язык.<br>Движок один. Разные среды выдают ему разные руки.</div>
+  </div>
+
+  <!-- S13: итог -->
+  <div class="slide" id="s13">
+    <div class="top-label">// итог урока</div>
+    <h2>Три способа перевода</h2>
+    <div class="ways">
+      <div class="way">
+        <span class="tag">компилятор</span>
+        <p>переводит <b>заранее и один раз</b>, делает готовый файл — C, C++</p>
+      </div>
+      <div class="way">
+        <span class="tag">интерпретатор</span>
+        <p>переводит <b>на ходу и каждый раз</b> заново — Python</p>
+      </div>
+      <div class="way">
+        <span class="tag">JIT</span>
+        <p><b>совмещает оба способа</b>: начинает быстро, горячее компилирует на лету — JavaScript</p>
+      </div>
+    </div>
+    <div class="bridge">Блок «Компьютер изнутри» на этом закрываем и <b>возвращаемся к JS</b>.<br>Только теперь ты знаешь, кто на самом деле выполняет твой код.</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">‹</button>
+  <span class="indicator"><span id="cur">1</span> / 13</span>
+  <button onclick="next()">›</button>
+</div>
+
+<div class="keyhint">← / → переключение слайдов</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.getElementById('cur').textContent = cur + 1;
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+
+</body>
+</html>
