@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока cs-03. Если слайды или тренажёр не открылись — ведёшь по этому файлу:
+     8 шагов живой схемы с номерами слайдов, ключевыми репликами и пингами.
+     Листинги «Привет, мир» на пяти языках вшиты в шаг 7, таблица браузер/консоль — в шаг 8. -->
+<title>Конспект урока cs-03 — резерв ведущего</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 20px; }
+  .intro { background: #1d1d28; border-left: 3px solid #ffd60a; border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 28px; color: #b8b8c4; font-size: 14px; }
+  .intro strong { color: #ffd60a; }
+  .step { margin-bottom: 24px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .step h2 .slide {
+    background: #0f3460; color: #7fd0ff; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 6px; letter-spacing: 1px;
+  }
+  .plate {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 16px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto; color: #dcdce6;
+  }
+  .plate .a { color: #ffd60a; font-weight: 700; }
+  .plate .c { color: #6272a4; font-style: italic; }
+  .plate b { color: #8be9fd; font-weight: 700; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  .ping { color: #00e676; font-size: 14px; margin-top: 8px; }
+  .ping::before { content: '💬 '; }
+  .warn { color: #ff8a65; font-size: 13.5px; margin-top: 8px; }
+  .warn::before { content: '⚠️ '; }
+  .code-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 10px; }
+  .snip { background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px; padding: 14px 16px; overflow-x: auto; }
+  .snip.wide { grid-column: 1 / -1; }
+  .snip .cap { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #00ffc8; letter-spacing: 2px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .snip .cap span { color: #ffd60a; }
+  .snip pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.6; color: #dcdce6; white-space: pre; }
+  table.envs { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 10px; }
+  table.envs th { background: #0f3460; color: #7fd0ff; padding: 8px 12px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px; }
+  table.envs td { padding: 8px 12px; border-bottom: 1px solid #2a2a38; }
+  table.envs td.code { font-family: 'JetBrains Mono', monospace; color: #dcdce6; }
+  .ok { color: #00e676; font-weight: 700; }
+  .no { color: #ff8a65; font-weight: 700; }
+  footer { color: #6b6b7a; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center; margin-top: 34px; }
+  @media (max-width: 600px) { .code-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Конспект урока <span class="y">cs-03</span> — резерв ведущего</h1>
+  <div class="sub">// языки программирования: кто переводит твой код · 60 минут</div>
+
+  <div class="intro">
+    Файл на случай, если слайды или тренажёр не открылись. Веди по восьми шагам: <strong>слайд указан в плашке</strong> у каждого заголовка. Тайминг и полные реплики — в <strong>scenario.md</strong>.
+  </div>
+
+  <div class="step">
+    <h2><span class="n">1</span><span class="slide">S1–S2</span> Повтор: лестница языков</h2>
+    <div class="plate">
+      машинный код <span class="a">→</span> ассемблер <span class="a">→</span> C <span class="a">→</span> Python, JS<br>
+      <span class="c">// языков больше двухсот: Java, Go, Rust, C# — и это только начало списка</span>
+    </div>
+    <div class="note">Способов запустить программу всего <strong>три</strong> — их сегодня и разбираем.</div>
+    <div class="ping">«На чём написана твоя любимая игра?»</div>
+    <div class="warn">Дети начнут спорить, какой язык лучше. Сними сразу: лучшего нет, есть подходящий для задачи.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span><span class="slide">S3–S4</span> Код — просто текст. Среда исполнения</h2>
+    <div class="plate">
+      файл <b>hello.py</b> = обычные буквы <span class="a">✕</span> процессор понимает только 0 и 1<br>
+      рецепт = твой код <span class="a">·</span> повар = <b>среда исполнения</b><br>
+      <span class="c">// взрослые называют среду исполнения «рантайм» — это то же самое слово</span>
+    </div>
+    <div class="note">Между текстом и процессором <strong>обязан</strong> стоять кто-то ещё. Весь урок — про этого «кого-то».</div>
+    <div class="ping">«Если открыть файл с программой в блокноте и нажать Enter — программа запустится?»</div>
+    <div class="warn">Среду исполнения путают с редактором. Редактор — блокнот, где пишешь; среда исполнения — кто выполняет.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span><span class="slide">S5</span> Схема на весь урок</h2>
+    <div class="plate">
+      исходник <span class="a">→</span> <b>?</b> <span class="a">→</span> машинный код <span class="a">→</span> CPU<br>
+      <span class="c">// меняться будет только середина — три переводчика по очереди</span>
+    </div>
+    <div class="warn">Не заполняй середину раньше времени: весь эффект следующих слайдов в том, что края остаются прежними.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span><span class="slide">S6–S7</span> Компилятор, ассемблер, линкер</h2>
+    <div class="plate">
+      C, C++ <span class="a">→</span> <b>компилятор</b> <span class="a">→</span> линкер <span class="a">→</span> готовый файл <span class="a">→</span> CPU<br>
+      <span class="c">// перевод ДО запуска, один раз, дальше исходник не нужен</span><br><br>
+      asm <span class="a">→</span> <b>ассемблер</b> (почти один-в-один) <span class="a">→</span> <b>линкер</b> (сшивает куски) <span class="a">→</span> файл <span class="a">→</span> CPU
+    </div>
+    <div class="note">Поэтому игру качают <strong>гигабайтами готового файла</strong>, а не текстом программы. На ассемблере пишут драйверы и куски операционных систем.</div>
+    <div class="ping">«Почему игру качают гигабайтами, а не текстом программы?»</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span><span class="slide">S8</span> Интерпретатор</h2>
+    <div class="plate">
+      Python <span class="a">→</span> <b>интерпретатор</b>: строку прочитал — выполнил <span class="a">→</span> CPU<br>
+      <span class="c">// перевод ВО ВРЕМЯ работы, каждый запуск заново</span>
+    </div>
+    <div class="note">Плюс — поменял строчку и сразу запустил. Минус — нужен установленный Python, и переводить приходится каждый раз.</div>
+    <div class="ping">«У кого установлен Python?»</div>
+    <div class="warn">Спросят про байткод — короткая честная реплика: питон немножко компилирует, но в свой внутренний код, не в машинный.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span><span class="slide">S9</span> JIT</h2>
+    <div class="plate">
+      JS <span class="a">→</span> <b>движок</b>: интерпретирует, горячий кусок компилирует на лету <span class="a">→</span> CPU<br>
+      <span class="c">// и так, и так: начинаем быстро, самое частое доводим до машинного кода</span>
+    </div>
+    <div class="note">Браузер <strong>не может ждать</strong>: страница должна открыться сейчас, но и тормозить не имеет права.</div>
+    <div class="ping">«Что откроется быстрее — страница, которую надо сначала целиком скомпилировать, или та, что начинает работать сразу?»</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">7</span><span class="slide">S10–S11</span> Пять языков, одна задача</h2>
+    <div class="code-grid">
+      <div class="snip wide">
+        <div class="cap">asm x86-64 <span>14 строк</span></div>
+        <pre>section .data
+  msg db "Привет, мир!", 10
+  len equ $ - msg
+
+section .text
+  global _start
+_start:
+  mov rax, 1          ; системный вызов write
+  mov rdi, 1          ; куда: на экран
+  mov rsi, msg        ; что: адрес текста
+  mov rdx, len        ; сколько байт
+  syscall
+  mov rax, 60         ; системный вызов exit
+  xor rdi, rdi
+  syscall</pre>
+      </div>
+      <div class="snip">
+        <div class="cap">C <span>5 строк</span></div>
+        <pre>#include &lt;stdio.h&gt;
+
+int main(void) {
+  printf("Привет, мир!\n");
+  return 0;
+}</pre>
+      </div>
+      <div class="snip">
+        <div class="cap">C++ <span>5 строк</span></div>
+        <pre>#include &lt;iostream&gt;
+
+int main() {
+  std::cout &lt;&lt; "Привет, мир!" &lt;&lt; std::endl;
+  return 0;
+}</pre>
+      </div>
+      <div class="snip">
+        <div class="cap">Python <span>1 строка</span></div>
+        <pre>print("Привет, мир!")</pre>
+      </div>
+      <div class="snip">
+        <div class="cap">JavaScript <span>1 строка</span></div>
+        <pre>console.log("Привет, мир!");</pre>
+      </div>
+    </div>
+    <div class="note">Результат одинаковый — разница в том, сколько ты обязан объяснить машине сам. Число с клавиатуры приходит <strong>текстом</strong>: на асме превращаешь его в число руками, в Python это <strong>int()</strong>, в JS — <strong>Number()</strong>.</div>
+    <div class="ping">«Угадай: сколько строк займёт «посчитай до пяти» на ассемблере?»</div>
+    <div class="warn">Не разбирай ассемблерные команды построчно — съест всё время. Задача блока: контраст объёма.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">8</span><span class="slide">S12–S13</span> Браузер против консоли. Итог</h2>
+    <table class="envs">
+      <tr><th>код</th><th>браузер</th><th>консоль (Node)</th></tr>
+      <tr><td class="code">let, for, функции</td><td class="ok">работает</td><td class="ok">работает</td></tr>
+      <tr><td class="code">console.log(...)</td><td class="ok">работает</td><td class="ok">работает</td></tr>
+      <tr><td class="code">alert(...)</td><td class="ok">работает</td><td class="no">нет</td></tr>
+      <tr><td class="code">document.title</td><td class="ok">работает</td><td class="no">нет</td></tr>
+      <tr><td class="code">require("node:fs")</td><td class="no">нет</td><td class="ok">работает</td></tr>
+    </table>
+    <div class="note">Язык один, движок один — <strong>разные среды выдают разные руки</strong>. Итог урока: компилятор переводит заранее и один раз, интерпретатор на ходу и каждый раз, JIT совмещает. Блок «Компьютер изнутри» закрываем, возвращаемся в JS-линейку.</div>
+    <div class="ping">«Что случится, если написать alert там, где браузера нет?»</div>
+  </div>
+
+  <footer>Junior_IT · урок cs-03 · резервный конспект ведущего</footer>
+
+</div>
+</body>
+</html>

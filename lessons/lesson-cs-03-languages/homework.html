@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашка · Кто переводит твой код (урок cs-03)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '03';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 { font-size: 38px; font-weight: 800; line-height: 1.05; margin-bottom: 10px; letter-spacing: -1px; }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  .note {
+    background: #fff5cc;
+    border-left: 5px solid #ffd60a;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
+  }
+  .note b { font-weight: 800; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 21px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 16px; color: #555; font-size: 15px; }
+
+  /* задание 1: соотнеси */
+  .match { display: grid; grid-template-columns: 150px 1fr; gap: 10px 16px; align-items: center; }
+  .match .lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    background: #faf7f2;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .blank {
+    border-bottom: 2px dashed #c9c2b4;
+    min-height: 34px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #999;
+  }
+  .bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .bank span {
+    background: #1a1a1a;
+    color: #ffd60a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 8px 14px;
+  }
+
+  /* задание 2: консоль */
+  .steps { counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px dashed #e5e0d6;
+  }
+  .step:last-child { border-bottom: none; }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+  .step .txt { font-size: 15px; }
+  code.inline {
+    font-family: 'JetBrains Mono', monospace;
+    background: #faf7f2;
+    border: 1px solid #e5e0d6;
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 14px;
+  }
+  .lines-box { margin-top: 16px; }
+  .lines-box .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .lines-box .row .what {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    background: #faf7f2;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+
+  .bonus {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .bonus b { display: block; font-size: 17px; font-weight: 800; margin-bottom: 8px; }
+  .bonus .blank { border-color: #8a5a00; color: #7a4f00; }
+
+  footer { text-align: center; color: #999; font-size: 13px; padding: 10px 0 30px; }
+  footer a { color: #c26a00; }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .match { grid-template-columns: 1fr; }
+    .lines-box .row { grid-template-columns: 1fr; }
+    header h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Домашка: кто переводит твой код</h1>
+    <p>Урок cs-03 · языки программирования</p>
+  </header>
+
+  <div class="note">Устанавливать <b>ничего не нужно</b>. Первое задание — на листочке, второе — в браузере, который у тебя уже открыт.</div>
+
+  <section>
+    <h2><span class="num">1</span> Соотнеси язык и переводчика</h2>
+    <p class="lead">Напиши напротив каждого языка, кто переводит его код, и что нужно, чтобы программа запустилась. Слова можно брать отсюда:</p>
+    <div class="bank">
+      <span>компилятор</span>
+      <span>интерпретатор</span>
+      <span>JIT</span>
+      <span>ассемблер + линкер</span>
+    </div>
+    <div class="match">
+      <div class="lang">asm</div><div class="blank">переводит: ____________ · чтобы запустить: ____________</div>
+      <div class="lang">C</div><div class="blank">переводит: ____________ · чтобы запустить: ____________</div>
+      <div class="lang">C++</div><div class="blank">переводит: ____________ · чтобы запустить: ____________</div>
+      <div class="lang">Python</div><div class="blank">переводит: ____________ · чтобы запустить: ____________</div>
+      <div class="lang">JavaScript</div><div class="blank">переводит: ____________ · чтобы запустить: ____________</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Проверь движок сам</h2>
+    <p class="lead">Ты уже умеешь открывать консоль браузера. Сейчас ты увидишь ту самую среду исполнения, о которой был урок, — она встроена в браузер и ждёт твой код.</p>
+    <div class="steps">
+      <div class="step"><div class="txt">Открой любую страницу и нажми <code class="inline">F12</code>, потом вкладку <code class="inline">Console</code>. На Маке — <code class="inline">Cmd + Option + J</code>.</div></div>
+      <div class="step"><div class="txt">Набери <code class="inline">let x = 5;</code> и нажми Enter.</div></div>
+      <div class="step"><div class="txt">Набери <code class="inline">let y = 7;</code> и нажми Enter.</div></div>
+      <div class="step"><div class="txt">Набери <code class="inline">console.log(x + y);</code> и нажми Enter.</div></div>
+    </div>
+    <div class="lines-box">
+      <div class="row"><div class="what">что вывелось после третьей строки</div><div class="blank"></div></div>
+      <div class="row"><div class="what">кто это выполнил</div><div class="blank"></div></div>
+      <div class="row"><div class="what">пришлось ли что-то устанавливать</div><div class="blank"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> Бонус</h2>
+    <div class="bonus">
+      <b>Найди самую большую разницу</b>
+      Открой тренажёр и пройди все четыре задачи на всех пяти языках. Найди задачу, где разница в количестве строк между самым коротким и самым длинным решением больше всего.
+      <div class="blank">задача: ____________ · строк меньше всего: ______ · строк больше всего: ______</div>
+    </div>
+  </section>
+
+  <footer>Тренажёр урока: <a href="demos/languages.html">demos/languages.html</a> · Junior_IT</footer>
+
+</div>
+</body>
+</html>

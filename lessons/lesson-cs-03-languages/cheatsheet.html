@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Кто переводит твой код (урок cs-03)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '03';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 10px; letter-spacing: -1px; }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 14px; color: #555; font-size: 15px; }
+
+  /* три способа */
+  .way { background: #faf7f2; border-left: 5px solid #ffd60a; border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; }
+  .way:last-child { margin-bottom: 0; }
+  .way .name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+  .way .flow { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #444; margin-bottom: 6px; }
+  .way .flow b { color: #c26a00; }
+  .way .when { font-size: 14px; color: #555; }
+  .way .when strong { color: #1a1a1a; }
+
+  /* таблица языков */
+  .langs { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .langs th {
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 10px 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+  }
+  .langs th:first-child { border-radius: 8px 0 0 0; }
+  .langs th:last-child { border-radius: 0 8px 0 0; }
+  .langs td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+  .langs tr:nth-child(even) td { background: #faf7f2; }
+  .langs td.name { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .langs td.how { color: #c26a00; font-weight: 600; }
+
+  /* листинги */
+  .hellos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .hello {
+    background: #faf7f2;
+    border: 1px solid #e5e0d6;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .hello .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .hello .lang { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; }
+  .hello .n { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #c26a00; font-weight: 700; }
+  .hello pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #333;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .hello.wide { grid-column: 1 / -1; }
+
+  /* браузер vs консоль */
+  .envs { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .envs th {
+    background: #1a1a1a; color: #ffd60a; padding: 10px 12px;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1px; text-align: left;
+  }
+  .envs th:first-child { border-radius: 8px 0 0 0; }
+  .envs th:last-child { border-radius: 0 8px 0 0; }
+  .envs td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+  .envs td.code { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .envs tr:nth-child(even) td { background: #faf7f2; }
+  .yes { color: #0a7d3c; font-weight: 700; }
+  .no { color: #c23c00; font-weight: 700; }
+
+  /* запомни */
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .fact {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    border-radius: 12px;
+    padding: 18px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .fact b { display: block; font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+
+  footer { text-align: center; color: #999; font-size: 13px; padding: 10px 0 30px; }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .facts { grid-template-columns: 1fr; }
+    .hellos { grid-template-columns: 1fr; }
+    header h1 { font-size: 28px; }
+    .langs td, .langs th { padding: 8px 6px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Кто переводит твой код</h1>
+    <p>Урок cs-03 · языки программирования</p>
+  </header>
+
+  <section>
+    <h2><span class="num">1</span> Три способа перевода</h2>
+    <p class="lead">Код — это просто текст. Сам по себе он не делает ничего: процессор понимает только 0 и 1. Между текстом и процессором всегда кто-то стоит.</p>
+
+    <div class="way">
+      <div class="name">Компилятор — C, C++</div>
+      <div class="flow">исходник → <b>компилятор</b> → линкер → готовый файл → CPU</div>
+      <div class="when">Переводит <strong>до запуска</strong> и один раз. Дальше исходник не нужен — работает готовый файл.</div>
+    </div>
+
+    <div class="way">
+      <div class="name">Интерпретатор — Python</div>
+      <div class="flow">исходник → <b>интерпретатор: строку прочитал — выполнил</b> → CPU</div>
+      <div class="when">Переводит <strong>во время работы</strong> и каждый запуск заново. Нужен установленный Python.</div>
+    </div>
+
+    <div class="way">
+      <div class="name">JIT — JavaScript</div>
+      <div class="flow">исходник → <b>движок: интерпретирует, горячее компилирует на лету</b> → CPU</div>
+      <div class="when">Делает <strong>и так, и так</strong>: начинает быстро, а кусок, который выполняется часто, доводит до машинного кода прямо на ходу.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Пять языков разом</h2>
+    <table class="langs">
+      <tr><th>язык</th><th>кто переводит</th><th>что нужно, чтобы запустить</th><th>что на нём пишут</th></tr>
+      <tr><td class="name">asm</td><td class="how">ассемблер + линкер</td><td>nasm и ld</td><td>драйверы, куски систем</td></tr>
+      <tr><td class="name">C</td><td class="how">компилятор</td><td>gcc — один раз, дальше только файл</td><td>операционные системы</td></tr>
+      <tr><td class="name">C++</td><td class="how">компилятор</td><td>g++ — один раз, дальше только файл</td><td>игры, движки, браузеры</td></tr>
+      <tr><td class="name">Python</td><td class="how">интерпретатор</td><td>установленный Python</td><td>искусственный интеллект, наука</td></tr>
+      <tr><td class="name">JavaScript</td><td class="how">JIT</td><td>браузер или Node</td><td>сайты и всё, что в браузере</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> «Привет, мир» на пяти языках</h2>
+    <p class="lead">Одна и та же задача. Результат одинаковый — разница в том, сколько ты обязан объяснить машине сам.</p>
+    <div class="hellos">
+      <div class="hello wide">
+        <div class="top"><span class="lang">asm x86-64</span><span class="n">14 строк</span></div>
+        <pre>section .data
+  msg db "Привет, мир!", 10
+  len equ $ - msg
+
+section .text
+  global _start
+_start:
+  mov rax, 1          ; системный вызов write
+  mov rdi, 1          ; куда: на экран
+  mov rsi, msg        ; что: адрес текста
+  mov rdx, len        ; сколько байт
+  syscall
+  mov rax, 60         ; системный вызов exit
+  xor rdi, rdi
+  syscall</pre>
+      </div>
+      <div class="hello">
+        <div class="top"><span class="lang">C</span><span class="n">5 строк</span></div>
+        <pre>#include &lt;stdio.h&gt;
+
+int main(void) {
+  printf("Привет, мир!\n");
+  return 0;
+}</pre>
+      </div>
+      <div class="hello">
+        <div class="top"><span class="lang">C++</span><span class="n">5 строк</span></div>
+        <pre>#include &lt;iostream&gt;
+
+int main() {
+  std::cout &lt;&lt; "Привет, мир!" &lt;&lt; std::endl;
+  return 0;
+}</pre>
+      </div>
+      <div class="hello">
+        <div class="top"><span class="lang">Python</span><span class="n">1 строка</span></div>
+        <pre>print("Привет, мир!")</pre>
+      </div>
+      <div class="hello">
+        <div class="top"><span class="lang">JavaScript</span><span class="n">1 строка</span></div>
+        <pre>console.log("Привет, мир!");</pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Браузер и консоль</h2>
+    <p class="lead">JavaScript живёт в двух средах. Язык один, движок один — руки разные.</p>
+    <table class="envs">
+      <tr><th>код</th><th>в браузере</th><th>в консоли (Node)</th></tr>
+      <tr><td class="code">let, for, функции</td><td class="yes">работает</td><td class="yes">работает</td></tr>
+      <tr><td class="code">console.log(...)</td><td class="yes">работает</td><td class="yes">работает</td></tr>
+      <tr><td class="code">alert(...)</td><td class="yes">работает</td><td class="no">нет</td></tr>
+      <tr><td class="code">document.title</td><td class="yes">работает</td><td class="no">нет</td></tr>
+      <tr><td class="code">require("node:fs")</td><td class="no">нет</td><td class="yes">работает</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Запомни</h2>
+    <div class="facts">
+      <div class="fact"><b>Код — это текст</b>Без того, кто его переведёт и выполнит, он остаётся буквами в файле.</div>
+      <div class="fact"><b>Один раз или каждый раз</b>Компилятор переводит заранее и один раз, интерпретатор — на ходу и каждый раз.</div>
+      <div class="fact"><b>Один язык, две среды</b>JS в браузере и в консоли — один язык. Разные среды дают ему разные возможности.</div>
+    </div>
+  </section>
+
+  <footer>Junior_IT · урок cs-03 · тренажёр: demos/languages.html</footer>
+
+</div>
+</body>
+</html>
