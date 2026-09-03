@@ -29,6 +29,9 @@ students/*
 # Записи занятий и их расшифровки — голоса и имена детей, не коммитим
 recordings/
 
+# Переписка и памятки родителям — имена детей/родителей, личное, не в публичный репо
+TO_PARENTS/
+
 # Claude CLI — личные настройки (shared settings.json коммитим)
 .claude/settings.local.json
 
@@ -44,3 +47,7 @@ desktop.ini
 print/node_modules/
 print/.book.html
 print/.shot*
+
+# Python bytecode
+__pycache__/
+*.pyc
