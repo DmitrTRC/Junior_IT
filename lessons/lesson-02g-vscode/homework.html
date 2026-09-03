@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашка · Свой дом для кода (VS Code)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px 60px;
+    line-height: 1.6;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 50px 40px;
+    border-radius: 24px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '{ }';
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 180px;
+    font-weight: 700;
+    opacity: 0.16;
+    line-height: 1;
+  }
+  header .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+  header h1 {
+    font-size: 46px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+  header p { font-size: 18px; max-width: 520px; font-weight: 600; }
+
+  section {
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .step {
+    background: #ffd60a;
+    color: #1a1a1a;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  p { margin-bottom: 12px; font-size: 16px; color: #333; }
+  p strong { color: #1a1a1a; font-weight: 800; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+  .kbd {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    background: #1a1a1a;
+    color: #ffd60a;
+    border-radius: 6px;
+    padding: 4px 9px;
+    white-space: nowrap;
+  }
+
+  /* блок «файл в редакторе» */
+  .editor {
+    background: #15151c;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .editor .tab {
+    background: #0c0c11;
+    color: #b8b8c4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 18px;
+    border-bottom: 1px solid #2a2a38;
+  }
+  .editor .tab .dot { color: #ffd60a; font-weight: 700; }
+  .editor .code {
+    padding: 18px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    color: #f0f0f0;
+  }
+  .editor .code .l { display: block; }
+  .editor .code .com { color: #6272a4; font-style: italic; display: block; }
+  .editor .code .kw { color: #8be9fd; }
+  .editor .code .str { color: #f1fa8c; }
+  .editor .code .nNum { color: #ffb86c; }
+
+  /* блок «консоль» */
+  .console {
+    background: #15151c;
+    color: #f0f0f0;
+    padding: 20px 22px;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin: 14px 0;
+  }
+  .console .out { display: block; color: #7fd0ff; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .nNum { color: #ffb86c; }
+
+  .tasks { list-style: none; counter-reset: tsk; }
+  .tasks li {
+    counter-increment: tsk;
+    padding: 16px 16px 16px 60px;
+    margin-bottom: 10px;
+    background: #faf7f2;
+    border-radius: 12px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .tasks li::before {
+    content: counter(tsk);
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    width: 30px; height: 30px;
+    background: #1a1a1a;
+    color: #ffd60a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .tasks li code { background: #1a1a1a; }
+
+  .soft {
+    background: #16213e;
+    color: rgba(255,255,255,0.82);
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-top: 14px;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .soft .ic { font-size: 20px; flex-shrink: 0; }
+  .soft strong { color: #fff; }
+
+  .bonus {
+    background: linear-gradient(135deg, #00e676, #00ffc8);
+    color: #1a1a2e;
+    padding: 24px;
+    border-radius: 16px;
+    margin-top: 16px;
+  }
+  .bonus h3 { font-size: 18px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .bonus ul { list-style: none; }
+  .bonus ul li { padding: 6px 0 6px 24px; position: relative; font-weight: 600; }
+  .bonus ul li::before { content: '✦'; position: absolute; left: 0; }
+  .bonus code { background: rgba(0,0,0,0.25); color: #fff; }
+
+  .check {
+    background: #ffd60a;
+    color: #2a1a00;
+    padding: 20px 24px;
+    border-radius: 14px;
+    font-weight: 800;
+    margin-top: 16px;
+    font-size: 16px;
+  }
+  .check h3 { margin-bottom: 8px; font-size: 18px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    header h1 { font-size: 34px; }
+    section { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <div class="kicker">// домашнее задание · урок 2.10</div>
+  <h1>Пропиши<br>свой код</h1>
+  <p>Сегодня главное — не написать новое, а <strong>поселить</strong> уже написанное. Ставим редактор и делаем свой первый настоящий файл.</p>
+</header>
+
+<section>
+  <h2><span class="step">1</span>Поставь VS Code</h2>
+  <p>Открой <code>code.visualstudio.com</code> → синяя кнопка <strong>Download for Windows</strong> → запусти скачанный файл → <strong>Далее</strong> до конца. Галочки не снимай.</p>
+  <p>На Mac — кнопка <strong>Download for Mac</strong>, скачанное приложение перетащи в папку <strong>Программы</strong>.</p>
+  <div class="soft">
+    <div class="ic">👨‍👩‍👧</div>
+    <div>Если компьютер просит пароль администратора — <strong>позови взрослых</strong>, это нормально и правильно. Программа бесплатная и безопасная, но ставить её должен тот, у кого есть права.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">2</span>Сделай папку и файл</h2>
+  <p>На Рабочем столе создай папку <code>Junior_IT</code>. В VS Code: <strong>File → Open Folder…</strong> → выбери её.</p>
+  <p>Слева в Проводнике нажми кнопку «новый файл» и назови его:</p>
+  <p style="text-align:center"><span class="kbd">trenajer.js</span></p>
+  <div class="soft">
+    <div class="ic">📁</div>
+    <div>Открывай именно <strong>папку</strong>, а не файл. Если слева пусто — ты открыл файл. Повтори: <code style="background:#0c0c11">File → Open Folder</code>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">3</span>Посели тренажёр в файл</h2>
+  <p>Это тот же тренажёр, что мы собирали на разминке. Набери его <strong>руками</strong>, не копируй — так пальцы запомнят, а редактор покажет свои подсказки.</p>
+  <div class="editor">
+    <div class="tab"><span class="dot">●</span> trenajer.js</div>
+    <div class="code"><span class="com">// мой тренажёр · автор: впиши своё имя</span><span class="l">&nbsp;</span><span class="l"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="l"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="l">&nbsp;</span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="l">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="l">&nbsp;&nbsp;<span class="kw">if</span> (otvet === chislo * i) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="nNum">1</span></span><span class="l">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="l">&nbsp;&nbsp;}</span><span class="l">}</span><span class="l">&nbsp;</span><span class="l">console.log(<span class="str">"Очки: "</span> + ochki + <span class="str">" из 5"</span>)</span></div>
+  </div>
+  <p>Сохрани: <span class="kbd">Ctrl + S</span>. Точка на вкладке должна пропасть.</p>
+  <div class="soft">
+    <div class="ic">🧱</div>
+    <div>Пустые строки между кусками — можно и нужно, так читается легче. В консоли пустая строка запускала команду, а в файле это просто воздух.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">4</span>Запусти</h2>
+  <p>Файл сам ничего не делает — это текст. Отдадим его браузеру:</p>
+  <ol class="tasks">
+    <li>Сохрани — <span class="kbd">Ctrl + S</span></li>
+    <li>Выдели весь файл — <span class="kbd">Ctrl + A</span></li>
+    <li>Скопируй — <span class="kbd">Ctrl + C</span></li>
+    <li>Браузер → <span class="kbd">F12</span> → вкладка <strong>Console</strong> → <span class="kbd">Ctrl + V</span> → <span class="kbd">Enter</span></li>
+  </ol>
+  <p>Выскочат пять окошек с примерами — отвечай. В конце тренажёр покажет очки:</p>
+  <div class="console"><span class="out">✅ Верно!</span><span class="out">❌ Мимо. Правильно: <span class="nNum">21</span></span><span class="out">✅ Верно!</span><span class="out">Очки: <span class="nNum">4</span> из 5</span></div>
+</section>
+
+<section>
+  <h2><span class="step">5</span>Почувствуй разницу</h2>
+  <p>Вот ради чего всё затевалось. Каждая правка — <strong>одна цифра</strong>. После каждой: сохранить, выделить всё, копировать, вставить.</p>
+  <ol class="tasks">
+    <li>Поменяй <code>let chislo = 7</code> на своё любимое число</li>
+    <li>Сделай не пять вопросов, а три: <code>i &lt;= 3</code> (и текст <code>"из 5"</code> в конце тоже поправь)</li>
+    <li>В комментарии сверху впиши своё имя — это твой файл</li>
+  </ol>
+  <div class="soft">
+    <div class="ic">🎯</div>
+    <div>Подумай: чтобы сделать то же самое <strong>в консоли</strong>, пришлось бы перенабрать всю программу заново. Все пятнадцать строк. Каждый раз. Вот зачем нужен файл.</div>
+  </div>
+
+  <div class="bonus">
+    <h3>✦ Если хочется посложнее (по желанию)</h3>
+    <ul>
+      <li>Замени умножение на сложение — <code>chislo + i</code>. Не забудь, что оно встречается <strong>дважды</strong></li>
+      <li>Закомментируй строку через <code>Ctrl + /</code> и посмотри, как она перестала работать</li>
+      <li>Сделай второй файл <code>igra.js</code> в той же папке — файлов может быть сколько угодно</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">6</span>Покажи и пришли</h2>
+  <ol class="tasks">
+    <li>Покажи родителям свой редактор — они наверняка видели такой в кино про хакеров</li>
+    <li>Сделай <strong>два скриншота</strong>: VS Code с твоим файлом и консоль с очками</li>
+    <li>Пришли оба мне в чат — посмотрю, дам совет</li>
+  </ol>
+
+  <div class="check">
+    <h3>✓ Проверь себя</h3>
+    Закрой VS Code полностью и открой заново. Если файл на месте со всем кодом — <strong>задача выполнена</strong>. Твой код теперь живёт на компьютере, а не в памяти вкладки. Красава.
+  </div>
+</section>
+
+<section style="text-align: center; background: #1a1a1a; color: #fff;">
+  <h2 style="border-color: #ffd60a; justify-content: center; color:#fff;">Не работает?</h2>
+  <p style="color: #ccc;">Это нормально, у всех так бывает. Проверь по порядку:</p>
+  <p style="color: #ccc;">→ Правишь, а работает по-старому? Посмотри на вкладку: <strong>точка вместо крестика</strong> = не сохранено, жми <code style="background:#333">Ctrl + S</code><br>
+  → Слева в Проводнике пусто? Ты открыл файл, а нужно <code style="background:#333">File → Open Folder</code><br>
+  → Всё серое, без цветов? В имени файла нет <code style="background:#333">.js</code> — правый клик → <code style="background:#333">Rename</code><br>
+  → Окошки с вопросами не появились? Скопировал не весь файл — жми <code style="background:#333">Ctrl + A</code><br>
+  → Тренажёр на всё отвечает «Мимо»? Это старая грабля с разминки: потерялся <code style="background:#333">Number(...)</code> вокруг <code style="background:#333">prompt</code><br>
+  → Кавычки английские <code style="background:#333">"</code>, команды английскими буквами?</p>
+  <p style="color: #ffd60a; margin-top: 20px;">Не смог поставить редактор — не страшно, приходи как есть, разберёмся вместе. Совсем застрял — пиши мне.</p>
+</section>
+
+</div>
+
+</body>
+</html>

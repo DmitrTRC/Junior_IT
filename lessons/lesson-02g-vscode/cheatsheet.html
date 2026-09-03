@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Свой дом для кода (VS Code)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '.js';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .desc code {
+    background: #faf7f2; color: #1a1a1a; white-space: normal;
+    padding: 2px 6px; font-size: 12px;
+  }
+
+  /* нумерованные шаги установки */
+  .steps { list-style: none; counter-reset: st; }
+  .steps li {
+    counter-increment: st;
+    padding: 12px 0 12px 46px;
+    position: relative;
+    font-size: 15px;
+    border-bottom: 1px dashed #e5e0d6;
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(st);
+    position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px;
+    background: #1a1a1a;
+    color: #ffd60a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .steps li code { background: #1a1a1a; color: #ffd60a; padding: 2px 8px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+
+  /* блок «редактор» */
+  .console {
+    background: #15151c;
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .console .in  { color: #f0f0f0; display: block; }
+  .console .in::before  { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { color: #7fd0ff; display: block; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw  { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+
+  /* блок «файл в редакторе» — с номерами строк, без стрелочек консоли */
+  .editor {
+    background: #15151c;
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .editor .tab {
+    background: #0c0c11;
+    color: #b8b8c4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 18px;
+    border-bottom: 1px solid #2a2a38;
+  }
+  .editor .tab .dot { color: #ffd60a; font-weight: 700; }
+  .editor .code {
+    padding: 18px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+  }
+  .editor .code .l { display: block; color: #f0f0f0; }
+  .editor .code .com { color: #6272a4; font-style: italic; display: block; }
+  .editor .code .kw { color: #8be9fd; }
+  .editor .code .str { color: #f1fa8c; }
+  .editor .code .nNum { color: #ffb86c; }
+
+  /* горячие клавиши */
+  .keys { width: 100%; border-collapse: collapse; }
+  .keys th {
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #888;
+    padding: 0 0 10px;
+    border-bottom: 2px solid #e5e0d6;
+    font-weight: 700;
+  }
+  .keys td { padding: 12px 0; border-bottom: 1px dashed #e5e0d6; font-size: 15px; }
+  .keys tr:last-child td { border-bottom: none; }
+  .kbd {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    background: #1a1a1a;
+    color: #ffd60a;
+    border-radius: 6px;
+    padding: 5px 9px;
+    white-space: nowrap;
+  }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  .err {
+    background: rgba(255,87,34,0.08);
+    border-left: 4px solid #ff5722;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #ff5722; }
+  .err code { background: #1a1a1a; color: #fff; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+    .keys th:nth-child(3), .keys td:nth-child(3) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Свой дом<br>для кода</h1>
+  <p>VS Code · файл · папка · урок 2.10</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Зачем вообще файл</h2>
+  <p class="lead">Консоль ничего не помнит: закрыл вкладку — код исчез. У файла есть имя, он лежит на компьютере и никуда не денется. Его можно открыть завтра, показать другу, продолжить с того же места.</p>
+  <div class="tip">
+    <div class="tip-icon">🏠</div>
+    <div>Консоль — это <strong>поговорить</strong>. Файл — это <strong>записать</strong>. Сегодня язык не меняется, меняется только место, где он живёт.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Ставим VS Code</h2>
+  <p class="lead">Бесплатно, без ключей и регистрации. Это тот же редактор, в котором пишут взрослые программисты.</p>
+  <ol class="steps">
+    <li>Открой <code>code.visualstudio.com</code></li>
+    <li>Синяя кнопка <strong>Download for Windows</strong></li>
+    <li>Запусти скачанный файл, прими лицензию, дальше <strong>Далее</strong> до конца</li>
+    <li>Галочки <strong>Add to PATH</strong> и <strong>Open with Code</strong> — оставь включёнными</li>
+    <li>Установить → Запустить</li>
+  </ol>
+  <div class="tip">
+    <div class="tip-icon">🍏</div>
+    <div><strong>На Mac:</strong> тот же сайт, кнопка <strong>Download for Mac</strong>, скачанное приложение перетащи в папку <strong>Программы</strong>. Дальше всё одинаково.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Папку, а не файл!</h2>
+  <p class="lead">Код живёт в папке проекта. Сделай на Рабочем столе папку <code>Junior_IT</code> — и открой в редакторе <strong>её</strong>.</p>
+  <div class="item">
+    <code>File → Open Folder</code>
+    <div class="desc"><strong>Правильно.</strong> Слева в Проводнике появится название папки — туда складываем файлы.</div>
+  </div>
+  <div class="item">
+    <code>File → Open File</code>
+    <div class="desc"><strong>Не то.</strong> Редактор увидит один файл, слева будет пусто, новые файлы делать некуда.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Первый файл и точка js</h2>
+  <p class="lead">В Проводнике слева — кнопка «новый файл». Имя любое, но <strong>обязательно</strong> с <code>.js</code> на конце.</p>
+  <div class="item">
+    <code>trenajer.js</code>
+    <div class="desc"><strong>Так.</strong> По расширению редактор понял язык — включились цвета и подсказки.</div>
+  </div>
+  <div class="item">
+    <code>trenajer</code>
+    <div class="desc"><strong>Так не надо.</strong> Серый текст как в блокноте, без подсветки и без помощи.</div>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">💾</div>
+    <div>Сохранить — <span class="kbd">Ctrl + S</span>. Посмотри на вкладку файла: <strong>точка вместо крестика</strong> значит «не сохранено». Это ошибка №1 у всех новичков.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Твой тренажёр — в файле</h2>
+  <p class="lead">Переносим тренажёр из урока 2.8 целиком. Ничего нового, тот же язык — просто теперь он живёт в файле, а не в памяти вкладки.</p>
+  <div class="editor">
+    <div class="tab"><span class="dot">●</span> trenajer.js</div>
+    <div class="code"><span class="com">// мой тренажёр · урок 2.8</span><span class="l">&nbsp;</span><span class="l"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="l"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="l">&nbsp;</span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="l">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="l">&nbsp;&nbsp;<span class="kw">if</span> (otvet === chislo * i) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="nNum">1</span></span><span class="l">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="l">&nbsp;&nbsp;}</span><span class="l">}</span><span class="l">&nbsp;</span><span class="l">console.log(<span class="str">"Очки: "</span> + ochki + <span class="str">" из 5"</span>)</span></div>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">💬</div>
+    <div>Строка с двумя косыми <code>//</code> — <strong>комментарий</strong>, он для человека. Компьютер его пропускает. Подписывай свои файлы — через месяц скажешь себе спасибо.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Как запустить свой файл</h2>
+  <p class="lead">Файл сам ничего не делает — это просто текст. Крутить код умеет браузер, поэтому отдаём текст ему.</p>
+  <ol class="steps">
+    <li>Сохрани файл — <span class="kbd">Ctrl + S</span></li>
+    <li>Выдели всё — <span class="kbd">Ctrl + A</span></li>
+    <li>Скопируй — <span class="kbd">Ctrl + C</span></li>
+    <li>Браузер → <span class="kbd">F12</span> → вкладка <strong>Console</strong></li>
+    <li>Вставь — <span class="kbd">Ctrl + V</span> — и <span class="kbd">Enter</span></li>
+  </ol>
+  <p>Тренажёр задаст свои пять вопросов, как обычно, и в конце покажет очки:</p>
+  <div class="console"><span class="out">✅ Верно!</span><span class="out">❌ Мимо. Правильно: <span class="nNum">21</span></span><span class="out">✅ Верно!</span><span class="out">Очки: <span class="nNum">4</span> из 5</span></div>
+  <div class="tip">
+    <div class="tip-icon">🔁</div>
+    <div>Поменял что-то в файле? Заново: <strong>сохранить → выделить всё → копировать → вставить</strong>. Да, неудобно. На следующем уроке подключим файл прямо к странице, и копировать не придётся.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">⭐</span>Зачем это всё: одна цифра</h2>
+  <p class="lead">Вот главный аргумент за файл. Хочешь тренажёр не на семь, а на девять.</p>
+  <div class="item">
+    <code>в консоли</code>
+    <div class="desc"><strong>Перенабирай всю программу.</strong> Все пятнадцать строк, руками, заново. Один раз стерпишь, на третий — бросишь.</div>
+  </div>
+  <div class="item">
+    <code>в файле</code>
+    <div class="desc"><strong>Поменял одну цифру</strong> в строке <code>let chislo = 7</code>, нажал <code>Ctrl + S</code> — и запускай. Всё.</div>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">🎯</div>
+    <div>Файл нужен не «потому что так правильно», а потому что <strong>менять код становится дёшево</strong>. Программу, которую легко менять, хочется доделывать.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Три подарка, которых не было в консоли</h2>
+  <div class="item">
+    <code>красная волна</code>
+    <div class="desc"><strong>Ошибка видна до запуска.</strong> Забыл скобку — редактор подчеркнул сразу, ещё до того, как ты что-то запустил.</div>
+  </div>
+  <div class="item">
+    <code>{ пара }</code>
+    <div class="desc"><strong>Скобки подсвечиваются парами.</strong> Ставишь курсор на одну — видно её пару. Больше не считаем глазами.</div>
+  </div>
+  <div class="item">
+    <code>Ctrl + S</code>
+    <div class="desc"><strong>Код не пропадает.</strong> Закрыл редактор, выключил компьютер, вернулся через неделю — файл на месте.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Горячие клавиши</h2>
+  <table class="keys">
+    <tr><th>Что делает</th><th>Windows</th><th>Mac</th></tr>
+    <tr><td>Сохранить файл</td><td><span class="kbd">Ctrl + S</span></td><td><span class="kbd">Cmd + S</span></td></tr>
+    <tr><td>Выделить весь файл</td><td><span class="kbd">Ctrl + A</span></td><td><span class="kbd">Cmd + A</span></td></tr>
+    <tr><td>Копировать</td><td><span class="kbd">Ctrl + C</span></td><td><span class="kbd">Cmd + C</span></td></tr>
+    <tr><td>Вставить</td><td><span class="kbd">Ctrl + V</span></td><td><span class="kbd">Cmd + V</span></td></tr>
+    <tr><td>Отменить последнее</td><td><span class="kbd">Ctrl + Z</span></td><td><span class="kbd">Cmd + Z</span></td></tr>
+    <tr><td>Закомментировать строку</td><td><span class="kbd">Ctrl + /</span></td><td><span class="kbd">Cmd + /</span></td></tr>
+    <tr><td>Крупнее шрифт</td><td><span class="kbd">Ctrl + +</span></td><td><span class="kbd">Cmd + +</span></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">⚠️</span>Топ-5 ошибок новичка</h2>
+  <div class="err">1. <strong>Забыл сохранить.</strong> Правишь, запускаешь — работает по-старому. Точка на вкладке → <code>Ctrl + S</code>.</div>
+  <div class="err">2. <strong>Открыл файл вместо папки.</strong> Слева пусто, новый файл делать негде. Нужно <code>File → Open Folder</code>.</div>
+  <div class="err">3. <strong>Имя без <code>.js</code>.</strong> Нет цветов и подсказок. Правый клик по файлу → <code>Rename</code>, допиши <code>.js</code>.</div>
+  <div class="err">4. <strong>Скопировал не весь файл.</strong> Окошки с вопросами не появились или красная ошибка. Жми <code>Ctrl + A</code> — он выделяет целиком.</div>
+  <div class="err">5. <strong>Кавычки-«ёлочки» и русская раскладка.</strong> Как всегда: только английские <code>"</code>, команды английскими буквами.</div>
+  <div class="tip">
+    <div class="tip-icon">🛠</div>
+    <div>Правило первой минуты: <strong>«не работает» → посмотри на вкладку</strong>. Если там точка — ты просто не сохранил.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">09</span>Что дальше</h2>
+  <p>Теперь у твоего кода есть дом: папка, файл, имя. Но запускать его копированием — так себе радость, и ты это почувствуешь уже на третий раз.</p>
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>На следующем уроке возвращаем кнопки и <strong>подключаем файл прямо к странице</strong>: нажал кнопку на своём сайте — тренажёр запустился. Файл, который ты сделал сегодня, там и пригодится. <strong>Не удаляй его.</strong></div>
+  </div>
+</section>
+
+<footer>
+  Сделано для занятия 2.10 · «Свой дом для кода». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

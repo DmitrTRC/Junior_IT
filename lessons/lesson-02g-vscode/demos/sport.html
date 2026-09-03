@@ -1,0 +1,52 @@
+<!-- ДЕМКА «спорт» · урок 2.10. Показываем не программу, а ФАЙЛ: тот же тренажёр из 2.8, но со вкладкой редактора.
+     Эстетика: оранжевый, жирный, Bebas-вайб. Герой — Саня (не Ника!). Без DOM и без новых слов языка.
+     Шрифт Arial Black — намеренный системный Cyrillic-safe фолбэк под Bebas-вайб (Bebas Neue на Google Fonts без кириллицы, «Саня» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORT · файл · trenirovka.js</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:'Arial Black',Arial,sans-serif; text-align:center; padding:50px 20px; min-height:100vh; }
+  .label { color:#ff5722; letter-spacing:4px; font-size:14px; font-weight:bold; }
+  h1 { font-size:46px; text-transform:uppercase; letter-spacing:-1px; margin:6px 0 2px; }
+  .sub { color:#ff5722; font-size:15px; text-transform:uppercase; letter-spacing:2px; margin-bottom:26px; font-family:Arial,sans-serif; }
+  .file { max-width:660px; margin:0 auto; border-radius:12px; overflow:hidden; text-align:left; font-family:'JetBrains Mono','Courier New',monospace; }
+  .file .tab { background:#0c0c11; color:#b8b8c4; font-size:12px; padding:10px 18px; border-bottom:1px solid #2a2a38; }
+  .file .tab .dot { color:#ff5722; font-weight:700; }
+  .file .code { background:#15151c; color:#f0f0f0; padding:18px 22px; font-size:13.5px; line-height:1.9; overflow-x:auto; }
+  .file .code .l { display:block; }
+  .file .code .kw { color:#8be9fd; } .file .code .str { color:#f1fa8c; } .file .code .num { color:#ffb86c; } .file .code .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { color:#888; font-size:13px; margin-top:22px; font-family:Arial,sans-serif; }
+  .hint b { color:#ff5722; }
+</style></head>
+<body>
+  <div class="label">// SPORT MODE · FILE</div>
+  <h1>Саня · trenirovka.js</h1>
+  <div class="sub">тот же тренажёр — но теперь он живёт в файле</div>
+
+  <div class="file">
+    <div class="tab"><span class="dot">●</span> trenirovka.js</div>
+    <div class="code"><span class="com">// мой тренажёр · счёт в уме между подходами</span><span class="l">&nbsp;</span><span class="l"><span class="kw">let</span> povtorov = <span class="num">8</span></span><span class="l"><span class="kw">let</span> ochki = <span class="num">0</span></span><span class="l">&nbsp;</span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt;= <span class="num">3</span>; i++) {</span><span class="l">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(<span class="str">"После "</span> + i + <span class="str">" подходов по "</span> + povtorov + <span class="str">" — всего сколько?"</span>))</span><span class="l">&nbsp;&nbsp;<span class="kw">if</span> (otvet === povtorov * i) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="num">1</span></span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Точно! Давай дальше"</span>)</span><span class="l">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Было: "</span> + (povtorov * i))</span><span class="l">&nbsp;&nbsp;}</span><span class="l">}</span><span class="l">&nbsp;</span><span class="l">console.log(<span class="str">"Саня, очков: "</span> + ochki + <span class="str">" из 3"</span>)</span></div>
+  </div>
+
+  <div class="hint">Сменил программу на 12 повторений? В файле — <b>одна цифра</b>. В консоли пришлось бы набирать всё заново.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let povtorov = 8;
+        let ochki = 0;
+        for (let i = 1; i <= 3; i++) {
+          let otvet = Number(prompt("После " + i + " подходов по " + povtorov + " — всего сколько?"));
+          if (otvet === povtorov * i) {
+            ochki = ochki + 1;
+            console.log("✅ Точно! Давай дальше");
+          } else {
+            console.log("❌ Мимо. Было: " + (povtorov * i));
+          }
+        }
+        console.log("Саня, очков: " + ochki + " из 3");
+        alert("🔥 Саня, очков: " + ochki + " из 3. Открой F12 → Console");
+      }, 400);
+    });
+  </script>
+</body></html>
