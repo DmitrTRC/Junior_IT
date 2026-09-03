@@ -69,14 +69,14 @@
     <text x="600" y="106" text-anchor="middle" font-weight="700">// JUNIOR DEV TRAINING · 11 TO 14</text>
   </g>
 
-  <g font-family="'Space Grotesk', 'Helvetica Neue', Arial, sans-serif" font-weight="700">
+  <g font-family="'Rubik', 'Helvetica Neue', Arial, sans-serif" font-weight="700">
     <text x="600" y="208" text-anchor="middle" font-size="98"
           fill="#ffd60a" opacity="0.18" filter="url(#textGlow)" letter-spacing="-3">Junior_IT</text>
     <text x="600" y="208" text-anchor="middle" font-size="98"
           fill="url(#titleGrad)" letter-spacing="-3">Junior_IT</text>
   </g>
 
-  <g font-family="'Space Grotesk', 'Helvetica Neue', Arial, sans-serif">
+  <g font-family="'Rubik', 'Helvetica Neue', Arial, sans-serif">
     <text x="600" y="252" text-anchor="middle" font-size="22" fill="#e8ecf5" font-weight="500">
       HTML, CSS, JS and your first real website
     </text>
@@ -85,7 +85,7 @@
     </text>
   </g>
 
-  <g font-family="'Space Grotesk', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600">
+  <g font-family="'Rubik', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600">
     <g transform="translate(380, 310)">
       <rect width="86" height="34" rx="17" fill="#ff5722" opacity="0.95"/>
       <text x="43" y="22" text-anchor="middle" fill="#fff">HTML</text>

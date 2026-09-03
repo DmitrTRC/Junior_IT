@@ -83,9 +83,14 @@
 | `--bg-light` | `#faf7f2` | Светлый фон для печати |
 
 ### Шрифты
-- **Headings:** Space Grotesk 700 (основной), Bebas Neue (спорт), Fraunces (арт)
+- **Headings:** Rubik 700
 - **Body:** Manrope 400/500/600
 - **Code/labels:** JetBrains Mono 400/700
+- **Эстетики демок:** спорт — `Arial Black`, арт — `Georgia`, геймер — `Press Start 2P` + Manrope
+
+⚠️ Новый шрифт с Google Fonts проверять на сабсет `cyrillic`, прежде чем ставить на русский
+текст. Без кириллицы (проверено, в проекте больше не используются): Space Grotesk, Bebas Neue,
+Fraunces, Rajdhani.
 
 ### Принципы дизайна
 - Минимум комментариев в коде (только для неочевидного)

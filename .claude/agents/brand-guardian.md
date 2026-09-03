@@ -35,11 +35,12 @@ Grep-подсказки: `дружин`, `отряд`, `контрол`, `про
   **Исключение (НЕ флагать):** Dracula-палитра подсветки кода в консольных блоках —
   `#8be9fd` `#f1fa8c` `#ffb86c` `#ff79c6` `#6272a4` `#7fd0ff` и тёмные фоны
   `#15151c`/`#0c0c11`. Функциональный слой консоли, де-факто система всей линейки, не декор.
-- Шрифты: Space Grotesk (headings), Manrope (body), JetBrains Mono (code); Bebas Neue —
-  спорт, Fraunces — арт. Прочие — флаг. **Исключение (НЕ флагать):** в `demos/sport.html`
-  шрифт `Arial Black`, в `demos/art.html` — `Georgia` — намеренные Cyrillic-safe фолбэки
-  (Bebas Neue и Fraunces на Google Fonts без кириллицы, русские заголовки отвалились бы).
-  Свопить обратно на Bebas/Fraunces — НЕ рекомендовать.
+- Шрифты: Rubik (headings), Manrope (body), JetBrains Mono (code). Прочие — флаг.
+  **Исключение (НЕ флагать):** в `demos/sport.html` шрифт `Arial Black`, в `demos/art.html` —
+  `Georgia`, в `demos/gamer.html` — `Press Start 2P` + Manrope. Это намеренные Cyrillic-safe
+  замены: Space Grotesk, Bebas Neue, Fraunces и Rajdhani на Google Fonts без кириллицы,
+  русские заголовки уезжали в системный шрифт. Свопить обратно — НЕ рекомендовать.
+  Новый шрифт на русском тексте без сабсета `cyrillic` — флаг.
 - Нет хрупких `position:absolute` декораций в hero (ломаются на широких экранах).
 - Кастомные SVG-баннеры, не генераторы вроде capsule-render.
 - На ранних уроках нет «семантика», «DOCTYPE», «валидация», «парсинг», «DOM».

@@ -21,7 +21,9 @@ allowed-tools: Read, Grep, Glob, Task
 ## Бренд (важно)
 - Палитра — только токены из `CLAUDE.md` (`--bg #0a0a14`, `--card #1a1a2e`,
   `--yellow #ffd60a` и т.д.). Никаких случайных hex.
-- Шрифты: Space Grotesk / Manrope / JetBrains Mono (+ Bebas/Fraunces для спорт/арт).
+- Шрифты: Rubik (headings) / Manrope (body) / JetBrains Mono (code).
+  В демках намеренно: спорт — Arial Black, арт — Georgia, геймер — Press Start 2P + Manrope.
+  Новый шрифт — проверить сабсет `cyrillic` до применения на русском тексте.
 - Нет хрупких `position:absolute` декораций в hero.
 - Кастомные SVG-баннеры, не capsule-render и подобные генераторы.
 - Тон: с детьми на «ты», без зубрёжки терминов на ранних уроках.

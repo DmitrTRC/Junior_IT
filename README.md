@@ -228,7 +228,7 @@ Junior_IT/
 > Сайты курса — это **самореклама самого курса**. Если первая страница, которую видит подросток, выглядит как презентация из 2003 — он закроет вкладку и не вернётся.
 
 - 🎨 **Фирменная палитра:** `#1a1a2e` · `#ffd60a` · `#16213e` · `#0f3460`
-- 🔤 **Шрифты:** [Manrope](https://fonts.google.com/specimen/Manrope), [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk), [JetBrains Mono](https://www.jetbrains.com/lp/mono/)
+- 🔤 **Шрифты:** [Rubik](https://fonts.google.com/specimen/Rubik), [Manrope](https://fonts.google.com/specimen/Manrope), [JetBrains Mono](https://www.jetbrains.com/lp/mono/)
 - ✨ **Принципы:** градиенты, мягкие тени, плавные hover-эффекты, моноширинные акценты, минимум декора, максимум смысла.
 
 ---

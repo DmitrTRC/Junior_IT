@@ -83,11 +83,15 @@
 `#7fd0ff` (вывод), фоны `#15151c`/`#0c0c11`. Это функциональный слой, не декор —
 в токены не входит, но единообразен по всей линейке. Не «чинить» в отдельном уроке.
 
-**Шрифты:** Headings — Space Grotesk 700 (Bebas Neue для спорта, Fraunces для арта);
-Body — Manrope 400/500/600; Code/labels — JetBrains Mono 400/700.
-⚠️ Bebas Neue и Fraunces на Google Fonts — **без кириллицы**. В демках с русскими
-заголовками (`demos/sport.html`, `demos/art.html`) — намеренные Cyrillic-safe фолбэки
-`Arial Black` / `Georgia`. Не свопить обратно на Bebas/Fraunces — «Саня»/«Лиза» уйдут в tofu.
+**Шрифты:** Headings — Rubik 700; Body — Manrope 400/500/600; Code/labels —
+JetBrains Mono 400/700. Эстетики демок: спорт — `Arial Black` (под Bebas-вайб),
+арт — `Georgia` (под Fraunces-вайб), геймер — `Press Start 2P` + Manrope.
+⚠️ **Новый шрифт с Google Fonts — сперва проверить сабсет `cyrillic`**, и только потом
+ставить на русский текст. Без кириллических глифов браузер молча подставляет системный:
+латиница и кириллица рисуются разными гарнитурами в одной строке, и это не tofu — заметно
+не сразу. Проверено: **без кириллицы** — Space Grotesk, Bebas Neue, Fraunces, Rajdhani
+(все заменены); **с кириллицей** — Rubik, Manrope, JetBrains Mono, Inter, Press Start 2P.
+Замены зафиксированы комментарием в шапке демок — не свопить назад.
 
 **Принципы дизайна:**
 - Градиенты, мягкие тени, плавные hover, скруглённые карточки.
