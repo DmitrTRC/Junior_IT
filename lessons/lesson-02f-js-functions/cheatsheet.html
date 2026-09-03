@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Своя команда (функции)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: 'fn';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .desc code {
+    background: #faf7f2; color: #1a1a1a; white-space: normal;
+    padding: 2px 6px; font-size: 12px;
+  }
+
+  /* блок «консоль браузера» */
+  .console {
+    background: #15151c;
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .console .in  { color: #f0f0f0; display: block; }
+  .console .in::before  { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { color: #7fd0ff; display: block; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw  { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  .err {
+    background: rgba(255,87,34,0.08);
+    border-left: 4px solid #ff5722;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #ff5722; }
+  .err code { background: #1a1a1a; color: #fff; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Своя<br>команда</h1>
+  <p>функции · function / вызов · урок 2.9</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Функция: своя команда с именем</h2>
+  <p class="lead">Функция — это <strong>свой кусок кода с именем</strong>. Упаковал один раз — зовёшь по имени, когда надо. Не нужно копировать одни и те же строки в разные места.</p>
+  <div class="console"><span class="com">// без функции — копипаста в каждом месте</span><span class="in">console.log(<span class="str">"============"</span>)</span><span class="in">console.log(<span class="str">"  Привет!"</span>)</span><span class="com">// …а нужно ещё и ещё? дай этому куску имя</span></div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Объявить ≠ запустить</h2>
+  <p class="lead">Сначала <strong>объявляем</strong> команду словом <code>function</code> — описываем, что она делает. Сама по себе она пока не работает (как записать рецепт). Чтобы сработала — её надо <strong>вызвать</strong>: имя и круглые скобки.</p>
+  <div class="console"><span class="com">// объявили — ничего не напечаталось</span><span class="in"><span class="kw">function</span> privet() {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Привет!"</span>)</span><span class="in">}</span><span class="com">// вызвали — теперь работает</span><span class="in">privet()</span><span class="out">Привет!</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>function privet() {…}</code>
+    <div class="desc"><strong>Объявить</strong> — описать команду. Само по себе не печатает.</div>
+  </div>
+  <div class="item">
+    <code>privet()</code>
+    <div class="desc"><strong>Вызвать</strong> — запустить. Скобки <code>()</code> значат «выполни».</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">⚠️</span>Главная ловушка: вызов без скобок</h2>
+  <p class="lead">Запускает команду только имя <strong>со скобками</strong>. Если написать <code>privet</code> без <code>()</code> — браузер не выполнит её, а просто покажет её тело.</p>
+  <div class="console"><span class="com">// без скобок — показал «рецепт», не приготовил</span><span class="in">privet</span><span class="out">ƒ privet() { console.log("Привет!") }</span><span class="com">// со скобками — выполнил</span><span class="in">privet()</span><span class="out">Привет!</span></div>
+  <div class="tip">
+    <div class="tip-icon">🔑</div>
+    <div>Зовёшь команду — <strong>всегда</strong> со скобками: <code>privet()</code>. Без скобок — увидишь текст функции вместо работы. И помни: объявил, но не вызвал → ничего не вывелось, это нормально.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Параметр — дырка-настройка</h2>
+  <p class="lead">Чтобы команда работала по-разному, делаем в ней <strong>дырку</strong> — её заполняем при вызове. Дырка в скобках называется <strong>параметр</strong>.</p>
+  <div class="console"><span class="in"><span class="kw">function</span> privet(imya) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Привет, "</span> + imya + <span class="str">"!"</span>)</span><span class="in">}</span><span class="in">privet(<span class="str">"Саня"</span>)</span><span class="out">Привет, Саня!</span><span class="in">privet(<span class="str">"Лиза"</span>)</span><span class="out">Привет, Лиза!</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>function privet(imya)</code>
+    <div class="desc"><strong>Дырка</strong> <code>imya</code> — коробочка, в которую приедет настройка.</div>
+  </div>
+  <div class="item">
+    <code>privet("Саня")</code>
+    <div class="desc">Что в скобках при вызове — тем дырку <strong>заполнили</strong>. Текст — в кавычках.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>А ты это уже умел!</h2>
+  <p class="lead"><code>console.log</code>, <code>prompt</code>, <code>Number</code> — это тоже функции, просто их написали создатели браузера. Имя, скобки «вызови», в скобках настройка — всё то же самое.</p>
+  <div class="console"><span class="in">console.log(<span class="str">"я функция"</span>)</span><span class="in">prompt(<span class="str">"я тоже"</span>)</span><span class="in">Number(<span class="str">"42"</span>)</span><span class="com">// чужие команды — зовём со скобками с первого урока</span></div>
+  <div class="tip">
+    <div class="tip-icon">🤯</div>
+    <div>Никакой новой магии: ты звал функции всё это время. Сегодня научился делать <strong>свои</strong>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Упакуй цикл в команду</h2>
+  <p class="lead">Внутри команды может жить что угодно — даже цикл с прошлого урока. Спрятал работу внутрь — снаружи просто зовёшь по имени с числом.</p>
+  <div class="console"><span class="in"><span class="kw">function</span> ryad(n) {</span><span class="in">&nbsp;&nbsp;<span class="kw">let</span> uzor = <span class="str">""</span></span><span class="in">&nbsp;&nbsp;<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i <= n; i++) {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;uzor = uzor + <span class="str">"⭐"</span></span><span class="in">&nbsp;&nbsp;}</span><span class="in">&nbsp;&nbsp;console.log(uzor)</span><span class="in">}</span><span class="in">ryad(<span class="nNum">3</span>)</span><span class="out">⭐⭐⭐</span><span class="in">ryad(<span class="nNum">5</span>)</span><span class="out">⭐⭐⭐⭐⭐</span></div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Две дырки + тизер (для сильных)</h2>
+  <p class="lead">Параметров может быть несколько — через запятую. Заполняются по порядку.</p>
+  <div class="console"><span class="in"><span class="kw">function</span> ploshad(a, b) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Площадь: "</span> + (a * b))</span><span class="in">}</span><span class="in">ploshad(<span class="nNum">3</span>, <span class="nNum">4</span>)</span><span class="out">Площадь: 12</span></div>
+  <div class="tip">
+    <div class="tip-icon">🔮</div>
+    <div>На будущее: команда умеет не только печатать, но и <strong>отдавать</strong> результат обратно — словом <code>return</code>. Про него — на следующих уроках.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Топ-5 ошибок новичка</h2>
+  <div class="err">1. <strong>Вызвал без скобок.</strong> <code>privet</code> показывает тело функции. Запускает только <code>privet()</code>.</div>
+  <div class="err">2. <strong>Объявил, но не вызвал.</strong> <code>function</code> сам не печатает — нужен вызов. Это не ошибка, просто ничего не вывелось.</div>
+  <div class="err">3. <strong>Имя в скобках без кавычек.</strong> <code>privet(Саня)</code> → ошибка. Текст — в кавычках: <code>privet("Саня")</code>.</div>
+  <div class="err">4. <strong>Кавычки-«ёлочки».</strong> Только английские <code>"</code> или <code>'</code>, не <code>«</code> и не <code>»</code>.</div>
+  <div class="err">5. <strong>Русская раскладка.</strong> <code>function</code> — английскими буквами. Забытая <code>{</code> / <code>}</code> — тоже частая.</div>
+  <div class="tip">
+    <div class="tip-icon">🛠</div>
+    <div>Если <strong>«ничего не происходит»</strong> — почти всегда забыты скобки вызова. Допиши <code>()</code> к имени команды.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Что дальше</h2>
+  <p>Теперь у тебя весь чистый язык: программа <strong>хранит</strong> (переменные), <strong>выбирает</strong> (<code>if</code>), <strong>повторяет</strong> (циклы) и зовёт <strong>свои команды</strong> (функции). Но пока всё это живёт в консоли и пропадает вместе с вкладкой. На следующем уроке дадим коду свой дом — настоящий редактор и файл. А потом вернём кнопки, и команда оживёт на клике.</p>
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>Хочешь вперёд? Сделай команду <code>privetVsem</code>, которая здоровается с несколькими именами. Честный учебник — <strong>developer.mozilla.org</strong>, раздел JavaScript.</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для занятия 2.9 · «Своя команда». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>
