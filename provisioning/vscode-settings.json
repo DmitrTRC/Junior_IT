@@ -1,0 +1,14 @@
+{
+  "editor.fontSize": 17,
+  "editor.tabSize": 2,
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "boundary",
+  "editor.bracketPairColorization.enabled": true,
+  "files.autoSave": "off",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "terminal.integrated.fontSize": 15,
+  "workbench.startupEditor": "none",
+  "telemetry.telemetryLevel": "off",
+  "update.showReleaseNotes": false
+}
