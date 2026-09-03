@@ -1,0 +1,47 @@
+<!-- ДЕМКА «арт» · урок 2.8 (разминка). Чистый язык в консоли: цикл спрашивает, if проверяет, копилка копит бусины.
+     Ничего нового относительно 2.5–2.7. Эстетика: тёплая, Fraunces-вайб. Героиня — Лиза. Без DOM.
+     Шрифт Georgia — намеренный системный Cyrillic-safe фолбэк под Fraunces-вайб (Fraunces на Google Fonts без кириллицы, «Лиза» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ART · консоль · всё вместе</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:Georgia,'Times New Roman',serif; text-align:center; padding:56px 20px; min-height:100vh; }
+  .label { letter-spacing:4px; font-size:13px; font-family:monospace; opacity:0.6; }
+  h1 { font-size:50px; font-style:italic; margin:10px 0 2px; }
+  .sub { font-size:16px; opacity:0.7; margin-bottom:28px; }
+  .console { background:#15151c; color:#f0f0f0; border-radius:14px; padding:20px 22px; max-width:660px; margin:0 auto;
+    text-align:left; font-family:'JetBrains Mono','Courier New',monospace; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#ff9100; font-weight:700; }
+  .console .l { display:block; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { font-size:14px; opacity:0.65; margin-top:24px; }
+  .hint b { color:#ff9100; font-style:italic; }
+</style></head>
+<body>
+  <div class="label">// ART MODE · CONSOLE</div>
+  <h1>Лиза · бусины</h1>
+  <div class="sub">в ряду 5 бусин — сколько всего в узоре?</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> ochki = <span class="num">0</span></span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt;= <span class="num">3</span>; i++) {</span><span class="l">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(<span class="str">"В узоре "</span> + i + <span class="str">" рядов по 5 бусин — сколько всего?"</span>))</span><span class="l">&nbsp;&nbsp;<span class="kw">if</span> (otvet === <span class="num">5</span> * i) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="num">1</span></span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✦ Верно, ряд готов"</span>)</span><span class="l">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"· Мимо. Было: "</span> + (<span class="num">5</span> * i))</span><span class="l">&nbsp;&nbsp;}</span><span class="l">}</span><span class="l">alert(<span class="str">"🎨 Лиза, собрано рядов: "</span> + ochki + <span class="str">" из 3"</span>)</span></div>
+
+  <div class="hint">Цикл ведёт узор ряд за рядом, <b>if проверяет ответ</b>, копилка считает собранное. Без единой кнопки.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let ochki = 0;
+        for (let i = 1; i <= 3; i++) {
+          let otvet = Number(prompt("В узоре " + i + " рядов по 5 бусин — сколько всего?"));
+          if (otvet === 5 * i) {
+            ochki = ochki + 1;
+            console.log("✦ Верно, ряд готов");
+          } else {
+            console.log("· Мимо. Было: " + (5 * i));
+          }
+        }
+        console.log("🎨 Лиза, собрано рядов: " + ochki + " из 3");
+        alert("🎨 Лиза, собрано рядов: " + ochki + " из 3");
+      }, 400);
+    });
+  </script>
+</body></html>

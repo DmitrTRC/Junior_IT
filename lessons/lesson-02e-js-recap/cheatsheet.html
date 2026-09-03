@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Разминка — собираем тренажёр</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '{ }';
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 88px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .desc code {
+    background: #faf7f2; color: #1a1a1a; white-space: normal;
+    padding: 2px 6px; font-size: 12px;
+  }
+
+  /* блок «консоль браузера» */
+  .console {
+    background: #15151c;
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .console .in  { color: #f0f0f0; display: block; }
+  .console .in::before  { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { color: #7fd0ff; display: block; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw  { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  .err {
+    background: rgba(255,87,34,0.08);
+    border-left: 4px solid #ff5722;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #ff5722; }
+  .err code { background: #1a1a1a; color: #fff; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* три кирпича */
+  .bricks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 6px; }
+  .brick {
+    background: #16213e;
+    color: #fff;
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .brick .n {
+    font-family: 'JetBrains Mono', monospace;
+    color: #ffd60a; font-size: 13px; letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .brick h3 { font-size: 17px; margin-bottom: 6px; }
+  .brick p { font-size: 13.5px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+    .bricks { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Всё вместе:<br>тренажёр</h1>
+  <p>разминка · переменные + if + цикл · урок 2.8</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Три кирпича, которые уже твои</h2>
+  <p class="lead">Сегодня ни одного нового слова. Всё, что нужно, ты уже проходил — просто раньше по отдельности, а теперь кладём друг на друга.</p>
+  <div class="bricks">
+    <div class="brick">
+      <div class="n">2.5</div>
+      <h3>Хранит</h3>
+      <p>Коробочка <code style="color:#ffd60a">let</code>, склейка текста через <code style="color:#ffd60a">+</code>, вопрос через <code style="color:#ffd60a">prompt</code>.</p>
+    </div>
+    <div class="brick">
+      <div class="n">2.6</div>
+      <h3>Выбирает</h3>
+      <p><code style="color:#ffd60a">if / else</code> — сравнил через <code style="color:#ffd60a">===</code> и пошёл по своей дороге.</p>
+    </div>
+    <div class="brick">
+      <div class="n">2.7</div>
+      <h3>Повторяет</h3>
+      <p><code style="color:#ffd60a">for</code> со счётчиком <code style="color:#ffd60a">i</code> — повторит хоть 5, хоть 500 раз.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Кирпич 1: коробочка и текст</h2>
+  <p class="lead">Коробочка хранит значение, <code>+</code> между текстами — <strong>склеивает</strong>, а не складывает. Цифра в кавычках — это текст, не число.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> imya = <span class="str">"Саня"</span></span><span class="in"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="in">console.log(<span class="str">"Привет, "</span> + imya + <span class="str">"! Очков: "</span> + ochki)</span><span class="out">Привет, Саня! Очков: 0</span><span class="com">// а вот ловушка:</span><span class="in">console.log(<span class="str">"7"</span> + <span class="nNum">1</span>)</span><span class="out">71</span></div>
+  <div class="tip">
+    <div class="tip-icon">🔑</div>
+    <div>Получилось <strong>71, а не 8</strong>: к тексту <code>+</code> приклеивает. Хочешь считать — сначала преврати текст в число.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Кирпич 2: спросить и проверить</h2>
+  <p class="lead"><code>prompt</code> отдаёт текст — оборачиваем в <code>Number</code>. Сравниваем всегда тремя равно <code>===</code>.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> otvet = Number(prompt(<span class="str">"Сколько будет 7 × 3?"</span>))</span><span class="in"><span class="kw">if</span> (otvet === <span class="nNum">21</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: 21"</span>)</span><span class="in">}</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>Number(prompt(…))</code>
+    <div class="desc"><strong>Спросить число.</strong> Без <code>Number</code> в коробочке окажется текст — и сравнение всегда даст «Мимо».</div>
+  </div>
+  <div class="item">
+    <code>===</code>
+    <div class="desc"><strong>Сравнить.</strong> Один <code>=</code> кладёт значение — тогда <code>if</code> сработает всегда.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Кирпич 3: повторить</h2>
+  <p class="lead">В круглых скобках через <code>;</code> три части: <strong>старт</strong>; <strong>условие</strong>; <strong>шаг</strong>. Счётчик <code>i</code> — не только «какой это повтор», но и данные для каждого шага.</p>
+  <div class="console"><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Вопрос номер "</span> + i)</span><span class="in">}</span><span class="com">// i будет 1, 2, 3, 4, 5</span></div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Собираем: тренажёр целиком</h2>
+  <p class="lead">Главное за урок. Цикл задаёт вопрос, <code>if</code> проверяет ответ, копилка считает очки. Три кирпича друг на друге.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="in"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="in">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="in">&nbsp;&nbsp;<span class="kw">if</span> (otvet === chislo * i) {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="nNum">1</span></span><span class="in">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="in">&nbsp;&nbsp;}</span><span class="in">}</span><span class="in">console.log(<span class="str">"Очки: "</span> + ochki + <span class="str">" из 5"</span>)</span><span class="out">Очки: 4 из 5</span></div>
+  <div class="tip">
+    <div class="tip-icon">🧱</div>
+    <div>Скобки стоят <strong>в скобках</strong>: <code>if</code> живёт внутри <code>for</code>. Считай пары сверху вниз — на каждую открытую <code>{</code> должна найтись закрытая <code>}</code>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Копилка очков</h2>
+  <p class="lead">Копилка — обычная коробочка, которая растёт. Главное — где её заводить.</p>
+  <div class="item">
+    <code>let ochki = 0</code>
+    <div class="desc"><strong>До цикла.</strong> Если завести внутри — будет обнуляться на каждом повторе, и в конце останется ноль.</div>
+  </div>
+  <div class="item">
+    <code>ochki = ochki + 1</code>
+    <div class="desc"><strong>Внутри цикла</strong>, в ветке «верно». «Возьми, что было, прибавь один, положи обратно».</div>
+  </div>
+  <div class="item">
+    <code>console.log(ochki)</code>
+    <div class="desc"><strong>После цикла.</strong> Когда все повторы закончились — печатаем итог.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Оценка в конце (три ветки)</h2>
+  <p class="lead">Между <code>if</code> и <code>else</code> помещается сколько угодно веток <code>else if</code>. Проверяются сверху вниз, сработает первая подошедшая.</p>
+  <div class="console"><span class="in"><span class="kw">if</span> (ochki === <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"🏆 Идеально!"</span>)</span><span class="in">} <span class="kw">else if</span> (ochki >= <span class="nNum">3</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"👍 Неплохо после каникул"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Ещё разок — станет легче"</span>)</span><span class="in">}</span></div>
+</section>
+
+<section>
+  <h2><span class="num">⚠️</span>Топ-5 ошибок после перерыва</h2>
+  <div class="err">1. <strong>Забыл <code>Number</code>.</strong> <code>prompt</code> отдаёт текст, <code>"21"</code> не равно <code>21</code> → тренажёр всегда говорит «Мимо».</div>
+  <div class="err">2. <strong><code>=</code> вместо <code>===</code>.</strong> Один <code>=</code> кладёт значение → тренажёр всегда говорит «Верно».</div>
+  <div class="err">3. <strong>Потерянная скобка.</strong> Сегодня <code>{</code> внутри <code>{</code> — считай пары сверху вниз.</div>
+  <div class="err">4. <strong>Копилка внутри цикла.</strong> <code>let ochki = 0</code> должна стоять <strong>до</strong> <code>for</code>, иначе обнуляется.</div>
+  <div class="err">5. <strong>Кавычки-«ёлочки» и русская раскладка.</strong> Только английские <code>"</code>, команды — английскими буквами.</div>
+  <div class="tip">
+    <div class="tip-icon">🛠</div>
+    <div>Тренажёр отвечает <strong>одно и то же на любой ответ</strong>? Смотри пункты 1 и 2 — это они, почти всегда.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Что дальше</h2>
+  <p>Посмотри на свой тренажёр ещё раз. Видишь кусок «задать вопрос и проверить ответ»? Он один, а пользоваться им хочется и в тренажёре умножения, и в тренажёре сложения. Копировать руками — скучно.</p>
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>На следующем уроке научимся упаковывать такой кусок в <strong>свою команду с именем</strong> — как <code>console.log</code>, только твою собственную. Честный учебник — <strong>developer.mozilla.org</strong>, раздел JavaScript.</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для занятия 2.8 · «Разминка: собираем тренажёр». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

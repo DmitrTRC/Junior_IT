@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашка · Разминка — собираем тренажёр</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px 60px;
+    line-height: 1.6;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 50px 40px;
+    border-radius: 24px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '✓';
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 220px;
+    font-weight: 700;
+    opacity: 0.16;
+    line-height: 1;
+  }
+  header .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+  header h1 {
+    font-size: 46px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+  header p { font-size: 18px; max-width: 520px; font-weight: 600; }
+
+  section {
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .step {
+    background: #ffd60a;
+    color: #1a1a1a;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  p { margin-bottom: 12px; font-size: 16px; color: #333; }
+  p strong { color: #1a1a1a; font-weight: 800; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+
+  /* блок «консоль» */
+  .console {
+    background: #15151c;
+    color: #f0f0f0;
+    padding: 20px 22px;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin: 14px 0;
+  }
+  .console .in { display: block; }
+  .console .in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { display: block; color: #7fd0ff; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+
+  .tasks { list-style: none; counter-reset: tsk; }
+  .tasks li {
+    counter-increment: tsk;
+    padding: 16px 16px 16px 60px;
+    margin-bottom: 10px;
+    background: #faf7f2;
+    border-radius: 12px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .tasks li::before {
+    content: counter(tsk);
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    width: 30px; height: 30px;
+    background: #1a1a1a;
+    color: #ffd60a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .tasks li code { background: #1a1a1a; }
+
+  /* мягкая пояснительная плашка */
+  .soft {
+    background: #16213e;
+    color: rgba(255,255,255,0.82);
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-top: 14px;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .soft .ic { font-size: 20px; flex-shrink: 0; }
+  .soft strong { color: #fff; }
+
+  .bonus {
+    background: linear-gradient(135deg, #00e676, #00ffc8);
+    color: #1a1a2e;
+    padding: 24px;
+    border-radius: 16px;
+    margin-top: 16px;
+  }
+  .bonus h3 { font-size: 18px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .bonus ul { list-style: none; }
+  .bonus ul li { padding: 6px 0 6px 24px; position: relative; font-weight: 600; }
+  .bonus ul li::before { content: '✦'; position: absolute; left: 0; }
+  .bonus code { background: rgba(0,0,0,0.25); color: #fff; }
+
+  .check {
+    background: #ffd60a;
+    color: #2a1a00;
+    padding: 20px 24px;
+    border-radius: 14px;
+    font-weight: 800;
+    margin-top: 16px;
+    font-size: 16px;
+  }
+  .check h3 { margin-bottom: 8px; font-size: 18px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    header h1 { font-size: 34px; }
+    section { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <div class="kicker">// домашнее задание · урок 2.8</div>
+  <h1>Тренажёр,<br>который твой</h1>
+  <p>Сегодня легко: запусти готовый тренажёр и переделай его под себя. Ничего нового — только то, что мы уже умеем.</p>
+</header>
+
+<section>
+  <h2><span class="step">1</span>Открой консоль</h2>
+  <p>Открой любой сайт (хоть пустую вкладку) и нажми <strong>F12</strong> → вкладка <strong>Console</strong>. На Mac в Chrome — <code>Cmd + Opt + J</code>.</p>
+  <p>Печатаешь строку → <strong>Enter</strong> → браузер отвечает. Всё как до каникул.</p>
+</section>
+
+<section>
+  <h2><span class="step">2</span>Запусти тренажёр</h2>
+  <p>Это ровно та программа, которую мы собрали на уроке. Скопируй её в консоль целиком и нажми Enter — она задаст пять вопросов.</p>
+<div class="console"><span class="in"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="in"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="in">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="in">&nbsp;&nbsp;<span class="kw">if</span> (otvet === chislo * i) {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="nNum">1</span></span><span class="in">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="in">&nbsp;&nbsp;}</span><span class="in">}</span><span class="in">console.log(<span class="str">"Очки: "</span> + ochki + <span class="str">" из 5"</span>)</span><span class="out">Очки: 4 из 5</span></div>
+  <div class="soft">
+    <div class="ic">💛</div>
+    <div>Не пугайся длины: тут нет ничего нового. <strong>Цикл</strong> задаёт вопрос, <strong>if</strong> проверяет ответ, <strong>копилка</strong> считает очки — всё это ты уже проходил, просто раньше по отдельности.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">3</span>Сделай его СВОИМ</h2>
+  <p>Три маленькие правки. Каждая — одна строка. После каждой запускай заново и смотри, что изменилось.</p>
+  <ol class="tasks">
+    <li>Поменяй <code>chislo = 7</code> на своё любимое число</li>
+    <li>Сделай не пять вопросов, а три: <code>i &lt;= 3</code>. Не забудь текст <code>"из 5"</code> в конце</li>
+    <li>Замени умножение на сложение: <code>×</code> в вопросе и <code>chislo * i</code> в проверке → <code>chislo + i</code></li>
+  </ol>
+  <div class="soft">
+    <div class="ic">🧩</div>
+    <div>В третьей правке <code>chislo * i</code> встречается <strong>дважды</strong> — в проверке и в подсказке. Поменяешь одно и забудешь другое — тренажёр начнёт врать. Найди оба.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">4</span>Оценка своими словами</h2>
+  <p>Допиши в самый конец, после цикла. Фразы придумай свои — какие сам хотел бы увидеть.</p>
+<div class="console"><span class="in"><span class="kw">if</span> (ochki === <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"🏆 Идеально!"</span>)</span><span class="in">} <span class="kw">else if</span> (ochki >= <span class="nNum">3</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"👍 Неплохо"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Ещё разок — станет легче"</span>)</span><span class="in">}</span></div>
+
+  <div class="bonus">
+    <h3>✦ Если хочется посложнее (по желанию)</h3>
+    <ul>
+      <li>Заведи вторую копилку <code>oshibki</code> и выведи в конце обе</li>
+      <li>Спроси число не в коде, а у человека: <code>let chislo = Number(prompt("Таблица на какое число?"))</code></li>
+      <li>Сделай, чтобы после неверного ответа программа печатала пример ещё раз — но <strong>без</strong> второй попытки</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">5</span>Покажи и пришли</h2>
+  <ol class="tasks">
+    <li>Дай пройти тренажёр родителям — сколько очков наберут?</li>
+    <li>Сделай скриншот <strong>консоли</strong> (Print Screen на Windows, Cmd+Shift+4 на Mac)</li>
+    <li>Пришли скриншот мне в чат — посмотрю, дам совет</li>
+  </ol>
+
+  <div class="check">
+    <h3>✓ Проверь себя</h3>
+    Если тренажёр спросил твоё число, на верный ответ сказал «Верно», на неверный — «Мимо», а в конце показал очки, — <strong>задача выполнена</strong>. Красава.
+  </div>
+</section>
+
+<section style="text-align: center; background: #1a1a1a; color: #fff;">
+  <h2 style="border-color: #ffd60a; justify-content: center; color:#fff;">Не работает?</h2>
+  <p style="color: #ccc;">Это нормально, у всех так бывает. Проверь по порядку:</p>
+  <p style="color: #ccc;">→ Всегда «Мимо»? Ответ из <code style="background:#333">prompt</code> обёрнут в <code style="background:#333">Number(...)</code>?<br>
+  → Всегда «Верно»? В <code style="background:#333">if</code> стоит <code style="background:#333">===</code>, а не один <code style="background:#333">=</code>?<br>
+  → Очки всегда 0 или 1? <code style="background:#333">let ochki = 0</code> должна быть <strong>до</strong> цикла, не внутри<br>
+  → «Красная ошибка»? Посчитай фигурные скобки: у каждой <code style="background:#333">{</code> есть своя <code style="background:#333">}</code><br>
+  → Кавычки английские <code style="background:#333">"</code>, команды английскими буквами?</p>
+  <p style="color: #ffd60a; margin-top: 20px;">Совсем застрял — открой шпаргалку урока, там весь тренажёр по кусочкам. Не помогло — пиши мне.</p>
+</section>
+
+</div>
+
+</body>
+</html>
