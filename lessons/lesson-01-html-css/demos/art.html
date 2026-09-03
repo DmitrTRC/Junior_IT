@@ -1,3 +1,5 @@
+<!-- ДЕМКА «арт» · урок 1 (HTML+CSS). Страница-визитка иллюстратора Лизы.
+     Шрифт Georgia — намеренный системный Cyrillic-safe фолбэк под Fraunces-вайб (Fraunces на Google Fonts без кириллицы, «Привет, я Лиза» рисовалось бы чужим шрифтом). -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +7,7 @@
 <title>Лиза — рисует</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -35,7 +37,7 @@
     font-size: 18px;
   }
   .kicker {
-    font-family: 'Fraunces', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-style: italic;
     color: #c9956d;
     font-size: 15px;
@@ -45,9 +47,9 @@
     font-weight: 400;
   }
   h1 {
-    font-family: 'Fraunces', serif;
-    font-size: 72px;
-    line-height: 1;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 64px;
+    line-height: 1.05;
     font-weight: 400;
     color: #2a1f17;
     margin-bottom: 18px;
@@ -59,7 +61,7 @@
     font-weight: 800;
   }
   .subtitle {
-    font-family: 'Fraunces', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 19px;
     color: #6e5a47;
     max-width: 480px;
@@ -86,8 +88,8 @@
 
   section { margin-bottom: 60px; }
   h2 {
-    font-family: 'Fraunces', serif;
-    font-size: 36px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 32px;
     font-weight: 400;
     margin-bottom: 22px;
     color: #2a1f17;
@@ -143,7 +145,7 @@
   ul li::before {
     content: counter(li, lower-roman) '.';
     counter-increment: li;
-    font-family: 'Fraunces', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-style: italic;
     color: #c9956d;
     font-size: 15px;
@@ -151,7 +153,7 @@
   }
   ul { counter-reset: li; }
   ul li strong {
-    font-family: 'Fraunces', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-weight: 600;
     color: #2a1f17;
   }
@@ -161,7 +163,7 @@
     border-left: 4px solid #c9956d;
     padding: 30px 30px 30px 36px;
     margin: 40px 0;
-    font-family: 'Fraunces', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-style: italic;
     font-size: 22px;
     line-height: 1.5;
@@ -174,7 +176,7 @@
     content: '"';
     position: absolute;
     top: -10px; left: 18px;
-    font-family: 'Fraunces', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 80px;
     color: #c9956d;
     line-height: 1;
@@ -196,7 +198,7 @@
     border-top: 1px solid #d9c9b3;
   }
   .contact-label {
-    font-family: 'Fraunces', serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-style: italic;
     color: #c9956d;
     margin-bottom: 18px;
@@ -223,8 +225,8 @@
   }
 
   @media (max-width: 600px) {
-    h1 { font-size: 52px; }
-    h2 { font-size: 30px; }
+    h1 { font-size: 46px; }
+    h2 { font-size: 28px; }
   }
 </style>
 </head>

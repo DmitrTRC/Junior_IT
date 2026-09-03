@@ -1,3 +1,5 @@
+<!-- ДЕМКА «спорт» · урок 1 (HTML+CSS). Страница-визитка скейтера Сани.
+     Шрифт Arial Black — намеренный системный Cyrillic-safe фолбэк под Bebas-вайб (Bebas Neue на Google Fonts без кириллицы, «САНЯ» и «Мои трюки» рисовались бы чужим шрифтом). -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +7,7 @@
 <title>Саня — скейтер</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -29,20 +31,20 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 400px;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 300px;
     opacity: 0.07;
-    letter-spacing: -20px;
+    letter-spacing: -12px;
     pointer-events: none;
   }
   .container { max-width: 800px; margin: 0 auto; position: relative; }
 
   .hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 110px;
-    line-height: 0.9;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 74px;
+    line-height: 0.95;
     text-transform: uppercase;
-    letter-spacing: -3px;
+    letter-spacing: -1px;
     margin-bottom: 16px;
   }
   .hero h1 span {
@@ -97,9 +99,9 @@
 
   section { padding: 0 20px; margin-bottom: 50px; }
   h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 56px;
-    line-height: 1;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 38px;
+    line-height: 1.05;
     color: #1a1a1a;
     margin-bottom: 24px;
     letter-spacing: -1px;
@@ -130,16 +132,16 @@
     box-shadow: 9px 9px 0 #ff5722;
   }
   .trick-num {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Arial Black', Arial, sans-serif;
     font-size: 14px;
     color: #ff5722;
     letter-spacing: 3px;
     margin-bottom: 6px;
   }
   .trick-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    line-height: 1;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.05;
     margin-bottom: 8px;
   }
   .trick-desc { font-size: 14px; color: #555; line-height: 1.5; }
@@ -163,7 +165,7 @@
   }
   ul.spots li::before {
     content: '→';
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Arial Black', Arial, sans-serif;
     font-size: 28px;
     color: #ff5722;
   }
@@ -179,9 +181,9 @@
     padding: 50px 30px;
     margin: 0 0 50px;
     text-align: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
-    line-height: 1.1;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 26px;
+    line-height: 1.25;
   }
   .quote span { color: #ff5722; }
 
@@ -211,8 +213,8 @@
   }
 
   @media (max-width: 600px) {
-    .hero h1 { font-size: 64px; }
-    h2 { font-size: 40px; }
+    .hero h1 { font-size: 44px; }
+    h2 { font-size: 28px; }
   }
 </style>
 </head>
