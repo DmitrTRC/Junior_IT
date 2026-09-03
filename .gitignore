@@ -43,10 +43,8 @@ Thumbs.db
 desktop.ini
 .aos/state/
 
-# print booklet build
-print/node_modules/
-print/.book.html
-print/.shot*
+# print booklet build — тяжёлый (PDF, node_modules, parts), собирается локально
+print/
 
 # Python bytecode
 __pycache__/
