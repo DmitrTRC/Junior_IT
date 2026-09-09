@@ -8,4 +8,4 @@ requires: [cs/m-01-computer]
 terms:
   - {ru: бит, en: bit}
   - {ru: байт, en: byte}
-  - {ru: оперативная память, en: RAM}
+  - {ru: шестнадцатеричная система, en: hexadecimal}
