@@ -105,82 +105,12 @@ JetBrains Mono 400/700. Эстетики демок: спорт — `Arial Black
 
 ---
 
-## 🧩 Анатомия урока
-
-Каждый урок — папка `lessons/lesson-NN-тема/` с фиксированным набором файлов
-(эталон — `lesson-01-html-css/`):
-
-| Файл | Что это |
-|---|---|
-| `README.md` | навигация по уроку + «что ребёнок умеет к концу» |
-| `scenario.md` | сценарий с таймингом по минутам (+ чек-лист готовности в конце) |
-| `live-code.md` | пошаговый живой кодинг (~8 шагов) |
-| `glossary.md` | словарик терминов простыми словами |
-| `cheatsheet.html` | шпаргалка для детей (отправляется в чат в КОНЦЕ урока) |
-| `homework.html` | домашка-стартер (тоже в конце урока) |
-| `slides.html` | слайды для шаринга (переключение ← / →) |
-| `index-final.html` | резервный финальный код |
-| `demos/gamer.html` | демка геймер (тёмная, неон, `--cyan`/`--magenta`) |
-| `demos/sport.html` | демка спорт (яркая, `--orange`) |
-| `demos/art.html` | демка арт (тёплая, элегантная) |
-
-Шпаргалку и домашку отправляем **в конце** урока, не до.
-
-### Блок cs («Компьютер изнутри»)
-
-Теоретические уроки об устройстве компьютера: `lessons/lesson-cs-NN-slug/`,
-нумерация своя (cs-01, cs-02, …). Два осознанных отступления от анатомии:
-`live-code.md` — «живая схема» (режиссура сборки схемы по слайдам, кода нет),
-и одна интерактивная демка на урок вместо трёх эстетик. Слайдов больше
-обычного (12–14): сквозная схема собирается послойно. Это норма блока,
-не нарушение бренда.
-
----
-
-## 📁 Структура репозитория
-
-```
-Junior_IT/                      # PascalCase + подчёркивание
-├── index.html                  # лендинг = хаб курса (GH Pages root)
-├── README.md                   # бейджи + кастомный SVG-баннер
-├── LICENSE                     # MIT
-├── CLAUDE.md                   # этот файл
-├── .claude/                    # инфраструктура Claude CLI
-│   ├── settings.json           # shared permissions (в git)
-│   ├── settings.local.json     # личные permissions (gitignored)
-│   ├── commands/               # slash-команды
-│   └── agents/                 # сабагенты
-├── .github/
-│   ├── assets/banner.svg       # кастомный SVG-баннер
-│   └── workflows/deploy.yml    # GH Pages auto-deploy
-├── docs/                       # setup-guide.html, soft-vs-hard-skills.html
-├── lessons/                    # уроки (см. «Анатомия урока»)
-├── meta/                       # project-instructions.md, lesson-NN-postmortem.md
-└── students/                   # работы учеников (gitignored)
-```
-
----
-
 ## 🌐 Деплой и ссылки
 
 - **GitHub:** [DmitrTRC/Junior_IT](https://github.com/DmitrTRC/Junior_IT) (public, MIT)
 - **GH Pages:** https://dmitrtrc.github.io/Junior_IT/ — авто-деплой на каждый push в `main`
   (`.github/workflows/deploy.yml`). Отдельной сборки нет — отдаётся весь репо как есть.
 - Локальный предпросмотр: `python3 -m http.server 8000` из корня → http://localhost:8000
-
----
-
-## 🛠 Slash-команды (`.claude/commands/`)
-
-| Команда | Назначение |
-|---|---|
-| `/new-lesson NN slug "тема"` | развернуть новый урок по анатомии и бренду |
-| `/deploy ["сообщение"]` | ревью изменений → commit → push в main (триггерит GH Pages) |
-| `/postmortem NN` | разбор урока + выводы в `meta/lesson-NN-postmortem.md` |
-| `/brand-check [путь]` | аудит материалов на бренд + запреты |
-| `/parent-msg "тема"` | черновик сообщения родителям по правилам коммуникации |
-
-Сабагент `brand-guardian` — ревьюер материалов (бренд + запреты), вызывается через Task.
 
 ---
 
@@ -192,6 +122,8 @@ Junior_IT/                      # PascalCase + подчёркивание
 - Новые/переписанные материалы прогонять через `/brand-check` (или brand-guardian)
   до коммита.
 - `students/` и `graphify-out/` — приватное/генерируемое, не коммитим.
+- Анатомия урока (набор файлов, блок cs) — `meta/lesson-anatomy.md`. Читать перед
+  созданием или ревью урока.
 - Глубокий контекст: `meta/project-instructions.md` (полные инструкции проекта) и
   `meta/lesson-01-postmortem.md` (что сработало, что нет, открытые вопросы).
 

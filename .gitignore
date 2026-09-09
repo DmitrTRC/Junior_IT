@@ -49,3 +49,6 @@ print/
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Superpowers SDD — рабочие файлы исполнения планов
+.superpowers/
