@@ -1,0 +1,10 @@
+id: TRACK/m-NN-slug
+title: "Тема (topic in English)"
+track: TRACK
+level: core                # core | deep | optional
+minutes: 25
+textbook: []               # ["7:1.1"] — какие параграфы закрывает
+requires: []               # ["python/m-01-first-run"]
+terms:
+  - {ru: термин, en: term}
+homework: homework/TRACK-NN-slug
