@@ -1,0 +1,12 @@
+id: cs/m-01-computer
+title: "Компьютер изнутри (how a computer works)"
+track: cs
+level: core
+minutes: 60
+textbook: []
+requires: []
+terms:
+  - {ru: процессор, en: CPU}
+  - {ru: оперативная память, en: RAM}
+  - {ru: шина, en: bus}
+  - {ru: операционная система, en: operating system}

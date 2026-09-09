@@ -1,0 +1,12 @@
+id: web/m-03-js-console
+title: "Сам язык: консоль-калькулятор (JavaScript in the console)"
+track: web
+level: optional
+minutes: 75
+textbook: []
+requires: [web/m-02-js-alive]
+terms:
+  - {ru: консоль, en: console}
+  - {ru: переменная, en: variable}
+  - {ru: строка (текст), en: string}
+  - {ru: оператор, en: operator}

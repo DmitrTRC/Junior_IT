@@ -1,0 +1,11 @@
+id: web/m-01-html-css
+title: "Первый сайт: HTML и CSS (first web page)"
+track: web
+level: optional
+minutes: 75
+textbook: []
+requires: []
+terms:
+  - {ru: тег, en: tag}
+  - {ru: стиль, en: style}
+  - {ru: селектор, en: selector}

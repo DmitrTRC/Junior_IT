@@ -1,0 +1,11 @@
+id: web/m-02-js-alive
+title: "Оживляем сайт: первые скрипты на JavaScript (making it interactive)"
+track: web
+level: optional
+minutes: 75
+textbook: []
+requires: [web/m-01-html-css]
+terms:
+  - {ru: переменная, en: variable}
+  - {ru: обработчик события, en: event handler}
+  - {ru: всплывающее окно, en: alert}
