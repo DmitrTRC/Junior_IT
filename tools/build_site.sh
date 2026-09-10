@@ -27,6 +27,7 @@ rsync -a \
   --exclude 'TO_PARENTS/' \
   --exclude 'graphify-out/' \
   --exclude 'docs/superpowers/' \
+  --exclude '.superpowers/' \
   --exclude '.DS_Store' \
   --exclude '__pycache__/' \
   "$ROOT/" "$OUT/"
