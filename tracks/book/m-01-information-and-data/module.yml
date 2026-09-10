@@ -7,8 +7,12 @@ textbook: ["7:1.1"]
 requires: []
 terms:
   - {ru: информация, en: information}
-  - {ru: данные, en: data, note: "данные записаны, информация — то, что понял"}
+  - {ru: данные, en: data, note: "данные записаны, информация — то, что поняла"}
   - {ru: сигнал, en: signal}
   - {ru: непрерывный, en: continuous}
   - {ru: дискретный, en: discrete}
+  - {ru: свойства информации, en: information quality}
+  - {ru: достоверность, en: accuracy}
+  - {ru: актуальность, en: timeliness}
+  - {ru: полнота, en: completeness}
 homework: homework/book-01-information-sources

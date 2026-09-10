@@ -162,10 +162,12 @@
     min-width: 170px;
   }
   .prop-card b { display: block; color: var(--track); font-size: clamp(15px, 1.9vw, 24px); margin-bottom: 8px; }
+  .prop-card b i { font-style: italic; font-weight: 400; opacity: .7; font-size: .6em; margin-left: 4px; }
   .prop-card span { color: #aeb4cc; font-size: clamp(12px, 1.3vw, 17px); }
 
   /* S5: непрерывное / дискретное */
   .wave-wrap { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; justify-content: center; }
+  .wave-path { stroke: var(--track); }
   .bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
   .bars div { width: 10px; background: var(--track); border-radius: 3px 3px 0 0; }
 
@@ -252,10 +254,11 @@
   <div class="slide" id="s4">
     <div class="top-label">// такт 3 · свойства информации</div>
     <h2>Три вопроса к источнику</h2>
+    <div class="sub">наш рабочий срез свойств информации <span class="t">(information quality)</span> — в учебнике их шесть</div>
     <div class="props-grid">
-      <div class="prop-card"><b>достоверность</b><span>можно доверять?</span></div>
-      <div class="prop-card"><b>актуальность</b><span>не устарело?</span></div>
-      <div class="prop-card"><b>полнота</b><span>сказано всё?</span></div>
+      <div class="prop-card"><b>достоверность <i>(accuracy)</i></b><span>можно доверять?</span></div>
+      <div class="prop-card"><b>актуальность <i>(timeliness)</i></b><span>не устарело?</span></div>
+      <div class="prop-card"><b>полнота <i>(completeness)</i></b><span>сказано всё?</span></div>
     </div>
   </div>
 
@@ -265,8 +268,8 @@
     <h2>Непрерывное <span class="t">(continuous)</span> и дискретное <span class="t">(discrete)</span></h2>
     <div class="wave-wrap">
       <svg width="200" height="80" viewBox="0 0 200 80">
-        <path d="M0,40 C25,0 50,80 75,40 C100,0 125,80 150,40 C175,0 190,20 200,40"
-              fill="none" stroke="#7aa2ff" stroke-width="4" stroke-linecap="round"/>
+        <path class="wave-path" d="M0,40 C25,0 50,80 75,40 C100,0 125,80 150,40 C175,0 190,20 200,40"
+              fill="none" stroke-width="4" stroke-linecap="round"/>
       </svg>
       <div class="branch-arrow">→</div>
       <div class="bars">
