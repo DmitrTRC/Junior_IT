@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Слайды · Информация и данные</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14;
+    --card: #1a1a2e;
+    --yellow: #ffd60a;
+    --track: #7aa2ff;
+    --track-ink: #2b4fa8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Rubik', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck { width: 100vw; height: 100vh; position: relative; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw 10vh;
+    text-align: center;
+    gap: 2vh;
+  }
+  .slide.active { display: flex; }
+
+  .top-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(11px, 1.1vw, 16px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+  .slide h2 {
+    font-size: clamp(28px, 4vw, 58px);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -2px;
+  }
+  .slide h2 .t { color: var(--track); }
+  .sub {
+    color: #aeb4cc;
+    font-size: clamp(15px, 1.6vw, 24px);
+    line-height: 1.4;
+    max-width: 900px;
+  }
+
+  /* S1: титул */
+  #s1 { background: radial-gradient(ellipse at 30% 20%, #1a1a3e, var(--bg) 60%); }
+  #s1 .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(13px, 1.4vw, 22px);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  #s1 h1 {
+    font-size: clamp(44px, 8vw, 130px);
+    line-height: 0.98;
+    font-weight: 700;
+    letter-spacing: -3px;
+  }
+  #s1 h1 .em {
+    background: var(--track);
+    color: var(--bg);
+    padding: 0 18px;
+    display: inline-block;
+    transform: rotate(-2deg);
+    margin: 8px 0;
+  }
+  #s1 .tagline {
+    font-size: clamp(18px, 2.6vw, 38px);
+    font-weight: 700;
+    color: #dfe3f5;
+    letter-spacing: -1px;
+    margin-top: 6px;
+  }
+
+  /* карточка термина (общая) */
+  .card {
+    background: var(--card);
+    border-left: 6px solid var(--track);
+    border-radius: 16px;
+    padding: 26px 32px;
+    max-width: 900px;
+    text-align: left;
+    font-size: clamp(16px, 1.8vw, 26px);
+    color: #dfe3f5;
+    line-height: 1.5;
+  }
+
+  /* S6: итог */
+  .bridge {
+    border: 2px solid var(--track);
+    border-radius: 16px;
+    padding: 20px 26px;
+    max-width: 900px;
+    font-size: clamp(14px, 1.5vw, 21px);
+    line-height: 1.45;
+    color: #dfe3f5;
+  }
+  .bridge b { color: var(--track); }
+
+  /* S2: светофор */
+  .tlight {
+    width: 72px;
+    background: #111119;
+    border-radius: 16px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  }
+  .tlight .b { width: 44px; height: 44px; border-radius: 50%; background: #2a2a35; }
+  .tlight .b.on { background: #ff3b30; box-shadow: 0 0 26px 8px rgba(255,59,48,.65); }
+
+  /* S3: данные -> информация */
+  .branch-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .databox {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(34px, 5vw, 56px);
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--track);
+    padding: 6px 34px;
+    border-radius: 14px;
+  }
+  .branch-arrow { color: var(--track); font-size: clamp(20px, 2.4vw, 30px); }
+  .chips-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
+  .chip-out {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.15);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: clamp(13px, 1.3vw, 18px);
+    color: #dfe3f5;
+  }
+
+  /* S4: три свойства */
+  .props-grid { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
+  .prop-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 18px 22px;
+    min-width: 170px;
+  }
+  .prop-card b { display: block; color: var(--track); font-size: clamp(15px, 1.9vw, 24px); margin-bottom: 8px; }
+  .prop-card span { color: #aeb4cc; font-size: clamp(12px, 1.3vw, 17px); }
+
+  /* S5: непрерывное / дискретное */
+  .wave-wrap { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; justify-content: center; }
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+  .bars div { width: 10px; background: var(--track); border-radius: 3px 3px 0 0; }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 16px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .nav button:hover { background: var(--track); color: var(--bg); }
+  .nav .indicator {
+    color: var(--yellow);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  .keyhint {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- S1: титул -->
+  <div class="slide active" id="s1">
+    <div class="kicker">// трек book · модуль 01</div>
+    <h1><span class="em">Информация</span><br>и данные</h1>
+    <div class="tagline">information and data — не одно и то же</div>
+  </div>
+
+  <!-- S2: сигнал -->
+  <div class="slide" id="s2">
+    <div class="top-label">// такт 1 · сигнал и информация</div>
+    <h2>Сигнал <span class="t">(signal)</span> — это ещё не смысл</h2>
+    <div class="tlight"><div class="b on"></div><div class="b"></div><div class="b"></div></div>
+    <div class="card">Красный свет — это просто фотоны определённой длины волны, летящие в глаз. «Стой» появляется не в лампочке — а у тебя в голове, когда ты знаешь правило.</div>
+  </div>
+
+  <!-- S3: данные vs информация -->
+  <div class="slide" id="s3">
+    <div class="top-label">// такт 2 · данные и информация</div>
+    <h2>Данные <span class="t">(data)</span> vs Информация <span class="t">(information)</span></h2>
+    <div class="branch-wrap">
+      <div class="databox">19</div>
+      <div class="branch-arrow">↓ ↓ ↓</div>
+      <div class="chips-row">
+        <div class="chip-out">мне 19 лет</div>
+        <div class="chip-out">+19 на улице</div>
+        <div class="chip-out">кв. №19</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: три свойства -->
+  <div class="slide" id="s4">
+    <div class="top-label">// такт 3 · свойства информации</div>
+    <h2>Три вопроса к источнику</h2>
+    <div class="props-grid">
+      <div class="prop-card"><b>достоверность</b><span>можно доверять?</span></div>
+      <div class="prop-card"><b>актуальность</b><span>не устарело?</span></div>
+      <div class="prop-card"><b>полнота</b><span>сказано всё?</span></div>
+    </div>
+  </div>
+
+  <!-- S5: непрерывное / дискретное -->
+  <div class="slide" id="s5">
+    <div class="top-label">// такт 4 · непрерывное и дискретное</div>
+    <h2>Непрерывное <span class="t">(continuous)</span> и дискретное <span class="t">(discrete)</span></h2>
+    <div class="wave-wrap">
+      <svg width="200" height="80" viewBox="0 0 200 80">
+        <path d="M0,40 C25,0 50,80 75,40 C100,0 125,80 150,40 C175,0 190,20 200,40"
+              fill="none" stroke="#7aa2ff" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <div class="branch-arrow">→</div>
+      <div class="bars">
+        <div style="height:30%"></div><div style="height:70%"></div><div style="height:45%"></div>
+        <div style="height:90%"></div><div style="height:20%"></div><div style="height:60%"></div>
+        <div style="height:80%"></div><div style="height:35%"></div>
+      </div>
+    </div>
+    <div class="sub">Голос в Zoom — плавная волна. Компьютер режет её на числа тысячи раз в секунду.</div>
+  </div>
+
+  <!-- S6: итог -->
+  <div class="slide" id="s6">
+    <div class="top-label">// что запомнить</div>
+    <h2>Итог</h2>
+    <div class="bridge">Данные <b>записаны</b>, информация — то, что ты <b>поняла</b>. Компьютер видит только 0 и 1 — как из них собирается всё остальное, разберём дальше.</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">‹</button>
+  <span class="indicator"><span id="cur">1</span> / 6</span>
+  <button onclick="next()">›</button>
+</div>
+
+<div class="keyhint">← / → переключение слайдов</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.getElementById('cur').textContent = cur + 1;
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+
+</body>
+</html>

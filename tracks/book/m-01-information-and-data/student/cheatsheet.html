@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Информация и данные</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+    --yellow: #ffd60a; --green: #00e676; --bg-light: #faf7f2;
+    --track: #7aa2ff; --track-ink: #2b4fa8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: #e8e8f0;
+    font-family: Manrope, system-ui, sans-serif;
+    margin: 0; padding: 2rem 1.25rem; line-height: 1.6;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; }
+  h1 { font-family: Rubik, system-ui, sans-serif; color: var(--track); margin: .6rem 0 .1rem; font-size: 1.7rem; }
+  .sub { color: #9aa0b5; margin: 0 0 1.25rem; font-size: .95rem; }
+  .chip {
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: .75rem;
+    letter-spacing: .08em; color: var(--bg); background: var(--track);
+    padding: .15rem .5rem; border-radius: .25rem;
+  }
+  .card {
+    background: var(--card); border-left: 4px solid var(--track);
+    border-radius: .75rem; padding: 1rem 1.25rem; margin: 1rem 0;
+  }
+  .card h2 {
+    font-family: Rubik, system-ui, sans-serif; font-size: 1.05rem;
+    margin: 0 0 .5rem; color: #fff;
+  }
+  .card p { margin: .4rem 0; }
+  code { font-family: "JetBrains Mono", monospace; background: var(--card-2); padding: .1rem .35rem; border-radius: .3rem; }
+  .term { color: var(--yellow); }
+  .term span { color: #9aa0b5; font-style: italic; }
+  .props { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin-top: .5rem; }
+  .props div {
+    background: var(--card-2); border-radius: .6rem; padding: .7rem .6rem;
+    font-size: .88rem; text-align: center;
+  }
+  .props b { display: block; color: var(--track); font-size: .95rem; margin-bottom: .25rem; }
+  .oneliner {
+    font-family: "JetBrains Mono", monospace; font-size: .85rem; color: var(--green);
+    background: var(--card-2); border-radius: .5rem; padding: .6rem .8rem; margin-top: .6rem;
+  }
+  footer { color: #6b7190; font-size: .8rem; margin-top: 1.5rem; }
+  @media print {
+    body { background: var(--bg-light); color: #1a1a1a; }
+    h1 { color: var(--track-ink); }
+    .sub { color: #555; }
+    .chip { background: var(--track-ink); color: #fff; }
+    .card { background: #fff; border-left-color: var(--track-ink); box-shadow: 0 0 0 1px #e5e0d8; }
+    .card h2 { color: #1a1a1a; }
+    code { background: #f0ede8; }
+    .props div { background: #f0ede8; }
+    .props b { color: var(--track-ink); }
+    .oneliner { background: #f0ede8; color: #1a1a1a; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="chip">BOOK</span>
+  <h1>Информация и данные</h1>
+  <p class="sub">information and data · §1.1, 7 класс</p>
+
+  <div class="card">
+    <h2>Сигнал <span class="term">(signal)</span> — это ещё не смысл</h2>
+    <p>Напряжение на проводе, свет светофора, звук — это просто физика,
+    <span class="term">сигнал <span>(signal)</span></span>. Смысл появляется не
+    в проводе и не в лампочке, а у тебя в голове — когда ты знаешь правило,
+    как этот сигнал читать. Без правила — просто огонёк.</p>
+  </div>
+
+  <div class="card">
+    <h2>Данные <span class="term">(data)</span> vs Информация <span class="term">(information)</span></h2>
+    <p>Строка <code>19</code> сама по себе — это
+    <span class="term">данные <span>(data)</span></span>: записанный символ,
+    без контекста. Она превращается в разную
+    <span class="term">информацию <span>(information)</span></span> в
+    зависимости от того, что ты знаешь вокруг: «мне 19 лет» — возраст,
+    «+19 на улице» — температура, «кв. №19» — адрес.</p>
+    <p class="oneliner">данные записаны · информация — то, что ты поняла</p>
+  </div>
+
+  <div class="card">
+    <h2>Три вопроса к любому источнику</h2>
+    <p>Прежде чем поверить источнику — проверь его по трём свойствам
+    информации из учебника:</p>
+    <div class="props">
+      <div><b>достоверность</b>можно доверять?</div>
+      <div><b>актуальность</b>не устарело?</div>
+      <div><b>полнота</b>сказано всё?</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Непрерывное <span class="term">(continuous)</span> и дискретное <span class="term">(discrete)</span></h2>
+    <p>Твой голос — плавная волна без скачков,
+    <span class="term">непрерывная <span>(continuous)</span></span>. Чтобы
+    отправить её по Zoom, её режут на тысячи чисел в секунду —
+    <span class="term">дискретных <span>(discrete)</span></span> — а потом
+    снова собирают в волну на другой стороне.</p>
+    <p class="oneliner">непрерывное течёт · дискретное посчитано по шагам</p>
+  </div>
+
+  <footer>Junior_IT · трек book · модуль 01</footer>
+</div>
+</body>
+</html>
