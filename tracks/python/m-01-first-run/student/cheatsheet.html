@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Первый запуск Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+    --yellow: #ffd60a; --green: #00e676; --bg-light: #faf7f2;
+    --track: #00ffc8; --track-ink: #00806a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: #e8e8f0;
+    font-family: Manrope, system-ui, sans-serif;
+    margin: 0; padding: 2rem 1.25rem; line-height: 1.6;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; }
+  h1 { font-family: Rubik, system-ui, sans-serif; color: var(--track); margin: .6rem 0 .1rem; font-size: 1.7rem; }
+  .sub { color: #9aa0b5; margin: 0 0 1.25rem; font-size: .95rem; }
+  .chip {
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: .75rem;
+    letter-spacing: .08em; color: var(--bg); background: var(--track);
+    padding: .15rem .5rem; border-radius: .25rem;
+  }
+  .card {
+    background: var(--card); border-left: 4px solid var(--track);
+    border-radius: .75rem; padding: 1rem 1.25rem; margin: 1rem 0;
+  }
+  .card h2 {
+    font-family: Rubik, system-ui, sans-serif; font-size: 1.05rem;
+    margin: 0 0 .5rem; color: #fff;
+  }
+  .card p { margin: .4rem 0; }
+  code, pre { font-family: "JetBrains Mono", monospace; }
+  code { background: var(--card-2); padding: .1rem .35rem; border-radius: .3rem; }
+  pre { background: var(--card-2); padding: .8rem .9rem; border-radius: .5rem; overflow-x: auto; font-size: .85rem; margin: .6rem 0; }
+  pre .pmt { color: var(--track); }
+  pre .out { color: #9aa0b5; }
+  pre .caret { color: #ffb86c; }
+  pre .err { color: #ff6b6b; font-weight: 700; }
+  .term { color: var(--yellow); }
+  .term span { color: #9aa0b5; font-style: italic; }
+  .split { display: flex; gap: .9rem; flex-wrap: wrap; }
+  .split > div { flex: 1 1 200px; }
+  .badge-row { display: flex; flex-direction: column; gap: .4rem; margin-top: .6rem; font-size: .85rem; }
+  .badge-row div { display: flex; gap: .5rem; align-items: baseline; }
+  .badge {
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: .75rem;
+    color: var(--bg); background: var(--yellow); border-radius: 50%;
+    width: 1.3rem; height: 1.3rem; min-width: 1.3rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .badge.b2 { background: #8be9fd; }
+  .oneliner {
+    font-family: "JetBrains Mono", monospace; font-size: .85rem; color: var(--green);
+    background: var(--card-2); border-radius: .5rem; padding: .6rem .8rem; margin-top: .6rem;
+  }
+  .rescue { border-left-color: var(--yellow); }
+  .rescue code { color: var(--yellow); }
+  footer { color: #6b7190; font-size: .8rem; margin-top: 1.5rem; }
+  @media print {
+    body { background: var(--bg-light); color: #1a1a1a; }
+    h1 { color: var(--track-ink); }
+    .sub { color: #555; }
+    .chip { background: var(--track-ink); color: #fff; }
+    .card { background: #fff; border-left-color: var(--track-ink); box-shadow: 0 0 0 1px #e5e0d8; }
+    .card h2 { color: #1a1a1a; }
+    code { background: #f0ede8; }
+    pre { background: #f0ede8; color: #1a1a1a; }
+    pre .pmt { color: var(--track-ink); }
+    pre .err { color: #a8005f; }
+    .oneliner { background: #f0ede8; color: #1a1a1a; }
+    .rescue { border-left-color: #b38f00; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="chip">PY</span>
+  <h1>Первый запуск Python</h1>
+  <p class="sub">first run · §5.1, 8 класс</p>
+
+  <div class="card">
+    <h2>REPL <span class="term">(read-eval-print loop)</span> — запуск и выход</h2>
+    <p>Одна команда — сразу ответ. Пока на экране <code>>>></code>, ты разговариваешь с Python напрямую.</p>
+<pre><span class="pmt">%</span> python3
+<span class="out">Python 3.12.0</span>
+<span class="pmt">>>></span> 2 + 2
+<span class="out">4</span>
+<span class="pmt">>>></span> exit()
+<span class="out">%</span></pre>
+  </div>
+
+  <div class="card">
+    <h2>print — строка <span class="term">(string)</span> и число</h2>
+    <p>Текст — обязательно в кавычках. Без них Python ищет имя переменной, а не текст.</p>
+<pre>print("Привет")
+<span class="out">Привет</span>
+
+print(2 + 2)
+<span class="out">4</span></pre>
+  </div>
+
+  <div class="card">
+    <h2>Файл и запуск</h2>
+    <p><code>nano</code> — редактор текста прямо в терминале. Сохранить: <code>Ctrl+O</code> → <code>Enter</code>. Выйти: <code>Ctrl+X</code>.</p>
+<pre>touch hello.py
+nano hello.py
+<span class="out"># три строки с print, сохранить, выйти</span>
+python3 hello.py</pre>
+    <div class="oneliner">в &gt;&gt;&gt; ты разговариваешь — в файле пишешь письмо: он дочитывает всё и только потом отвечает</div>
+  </div>
+
+  <div class="card">
+    <h2>Ошибка <span class="term">(traceback)</span> — читай снизу вверх</h2>
+<pre>  File "hello.py", line 1
+    print("Привет! Меня зовут Аня)
+          <span class="caret">^</span>
+<span class="err">SyntaxError: unterminated string literal (detected at line 1)</span></pre>
+    <div class="badge-row">
+      <div><span class="badge">1</span> снизу — что случилось: строка осталась незакрытой</div>
+      <div><span class="badge b2">2</span> выше — где: файл, строка 1, стрелочка на месте пропажи</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Термины</h2>
+    <p><span class="term">Интерпретатор <span>(interpreter)</span></span> — читает код и сразу выполняет, строка за строкой.
+    <span class="term">Скрипт <span>(script)</span></span> — программа, записанная в файл.
+    <span class="term">Вывод <span>(output)</span></span> — то, что напечатал <code>print</code>.</p>
+  </div>
+
+  <div class="card rescue">
+    <h2>Если что-то пошло не так</h2>
+    <p>Красный текст — не поломка компьютера, а Python вежливо объясняет, что не понял, и говорит, где смотреть.</p>
+    <p>Не в той папке — <code>pwd</code>, чтобы посмотреть, и <code>cd ~/code/junior_it</code>, чтобы вернуться.</p>
+  </div>
+
+  <footer>Junior_IT · трек python · модуль 01</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Слайды · Первый запуск Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14;
+    --card: #1a1a2e;
+    --yellow: #ffd60a;
+    --track: #00ffc8;
+    --track-ink: #00806a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Rubik', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck { width: 100vw; height: 100vh; position: relative; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw 10vh;
+    text-align: center;
+    gap: 2vh;
+  }
+  .slide.active { display: flex; }
+
+  .top-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(11px, 1.1vw, 16px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+  .slide h2 {
+    font-size: clamp(28px, 4vw, 58px);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -2px;
+  }
+  .slide h2 .t { color: var(--track); }
+  .sub {
+    color: #aeb4cc;
+    font-size: clamp(15px, 1.6vw, 24px);
+    line-height: 1.4;
+    max-width: 900px;
+  }
+  .sub .t { color: var(--track); }
+
+  /* S1: титул */
+  #s1 { background: radial-gradient(ellipse at 30% 20%, #103330, var(--bg) 60%); }
+  #s1 .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(13px, 1.4vw, 22px);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  #s1 h1 {
+    font-size: clamp(48px, 9vw, 150px);
+    line-height: 0.92;
+    font-weight: 700;
+    letter-spacing: -3px;
+  }
+  #s1 h1 .em {
+    background: var(--track);
+    color: var(--bg);
+    padding: 0 18px;
+    display: inline-block;
+    transform: rotate(-2deg);
+    margin: 8px 0;
+  }
+  #s1 .tagline {
+    font-size: clamp(16px, 2vw, 30px);
+    font-weight: 700;
+    color: #dfe3f5;
+    letter-spacing: -0.5px;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* терминальное окно, общее для нескольких слайдов */
+  .term {
+    background: #0e0e16;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    overflow: hidden;
+    text-align: left;
+    max-width: 640px;
+    width: 100%;
+  }
+  .term .bar {
+    background: #1e1e2c;
+    padding: 10px 14px;
+    display: flex;
+    gap: 8px;
+  }
+  .term .bar span { width: 12px; height: 12px; border-radius: 50%; }
+  .term .bar span:nth-child(1) { background: #ff5f57; }
+  .term .bar span:nth-child(2) { background: #febc2e; }
+  .term .bar span:nth-child(3) { background: #28c840; }
+  .term .body {
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 1.5vw, 19px);
+    line-height: 1.7;
+    color: #dfe3f5;
+    white-space: pre-wrap;
+  }
+  .term .body .pmt { color: var(--track); }
+  .term .body .out { color: #9aa0b5; }
+  .term .body .caret { color: #ffb86c; }
+  .term .body .err { color: #ff6b6b; font-weight: 700; }
+
+  /* карточка (общая) */
+  .card {
+    background: var(--card);
+    border-left: 6px solid var(--track);
+    border-radius: 16px;
+    padding: 26px 32px;
+    max-width: 900px;
+    text-align: left;
+    font-size: clamp(16px, 1.8vw, 26px);
+    color: #dfe3f5;
+    line-height: 1.5;
+  }
+
+  /* итог / мост (общее) */
+  .bridge {
+    border: 2px solid var(--track);
+    border-radius: 16px;
+    padding: 20px 26px;
+    max-width: 900px;
+    font-size: clamp(14px, 1.5vw, 21px);
+    line-height: 1.45;
+    color: #dfe3f5;
+  }
+  .bridge b { color: var(--track); }
+  .bridge code { font-family: 'JetBrains Mono', monospace; color: var(--track); }
+
+  /* S2: JS vs Python */
+  .compare { display: flex; gap: 28px; align-items: stretch; flex-wrap: wrap; justify-content: center; max-width: 1000px; }
+  .lang-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px 26px;
+    text-align: left;
+    min-width: 260px;
+    max-width: 320px;
+  }
+  .lang-card .cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .lang-card.js .cap { color: #aeb4cc; }
+  .lang-card.py .cap { color: var(--track); }
+  .lang-card code {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 1.3vw, 17px);
+    background: #0e0e16;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .lang-card p { color: #aeb4cc; font-size: clamp(12px, 1.2vw, 16px); margin: 0; }
+
+  /* S3: REPL — термин интерпретатор */
+  /* использует .term и .card выше */
+
+  /* S4: REPL vs файл */
+  .split-wrap { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
+  .split-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px 26px;
+    min-width: 220px;
+    text-align: center;
+  }
+  .split-box .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(28px, 3.4vw, 46px);
+    color: var(--track);
+    margin-bottom: 10px;
+  }
+  .split-box .cap { font-size: clamp(15px, 1.6vw, 22px); font-weight: 700; margin-bottom: 8px; }
+  .split-box p { color: #aeb4cc; font-size: clamp(12px, 1.3vw, 17px); margin: 0; }
+
+  /* S5: traceback снизу вверх */
+  .tb-legend { display: flex; flex-direction: column; gap: 10px; max-width: 640px; width: 100%; text-align: left; }
+  .tb-legend div {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: clamp(12px, 1.3vw, 17px);
+    color: #dfe3f5;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .tb-legend b {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--yellow);
+    color: var(--bg);
+    width: 26px; height: 26px; min-width: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tb-legend div.loc b { background: #8be9fd; }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 16px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .nav button:hover { background: var(--track); color: var(--bg); }
+  .nav .indicator {
+    color: var(--yellow);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  .keyhint {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- S1: титул -->
+  <div class="slide active" id="s1">
+    <div class="kicker">// трек python · модуль 01</div>
+    <h1>Первый запуск <span class="em">Python</span></h1>
+    <div class="tagline">first run — от &gt;&gt;&gt; до первой ошибки</div>
+  </div>
+
+  <!-- S2: почему Python, а не JS -->
+  <div class="slide" id="s2">
+    <div class="top-label">// такт 1 · почему Python, а не JS</div>
+    <h2>Один и тот же <span class="t">«Привет»</span>, разное место</h2>
+    <div class="compare">
+      <div class="lang-card js">
+        <div class="cap">JS · в браузере</div>
+        <code>console.log("Привет")</code>
+        <p>смотришь в консоли браузера — страница обязательно должна быть открыта</p>
+      </div>
+      <div class="lang-card py">
+        <div class="cap">Python · где угодно</div>
+        <code>print("Привет")</code>
+        <p>прямо в терминале — браузер вообще не нужен</p>
+      </div>
+    </div>
+    <div class="sub">Программировать ты уже умеешь. Меняется место, где это работает, — не то, как ты думаешь.</div>
+  </div>
+
+  <!-- S3: интерпретатор -->
+  <div class="slide" id="s3">
+    <div class="top-label">// термин · REPL</div>
+    <h2>Интерпретатор <span class="t">(interpreter)</span></h2>
+    <div class="term">
+      <div class="bar"><span></span><span></span><span></span></div>
+      <div class="body"><span class="pmt">%</span> python3
+<span class="out">Python 3.12.0</span>
+<span class="pmt">>>></span> 2 + 2
+<span class="out">4</span></div>
+    </div>
+    <div class="card">Программа, которая читает твою строку и сразу её выполняет — что в браузере с JS, что здесь. Разница только в том, что тут этот процесс виден напрямую: окно называется REPL, а <code style="font-family:'JetBrains Mono',monospace;color:var(--track)">&gt;&gt;&gt;</code> — его способ сказать «жду следующую строку».</div>
+  </div>
+
+  <!-- S4: REPL vs файл -->
+  <div class="slide" id="s4">
+    <div class="top-label">// такт 3 · REPL и файл — это разные режимы</div>
+    <h2>Разговор <span class="t">против</span> письма</h2>
+    <div class="split-wrap">
+      <div class="split-box">
+        <div class="icon">&gt;&gt;&gt;</div>
+        <div class="cap">REPL</div>
+        <p>строка → Enter → сразу ответ</p>
+      </div>
+      <div class="split-box">
+        <div class="icon">.py</div>
+        <div class="cap">файл</div>
+        <p>пишешь всё → запускаешь → ответ в конце</p>
+      </div>
+    </div>
+    <div class="bridge">В <b>&gt;&gt;&gt;</b> ты <b>разговариваешь</b> с Python. В файле — ты пишешь ему <b>письмо</b>: он дочитывает всё целиком и только потом отвечает.</div>
+  </div>
+
+  <!-- S5: traceback -->
+  <div class="slide" id="s5">
+    <div class="top-label">// такт 4 · ошибка нарочно</div>
+    <h2>Traceback читается <span class="t">снизу вверх</span></h2>
+    <div class="term">
+      <div class="bar"><span></span><span></span><span></span></div>
+      <div class="body">  File "hello.py", line 1
+    print("Привет! Меня зовут Аня)
+          <span class="caret">^</span>
+<span class="err">SyntaxError: unterminated string literal (detected at line 1)</span></div>
+    </div>
+    <div class="tb-legend">
+      <div><b>1</b> снизу — что случилось: строка осталась незакрытой</div>
+      <div class="loc"><b>2</b> выше — где: файл, строка 1, стрелочка на месте пропажи</div>
+    </div>
+  </div>
+
+  <!-- S6: итог -->
+  <div class="slide" id="s6">
+    <div class="top-label">// что запомнить</div>
+    <h2>Итог</h2>
+    <div class="bridge"><b>REPL</b> — для проб, <b>файл</b> — для программ. Ошибка — не поломка, а подсказка: читай снизу вверх. Это глава <b>восьмого класса</b> — школа дойдёт через год. А по соседству в учебнике та же программа есть и на <b>Паскале</b>: язык меняется, алгоритм — нет.</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">‹</button>
+  <span class="indicator"><span id="cur">1</span> / 6</span>
+  <button onclick="next()">›</button>
+</div>
+
+<div class="keyhint">← / → переключение слайдов</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.getElementById('cur').textContent = cur + 1;
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+
+</body>
+</html>
