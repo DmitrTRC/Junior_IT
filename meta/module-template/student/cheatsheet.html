@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · ТЕМА</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+    --yellow: #ffd60a; --green: #00e676; --bg-light: #faf7f2;
+    --track: #00ffc8; --track-ink: #00806a;
+  }
+  body {
+    background: var(--bg); color: #e8e8f0;
+    font-family: Manrope, system-ui, sans-serif;
+    margin: 0; padding: 2rem 1.25rem; line-height: 1.6;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; }
+  h1 { font-family: Rubik, system-ui, sans-serif; color: var(--track); margin: 0 0 .25rem; }
+  .chip {
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: .75rem;
+    letter-spacing: .08em; color: var(--bg); background: var(--track);
+    padding: .15rem .5rem; border-radius: .25rem;
+  }
+  .card {
+    background: var(--card); border-left: 4px solid var(--track);
+    border-radius: .75rem; padding: 1rem 1.25rem; margin: 1rem 0;
+  }
+  code, pre { font-family: "JetBrains Mono", monospace; }
+  pre { background: var(--card-2); padding: .9rem 1rem; border-radius: .5rem; overflow-x: auto; }
+  .term { color: var(--yellow); }
+  .term span { color: #9aa0b5; font-style: italic; }
+  @media print {
+    body { background: var(--bg-light); color: #1a1a1a; }
+    h1 { color: var(--track-ink); }
+    .chip { background: var(--track-ink); color: #fff; }
+    .card { background: #fff; border-left-color: var(--track-ink); }
+    pre { background: #f0ede8; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="chip">PY</span>
+  <h1>Тема урока</h1>
+  <div class="card">
+    <p class="term">Термин <span>(term)</span> — что это одной строкой.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока 2.7. Если живой кодинг в консоли сломался —
+     открываешь этот файл и ведёшь по нему: тут все строки урока с ответами.
+     Это НЕ страница с DOM — урок целиком в консоли, тут просто шпаргалка ведущего. -->
+<title>Консоль урока 2.7 — рабочий конспект</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 28px; }
+  .step { margin-bottom: 22px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .console {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 18px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto;
+  }
+  .console .in { display: block; color: #f0f0f0; }
+  .console .in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { display: block; color: #7fd0ff; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { display: block; color: #6272a4; font-style: italic; }
+  .console .kw { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  footer { margin-top: 30px; color: #6a6a78; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Консоль урока 2.7 · <span class="y">рабочий конспект</span></h1>
+  <div class="sub">// резерв ведущего · открываешь, если живой кодинг встал · F12 → Console</div>
+
+  <div class="step">
+    <h2><span class="n">1</span>Повторять руками — скучно</h2>
+    <div class="console"><span class="in">console.log(<span class="str">"Привет 1"</span>)</span><span class="in">console.log(<span class="str">"Привет 2"</span>)</span><span class="com">// …а если тысячу раз? нужен цикл</span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span>while — повторяй, пока (кульминация №1)</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> i = <span class="nNum">1</span></span><span class="in"><span class="kw">while</span> (i <= <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Привет "</span> + i)</span><span class="in">&nbsp;&nbsp;i = i + <span class="nNum">1</span></span><span class="in">}</span><span class="com">// Привет 1 … Привет 5</span></div>
+    <div class="note">Счётчик: <strong>let i = 1</strong> завести · <strong>i &lt;= 5</strong> проверить · <strong>i = i + 1</strong> увеличить.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span>Бесконечный цикл (главная ловушка)</h2>
+    <div class="console"><span class="com">// НЕ запускать насовсем — для показа!</span><span class="in"><span class="kw">let</span> i = <span class="nNum">1</span></span><span class="in"><span class="kw">while</span> (i <= <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"застрял на "</span> + i)</span><span class="com">&nbsp;&nbsp;// забыли i = i + 1</span><span class="in">}</span></div>
+    <div class="note">Счётчик не растёт → условие всегда <span style="color:#ff79c6">true</span> → крутится вечно. Лечение: <strong>закрыть вкладку</strong>.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span>Цикл умеет считать</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> i = <span class="nNum">1</span></span><span class="in"><span class="kw">let</span> sum = <span class="nNum">0</span></span><span class="in"><span class="kw">while</span> (i <= <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;sum = sum + i</span><span class="in">&nbsp;&nbsp;i = i + <span class="nNum">1</span></span><span class="in">}</span><span class="in">console.log(<span class="str">"Сумма: "</span> + sum)</span><span class="out">Сумма: <span class="nNum">15</span></span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span>for — та же тройка в строку (кульминация №2)</h2>
+    <div class="console"><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i <= <span class="nNum">5</span>; i++) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Привет "</span> + i)</span><span class="in">}</span><span class="com">// тот же результат, что у while</span></div>
+    <div class="note">Через <strong>;</strong> три части: <strong>let i = 1</strong> старт · <strong>i &lt;= 5</strong> условие · <strong>i++</strong> шаг (= i = i + 1).</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span>Таблица умножения (главное за урок)</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> n = Number(prompt(<span class="str">"Какое число умножаем?"</span>))</span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i <= <span class="nNum">10</span>; i++) {</span><span class="in">&nbsp;&nbsp;console.log(n + <span class="str">" × "</span> + i + <span class="str">" = "</span> + (n * i))</span><span class="in">}</span></div>
+    <div class="note">Ввёл <strong>7</strong> → от <code>7 × 1 = 7</code> до <code>7 × 10 = 70</code>. Скобки <code>(n * i)</code> — посчитать, потом приклеить.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">7</span>Бонус: обратный отсчёт и узор</h2>
+    <div class="console"><span class="com">// вниз — i--</span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">5</span>; i >= <span class="nNum">1</span>; i--) { console.log(i) }</span><span class="in">console.log(<span class="str">"Поехали! 🚀"</span>)</span><span class="com">// узор: копим строку</span><span class="in"><span class="kw">let</span> uzor = <span class="str">""</span></span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i <= <span class="nNum">5</span>; i++) { uzor = uzor + <span class="str">"⭐"</span>; console.log(uzor) }</span></div>
+  </div>
+
+  <footer>// конец конспекта · следующий урок — переменные, if и циклы на кнопках страницы</footer>
+
+</div>
+</body>
+</html>

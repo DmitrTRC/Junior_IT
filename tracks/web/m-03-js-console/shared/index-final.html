@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока 2.5. Если живой кодинг в консоли сломался —
+     открываешь этот файл и ведёшь по нему: тут все строки урока с ответами.
+     Это НЕ страница с DOM — урок целиком в консоли, тут просто шпаргалка ведущего. -->
+<title>Консоль урока 2.5 — рабочий конспект</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 28px; }
+  .step { margin-bottom: 22px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .console {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 18px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto;
+  }
+  .console .in { display: block; color: #f0f0f0; }
+  .console .in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { display: block; color: #7fd0ff; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { display: block; color: #6272a4; font-style: italic; }
+  .console .kw { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  footer { margin-top: 30px; color: #6a6a78; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Консоль урока 2.5 · <span class="y">рабочий конспект</span></h1>
+  <div class="sub">// резерв ведущего · открываешь, если живой кодинг встал · F12 → Console</div>
+
+  <div class="step">
+    <h2><span class="n">1</span>Калькулятор</h2>
+    <div class="console"><span class="in"><span class="nNum">100</span> / <span class="nNum">7</span></span><span class="out"><span class="nNum">14.2857142857...</span></span><span class="in">(<span class="nNum">5</span> + <span class="nNum">3</span>) * <span class="nNum">10</span></span><span class="out"><span class="nNum">80</span></span><span class="com">// 15% от 1500</span><span class="in"><span class="nNum">1500</span> * <span class="nNum">0.15</span></span><span class="out"><span class="nNum">225</span></span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span>Переменная — коробочка</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> cena = <span class="nNum">250</span></span><span class="in">cena * <span class="nNum">3</span></span><span class="out"><span class="nNum">750</span></span><span class="com">// перезапись — без let</span><span class="in">cena = <span class="nNum">300</span></span><span class="in">cena * <span class="nNum">3</span></span><span class="out"><span class="nNum">900</span></span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span>Число и текст</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> imya = <span class="str">"Артём"</span></span><span class="in"><span class="str">"Привет, "</span> + imya</span><span class="out"><span class="str">"Привет, Артём"</span></span><span class="com">// ловушка: кавычки делают текст</span><span class="in"><span class="str">"5"</span> + <span class="nNum">5</span></span><span class="out"><span class="str">"55"</span></span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span>Спроси и покажи</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> name = prompt(<span class="str">"Как тебя зовут?"</span>)</span><span class="in">alert(<span class="str">"Привет, "</span> + name + <span class="str">"!"</span>)</span><span class="in">console.log(<span class="str">"name ="</span>, name)</span></div>
+    <div class="note"><strong>prompt</strong> всегда возвращает текст. <strong>alert</strong> — окошко. <strong>console.log</strong> — печать в консоль.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span>Мини-программа (кульминация)</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> vozrast = Number(prompt(<span class="str">"Сколько тебе лет?"</span>))</span><span class="in"><span class="kw">let</span> god = <span class="nNum">2026</span> - vozrast</span><span class="in">alert(<span class="str">"Ты родился примерно в "</span> + god)</span></div>
+    <div class="note"><strong>Number(...)</strong> превращает текст из prompt в число. Спросили → посчитали → показали.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span>Бонус: калькулятор чаевых</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> summa = Number(prompt(<span class="str">"Сумма счёта?"</span>))</span><span class="in">alert(<span class="str">"Чаевые 10%: "</span> + (summa * <span class="nNum">0.1</span>))</span></div>
+  </div>
+
+  <footer>// конец конспекта · следующий урок — этот же язык на кнопках страницы</footer>
+
+</div>
+</body>
+</html>

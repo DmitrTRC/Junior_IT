@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока 2.10. Если показ в редакторе сломался (не поставился,
+     завис, не видно экрана) — открываешь этот файл и ведёшь по нему: тут все шаги
+     установки и весь файл целиком, готовым к копированию. -->
+<title>Конспект урока 2.10 — VS Code, рабочий конспект</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 28px; }
+  .step { margin-bottom: 22px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .console {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 18px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto;
+  }
+  .console .in { display: block; color: #f0f0f0; }
+  .console .in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { display: block; color: #7fd0ff; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { display: block; color: #6272a4; font-style: italic; }
+  .console .kw { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  /* файл в редакторе — без стрелочек консоли */
+  .editor { background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px; overflow: hidden; }
+  .editor .tab {
+    background: #15151c; color: #b8b8c4; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; padding: 9px 18px; border-bottom: 1px solid #2a2a38;
+  }
+  .editor .tab .dot { color: #ffd60a; font-weight: 700; }
+  .editor .code { padding: 18px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.9; overflow-x: auto; }
+  .editor .code .l { display: block; color: #f0f0f0; }
+  .editor .code .com { display: block; color: #6272a4; font-style: italic; }
+  .editor .code .kw { color: #8be9fd; }
+  .editor .code .str { color: #f1fa8c; }
+  .editor .code .nNum { color: #ffb86c; }
+  ol.plain { margin: 6px 0 0 20px; }
+  ol.plain li { padding: 3px 0; color: #d8d8e2; font-size: 14.5px; }
+  ol.plain code { font-family: 'JetBrains Mono', monospace; color: #ffd60a; font-size: 13px; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  footer { margin-top: 30px; color: #6a6a78; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Конспект урока 2.10 · <span class="y">VS Code</span></h1>
+  <div class="sub">// резерв ведущего · открываешь, если показ в редакторе встал</div>
+
+  <div class="step">
+    <h2><span class="n">0</span>Боль: консоль ничего не помнит</h2>
+    <div class="console"><span class="com">// набрать ВЕСЬ тренажёр с разминки вручную, запустить — работает</span><span class="com">// закрыть вкладку · открыть заново · консоль пустая</span><span class="in"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="com">// …и все пятнадцать строк заново. Каждый раз.</span></div>
+    <div class="note">Тут пауза. «Тренажёр, который вы собирали <strong>целый урок</strong>, — исчез.» Набирай медленно: чувство «не хочу делать это каждый раз» и есть завязка урока.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">1</span>Ставим (Windows)</h2>
+    <ol class="plain">
+      <li><code>code.visualstudio.com</code> → <strong>Download for Windows</strong></li>
+      <li>Запустить скачанный файл → принять лицензию → <strong>Далее</strong> до конца</li>
+      <li>Галочки <code>Add to PATH</code> и <code>Open with Code</code> — не снимать</li>
+      <li>Установить → Запустить</li>
+    </ol>
+    <div class="note"><strong>Mac:</strong> Download for Mac → перетащить приложение в <strong>Программы</strong>.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span>Папка проекта (грабля №2)</h2>
+    <ol class="plain">
+      <li>Создать на Рабочем столе папку <code>Junior_IT</code></li>
+      <li>В VS Code: <code>File → Open Folder…</code> → выбрать её</li>
+      <li>Слева в Проводнике появилось название папки</li>
+    </ol>
+    <div class="note">Открываем <strong>папку</strong>, не файл. <code>Open Folder</code>, не <code>Open File</code> — иначе слева пусто.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span>Первый файл и точка js</h2>
+    <div class="editor">
+      <div class="tab"><span class="dot">●</span> trenajer.js</div>
+      <div class="code"><span class="l">console.log(<span class="str">"Привет из файла!"</span>)</span></div>
+    </div>
+    <div class="note">Цвета появились из-за <strong>.js</strong> в имени. Дальше <strong>Ctrl + S</strong> — точка на вкладке исчезает.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span>Файл целиком (главное за урок)</h2>
+    <div class="editor">
+      <div class="tab"><span class="dot">●</span> trenajer.js</div>
+      <div class="code"><span class="com">// мой тренажёр · урок 2.8</span><span class="l">&nbsp;</span><span class="l"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="l"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="l">&nbsp;</span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="l">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="l">&nbsp;&nbsp;<span class="kw">if</span> (otvet === chislo * i) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="nNum">1</span></span><span class="l">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="l">&nbsp;&nbsp;}</span><span class="l">}</span><span class="l">&nbsp;</span><span class="l">console.log(<span class="str">"Очки: "</span> + ochki + <span class="str">" из 5"</span>)</span></div>
+    </div>
+    <div class="note">Всё это — код из урока 2.8. <strong>Ничего нового про язык сегодня нет.</strong></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span>Три подарка редактора</h2>
+    <ol class="plain">
+      <li>Стереть <code>}</code> → красная волна <strong>до запуска</strong>. Вернуть — волна ушла</li>
+      <li>Курсор на <code>{</code> → подсвечивается её пара (у нас <code>if</code> внутри <code>for</code>)</li>
+      <li><code>Ctrl+S</code> → закрыть VS Code → открыть: файл на месте</li>
+    </ol>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span>Запуск (кульминация)</h2>
+    <ol class="plain">
+      <li><code>Ctrl + S</code> — сохранить</li>
+      <li><code>Ctrl + A</code> — выделить всё</li>
+      <li><code>Ctrl + C</code> — копировать</li>
+      <li>Браузер → <code>F12</code> → Console → <code>Ctrl + V</code> → Enter</li>
+    </ol>
+    <div class="console"><span class="out">✅ Верно!</span><span class="out">❌ Мимо. Правильно: <span class="nNum">21</span></span><span class="out">✅ Верно!</span><span class="out">Очки: <span class="nNum">4</span> из 5</span></div>
+    <div class="note"><strong>Кульминация — дальше:</strong> поменять <code>let chislo = 7</code> на <code>9</code>, сохранить, скопировать, вставить. «В консоли пришлось бы перенабрать все пятнадцать строк. В файле — одна цифра. Вот зачем нужен файл.»</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">7</span>Мостик вперёд (не пропускать)</h2>
+    <div class="note">«Копировать каждый раз — неудобно, и я специально это не прятал. На следующем уроке подключим файл прямо к странице: нажал кнопку — тренажёр запустился. <strong>Файл не удаляйте.</strong>»</div>
+  </div>
+
+  <footer>// конец конспекта · следующий урок — кнопка на странице запускает твой тренажёр</footer>
+
+</div>
+</body>
+</html>

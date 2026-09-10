@@ -1,0 +1,42 @@
+<!-- ДЕМКА «геймер» · урок 2.5. Чистый язык в консоли: спросить → посчитать → показать.
+     Эстетика: неон, cyan/magenta. Никакого DOM — только prompt/alert. Показываем как «вау». -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMER · консоль</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { background:#0a0a14; color:#fff; font-family:'JetBrains Mono',monospace; text-align:center; padding:50px 20px; min-height:100vh; }
+  .label { color:#00ffc8; letter-spacing:4px; font-size:14px; }
+  h1 { font-size:40px; color:#00ffc8; text-shadow:0 0 16px #00ffc8; letter-spacing:2px; margin:6px 0 4px; }
+  .sub { color:#ff0096; text-shadow:0 0 12px #ff0096; font-size:15px; margin-bottom:26px; }
+  .console { background:#15151c; border:1px solid rgba(0,255,200,0.3); border-radius:12px; padding:20px 22px;
+    max-width:560px; margin:0 auto; text-align:left; font-size:14px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#00ffc8; font-weight:700; }
+  .console .l { display:block; color:#f0f0f0; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { color:#7a7a8a; font-size:13px; margin-top:22px; }
+  .hint b { color:#00ffc8; }
+</style></head>
+<body>
+  <div class="label">// GAMER MODE · CONSOLE</div>
+  <h1>MAX_LVL_99</h1>
+  <div class="sub">калькулятор XP — три строки языка</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> frags = Number(prompt(<span class="str">"Сколько фрагов за катку?"</span>))</span><span class="l"><span class="kw">let</span> xp = frags * <span class="num">10</span></span><span class="l">alert(<span class="str">"🎮 +"</span> + xp + <span class="str">" XP! До 1000 осталось "</span> + (<span class="num">1000</span> - xp))</span></div>
+
+  <div class="hint">Ни одной кнопки на странице. Всё считает <b>сам язык</b> в консоли.</div>
+
+  <script>
+    // авто-показ для вебинара: спросит и ответит сам. Дома можно вставить тот же код в консоль.
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let frags = Number(prompt("Сколько фрагов за катку?"));
+        let xp = frags * 10;
+        console.log("frags =", frags, "| xp =", xp);
+        alert("🎮 +" + xp + " XP! До 1000 осталось " + (1000 - xp));
+      }, 400);
+    });
+  </script>
+</body></html>

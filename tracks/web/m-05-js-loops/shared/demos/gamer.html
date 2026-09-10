@@ -1,0 +1,44 @@
+<!-- ДЕМКА «геймер» · урок 2.7. Чистый язык в консоли: спросить число → обратный отсчёт до старта босса циклом.
+     Эстетика: неон, cyan/magenta. Никакого DOM — только prompt/console.log/alert + for. Показываем как «вау». -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMER · консоль · повторяет</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { background:#0a0a14; color:#fff; font-family:'JetBrains Mono',monospace; text-align:center; padding:50px 20px; min-height:100vh; }
+  .label { color:#00ffc8; letter-spacing:4px; font-size:14px; }
+  h1 { font-size:40px; color:#00ffc8; text-shadow:0 0 16px #00ffc8; letter-spacing:2px; margin:6px 0 4px; }
+  .sub { color:#ff0096; text-shadow:0 0 12px #ff0096; font-size:15px; margin-bottom:26px; }
+  .console { background:#15151c; border:1px solid rgba(0,255,200,0.3); border-radius:12px; padding:20px 22px;
+    max-width:600px; margin:0 auto; text-align:left; font-size:14px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#00ffc8; font-weight:700; }
+  .console .l { display:block; color:#f0f0f0; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { color:#7a7a8a; font-size:13px; margin-top:22px; }
+  .hint b { color:#00ffc8; }
+</style></head>
+<body>
+  <div class="label">// GAMER MODE · CONSOLE</div>
+  <h1>BOSS_INC</h1>
+  <div class="sub">обратный отсчёт до босса — повторяет цикл</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> start = Number(prompt(<span class="str">"С какого числа отсчёт до босса?"</span>))</span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = start; i >= <span class="num">1</span>; i--) {</span><span class="l">&nbsp;&nbsp;console.log(<span class="str">"⏳ "</span> + i)</span><span class="l">}</span><span class="l">alert(<span class="str">"🎮 СТАРТ! Босс заходит в бой"</span>)</span></div>
+
+  <div class="hint">Одна команда — <b>столько повторов, сколько скажешь</b>. Считает сам язык в консоли.</div>
+
+  <script>
+    // авто-показ для вебинара: спросит число и отсчитает вниз циклом. Дома можно вставить тот же код в консоль.
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let start = Number(prompt("С какого числа отсчёт до босса?"));
+        for (let i = start; i >= 1; i--) {
+          console.log("⏳ " + i);
+        }
+        console.log("🎮 СТАРТ! Босс заходит в бой");
+        alert("🎮 СТАРТ! Босс заходит в бой");
+      }, 400);
+    });
+  </script>
+</body></html>

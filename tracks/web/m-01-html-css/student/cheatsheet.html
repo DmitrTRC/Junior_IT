@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Шпаргалка по HTML и CSS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '</>';
+    position: absolute;
+    right: 30px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 100px;
+    opacity: 0.08;
+    font-weight: 700;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .ex {
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #888;
+    background: #f5f1ea;
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .skeleton {
+    background: #1a1a1a;
+    color: #f0f0f0;
+    padding: 24px;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .skeleton .tag { color: #ff79c6; }
+  .skeleton .attr { color: #50fa7b; }
+  .skeleton .text { color: #f0f0f0; }
+  .skeleton .com { color: #6272a4; font-style: italic; }
+
+  .colors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .color {
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ffb800);
+    color: #1a1a1a;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .err {
+    background: #ffe8e8;
+    border-left: 4px solid #ff3b30;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #c00; }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Шпаргалка<br>HTML + CSS</h1>
+  <p>Всё с первого урока, на одной странице</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Скелет любого сайта</h2>
+  <p style="margin-bottom: 12px; color: #555;">Просто скопируй это в файл <code>index.html</code> и начинай менять.</p>
+  <div class="skeleton">
+<span class="com">&lt;!-- index.html --&gt;</span>
+<span class="tag">&lt;style&gt;</span>
+  body { background: <span class="attr">#1a1a2e</span>; color: <span class="attr">white</span>; padding: <span class="attr">40px</span>; }
+  h1 { color: <span class="attr">#ffd60a</span>; }
+<span class="tag">&lt;/style&gt;</span>
+
+<span class="tag">&lt;h1&gt;</span>Заголовок<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;p&gt;</span>Абзац текста.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="text">"https://..."</span><span class="tag">&gt;</span>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>HTML-теги</h2>
+
+  <div class="item">
+    <code>&lt;h1&gt;...&lt;/h1&gt;</code>
+    <div class="desc"><strong>Главный заголовок.</strong> Самый большой текст на странице. Обычно один.</div>
+  </div>
+  <div class="item">
+    <code>&lt;h2&gt;...&lt;/h2&gt;</code>
+    <div class="desc"><strong>Подзаголовок.</strong> Поменьше. Их может быть несколько.</div>
+  </div>
+  <div class="item">
+    <code>&lt;p&gt;...&lt;/p&gt;</code>
+    <div class="desc"><strong>Абзац.</strong> Обычный текст.</div>
+  </div>
+  <div class="item">
+    <code>&lt;img src="..."&gt;</code>
+    <div class="desc"><strong>Картинка.</strong> Внутри `src` — адрес картинки. Тег закрывать не нужно.
+    <div class="ex">&lt;img src="https://images.unsplash.com/photo-..."&gt;</div></div>
+  </div>
+  <div class="item">
+    <code>&lt;a href="..."&gt;</code>
+    <div class="desc"><strong>Ссылка.</strong> Внутри `href` — адрес куда вести.
+    <div class="ex">&lt;a href="https://youtube.com"&gt;Мой ютуб&lt;/a&gt;</div></div>
+  </div>
+  <div class="item">
+    <code>&lt;ul&gt;&lt;li&gt;</code>
+    <div class="desc"><strong>Список.</strong> `ul` снаружи, `li` — каждый пункт внутри.</div>
+  </div>
+  <div class="item">
+    <code>&lt;br&gt;</code>
+    <div class="desc"><strong>Перенос строки.</strong> Не закрывается. Используй когда хочешь начать с новой строки внутри абзаца.</div>
+  </div>
+  <div class="item">
+    <code>&lt;hr&gt;</code>
+    <div class="desc"><strong>Горизонтальная черта.</strong> Разделитель между блоками.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>CSS-свойства</h2>
+
+  <p style="margin-bottom: 14px; color: #555;">CSS пишется внутри <code style="background:#1a1a1a;color:#ffd60a;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;style&gt;...&lt;/style&gt;</code> в начале файла. Правила выглядят так:</p>
+
+  <div class="skeleton">
+<span class="tag">имя_тега</span> {
+  свойство: значение;
+  свойство: значение;
+}
+  </div>
+
+  <div style="height: 16px"></div>
+
+  <div class="item">
+    <code>background</code>
+    <div class="desc"><strong>Фон.</strong> Цвет или градиент.
+    <div class="ex">background: #1a1a2e;</div>
+    <div class="ex">background: linear-gradient(135deg, red, blue);</div></div>
+  </div>
+  <div class="item">
+    <code>color</code>
+    <div class="desc"><strong>Цвет текста.</strong>
+    <div class="ex">color: white;</div></div>
+  </div>
+  <div class="item">
+    <code>font-size</code>
+    <div class="desc"><strong>Размер текста.</strong> В пикселях.
+    <div class="ex">font-size: 24px;</div></div>
+  </div>
+  <div class="item">
+    <code>font-family</code>
+    <div class="desc"><strong>Шрифт.</strong>
+    <div class="ex">font-family: Arial, sans-serif;</div></div>
+  </div>
+  <div class="item">
+    <code>text-align</code>
+    <div class="desc"><strong>Выравнивание текста:</strong> `left`, `center`, `right`.</div>
+  </div>
+  <div class="item">
+    <code>padding</code>
+    <div class="desc"><strong>Отступ ВНУТРИ</strong> (от края рамки до содержимого).
+    <div class="ex">padding: 20px;</div></div>
+  </div>
+  <div class="item">
+    <code>margin</code>
+    <div class="desc"><strong>Отступ СНАРУЖИ</strong> (от блока до соседних).</div>
+  </div>
+  <div class="item">
+    <code>border</code>
+    <div class="desc"><strong>Рамка.</strong> Толщина, тип, цвет.
+    <div class="ex">border: 4px solid yellow;</div></div>
+  </div>
+  <div class="item">
+    <code>border-radius</code>
+    <div class="desc"><strong>Закругление углов.</strong> Поставь `50%` для круга.
+    <div class="ex">border-radius: 20px;</div></div>
+  </div>
+  <div class="item">
+    <code>width / height</code>
+    <div class="desc"><strong>Ширина и высота.</strong> Часто для картинок.
+    <div class="ex">width: 300px;</div></div>
+  </div>
+  <div class="item">
+    <code>:hover</code>
+    <div class="desc"><strong>Магия!</strong> Что произойдёт когда наведёшь мышкой.
+    <div class="ex">a:hover { background: red; }</div></div>
+  </div>
+  <div class="item">
+    <code>transition</code>
+    <div class="desc"><strong>Плавное изменение.</strong> Поставь в правило, чтобы hover работал плавно.
+    <div class="ex">transition: 0.3s;</div></div>
+  </div>
+  <div class="item">
+    <code>transform</code>
+    <div class="desc"><strong>Поворот / масштаб.</strong>
+    <div class="ex">transform: scale(1.1);</div>
+    <div class="ex">transform: rotate(5deg);</div></div>
+  </div>
+  <div class="item">
+    <code>box-shadow</code>
+    <div class="desc"><strong>Тень.</strong> Размер X, размер Y, размытие, цвет.
+    <div class="ex">box-shadow: 0 4px 20px rgba(0,0,0,0.3);</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Готовые цвета</h2>
+  <p style="margin-bottom: 8px; color: #555;">Можешь писать словом — <code style="background:#1a1a1a;color:#ffd60a;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;">red, blue, pink</code>. А можешь HEX-кодом — это решётка и 6 символов:</p>
+
+  <div class="colors">
+    <div class="color" style="background:#1a1a2e">#1a1a2e</div>
+    <div class="color" style="background:#ffd60a; color:#1a1a1a; text-shadow:none">#ffd60a</div>
+    <div class="color" style="background:#ff3b30">#ff3b30</div>
+    <div class="color" style="background:#00e676">#00e676</div>
+    <div class="color" style="background:#0f3460">#0f3460</div>
+    <div class="color" style="background:#ff5722">#ff5722</div>
+    <div class="color" style="background:#00ffc8; color:#1a1a1a; text-shadow:none">#00ffc8</div>
+    <div class="color" style="background:#c9956d">#c9956d</div>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">🎨</div>
+    <div>Где брать красивые сочетания: <strong>coolors.co/palettes/trending</strong> — листай и копируй HEX-коды прямо оттуда.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Картинки — где брать</h2>
+  <div class="item">
+    <code>unsplash.com</code>
+    <div class="desc"><strong>Бесплатные фото.</strong> Найди картинку → правый клик → "Копировать адрес изображения" → вставь в `src`.</div>
+  </div>
+  <div class="item">
+    <code>pexels.com</code>
+    <div class="desc">То же самое, тоже бесплатно.</div>
+  </div>
+
+  <div class="err">
+    ⚠ <strong>Внимание:</strong> Если копируешь адрес страницы вместо адреса картинки — не сработает. Адрес картинки заканчивается на `.jpg`, `.png` или `.webp`.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Эмодзи</h2>
+  <p>Вставляй прямо в текст. Тегов не нужно.</p>
+  <div class="item">
+    <code>Windows</code>
+    <div class="desc">Нажми <strong>Win + . (точка)</strong> — откроется панель эмодзи.</div>
+  </div>
+  <div class="item">
+    <code>Mac</code>
+    <div class="desc">Нажми <strong>Ctrl + Cmd + пробел</strong>.</div>
+  </div>
+  <div class="item">
+    <code>emojipedia.org</code>
+    <div class="desc">Просто погугли эмодзи, найди, скопируй, вставь.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Топ-5 ошибок новичка</h2>
+  <div class="err">1. <strong>Забыл закрыть тег.</strong> Каждый `&lt;тег&gt;` нужно закрыть `&lt;/тег&gt;`. Исключения: `&lt;img&gt;`, `&lt;br&gt;`, `&lt;hr&gt;`.</div>
+  <div class="err">2. <strong>Перепутал кавычки.</strong> Используй обычные английские <code style="background:#1a1a1a;color:#fff;padding:2px 6px;border-radius:4px">"</code>, не «ёлочки» и не „лапки".</div>
+  <div class="err">3. <strong>Забыл `;` в CSS.</strong> Каждое правило заканчивается точкой с запятой.</div>
+  <div class="err">4. <strong>Скопировал не тот адрес картинки.</strong> Нужен прямой URL, заканчивающийся на `.jpg/.png/.webp`.</div>
+  <div class="err">5. <strong>Не сохранил файл.</strong> Ctrl+S после каждого изменения. Без этого браузер не покажет новое.</div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Что дальше</h2>
+  <p>На следующем уроке: <strong>JavaScript</strong> — оживляем сайт. Кнопки начнут что-то делать, появятся счётчики, всплывающие окна, анимации.</p>
+  <p style="margin-top: 12px;">Через 3-4 урока — <strong>выложим твою страничку в интернет</strong> по реальной ссылке. Будешь давать друзьям.</p>
+
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>Хочешь забежать вперёд? Открой <strong>developer.mozilla.org</strong> — самый честный учебник по веб-разработке в мире. На русском есть.</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для первого занятия. Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

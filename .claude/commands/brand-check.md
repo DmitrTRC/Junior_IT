@@ -21,8 +21,15 @@ allowed-tools: Read, Grep, Glob, Task
 ## Бренд (важно)
 - Палитра — только токены из `CLAUDE.md` (`--bg #0a0a14`, `--card #1a1a2e`,
   `--yellow #ffd60a` и т.д.). Никаких случайных hex.
+- Цвета трека — модуль использует свою пару из `meta/brand-tokens.css`:
+  `--track-X` на тёмном фоне материалов, `--track-X-ink` в `@media print`.
+  Чужой трек или произвольный hex вместо пары — флаг.
+- Термины — парой ру/en в шпаргалке и словарике: «Ветвление (branching)».
+  Термин без английской пары — флаг.
 - Шрифты: Rubik (headings) / Manrope (body) / JetBrains Mono (code).
   В демках намеренно: спорт — Arial Black, арт — Georgia, геймер — Press Start 2P + Manrope.
+  Три эстетики — правило трека `web`, не всего курса: `cs` даёт одну демку на модуль
+  (см. `meta/module-anatomy.md`).
   Новый шрифт — проверить сабсет `cyrillic` до применения на русском тексте.
 - Нет хрупких `position:absolute` декораций в hero.
 - Кастомные SVG-баннеры, не capsule-render и подобные генераторы.

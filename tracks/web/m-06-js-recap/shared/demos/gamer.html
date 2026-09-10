@@ -1,0 +1,50 @@
+<!-- ДЕМКА «геймер» · урок 2.8 (разминка). Чистый язык в консоли: цикл задаёт вопросы, if проверяет, копилка копит урон.
+     Ничего нового относительно 2.5–2.7. Эстетика: неон, cyan/magenta. Только prompt/console.log/alert, без DOM. -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMER · консоль · всё вместе</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { background:#0a0a14; color:#fff; font-family:'JetBrains Mono',monospace; text-align:center; padding:50px 20px; min-height:100vh; }
+  .label { color:#00ffc8; letter-spacing:4px; font-size:14px; }
+  h1 { font-size:40px; color:#00ffc8; text-shadow:0 0 16px #00ffc8; letter-spacing:2px; margin:6px 0 4px; }
+  .sub { color:#ff0096; text-shadow:0 0 12px #ff0096; font-size:15px; margin-bottom:26px; }
+  .console { background:#15151c; border:1px solid rgba(0,255,200,0.3); border-radius:12px; padding:20px 22px;
+    max-width:640px; margin:0 auto; text-align:left; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#00ffc8; font-weight:700; }
+  .console .l { display:block; color:#f0f0f0; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { color:#7a7a8a; font-size:13px; margin-top:22px; }
+  .hint b { color:#00ffc8; }
+</style></head>
+<body>
+  <div class="label">// GAMER MODE · CONSOLE</div>
+  <h1>DMG_CHECK</h1>
+  <div class="sub">три удара по боссу — считает сам язык</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> uron = <span class="num">0</span></span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt;= <span class="num">3</span>; i++) {</span><span class="l">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(<span class="str">"Удар "</span> + i + <span class="str">": 6 × "</span> + i + <span class="str">" = ?"</span>))</span><span class="l">&nbsp;&nbsp;<span class="kw">if</span> (otvet === <span class="num">6</span> * i) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;uron = uron + <span class="num">10</span></span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"💥 Попал! Урон +10"</span>)</span><span class="l">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"🛡 Мимо. Было: "</span> + (<span class="num">6</span> * i))</span><span class="l">&nbsp;&nbsp;}</span><span class="l">}</span><span class="l">alert(<span class="str">"Общий урон: "</span> + uron)</span></div>
+
+  <div class="hint">Цикл спрашивает, <b>if проверяет</b>, копилка считает урон. Ни одного нового слова — всё это ты уже умеешь.</div>
+
+  <script>
+    // авто-показ для вебинара: три вопроса подряд с подсчётом урона. Дома можно вставить тот же код в консоль.
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let uron = 0;
+        for (let i = 1; i <= 3; i++) {
+          let otvet = Number(prompt("Удар " + i + ": 6 × " + i + " = ?"));
+          if (otvet === 6 * i) {
+            uron = uron + 10;
+            console.log("💥 Попал! Урон +10");
+          } else {
+            console.log("🛡 Мимо. Было: " + (6 * i));
+          }
+        }
+        console.log("Общий урон: " + uron);
+        alert("Общий урон: " + uron);
+      }, 400);
+    });
+  </script>
+</body></html>

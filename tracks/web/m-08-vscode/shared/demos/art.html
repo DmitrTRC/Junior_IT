@@ -1,0 +1,52 @@
+<!-- ДЕМКА «арт» · урок 2.10. Показываем не программу, а ФАЙЛ: тот же тренажёр из 2.8, но со вкладкой редактора.
+     Эстетика: тёплая, Fraunces-вайб. Героиня — Лиза. Без DOM и без новых слов языка.
+     Шрифт Georgia — намеренный системный Cyrillic-safe фолбэк под Fraunces-вайб (Fraunces на Google Fonts без кириллицы, «Лиза» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ART · файл · uzor.js</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:Georgia,'Times New Roman',serif; text-align:center; padding:56px 20px; min-height:100vh; }
+  .label { letter-spacing:4px; font-size:13px; font-family:monospace; opacity:0.6; }
+  h1 { font-size:50px; font-style:italic; margin:10px 0 2px; }
+  .sub { font-size:16px; opacity:0.7; margin-bottom:28px; }
+  .file { max-width:680px; margin:0 auto; border-radius:14px; overflow:hidden; text-align:left; font-family:'JetBrains Mono','Courier New',monospace; }
+  .file .tab { background:#0c0c11; color:#b8b8c4; font-size:12px; padding:10px 18px; border-bottom:1px solid #2a2a38; }
+  .file .tab .dot { color:#ff9100; font-weight:700; }
+  .file .code { background:#15151c; color:#f0f0f0; padding:18px 22px; font-size:13.5px; line-height:1.9; overflow-x:auto; }
+  .file .code .l { display:block; }
+  .file .code .kw { color:#8be9fd; } .file .code .str { color:#f1fa8c; } .file .code .num { color:#ffb86c; } .file .code .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { font-size:14px; opacity:0.65; margin-top:24px; }
+  .hint b { color:#ff9100; font-style:italic; }
+</style></head>
+<body>
+  <div class="label">// ART MODE · FILE</div>
+  <h1>Лиза · uzor.js</h1>
+  <div class="sub">тот же тренажёр — но теперь он живёт в файле</div>
+
+  <div class="file">
+    <div class="tab"><span class="dot">●</span> uzor.js</div>
+    <div class="code"><span class="com">// мой тренажёр · бусины в рядах узора</span><span class="l">&nbsp;</span><span class="l"><span class="kw">let</span> businok = <span class="num">5</span></span><span class="l"><span class="kw">let</span> ochki = <span class="num">0</span></span><span class="l">&nbsp;</span><span class="l"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt;= <span class="num">3</span>; i++) {</span><span class="l">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(<span class="str">"В узоре "</span> + i + <span class="str">" рядов по "</span> + businok + <span class="str">" бусин — сколько всего?"</span>))</span><span class="l">&nbsp;&nbsp;<span class="kw">if</span> (otvet === businok * i) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="num">1</span></span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✦ Верно, ряд готов"</span>)</span><span class="l">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"· Мимо. Было: "</span> + (businok * i))</span><span class="l">&nbsp;&nbsp;}</span><span class="l">}</span><span class="l">&nbsp;</span><span class="l">console.log(<span class="str">"Лиза, собрано рядов: "</span> + ochki + <span class="str">" из 3"</span>)</span></div>
+  </div>
+
+  <div class="hint">Захотела узор по 7 бусин в ряду? В файле — <b>одна цифра</b>, и узор другой. Файл можно открыть завтра и дорисовать.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let businok = 5;
+        let ochki = 0;
+        for (let i = 1; i <= 3; i++) {
+          let otvet = Number(prompt("В узоре " + i + " рядов по " + businok + " бусин — сколько всего?"));
+          if (otvet === businok * i) {
+            ochki = ochki + 1;
+            console.log("✦ Верно, ряд готов");
+          } else {
+            console.log("· Мимо. Было: " + (businok * i));
+          }
+        }
+        console.log("Лиза, собрано рядов: " + ochki + " из 3");
+        alert("🎨 Лиза, собрано рядов: " + ochki + " из 3. Открой F12 → Console");
+      }, 400);
+    });
+  </script>
+</body></html>

@@ -1,0 +1,12 @@
+id: web/m-06-js-recap
+title: "Разминка: собираем тренажёр (recap project)"
+track: web
+level: optional
+minutes: 65
+textbook: []
+requires: [web/m-03-js-console, web/m-04-js-conditions, web/m-05-js-loops]
+terms:
+  - {ru: переменная, en: variable}
+  - {ru: цикл, en: loop}
+  - {ru: условие, en: condition}
+  - {ru: копилка очков, en: accumulator}

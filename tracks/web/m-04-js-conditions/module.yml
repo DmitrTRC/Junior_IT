@@ -1,0 +1,12 @@
+id: web/m-04-js-conditions
+title: "Программа решает: условия (conditionals)"
+track: web
+level: optional
+minutes: 75
+textbook: []
+requires: [web/m-03-js-console]
+terms:
+  - {ru: условие, en: condition}
+  - {ru: ветвление, en: branching}
+  - {ru: логическое значение, en: boolean}
+  - {ru: сравнение, en: comparison}

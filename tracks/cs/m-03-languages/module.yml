@@ -1,0 +1,12 @@
+id: cs/m-03-languages
+title: "Языки программирования: кто переводит код (compilers and interpreters)"
+track: cs
+level: core
+minutes: 60
+textbook: []
+requires: [cs/m-02-layers]
+terms:
+  - {ru: компилятор, en: compiler}
+  - {ru: интерпретатор, en: interpreter}
+  - {ru: среда исполнения, en: runtime}
+  - {ru: исходный код, en: source code}

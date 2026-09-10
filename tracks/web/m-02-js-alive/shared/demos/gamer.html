@@ -1,0 +1,53 @@
+<!-- ДЕМКА «геймер» · урок 2. Одна живая механика: счётчик очков +1.
+     Эстетика: неон, cyan/magenta. Показываем в начале урока как «вау». -->
+<style>
+  body {
+    background: #0a0a14;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    padding: 50px 20px;
+    min-height: 100vh;
+    transition: 0.3s;
+  }
+  h1 {
+    font-size: 42px;
+    color: #00ffc8;
+    text-shadow: 0 0 16px #00ffc8;
+    letter-spacing: 2px;
+  }
+  #score {
+    font-size: 120px;
+    color: #ff0096;
+    text-shadow: 0 0 30px #ff0096;
+    margin: 20px 0;
+  }
+  button {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    font-weight: bold;
+    color: #0a0a14;
+    background: #00ffc8;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #00ffc8;
+    transition: 0.15s;
+  }
+  button:hover { transform: scale(1.1); box-shadow: 0 0 35px #00ffc8; }
+  .label { color: #00ffc8; letter-spacing: 4px; font-size: 14px; }
+</style>
+
+<div class="label">// GAMER MODE</div>
+<h1>MAX_LVL_99</h1>
+<div id="score">0</div>
+<button onclick="hit()">+1 ОЧКО ⚡</button>
+
+<script>
+  let score = 0;
+  function hit() {
+    score = score + 1;
+    document.getElementById('score').textContent = score;
+  }
+</script>

@@ -1,0 +1,14 @@
+id: devops/m-01-terminal-first-steps
+title: "Терминал: где я и что вокруг (terminal first steps)"
+track: devops
+level: core
+minutes: 25
+textbook: ["7:2.3"]
+requires: []
+terms:
+  - {ru: терминал, en: terminal}
+  - {ru: оболочка, en: shell, note: "zsh — на маке по умолчанию"}
+  - {ru: каталог, en: directory, note: "«папка» — то же самое"}
+  - {ru: путь, en: path}
+  - {ru: домашний каталог, en: home directory}
+homework: homework/devops-01-terminal

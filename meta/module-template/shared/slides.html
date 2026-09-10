@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Слайды · ТЕМА</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14;
+    --card: #1a1a2e;
+    --yellow: #ffd60a;
+    --track: #00ffc8;
+    --track-ink: #00806a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Rubik', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck { width: 100vw; height: 100vh; position: relative; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw 10vh;
+    text-align: center;
+    gap: 2vh;
+  }
+  .slide.active { display: flex; }
+
+  .top-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(11px, 1.1vw, 16px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+  .slide h2 {
+    font-size: clamp(30px, 4.4vw, 66px);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -2px;
+  }
+  .slide h2 .t { color: var(--track); }
+  .sub {
+    color: #aeb4cc;
+    font-size: clamp(15px, 1.6vw, 24px);
+    line-height: 1.4;
+    max-width: 900px;
+  }
+
+  /* S1: титул */
+  #s1 { background: radial-gradient(ellipse at 30% 20%, #1a1a3e, var(--bg) 60%); }
+  #s1 .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: clamp(13px, 1.4vw, 22px);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  #s1 h1 {
+    font-size: clamp(48px, 9vw, 150px);
+    line-height: 0.92;
+    font-weight: 700;
+    letter-spacing: -3px;
+  }
+  #s1 h1 .em {
+    background: var(--track);
+    color: var(--bg);
+    padding: 0 18px;
+    display: inline-block;
+    transform: rotate(-2deg);
+    margin: 8px 0;
+  }
+  #s1 .tagline {
+    font-size: clamp(20px, 3vw, 44px);
+    font-weight: 700;
+    color: #dfe3f5;
+    letter-spacing: -1px;
+    margin-top: 6px;
+  }
+
+  /* S2: карточка термина */
+  .card {
+    background: var(--card);
+    border-left: 6px solid var(--track);
+    border-radius: 16px;
+    padding: 26px 32px;
+    max-width: 900px;
+    text-align: left;
+    font-size: clamp(16px, 1.8vw, 26px);
+    color: #dfe3f5;
+    line-height: 1.5;
+  }
+
+  /* S3: итог */
+  .bridge {
+    border: 2px solid var(--track);
+    border-radius: 16px;
+    padding: 20px 26px;
+    max-width: 900px;
+    font-size: clamp(14px, 1.5vw, 21px);
+    line-height: 1.45;
+    color: #dfe3f5;
+  }
+  .bridge b { color: var(--track); }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 16px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .nav button:hover { background: var(--track); color: var(--bg); }
+  .nav .indicator {
+    color: var(--yellow);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  .keyhint {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- S1: титул -->
+  <div class="slide active" id="s1">
+    <div class="kicker">// трек TRACK · модуль NN</div>
+    <h1><span class="em">Тема</span></h1>
+    <div class="tagline">о чём этот модуль одной строкой</div>
+  </div>
+
+  <!-- S2: термин -->
+  <div class="slide" id="s2">
+    <div class="top-label">// термин</div>
+    <h2>Термин <span class="t">(term)</span></h2>
+    <div class="card">Что это одной строкой — простыми словами, без зубрёжки.</div>
+  </div>
+
+  <!-- S3: итог -->
+  <div class="slide" id="s3">
+    <div class="top-label">// что запомнить</div>
+    <h2>Итог</h2>
+    <div class="bridge">Главная мысль модуля — <b>одной фразой</b>, чтобы унести с собой.</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">‹</button>
+  <span class="indicator"><span id="cur">1</span> / 3</span>
+  <button onclick="next()">›</button>
+</div>
+
+<div class="keyhint">← / → переключение слайдов</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.getElementById('cur').textContent = cur + 1;
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+
+</body>
+</html>

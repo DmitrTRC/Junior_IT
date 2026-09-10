@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Домашка — твой сайт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px 60px;
+    line-height: 1.6;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, #ff5722, #ff8a50);
+    color: #fff;
+    padding: 50px 40px;
+    border-radius: 24px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '🚀';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 200px;
+    opacity: 0.15;
+    line-height: 1;
+  }
+  header .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.9;
+  }
+  header h1 {
+    font-size: 48px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+  header p { font-size: 18px; max-width: 500px; }
+
+  section {
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ff5722;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .step {
+    background: #ff5722;
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  p { margin-bottom: 12px; font-size: 16px; color: #333; }
+  p strong { color: #1a1a1a; font-weight: 800; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+
+  .pre {
+    background: #1a1a1a;
+    color: #f0f0f0;
+    padding: 22px;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 14px 0;
+    white-space: pre;
+  }
+  .pre .c { color: #ff79c6; }
+  .pre .a { color: #50fa7b; }
+  .pre .v { color: #f1fa8c; }
+  .pre .com { color: #6272a4; font-style: italic; }
+
+  .tasks {
+    list-style: none;
+    counter-reset: tsk;
+  }
+  .tasks li {
+    counter-increment: tsk;
+    padding: 16px 16px 16px 60px;
+    margin-bottom: 10px;
+    background: #faf7f2;
+    border-radius: 12px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .tasks li::before {
+    content: counter(tsk);
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    width: 30px; height: 30px;
+    background: #1a1a1a;
+    color: #ff5722;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .bonus {
+    background: linear-gradient(135deg, #ffd60a, #ffb800);
+    color: #1a1a1a;
+    padding: 24px;
+    border-radius: 16px;
+    margin-top: 16px;
+  }
+  .bonus h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .bonus ul {
+    list-style: none;
+  }
+  .bonus ul li {
+    padding: 6px 0 6px 24px;
+    position: relative;
+    font-weight: 600;
+  }
+  .bonus ul li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+  }
+
+  .check {
+    background: #00e676;
+    color: #1a1a1a;
+    padding: 20px 24px;
+    border-radius: 14px;
+    font-weight: 800;
+    margin-top: 16px;
+    font-size: 16px;
+  }
+  .check h3 { margin-bottom: 8px; font-size: 18px; }
+
+  .download {
+    display: inline-block;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 14px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 10px;
+    transition: 0.2s;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+  .download:hover { background: #ffd60a; color: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <div class="kicker">// домашнее задание · урок 1</div>
+  <h1>Твой первый сайт</h1>
+  <p>Сделать самому, сегодня вечером. Шпаргалка под рукой, всё получится.</p>
+</header>
+
+<section>
+  <h2><span class="step">1</span>Поставь VS Code</h2>
+  <p>Зайди на сайт <code>code.visualstudio.com</code>. Нажми большую синюю кнопку — она сама поймёт какая у тебя система (Windows или Mac). Скачай, установи. 5 минут максимум.</p>
+  <p><strong>Зачем именно VS Code?</strong> Он подсвечивает теги цветом, подсказывает ошибки и автоматически закрывает теги. Блокнот всё это не умеет.</p>
+</section>
+
+<section>
+  <h2><span class="step">2</span>Создай файл и папку</h2>
+  <p>На рабочем столе создай папку — назови <code>moi-sait</code> (только английские буквы!).</p>
+  <p>Внутри папки создай файл <strong>index.html</strong>. Это имя стандартное — так называется главный файл любого сайта.</p>
+  <p>Открой этот файл в VS Code.</p>
+</section>
+
+<section>
+  <h2><span class="step">3</span>Скопируй стартер</h2>
+  <p>Это базовый код. Скопируй его в свой <code>index.html</code> и дальше будешь менять под себя:</p>
+
+<div class="pre"><span class="c">&lt;style&gt;</span>
+  body {
+    background: <span class="v">#1a1a2e</span>;
+    color: <span class="v">white</span>;
+    font-family: <span class="v">Arial</span>, sans-serif;
+    padding: <span class="v">40px</span>;
+  }
+  h1 {
+    color: <span class="v">#ffd60a</span>;
+    font-size: <span class="v">50px</span>;
+    text-align: <span class="v">center</span>;
+  }
+  img {
+    width: <span class="v">300px</span>;
+    border-radius: <span class="v">20px</span>;
+    display: block;
+    margin: <span class="v">20px auto</span>;
+  }
+  a {
+    color: <span class="v">#ffd60a</span>;
+    text-decoration: none;
+    background: <span class="v">#16213e</span>;
+    padding: <span class="v">12px 24px</span>;
+    border-radius: <span class="v">8px</span>;
+    display: inline-block;
+    transition: <span class="v">0.3s</span>;
+  }
+  a:hover {
+    background: <span class="v">#ffd60a</span>;
+    color: <span class="v">#1a1a2e</span>;
+    transform: <span class="v">scale(1.1)</span>;
+  }
+<span class="c">&lt;/style&gt;</span>
+
+<span class="c">&lt;h1&gt;</span>Привет! Я ___<span class="c">&lt;/h1&gt;</span>
+<span class="c">&lt;p&gt;</span>Мне ___ лет. Я ___.<span class="c">&lt;/p&gt;</span>
+
+<span class="c">&lt;img</span> <span class="a">src</span>=<span class="v">"ВСТАВЬ_СВОЮ_КАРТИНКУ"</span><span class="c">&gt;</span>
+
+<span class="c">&lt;h2&gt;</span>Что я люблю:<span class="c">&lt;/h2&gt;</span>
+<span class="c">&lt;ul&gt;</span>
+  <span class="c">&lt;li&gt;</span>___<span class="c">&lt;/li&gt;</span>
+  <span class="c">&lt;li&gt;</span>___<span class="c">&lt;/li&gt;</span>
+  <span class="c">&lt;li&gt;</span>___<span class="c">&lt;/li&gt;</span>
+<span class="c">&lt;/ul&gt;</span>
+
+<span class="c">&lt;a</span> <span class="a">href</span>=<span class="v">"https://..."</span><span class="c">&gt;</span>Мой любимый сайт<span class="c">&lt;/a&gt;</span></div>
+</section>
+
+<section>
+  <h2><span class="step">4</span>Заполни своими данными</h2>
+  <ol class="tasks">
+    <li>Замени имя в <code>&lt;h1&gt;</code></li>
+    <li>Напиши свой возраст и хобби в <code>&lt;p&gt;</code></li>
+    <li>Найди свою картинку на <code>unsplash.com</code> и вставь её URL в <code>src</code></li>
+    <li>Напиши минимум 5 пунктов в <code>&lt;ul&gt;</code> — что любишь</li>
+    <li>Вставь ссылку на свой любимый сайт в <code>&lt;a&gt;</code></li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="step">5</span>Сделай это СВОИМ</h2>
+  <p>Это самое главное. Поменяй цвета. Шрифт. Размеры. Поэкспериментируй.</p>
+
+  <div class="bonus">
+    <h3>✦ Идеи для прокачки</h3>
+    <ul>
+      <li>Поменяй цвета через coolors.co</li>
+      <li>Поставь <code>border-radius: 50%</code> на картинку — будет круглая</li>
+      <li>Добавь градиент: <code>background: linear-gradient(135deg, цвет1, цвет2)</code></li>
+      <li>Добавь эмодзи в заголовок</li>
+      <li>Сделай несколько разных кнопок-ссылок</li>
+      <li>Поменяй шрифт через <code>fonts.google.com</code> (это уже продвинуто, но попробуй)</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="step">6</span>Покажи и пришли</h2>
+  <p>Когда сайт готов:</p>
+  <ol class="tasks">
+    <li>Покажи родителям — заслуженно похвастайся</li>
+    <li>Сделай скриншот (Print Screen на Windows, Cmd+Shift+4 на Mac)</li>
+    <li>Пришли скриншот мне в чат — посмотрю, дам совет</li>
+    <li>На следующий урок принеси файл — будем добавлять анимацию</li>
+  </ol>
+
+  <div class="check">
+    <h3>✓ Проверь себя</h3>
+    Если открываешь свой <code>index.html</code> в браузере, и появляется страница с твоим именем, картинкой, списком и кнопкой — <strong>задача выполнена</strong>. Молодец.
+  </div>
+</section>
+
+<section style="text-align: center; background: #1a1a1a; color: #fff;">
+  <h2 style="border-color: #ffd60a; justify-content: center;">Застрял?</h2>
+  <p style="color: #ccc;">Это нормально. Перечитай шпаргалку, проверь:</p>
+  <p style="color: #ccc;">→ Все теги закрыты?<br>
+  → Кавычки английские <code style="background:#333">"</code> а не «ёлочки»?<br>
+  → Файл сохранён? (Ctrl+S)<br>
+  → Браузер обновлён? (F5)</p>
+  <p style="color: #ffd60a; margin-top: 20px;">Если совсем не получается — напиши мне, разберёмся вместе.</p>
+</section>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!-- ДЕМКА «арт» · урок 2.6. Чистый язык в консоли: спросить время → решить, успеешь ли до дедлайна.
+     Эстетика: тёплая, Fraunces-вайб. Героиня — Лиза, рисует. Только prompt/alert + if/else, без DOM.
+     Шрифт Georgia — намеренный системный Cyrillic-safe фолбэк под Fraunces-вайб (Fraunces на Google Fonts без кириллицы, «Лиза» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ART · консоль · решает</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:Georgia,'Times New Roman',serif; text-align:center; padding:56px 20px; min-height:100vh; }
+  .label { letter-spacing:4px; font-size:13px; font-family:monospace; opacity:0.6; }
+  h1 { font-size:50px; font-style:italic; margin:10px 0 2px; }
+  .sub { font-size:16px; opacity:0.7; margin-bottom:28px; }
+  .console { background:#15151c; color:#f0f0f0; border-radius:14px; padding:20px 22px; max-width:620px; margin:0 auto;
+    text-align:left; font-family:'JetBrains Mono','Courier New',monospace; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#ff9100; font-weight:700; }
+  .console .l { display:block; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { font-size:14px; opacity:0.65; margin-top:24px; }
+  .hint b { color:#ff9100; font-style:italic; }
+</style></head>
+<body>
+  <div class="label">// ART MODE · CONSOLE</div>
+  <h1>Лиза · успеть</h1>
+  <div class="sub">успеешь ли до дедлайна — решает сам язык</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> est = Number(prompt(<span class="str">"Сколько минут до дедлайна?"</span>))</span><span class="l"><span class="kw">let</span> nado = Number(prompt(<span class="str">"Сколько минут нужно на рисунок?"</span>))</span><span class="l"><span class="kw">if</span> (est >= nado) { alert(<span class="str">"🎨 Успеешь нарисовать!"</span>) }</span><span class="l"><span class="kw">else</span> { alert(<span class="str">"Не успеть… не хватает "</span> + (nado - est) + <span class="str">" мин"</span>) }</span></div>
+
+  <div class="hint">Сравнила, что есть, с тем, что нужно — и <b>сама решила</b>. Без единой кнопки.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let est = Number(prompt("Сколько минут до дедлайна?"));
+        let nado = Number(prompt("Сколько минут нужно на рисунок?"));
+        if (est >= nado) {
+          console.log("есть", est, "нужно", nado, "| успеешь");
+          alert("🎨 Успеешь нарисовать!");
+        } else {
+          console.log("есть", est, "нужно", nado, "| не хватает", nado - est);
+          alert("Не успеть… не хватает " + (nado - est) + " мин");
+        }
+      }, 400);
+    });
+  </script>
+</body></html>

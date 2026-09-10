@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Терминал: где я и что вокруг</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+    --yellow: #ffd60a; --green: #00e676; --bg-light: #faf7f2;
+    --track: #00e676; --track-ink: #00803d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: #e8e8f0;
+    font-family: Manrope, system-ui, sans-serif;
+    margin: 0; padding: 2rem 1.25rem; line-height: 1.6;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; }
+  h1 { font-family: Rubik, system-ui, sans-serif; color: var(--track); margin: .6rem 0 .1rem; font-size: 1.7rem; }
+  .sub { color: #9aa0b5; margin: 0 0 1.25rem; font-size: .95rem; }
+  .chip {
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: .75rem;
+    letter-spacing: .08em; color: var(--bg); background: var(--track);
+    padding: .15rem .5rem; border-radius: .25rem;
+  }
+  .card {
+    background: var(--card); border-left: 4px solid var(--track);
+    border-radius: .75rem; padding: 1rem 1.25rem; margin: 1rem 0;
+  }
+  .card h2 {
+    font-family: Rubik, system-ui, sans-serif; font-size: 1.05rem;
+    margin: 0 0 .5rem; color: #fff;
+  }
+  .card p { margin: .4rem 0; }
+  code { font-family: "JetBrains Mono", monospace; background: var(--card-2); padding: .1rem .35rem; border-radius: .3rem; }
+  .term { color: var(--yellow); }
+  .term span { color: #9aa0b5; font-style: italic; }
+  .addr {
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 1.1rem;
+    background: var(--card-2); border-radius: .6rem; padding: .7rem .9rem;
+    text-align: center; letter-spacing: .02em;
+  }
+  .addr .p0 { color: var(--yellow); }
+  .addr .p1 { color: var(--track); }
+  .addr .p2 { color: #8be9fd; }
+  .addr .p3 { color: #ff79c6; }
+  .addr .p4 { color: #ffb86c; }
+  table { width: 100%; border-collapse: collapse; margin-top: .5rem; font-size: .88rem; }
+  th { text-align: left; color: #9aa0b5; font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; padding: .3rem .5rem; }
+  td { background: var(--card-2); padding: .5rem .5rem; border-bottom: 3px solid var(--card); }
+  td:first-child { border-radius: .4rem 0 0 .4rem; }
+  td:last-child { border-radius: 0 .4rem .4rem 0; }
+  td code { background: transparent; padding: 0; color: var(--track); }
+  .oneliner {
+    font-family: "JetBrains Mono", monospace; font-size: .85rem; color: var(--green);
+    background: var(--card-2); border-radius: .5rem; padding: .6rem .8rem; margin-top: .6rem;
+  }
+  .rescue { border-left-color: var(--yellow); }
+  .rescue code { color: var(--yellow); }
+  footer { color: #6b7190; font-size: .8rem; margin-top: 1.5rem; }
+  @media print {
+    body { background: var(--bg-light); color: #1a1a1a; }
+    h1 { color: var(--track-ink); }
+    .sub { color: #555; }
+    .chip { background: var(--track-ink); color: #fff; }
+    .card { background: #fff; border-left-color: var(--track-ink); box-shadow: 0 0 0 1px #e5e0d8; }
+    .card h2 { color: #1a1a1a; }
+    code { background: #f0ede8; }
+    .addr { background: #f0ede8; }
+    td { background: #f0ede8; }
+    .oneliner { background: #f0ede8; color: #1a1a1a; }
+    .rescue { border-left-color: #b38f00; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="chip">OPS</span>
+  <h1>Терминал: где я и что вокруг</h1>
+  <p class="sub">terminal first steps · §2.3, 7 класс</p>
+
+  <div class="card">
+    <h2>Как открыть Терминал</h2>
+    <p><code>Cmd</code> + пробел → напечатать <code>Terminal</code> → <code>Enter</code>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Путь <span class="term">(path)</span> — это адрес</h2>
+    <p>Читай слева направо, как обычный адрес — от главного этажа к своей комнате:</p>
+    <div class="addr"><span class="p0">/</span><span class="p1">Users</span><span class="p2">/имя</span><span class="p3">/code</span><span class="p4">/junior_it</span></div>
+    <p class="oneliner">/ — главный этаж · Users — этаж пользователей · имя — твоя комната · code/junior_it — твой стол</p>
+  </div>
+
+  <div class="card">
+    <h2>Одиннадцать команд трека — девять с занятия и два бонусом</h2>
+    <table>
+      <tr><th>Команда</th><th>Что делает</th><th>А в cmd (Windows)</th></tr>
+      <tr><td><code>pwd</code></td><td>где я сейчас</td><td><code>cd</code> без аргументов</td></tr>
+      <tr><td><code>ls</code></td><td>что вокруг</td><td><code>dir</code></td></tr>
+      <tr><td><code>ls -la</code></td><td>вокруг, включая скрытое</td><td><code>dir /a</code></td></tr>
+      <tr><td><code>cd ~</code></td><td>домой, работает всегда</td><td><code>cd %USERPROFILE%</code></td></tr>
+      <tr><td><code>cd ..</code></td><td>на этаж выше</td><td><code>cd ..</code> — так же</td></tr>
+      <tr><td><code>cd -</code></td><td>прыжок туда, где была секунду назад</td><td>прямого аналога нет</td></tr>
+      <tr><td><code>mkdir -p путь</code></td><td>создать папку и все папки по дороге</td><td><code>mkdir путь</code> — само создаёт по дороге</td></tr>
+      <tr><td><code>touch файл</code></td><td>создать пустой файл</td><td>прямого аналога нет, проще через Проводник</td></tr>
+      <tr><td><code>open .</code></td><td>открыть текущую папку в Finder</td><td><code>start .</code></td></tr>
+      <tr><td><code>ls -R путь</code></td><td>показать всё дерево вложенных папок и файлов сразу</td><td><code>dir /s путь</code></td></tr>
+      <tr><td><code>python3 --version</code></td><td>какой Python установлен</td><td><code>python --version</code> — иногда без «3»</td></tr>
+    </table>
+    <p><code>cd -</code> и <code>ls -R</code> на занятии не показывали (в
+    итоге слайда — только шесть) — держи их здесь про запас, пригодятся
+    сами, когда понадобятся.</p>
+  </div>
+
+  <div class="card">
+    <h2>Термины</h2>
+    <p><span class="term">Терминал <span>(terminal)</span></span> — окно, где команды печатают текстом. Внутри него работает
+    <span class="term">оболочка <span>(shell)</span></span> — на маке по умолчанию это <code>zsh</code>.
+    <span class="term">Каталог <span>(directory)</span></span> — то же самое, что папка.
+    <span class="term">Домашний каталог <span>(home directory)</span></span> — твоя личная папка, значок <code>~</code>.</p>
+  </div>
+
+  <div class="card rescue">
+    <h2>Если что-то пошло не так</h2>
+    <p>Команда ничего не ответила — это хорошо: тишина значит «всё получилось». Терминал пишет только тогда, когда что-то пошло не так.</p>
+    <p><code>cd ~</code> возвращает домой из любого места — это самая безопасная команда во всём модуле.</p>
+    <p>Красный текст — не поломка компьютера, а вежливое «не понял, повтори». Обычно там прямо написано, что не так.</p>
+    <p>Совсем потерялась — напечатай <code>pwd</code> и прочитай путь вслух слева направо, как адрес.</p>
+  </div>
+
+  <footer>Junior_IT · трек devops · модуль 01</footer>
+</div>
+</body>
+</html>

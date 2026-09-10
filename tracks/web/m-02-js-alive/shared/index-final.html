@@ -1,0 +1,134 @@
+<!-- РЕЗЕРВНЫЙ ФИНАЛ урока 2. Если живой кодинг сломался — открываешь этот файл,
+     он уже рабочий: счётчик, всплывашка, смена темы. Это страничка урока 1, ОЖИВЛЁННАЯ. -->
+<style>
+  body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    min-height: 100vh;
+    transition: 0.4s;
+  }
+
+  h1 {
+    color: #ffd60a;
+    font-size: 60px;
+    text-align: center;
+  }
+
+  h2 {
+    color: #ffd60a;
+    border-bottom: 2px solid #ffd60a;
+    padding-bottom: 8px;
+  }
+
+  img {
+    width: 300px;
+    border-radius: 20px;
+    border: 4px solid #ffd60a;
+    display: block;
+    margin: 20px auto;
+  }
+
+  ul {
+    font-size: 20px;
+    line-height: 1.8;
+  }
+
+  /* счётчик */
+  #score {
+    color: #00e676;
+    font-size: 70px;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  button {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a1a2e;
+    background: #ffd60a;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    margin: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  button:hover { transform: scale(1.08); }
+
+  .panel { text-align: center; margin: 24px 0; }
+
+  a {
+    color: #ffd60a;
+    text-decoration: none;
+    background: #16213e;
+    padding: 12px 24px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 20px;
+    transition: 0.3s;
+    font-weight: bold;
+  }
+
+  a:hover {
+    background: #ffd60a;
+    color: #1a1a2e;
+    transform: scale(1.1);
+  }
+</style>
+
+<h1>🎮 Привет! Я Артём</h1>
+<p style="text-align:center">Мне 12 лет. Я люблю Майнкрафт и собаку.</p>
+
+<img src="https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=400" alt="моя собака">
+
+<h2>Что я люблю:</h2>
+<ul>
+  <li>🎮 Майнкрафт</li>
+  <li>🍕 Пиццу с колбасой</li>
+  <li>🐶 Свою собаку Рекса</li>
+  <li>🚲 Гонять на велике</li>
+</ul>
+
+<!-- === ЖИВЫЕ КНОПКИ (новое в уроке 2) === -->
+<h2>Мой счётчик:</h2>
+<h2 id="score">0</h2>
+
+<div class="panel">
+  <button onclick="add()">+1</button>
+  <button onclick="sub()">−1</button>
+  <button onclick="reset()">Сброс</button>
+</div>
+
+<div class="panel">
+  <button onclick="alert('Привет от кнопки!')">Кнопка-сюрприз</button>
+  <button onclick="document.body.style.background='#0f3460'">Тёмная тема</button>
+  <button onclick="document.body.style.background='#faf7f2'">Светлая тема</button>
+</div>
+
+<div class="panel">
+  <a href="https://minecraft.net">Мой любимый сайт</a>
+</div>
+
+<!-- скрипт ВНИЗУ — чтобы кнопки уже были на странице, когда код их ищет -->
+<script>
+  let score = 0;
+
+  function add() {
+    score = score + 1;
+    document.getElementById('score').textContent = score;
+  }
+
+  function sub() {
+    score = score - 1;
+    document.getElementById('score').textContent = score;
+  }
+
+  function reset() {
+    score = 0;
+    document.getElementById('score').textContent = score;
+  }
+</script>

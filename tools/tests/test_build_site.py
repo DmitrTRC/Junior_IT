@@ -1,0 +1,50 @@
+import subprocess
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[2]
+BUILD = REPO / "tools" / "build_site.sh"
+
+
+def build(tmp_path):
+    out = tmp_path / "site"
+    subprocess.run([str(BUILD), str(out)], check=True)
+    return out
+
+
+def test_teacher_dirs_never_published(tmp_path):
+    out = build(tmp_path)
+    assert list(out.rglob("teacher")) == []
+
+
+def test_student_and_shared_are_published(tmp_path):
+    out = build(tmp_path)
+    assert (out / "tracks" / "web" / "m-01-html-css" / "student" / "cheatsheet.html").is_file()
+    assert (out / "tracks" / "web" / "m-01-html-css" / "shared").is_dir()
+
+
+def test_landing_page_is_published(tmp_path):
+    out = build(tmp_path)
+    assert (out / "index.html").is_file()
+
+
+def test_internal_dirs_never_published(tmp_path):
+    out = build(tmp_path)
+    # Все каталоги, исключённые в build_site.sh (кроме _site/, .DS_Store,
+    # __pycache__ — build-гигиена, а не публикуемый контент).
+    for internal in (
+        ".git", ".github", ".claude",
+        "teacher", "tools", "meta", "refs", "homework", "playground",
+        "provisioning", "print", "students", "recordings", "TO_PARENTS",
+        "graphify-out", ".superpowers",
+    ):
+        assert not (out / internal).exists(), f"{internal}/ не должен публиковаться"
+
+
+def test_nested_excluded_dir_never_published(tmp_path):
+    out = build(tmp_path)
+    assert not (out / "docs" / "superpowers").exists()
+
+
+def test_live_code_never_published(tmp_path):
+    out = build(tmp_path)
+    assert list(out.rglob("live-code.md")) == []

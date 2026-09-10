@@ -1,0 +1,49 @@
+<!-- ДЕМКА «спорт» · урок 2.9 (функции). Своя команда с именем: объявили podhod(nomer) — цикл зовёт её на каждый подход.
+     Ничего нового относительно 2.9: объявить → вызвать → параметр. Без return и без DOM. Эстетика: оранжевый, жирный, Bebas-вайб. Герой — Саня.
+     Шрифт Arial Black — намеренный системный Cyrillic-safe фолбэк под Bebas-вайб (Bebas Neue на Google Fonts без кириллицы, «Саня» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORT · консоль · своя команда</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:'Arial Black',Arial,sans-serif; text-align:center; padding:50px 20px; min-height:100vh; }
+  .label { color:#ff5722; letter-spacing:4px; font-size:14px; font-weight:bold; }
+  h1 { font-size:46px; text-transform:uppercase; letter-spacing:-1px; margin:6px 0 2px; }
+  .sub { color:#ff5722; font-size:15px; text-transform:uppercase; letter-spacing:2px; margin-bottom:26px; font-family:Arial,sans-serif; }
+  .console { background:#15151c; color:#f0f0f0; border-radius:12px; padding:20px 22px; max-width:640px; margin:0 auto;
+    text-align:left; font-family:'JetBrains Mono','Courier New',monospace; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#ff5722; font-weight:700; }
+  .console .l { display:block; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { color:#888; font-size:13px; margin-top:22px; font-family:Arial,sans-serif; }
+  .hint b { color:#ff5722; }
+</style></head>
+<body>
+  <div class="label">// SPORT MODE · CONSOLE</div>
+  <h1>Саня · подходы</h1>
+  <div class="sub">одна команда — зовём на каждый подход</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">function</span> podhod(nomer) {</span><span class="l">&nbsp;&nbsp;console.log(<span class="str">"💪 Подход "</span> + nomer + <span class="str">": 8 повторений — есть!"</span>)</span><span class="l">}</span><span class="l"><span class="kw">let</span> skolko = Number(prompt(<span class="str">"Сколько подходов сегодня у Сани?"</span>))</span><span class="l"><span class="kw">if</span> (skolko &gt; <span class="num">0</span>) {</span><span class="l">&nbsp;&nbsp;<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt;= skolko; i++) {</span><span class="l">&nbsp;&nbsp;&nbsp;&nbsp;podhod(i)</span><span class="l">&nbsp;&nbsp;}</span><span class="l">&nbsp;&nbsp;alert(<span class="str">"🔥 Саня, подходов: "</span> + skolko)</span><span class="l">} <span class="kw">else</span> {</span><span class="l">&nbsp;&nbsp;alert(<span class="str">"Впиши число — например, 3"</span>)</span><span class="l">}</span></div>
+
+  <div class="hint">Цикл с прошлого урока <b>зовёт нашу команду</b> — сколько скажешь, столько раз. Код внутри написан один раз.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        function podhod(nomer) {
+          console.log("💪 Подход " + nomer + ": 8 повторений — есть!");
+        }
+        let skolko = Number(prompt("Сколько подходов сегодня у Сани?"));
+        if (skolko > 0) {
+          for (let i = 1; i <= skolko; i++) {
+            podhod(i);
+          }
+          console.log("🔥 Саня, подходов: " + skolko);
+          alert("🔥 Саня, подходов: " + skolko);
+        } else {
+          console.log("Впиши число — например, 3");
+          alert("Впиши число — например, 3");
+        }
+      }, 400);
+    });
+  </script>
+</body></html>

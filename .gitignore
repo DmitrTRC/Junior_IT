@@ -49,3 +49,15 @@ print/
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Superpowers SDD — рабочие файлы исполнения планов
+.superpowers/
+
+# Учебники и производные OCR — чужой копирайт, десятки мегабайт
+refs/
+
+# Сборка сайта для GitHub Pages
+_site/
+
+# Виртуальное окружение инструментов
+tools/.venv/

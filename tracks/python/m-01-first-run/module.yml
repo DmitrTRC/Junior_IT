@@ -1,0 +1,15 @@
+id: python/m-01-first-run
+title: "Первый запуск Python (first run)"
+track: python
+level: core
+minutes: 25
+textbook: ["8:5.1"]
+requires: [devops/m-01-terminal-first-steps]
+terms:
+  - {ru: интерпретатор, en: interpreter}
+  - {ru: командный режим, en: REPL, note: "в учебнике — «командный (интерактивный) режим»"}
+  - {ru: скрипт, en: script}
+  - {ru: вывод, en: output}
+  - {ru: строка, en: string, note: "текст в кавычках"}
+  - {ru: ошибка, en: traceback, note: "читается снизу вверх"}
+homework: homework/python-01-first-run

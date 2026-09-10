@@ -1,0 +1,40 @@
+<!-- ДЕМКА «арт» · урок 2.5. Чистый язык в консоли: спросить → посчитать время на рисунки.
+     Эстетика: тёплая, Fraunces-вайб. Героиня — Лиза, рисует. Только prompt/alert, без DOM.
+     Шрифт Georgia — намеренный системный Cyrillic-safe фолбэк под Fraunces-вайб (Fraunces на Google Fonts без кириллицы, «Лиза» отвалилась бы). -->
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ART · консоль</title>
+<style>
+  body { background:#faf7f2; color:#1a1a1a; font-family:Georgia,'Times New Roman',serif; text-align:center; padding:56px 20px; min-height:100vh; }
+  .label { letter-spacing:4px; font-size:13px; font-family:monospace; opacity:0.6; }
+  h1 { font-size:50px; font-style:italic; margin:10px 0 2px; }
+  .sub { font-size:16px; opacity:0.7; margin-bottom:28px; }
+  .console { background:#15151c; color:#f0f0f0; border-radius:14px; padding:20px 22px; max-width:600px; margin:0 auto;
+    text-align:left; font-family:'JetBrains Mono','Courier New',monospace; font-size:13.5px; line-height:1.9; }
+  .console .l::before { content:'\203A '; color:#ff9100; font-weight:700; }
+  .console .l { display:block; }
+  .console .kw { color:#8be9fd; } .console .str { color:#f1fa8c; } .console .num { color:#ffb86c; } .console .com { color:#6272a4; font-style:italic; display:block; }
+  .hint { font-size:14px; opacity:0.65; margin-top:24px; }
+  .hint b { color:#ff9100; font-style:italic; }
+</style></head>
+<body>
+  <div class="label">// ART MODE · CONSOLE</div>
+  <h1>Лиза рисует</h1>
+  <div class="sub">сколько времени на серию рисунков — сам язык</div>
+
+  <div class="console"><span class="com">// открой F12 → Console и вставь</span><span class="l"><span class="kw">let</span> risunki = Number(prompt(<span class="str">"Сколько рисунков нарисуешь?"</span>))</span><span class="l"><span class="kw">let</span> minut = Number(prompt(<span class="str">"Минут на один?"</span>))</span><span class="l"><span class="kw">let</span> vsego = risunki * minut</span><span class="l">alert(<span class="str">"Всего "</span> + vsego + <span class="str">" минут ≈ "</span> + (vsego / <span class="num">60</span>) + <span class="str">" часов"</span>)</span></div>
+
+  <div class="hint">Ни одной кнопки — всё считает <b>сам язык</b> в консоли.</div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        let risunki = Number(prompt("Сколько рисунков нарисуешь?"));
+        let minut = Number(prompt("Минут на один?"));
+        let vsego = risunki * minut;
+        console.log("рисунки:", risunki, "| минут каждый:", minut);
+        alert("Всего " + vsego + " минут ≈ " + (vsego / 60) + " часов");
+      }, 400);
+    });
+  </script>
+</body></html>

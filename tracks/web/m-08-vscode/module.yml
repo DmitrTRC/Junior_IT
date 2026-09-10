@@ -1,0 +1,12 @@
+id: web/m-08-vscode
+title: "Свой дом для кода: VS Code (code editor)"
+track: web
+level: optional
+minutes: 75
+textbook: []
+requires: [web/m-07-js-functions]
+terms:
+  - {ru: редактор кода, en: code editor}
+  - {ru: папка проекта, en: project folder}
+  - {ru: автодополнение, en: autocomplete}
+  - {ru: комментарий, en: comment}

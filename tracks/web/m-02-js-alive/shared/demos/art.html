@@ -1,0 +1,57 @@
+<!-- ДЕМКА «арт» · урок 2. Живая механика: кнопка меняет палитру/фон по клику.
+     Эстетика: тёплая, Fraunces-вайб. Героиня — Лиза, рисует. -->
+<style>
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: Georgia, 'Times New Roman', serif;
+    text-align: center;
+    padding: 60px 20px;
+    min-height: 100vh;
+    transition: 0.5s;
+  }
+  .label { letter-spacing: 4px; font-size: 13px; font-family: monospace; opacity: 0.6; }
+  h1 { font-size: 52px; font-style: italic; margin: 10px 0 6px; }
+  p { font-size: 18px; opacity: 0.7; }
+  .swatch {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    margin: 30px auto;
+    background: #ff0096;
+    transition: 0.5s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  button {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-style: italic;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  button:hover { transform: scale(1.06); }
+</style>
+
+<div class="label">// ART MODE</div>
+<h1>Лиза рисует</h1>
+<p>Жми на кнопку — палитра меняется</p>
+
+<div class="swatch" id="swatch"></div>
+
+<button onclick="paint()">Новый цвет ✦</button>
+
+<script>
+  let colors = ['#ff0096', '#00e676', '#ffd60a', '#00ffc8', '#ff5722', '#9c27b0'];
+  let i = 0;
+
+  function paint() {
+    i = i + 1;
+    if (i >= colors.length) { i = 0; }
+    document.getElementById('swatch').style.background = colors[i];
+    document.body.style.background = colors[i] + '22';
+  }
+</script>

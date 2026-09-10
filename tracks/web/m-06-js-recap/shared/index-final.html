@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- РЕЗЕРВНЫЙ КОНСПЕКТ урока 2.8. Если живой кодинг в консоли сломался —
+     открываешь этот файл и ведёшь по нему: тут все строки урока с ответами.
+     Это НЕ страница с DOM — урок целиком в консоли, тут просто шпаргалка ведущего. -->
+<title>Консоль урока 2.8 — рабочий конспект</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #15151c; color: #f0f0f0; font-family: 'Manrope', sans-serif; padding: 40px 18px 70px; line-height: 1.6; }
+  .container { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  h1 .y { color: #ffd60a; }
+  .sub { color: #8a8a99; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-bottom: 28px; }
+  .step { margin-bottom: 22px; }
+  .step h2 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step h2 .n {
+    background: #ffd60a; color: #15151c; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  }
+  .console {
+    background: #0c0c11; border: 1px solid #2a2a38; border-radius: 12px;
+    padding: 18px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; line-height: 1.9; overflow-x: auto;
+  }
+  .console .in { display: block; color: #f0f0f0; }
+  .console .in::before { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { display: block; color: #7fd0ff; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { display: block; color: #6272a4; font-style: italic; }
+  .console .kw { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+  .console .bool { color: #ff79c6; font-weight: 700; }
+  .note { color: #b8b8c4; font-size: 14px; margin-top: 8px; }
+  .note strong { color: #ffd60a; }
+  footer { margin-top: 30px; color: #6a6a78; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Консоль урока 2.8 · <span class="y">рабочий конспект</span></h1>
+  <div class="sub">// резерв ведущего · открываешь, если живой кодинг встал · F12 → Console</div>
+
+  <div class="step">
+    <h2><span class="n">1</span>Коробочки — помним?</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> imya = <span class="str">"Саня"</span></span><span class="in"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="in">console.log(<span class="str">"Привет, "</span> + imya + <span class="str">"! Очков: "</span> + ochki)</span><span class="out">Привет, Саня! Очков: 0</span><span class="com">// ловушка после каникул:</span><span class="in">console.log(<span class="str">"7"</span> + <span class="nNum">1</span>)</span><span class="out">71</span></div>
+    <div class="note">Не восемь: к <strong>тексту</strong> плюс приклеивает, а не прибавляет.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">2</span>Спросить у человека</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> otvet = Number(prompt(<span class="str">"Сколько будет 7 × 3?"</span>))</span><span class="in">console.log(otvet)</span><span class="out"><span class="nNum">21</span></span></div>
+    <div class="note">Без <strong>Number</strong> в коробочке был бы текст <code>"21"</code> — и дальше всё сломается.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">3</span>Проверить ответ</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> otvet = Number(prompt(<span class="str">"Сколько будет 7 × 3?"</span>))</span><span class="in"><span class="kw">if</span> (otvet === <span class="nNum">21</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: 21"</span>)</span><span class="in">}</span></div>
+    <div class="note">Показать на секунду <strong>if (otvet = 21)</strong> — срабатывает всегда — и стереть.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">4</span>Одна попытка целиком</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="in"><span class="kw">let</span> i = <span class="nNum">3</span></span><span class="in"><span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="in"><span class="kw">if</span> (otvet === chislo * i) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="in">}</span></div>
+    <div class="note">Число <strong>21</strong> нигде не написано — программа считает его сама. Скобки <code>(chislo * i)</code>: посчитать, потом приклеить.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">5</span>Пять вопросов подряд (кульминация)</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="in">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="in">&nbsp;&nbsp;<span class="kw">if</span> (otvet === chislo * i) {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="in">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="in">&nbsp;&nbsp;}</span><span class="in">}</span></div>
+    <div class="note">Строка <strong>let i = 3</strong> ушла — теперь <code>i</code> заводит сам цикл. Скобки в скобках: <code>if</code> внутри <code>for</code>.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">6</span>Копилка очков</h2>
+    <div class="console"><span class="in"><span class="kw">let</span> chislo = <span class="nNum">7</span></span><span class="in"><span class="kw">let</span> ochki = <span class="nNum">0</span></span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">5</span>; i++) {</span><span class="in">&nbsp;&nbsp;<span class="kw">let</span> otvet = Number(prompt(chislo + <span class="str">" × "</span> + i + <span class="str">" = ?"</span>))</span><span class="in">&nbsp;&nbsp;<span class="kw">if</span> (otvet === chislo * i) {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"✅ Верно!"</span>)</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;ochki = ochki + <span class="nNum">1</span></span><span class="in">&nbsp;&nbsp;} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;console.log(<span class="str">"❌ Мимо. Правильно: "</span> + (chislo * i))</span><span class="in">&nbsp;&nbsp;}</span><span class="in">}</span><span class="in">console.log(<span class="str">"Очки: "</span> + ochki + <span class="str">" из 5"</span>)</span><span class="out">Очки: 4 из 5</span></div>
+    <div class="note">Копилка: завести <strong>до</strong> цикла · растить <strong>внутри</strong> (в ветке «верно») · печатать <strong>после</strong>.</div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">7</span>Оценка в конце</h2>
+    <div class="console"><span class="in"><span class="kw">if</span> (ochki === <span class="nNum">5</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"🏆 Идеально!"</span>)</span><span class="in">} <span class="kw">else if</span> (ochki >= <span class="nNum">3</span>) {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"👍 Неплохо после каникул"</span>)</span><span class="in">} <span class="kw">else</span> {</span><span class="in">&nbsp;&nbsp;console.log(<span class="str">"Ещё разок — станет легче"</span>)</span><span class="in">}</span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="n">8</span>Сделай своим (на экране, если есть время)</h2>
+    <div class="console"><span class="com">// любимое число</span><span class="in"><span class="kw">let</span> chislo = <span class="nNum">9</span></span><span class="com">// три вопроса вместо пяти</span><span class="in"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="nNum">1</span>; i &lt;= <span class="nNum">3</span>; i++) {</span><span class="com">// сложение вместо умножения — менять В ДВУХ местах</span><span class="in"><span class="kw">if</span> (otvet === chislo + i) { … }</span></div>
+    <div class="note">Скучающему: вторая копилка <strong>oshibki</strong> — считать отдельно верные и промахи.</div>
+  </div>
+
+  <footer>// конец конспекта · следующий урок — своя команда с именем (функции)</footer>
+
+</div>
+</body>
+</html>

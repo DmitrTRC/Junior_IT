@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка · Консоль-калькулятор (JS)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #faf7f2;
+    color: #1a1a1a;
+    font-family: 'Manrope', sans-serif;
+    padding: 30px 16px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '> _';
+    position: absolute;
+    right: 34px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 90px;
+    opacity: 0.10;
+    font-weight: 700;
+    color: #ffd60a;
+  }
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  header p { color: #ffd60a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #ffd60a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    background: #ffd60a;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .lead { margin-bottom: 12px; color: #555; font-size: 15px; }
+
+  .item {
+    padding: 14px 0;
+    border-bottom: 1px dashed #e5e0d6;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .item:last-child { border-bottom: none; }
+  .item code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1a1a1a;
+    color: #ffd60a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .item .desc { font-size: 15px; color: #333; }
+  .item .desc strong { color: #1a1a1a; }
+  .item .desc code {
+    background: #faf7f2; color: #1a1a1a; white-space: normal;
+    padding: 2px 6px; font-size: 12px;
+  }
+
+  /* блок «консоль браузера» */
+  .console {
+    background: #15151c;
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.85;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .console .in  { color: #f0f0f0; display: block; }
+  .console .in::before  { content: '\203A '; color: #ffd60a; font-weight: 700; }
+  .console .out { color: #7fd0ff; display: block; }
+  .console .out::before { content: '\2039 '; color: #5a6b7a; }
+  .console .com { color: #6272a4; font-style: italic; display: block; }
+  .console .kw  { color: #8be9fd; }
+  .console .str { color: #f1fa8c; }
+  .console .nNum { color: #ffb86c; }
+
+  .tip {
+    background: linear-gradient(135deg, #ffd60a, #ff9100);
+    color: #2a1a00;
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tip strong { font-weight: 800; }
+  .tip-icon { font-size: 22px; flex-shrink: 0; }
+
+  .err {
+    background: rgba(255,87,34,0.08);
+    border-left: 4px solid #ff5722;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .err strong { color: #ff5722; }
+  .err code { background: #1a1a1a; color: #fff; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  .draft {
+    background: #fff3cd;
+    border: 2px dashed #e0a800;
+    color: #5c4500;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .draft { display: none; }
+    header, section { box-shadow: none; page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Консоль —<br>твой калькулятор</h1>
+  <p>сам язык JS · урок 2.5</p>
+</header>
+
+<section>
+  <h2><span class="num">01</span>Где печатать: консоль браузера</h2>
+  <p class="lead">Тебе не нужны файлы и кнопки. В любом браузере уже есть место, где можно писать на JavaScript и сразу видеть ответ. Это <strong>консоль</strong>.</p>
+  <div class="item">
+    <code>F12</code>
+    <div class="desc"><strong>Открыть консоль</strong> (Windows). Дальше — вкладка <strong>Console</strong>.</div>
+  </div>
+  <div class="item">
+    <code>Cmd + Opt + J</code>
+    <div class="desc"><strong>Открыть консоль</strong> (Mac, Chrome). Сразу попадаешь в Console.</div>
+  </div>
+  <div class="item">
+    <code>Enter</code>
+    <div class="desc">Печатаешь строку → жмёшь <strong>Enter</strong> → браузер отвечает. Как чат, только с компьютером.</div>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div>Консоль есть <strong>всегда</strong> — на любом сайте, даже без интернета. Открыл браузер — у тебя под рукой калькулятор, который умеет гораздо больше «плюс-минус».</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">👀</span>Почему серый «undefined»?</h2>
+  <p class="lead">После каждой строки консоль серым (со стрелкой <code>‹</code>) показывает <strong>итог</strong> — что строка «вернула». У некоторых строк итога нет — тогда она честно пишет <code>undefined</code> («ничего»). Это <strong>не ошибка</strong>.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> a = <span class="nNum">4</span>;</span><span class="out">undefined</span><span class="in">console.info(<span class="str">"a = "</span> + a)</span><span style="display:block;color:#f0f0f0">a = 4</span><span class="out">undefined</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>let a = 4</code>
+    <div class="desc"><strong>Завёл коробочку.</strong> Итога-значения нет → серое <code>undefined</code>. Норма.</div>
+  </div>
+  <div class="item">
+    <code>console.info(...)</code>
+    <div class="desc"><strong>Сначала печатает</strong> (белая строка <code>a = 4</code>), <strong>а возвращает «ничего»</strong> → снова серое <code>undefined</code>.</div>
+  </div>
+  <div class="tip">
+    <div class="tip-icon">✅</div>
+    <div>Хочешь «настоящий» итог — введи выражение со значением: набери <strong>a</strong> или <strong>2 + 2</strong> и нажми Enter. Серым будет уже <strong>4</strong>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Считает что угодно</h2>
+  <p class="lead">Просто пиши пример и жми Enter.</p>
+  <div class="console"><span class="in"><span class="nNum">2</span> + <span class="nNum">2</span></span><span class="out"><span class="nNum">4</span></span><span class="in"><span class="nNum">100</span> / <span class="nNum">7</span></span><span class="out"><span class="nNum">14.2857...</span></span><span class="in">(<span class="nNum">5</span> + <span class="nNum">3</span>) * <span class="nNum">10</span></span><span class="out"><span class="nNum">80</span></span><span class="com">// сколько это 15% от 1500?</span><span class="in"><span class="nNum">1500</span> * <span class="nNum">0.15</span></span><span class="out"><span class="nNum">225</span></span></div>
+  <div class="item" style="margin-top:14px">
+    <code>+  -  *  /</code>
+    <div class="desc"><strong>Плюс, минус, умножить, делить.</strong> Звёздочка <code>*</code> — это «умножить», слэш <code>/</code> — «делить».</div>
+  </div>
+  <div class="item">
+    <code>(  )</code>
+    <div class="desc"><strong>Скобки</strong> работают как в математике — сначала считается то, что внутри.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Переменная — коробочка с именем</h2>
+  <p class="lead">Чтобы не считать одно и то же дважды, кладём число в коробочку и даём ей имя.</p>
+  <div class="console"><span class="com">// завели коробочку cena, положили 250</span><span class="in"><span class="kw">let</span> cena = <span class="nNum">250</span></span><span class="com">// теперь имя = значение</span><span class="in">cena * <span class="nNum">3</span></span><span class="out"><span class="nNum">750</span></span><span class="com">// можно перезаписать</span><span class="in">cena = <span class="nNum">300</span></span><span class="in">cena * <span class="nNum">3</span></span><span class="out"><span class="nNum">900</span></span></div>
+  <div class="item" style="margin-top:14px">
+    <code>let</code>
+    <div class="desc"><strong>Заводим</strong> новую коробочку. Слово <code>let</code> нужно <strong>только один раз</strong> — когда создаём.</div>
+  </div>
+  <div class="item">
+    <code>cena = 300</code>
+    <div class="desc"><strong>Перезаписать.</strong> Без <code>let</code> — просто кладём в коробочку новое значение.</div>
+  </div>
+  <div class="item">
+    <code>имя</code>
+    <div class="desc">Придумываешь сам, английскими буквами, без пробелов: <code>ochki</code>, <code>vozrast</code>, <code>summa</code>.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Число и текст — разные вещи</h2>
+  <p class="lead">Число считается. Текст (его называют <em>строка</em>) — пишется в кавычках и «складывается» как слова.</p>
+  <div class="console"><span class="com">// текст — в кавычках</span><span class="in"><span class="kw">let</span> imya = <span class="str">"Артём"</span></span><span class="in"><span class="str">"Привет, "</span> + imya</span><span class="out"><span class="str">"Привет, Артём"</span></span><span class="com">// осторожно: число в кавычках — уже текст!</span><span class="in"><span class="str">"5"</span> + <span class="nNum">5</span></span><span class="out"><span class="str">"55"</span>  <span class="com">// склеилось, а не сложилось</span></span></div>
+  <div class="item" style="margin-top:14px">
+    <code>"текст"</code>
+    <div class="desc"><strong>Строка.</strong> Всё в кавычках — это текст, даже <code>"5"</code>. С текстом <code>+</code> — это «склеить».</div>
+  </div>
+  <div class="item">
+    <code>5</code>
+    <div class="desc"><strong>Число.</strong> Без кавычек. С числами <code>+</code> — это «сложить».</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Спроси и покажи</h2>
+  <p class="lead">Три команды, чтобы программа «поговорила» с человеком.</p>
+  <div class="console"><span class="com">// спросить (ответ всегда ТЕКСТ)</span><span class="in"><span class="kw">let</span> name = prompt(<span class="str">"Как тебя зовут?"</span>)</span><span class="com">// показать окошко</span><span class="in">alert(<span class="str">"Привет, "</span> + name + <span class="str">"!"</span>)</span><span class="com">// напечатать в консоль</span><span class="in">console.log(<span class="str">"Готово"</span>)</span></div>
+  <div class="item" style="margin-top:14px">
+    <code>prompt("...")</code>
+    <div class="desc"><strong>Спросить.</strong> Показывает окошко с полем ввода. Ответ — <strong>всегда текст</strong>.</div>
+  </div>
+  <div class="item">
+    <code>Number(...)</code>
+    <div class="desc"><strong>Сделать числом.</strong> Если спросил число — оберни: <code>Number(prompt("Сколько лет?"))</code>.</div>
+  </div>
+  <div class="item">
+    <code>alert("...")</code>
+    <div class="desc"><strong>Показать</strong> сообщение в окошке.</div>
+  </div>
+  <div class="item">
+    <code>console.log(...)</code>
+    <div class="desc"><strong>Напечатать</strong> прямо в консоль. Удобно подсмотреть, что лежит в коробочке.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Мини-программа в консоли</h2>
+  <p class="lead">Спросили возраст — посчитали год рождения. Всё в консоли, без единой кнопки.</p>
+  <div class="console"><span class="in"><span class="kw">let</span> vozrast = Number(prompt(<span class="str">"Сколько тебе лет?"</span>))</span><span class="in"><span class="kw">let</span> god = <span class="nNum">2026</span> - vozrast</span><span class="in">alert(<span class="str">"Ты родился примерно в "</span> + god)</span></div>
+  <div class="tip">
+    <div class="tip-icon">🧮</div>
+    <div>Так же считается <strong>что угодно своё</strong>: чаевые (<code>summa * 0.1</code>), средний балл, сколько секунд в твоём возрасте. Калькулятор, который ты программируешь сам.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Топ-5 ошибок новичка</h2>
+  <div class="err">1. <strong>Кавычки-«ёлочки».</strong> Только английские <code>"</code> или <code>'</code>, не <code>«</code> и не <code>»</code>. Иначе красная ошибка.</div>
+  <div class="err">2. <strong>Число в кавычках.</strong> <code>"5" + 1</code> даёт <code>"51"</code>, а не <code>6</code>. Для счёта — без кавычек.</div>
+  <div class="err">3. <strong>Забыл Number у prompt.</strong> <code>prompt</code> возвращает текст — заверни в <code>Number(...)</code>, если надо считать.</div>
+  <div class="err">4. <strong>Второй раз пишу let.</strong> <code>let</code> — один раз при создании. Меняешь значение — без <code>let</code>.</div>
+  <div class="err">5. <strong>Русская раскладка.</strong> Команды пишутся английскими буквами. <code>лет</code> ≠ <code>let</code>.</div>
+  <div class="tip">
+    <div class="tip-icon">🛠</div>
+    <div>Красная строка в консоли — это <strong>не страшно</strong>. Она прямо говорит, что не так. Прочитай слово после слова <strong>Error</strong> — обычно там и ответ.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Что дальше</h2>
+  <p>Ты уже умеешь <strong>сам язык</strong>: считать, хранить в переменных, спрашивать и показывать. На следующем уроке этот же язык мы повесим на <strong>кнопки на странице</strong> — и счётчик из прошлого раза станет понятным.</p>
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div>Хочешь вперёд? Открой консоль на любимом сайте и посчитай что-нибудь своё. Честный учебник по языку — <strong>developer.mozilla.org</strong>, раздел JavaScript (есть на русском).</div>
+  </div>
+</section>
+
+<footer>
+  Сделано для занятия 2.5 · «Сам язык». Распечатай или сохрани в закладки.
+</footer>
+
+</div>
+</body>
+</html>

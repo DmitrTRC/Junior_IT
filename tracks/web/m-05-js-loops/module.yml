@@ -1,0 +1,11 @@
+id: web/m-05-js-loops
+title: "Программа повторяет: циклы (loops)"
+track: web
+level: optional
+minutes: 75
+textbook: []
+requires: [web/m-04-js-conditions]
+terms:
+  - {ru: цикл, en: loop}
+  - {ru: счётчик, en: counter}
+  - {ru: условие цикла, en: loop condition}

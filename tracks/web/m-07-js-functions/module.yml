@@ -1,0 +1,11 @@
+id: web/m-07-js-functions
+title: "Своя команда: функции (functions)"
+track: web
+level: optional
+minutes: 75
+textbook: []
+requires: [web/m-06-js-recap]
+terms:
+  - {ru: функция, en: function}
+  - {ru: параметр, en: parameter}
+  - {ru: вызов функции, en: function call}

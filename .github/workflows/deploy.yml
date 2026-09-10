@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
-# Деплоит весь репо как статический сайт на каждый push в main.
-# Лекции, шпаргалки и демки доступны по адресу:
-#   https://dmitrtrc.github.io/Junior_IT/
+# Собирает публикуемую часть репозитория и деплоит на каждый push в main.
+# teacher/, инструменты и рабочие материалы на сайт не попадают.
+# Адрес: https://dmitrtrc.github.io/Junior_IT/
 
 on:
   workflow_dispatch:
@@ -29,10 +29,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Build site
+        run: ./tools/build_site.sh _site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

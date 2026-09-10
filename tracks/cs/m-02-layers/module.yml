@@ -1,0 +1,11 @@
+id: cs/m-02-layers
+title: "Слои компьютера: от битов до программы (layers)"
+track: cs
+level: core
+minutes: 60
+textbook: ["7:1.4"]
+requires: [cs/m-01-computer]
+terms:
+  - {ru: бит, en: bit}
+  - {ru: байт, en: byte}
+  - {ru: шестнадцатеричная система, en: hexadecimal}
