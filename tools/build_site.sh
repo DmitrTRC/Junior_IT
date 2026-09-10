@@ -15,6 +15,7 @@ rsync -a \
   --exclude '.claude/' \
   --exclude '_site/' \
   --exclude 'teacher/' \
+  --exclude 'live-code.md' \
   --exclude 'tools/' \
   --exclude 'meta/' \
   --exclude 'refs/' \

@@ -29,5 +29,22 @@ def test_landing_page_is_published(tmp_path):
 
 def test_internal_dirs_never_published(tmp_path):
     out = build(tmp_path)
-    for internal in ("tools", "meta", "refs", "homework", "playground", "provisioning"):
+    # Все каталоги, исключённые в build_site.sh (кроме _site/, .DS_Store,
+    # __pycache__ — build-гигиена, а не публикуемый контент).
+    for internal in (
+        ".git", ".github", ".claude",
+        "teacher", "tools", "meta", "refs", "homework", "playground",
+        "provisioning", "print", "students", "recordings", "TO_PARENTS",
+        "graphify-out", ".superpowers",
+    ):
         assert not (out / internal).exists(), f"{internal}/ не должен публиковаться"
+
+
+def test_nested_excluded_dir_never_published(tmp_path):
+    out = build(tmp_path)
+    assert not (out / "docs" / "superpowers").exists()
+
+
+def test_live_code_never_published(tmp_path):
+    out = build(tmp_path)
+    assert list(out.rglob("live-code.md")) == []
