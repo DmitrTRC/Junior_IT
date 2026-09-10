@@ -112,13 +112,13 @@
 
 <br>
 
-Каждый урок — папка в [`lessons/`](./lessons/) с фиксированным набором:
-`scenario.md` (сценарий с таймингом) · `live-code.md` (живой кодинг по шагам) ·
-`glossary.md` (словарик) · `index-final.html` (резервный финал) и детские раздатки.
+Каждый модуль — папка в [`tracks/`](./tracks/) с тремя ролями: `shared/`
+(слайды, живой код, демки) · `student/` (шпаргалка, словарик, домашка) ·
+`teacher/` (сценарий с таймингом, ответы).
 
-- 🎯 [Сценарий урока 1](./lessons/lesson-01-html-css/scenario.md) · [Живой код](./lessons/lesson-01-html-css/live-code.md)
-- 🎯 [Сценарий урока 2b](./lessons/lesson-02b-js-console/scenario.md) · [Живой код](./lessons/lesson-02b-js-console/live-code.md)
-- 🎯 [Сценарий урока 2c](./lessons/lesson-02c-js-conditions/scenario.md) · [Живой код](./lessons/lesson-02c-js-conditions/live-code.md)
+- 🎯 [Сценарий урока 1](./tracks/web/m-01-html-css/teacher/scenario.md) · [Живой код](./tracks/web/m-01-html-css/shared/live-code.md)
+- 🎯 [Сценарий урока 2b](./tracks/web/m-03-js-console/teacher/scenario.md) · [Живой код](./tracks/web/m-03-js-console/shared/live-code.md)
+- 🎯 [Сценарий урока 2c](./tracks/web/m-04-js-conditions/teacher/scenario.md) · [Живой код](./tracks/web/m-04-js-conditions/shared/live-code.md)
 
 </details>
 

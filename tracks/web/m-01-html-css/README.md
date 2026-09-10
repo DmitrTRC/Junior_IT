@@ -33,7 +33,7 @@
 
 1. За день — отправить родителям ссылку и [гайд подготовки устройств](../../../docs/setup-guide.html)
 2. За час — открыть все 3 демки, слайды, VS Code, пустую папку для живого кодинга
-3. Чек-лист готовности — в конце [`scenario.md`](./teacher/scenario.md)
+3. Чек-лист готовности — в конце [`scenario.md`](https://github.com/DmitrTRC/Junior_IT/blob/main/tracks/web/m-01-html-css/teacher/scenario.md)
 
 ## После урока
 
