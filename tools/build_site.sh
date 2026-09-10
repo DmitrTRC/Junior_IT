@@ -33,4 +33,7 @@ rsync -a \
   --exclude '__pycache__/' \
   "$ROOT/" "$OUT/"
 
+PYBIN="${PYBIN:-$ROOT/tools/.venv/bin/python}"
+"$PYBIN" "$ROOT/tools/build_course_map.py" "$ROOT" "$OUT/course-map.json"
+
 echo "сайт собран: $OUT"

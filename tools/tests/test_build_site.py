@@ -48,3 +48,10 @@ def test_nested_excluded_dir_never_published(tmp_path):
 def test_live_code_never_published(tmp_path):
     out = build(tmp_path)
     assert list(out.rglob("live-code.md")) == []
+
+
+def test_course_map_generated_and_valid(tmp_path):
+    import json
+    out = build(tmp_path)
+    data = json.loads((out / "course-map.json").read_text(encoding="utf-8"))
+    assert data["modules"], "карта не должна быть пустой на живом репо"

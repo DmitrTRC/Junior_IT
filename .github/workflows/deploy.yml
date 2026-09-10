@@ -29,8 +29,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Setup Python for course map
+        run: pip install pyyaml
       - name: Build site
-        run: ./tools/build_site.sh _site
+        run: PYBIN=python3 ./tools/build_site.sh _site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
