@@ -7,6 +7,7 @@ textbook: ["8:5.1"]
 requires: [devops/m-01-terminal-first-steps]
 terms:
   - {ru: интерпретатор, en: interpreter}
+  - {ru: командный режим, en: REPL, note: "в учебнике — «командный (интерактивный) режим»"}
   - {ru: скрипт, en: script}
   - {ru: вывод, en: output}
   - {ru: строка, en: string, note: "текст в кавычках"}

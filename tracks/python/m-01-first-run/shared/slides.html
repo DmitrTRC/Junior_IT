@@ -335,20 +335,20 @@
     <div class="bridge">В <b>&gt;&gt;&gt;</b> ты <b>разговариваешь</b> с Python. В файле — ты пишешь ему <b>письмо</b>: он дочитывает всё целиком и только потом отвечает.</div>
   </div>
 
-  <!-- S5: traceback -->
+  <!-- S5: ошибка читается снизу вверх -->
   <div class="slide" id="s5">
     <div class="top-label">// такт 4 · ошибка нарочно</div>
-    <h2>Traceback читается <span class="t">снизу вверх</span></h2>
+    <h2>Ошибка читается <span class="t">снизу вверх</span></h2>
     <div class="term">
       <div class="bar"><span></span><span></span><span></span></div>
-      <div class="body">  File "hello.py", line 1
+      <div class="body">  File "/Users/имя/code/junior_it/hello.py", line 1
     print("Привет! Меня зовут Аня)
           <span class="caret">^</span>
 <span class="err">SyntaxError: unterminated string literal (detected at line 1)</span></div>
     </div>
     <div class="tb-legend">
       <div><b>1</b> снизу — что случилось: строка осталась незакрытой</div>
-      <div class="loc"><b>2</b> выше — где: файл, строка 1, стрелочка на месте пропажи</div>
+      <div class="loc"><b>2</b> выше — где: файл, строка 1; стрелочка стоит под открывающей кавычкой — оттуда Python искал конец строки и не нашёл</div>
     </div>
   </div>
 

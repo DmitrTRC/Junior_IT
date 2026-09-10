@@ -73,7 +73,9 @@
     code { background: #f0ede8; }
     pre { background: #f0ede8; color: #1a1a1a; }
     pre .pmt { color: var(--track-ink); }
-    pre .err { color: #a8005f; }
+    pre .out { color: #555; }
+    pre .caret { color: #b38f00; font-weight: 700; }
+    pre .err { color: var(--track-ink); }
     .oneliner { background: #f0ede8; color: #1a1a1a; }
     .rescue { border-left-color: #b38f00; }
   }
@@ -118,13 +120,13 @@ python3 hello.py</pre>
 
   <div class="card">
     <h2>Ошибка <span class="term">(traceback)</span> — читай снизу вверх</h2>
-<pre>  File "hello.py", line 1
+<pre>  File "/Users/имя/code/junior_it/hello.py", line 1
     print("Привет! Меня зовут Аня)
           <span class="caret">^</span>
 <span class="err">SyntaxError: unterminated string literal (detected at line 1)</span></pre>
     <div class="badge-row">
       <div><span class="badge">1</span> снизу — что случилось: строка осталась незакрытой</div>
-      <div><span class="badge b2">2</span> выше — где: файл, строка 1, стрелочка на месте пропажи</div>
+      <div><span class="badge b2">2</span> выше — где: файл, строка 1; стрелочка стоит под открывающей кавычкой — оттуда Python искал конец строки и не нашёл</div>
     </div>
   </div>
 
