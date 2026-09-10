@@ -84,6 +84,11 @@
   <p class="sub">terminal first steps · §2.3, 7 класс</p>
 
   <div class="card">
+    <h2>Как открыть Терминал</h2>
+    <p><code>Cmd</code> + пробел → напечатать <code>Terminal</code> → <code>Enter</code>.</p>
+  </div>
+
+  <div class="card">
     <h2>Путь <span class="term">(path)</span> — это адрес</h2>
     <p>Читай слева направо, как обычный адрес — от главного этажа к своей комнате:</p>
     <div class="addr"><span class="p0">/</span><span class="p1">Users</span><span class="p2">/имя</span><span class="p3">/code</span><span class="p4">/junior_it</span></div>
@@ -91,9 +96,9 @@
   </div>
 
   <div class="card">
-    <h2>Десять команд, которые уже умеешь</h2>
+    <h2>Одиннадцать команд, которые уже умеешь</h2>
     <table>
-      <tr><th>Команда</th><th>Что делает</th><th>А в Windows</th></tr>
+      <tr><th>Команда</th><th>Что делает</th><th>А в cmd (Windows)</th></tr>
       <tr><td><code>pwd</code></td><td>где я сейчас</td><td><code>cd</code> без аргументов</td></tr>
       <tr><td><code>ls</code></td><td>что вокруг</td><td><code>dir</code></td></tr>
       <tr><td><code>ls -la</code></td><td>вокруг, включая скрытое</td><td><code>dir /a</code></td></tr>
@@ -103,6 +108,7 @@
       <tr><td><code>mkdir -p путь</code></td><td>создать папку и все папки по дороге</td><td><code>mkdir путь</code> — само создаёт по дороге</td></tr>
       <tr><td><code>touch файл</code></td><td>создать пустой файл</td><td>прямого аналога нет, проще через Проводник</td></tr>
       <tr><td><code>open .</code></td><td>открыть текущую папку в Finder</td><td><code>start .</code></td></tr>
+      <tr><td><code>ls -R путь</code></td><td>показать всё дерево вложенных папок и файлов сразу</td><td><code>dir /s путь</code></td></tr>
       <tr><td><code>python3 --version</code></td><td>какой Python установлен</td><td><code>python --version</code> — иногда без «3»</td></tr>
     </table>
   </div>
@@ -117,6 +123,7 @@
 
   <div class="card rescue">
     <h2>Если что-то пошло не так</h2>
+    <p>Команда ничего не ответила — это хорошо: тишина значит «всё получилось». Терминал пишет только тогда, когда что-то пошло не так.</p>
     <p><code>cd ~</code> возвращает домой из любого места — это самая безопасная команда во всём модуле.</p>
     <p>Красный текст — не поломка компьютера, а вежливое «не понял, повтори». Обычно там прямо написано, что не так.</p>
     <p>Совсем потерялась — напечатай <code>pwd</code> и прочитай путь вслух слева направо, как адрес.</p>
