@@ -52,6 +52,7 @@ def plan_redirects(repo_root):
     repo_root = Path(repo_root)
     plan = []
     for old_dir, new_module in sorted(MOVES.items()):
+        # Standard files: cheatsheet, homework, slides, index-final
         for filename, role in sorted(ROLE_OF.items()):
             target = repo_root / "tracks" / new_module / role / filename
             if not target.is_file():
@@ -59,6 +60,15 @@ def plan_redirects(repo_root):
             stub = repo_root / "lessons" / old_dir / filename
             url = f"../../tracks/{new_module}/{role}/{filename}"
             plan.append((stub, url))
+
+        # Demo files in shared/demos/
+        demos_dir = repo_root / "tracks" / new_module / "shared" / "demos"
+        if demos_dir.is_dir():
+            for demo_file in sorted(demos_dir.glob("*.html")):
+                stub = repo_root / "lessons" / old_dir / "demos" / demo_file.name
+                url = f"../../../tracks/{new_module}/shared/demos/{demo_file.name}"
+                plan.append((stub, url))
+
     return plan
 
 

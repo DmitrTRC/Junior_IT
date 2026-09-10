@@ -44,3 +44,26 @@ def test_write_creates_files(tmp_path):
 
 def test_moves_cover_all_eleven_lessons():
     assert len(MOVES) == 11
+
+
+def test_plan_covers_demos_with_correct_relative_path(tmp_path):
+    module_dir = tmp_path / "tracks" / "web" / "m-01-html-css" / "shared" / "demos"
+    module_dir.mkdir(parents=True)
+    (module_dir / "gamer.html").write_text("x", encoding="utf-8")
+    plan = plan_redirects(tmp_path)
+    targets = dict(
+        (path.relative_to(tmp_path).as_posix(), url) for path, url in plan
+    )
+    assert (
+        targets["lessons/lesson-01-html-css/demos/gamer.html"]
+        == "../../../tracks/web/m-01-html-css/shared/demos/gamer.html"
+    )
+
+
+def test_plan_skips_modules_without_demos(tmp_path):
+    module_dir = tmp_path / "tracks" / "web" / "m-01-html-css" / "student"
+    module_dir.mkdir(parents=True)
+    (module_dir / "cheatsheet.html").write_text("x", encoding="utf-8")
+    plan = plan_redirects(tmp_path)
+    stubs = {path.relative_to(tmp_path).as_posix() for path, _ in plan}
+    assert "lessons/lesson-01-html-css/demos/gamer.html" not in stubs
