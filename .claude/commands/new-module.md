@@ -19,8 +19,13 @@ argument-hint: TRACK slug "тема модуля"
    - `module.yml` — id, title с английским термином в скобках, level, minutes,
      textbook, requires, terms, homework
    - `shared/` — слайды, живой код, демки
-   - `student/` — шпаргалка, словарик, условие домашки
+   - `student/` — шпаргалка, словарик
    - `teacher/` — сценарий с таймингом, ответы, «где залипнет»
+
+   Домашка — не в `student/`: создай `homework/$1-NN-$2/task.md` в корне
+   репозитория и укажи путь полем `homework` в `module.yml`. `homework/`
+   не публикуется (исключена в `tools/build_site.sh`). `student/homework.html`
+   — наследие 11 перенесённых модулей `cs`/`web`, для новых не заводи.
 
 3. Цвета — пара токенов своего трека из `meta/brand-tokens.css`, чип трека
    моноширинным шрифтом. Имя токена не совпадает с именем трека дословно —
