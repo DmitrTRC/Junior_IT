@@ -37,7 +37,9 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
   body {
     background: var(--bg);
     color: #e8e8f0;
@@ -102,7 +104,7 @@
     max-width: 26ch;
   }
   .hero .hook {
-    color: #c7cbe0;
+    color: #dfe3f5;
     font-size: clamp(16px, 1.7vw, 19px);
     max-width: 42ch;
     margin-bottom: 36px;
@@ -211,7 +213,7 @@
     margin-bottom: 16px;
   }
   .how-card h3 { font-size: 20px; margin-bottom: 10px; }
-  .how-card p { color: #c7cbe0; font-size: 15px; max-width: 40ch; }
+  .how-card p { color: #dfe3f5; font-size: 15px; max-width: 40ch; }
 
   /* ============ КТО ВЕДЁТ ============ */
   .teacher-strip { background: var(--card-2); padding: 44px 0; }
@@ -229,7 +231,7 @@
 
   /* ============ ХАБ ============ */
   #how, #hub { scroll-margin-top: 28px; }
-  .hub h2 { font-size: clamp(28px, 3.6vw, 40px); margin-bottom: 28px; }
+  #how h2, .hub h2 { font-size: clamp(28px, 3.6vw, 40px); margin-bottom: 28px; }
   .course-map {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -257,7 +259,7 @@
   .stub-plate {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    color: #6b7190;
+    color: #7d84a6;
     border: 1px dashed rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     padding: 10px 16px;
@@ -313,19 +315,20 @@
 
   <section id="how">
     <div class="container">
+      <h2>Как проходят занятия</h2>
       <div class="how-grid">
         <div class="how-card" style="--chip-color: var(--track-book)">
-          <span class="chip" style="--chip-color: var(--track-book)">BOOK</span>
+          <span class="chip">BOOK</span>
           <h3>Учебник — с опережением</h3>
           <p>Идём по школьному учебнику информатики — на главу впереди класса по теории и на год по программированию. Тесты учебника сдаём все, плюс свои.</p>
         </div>
         <div class="how-card" style="--chip-color: var(--track-py)">
-          <span class="chip" style="--chip-color: var(--track-py)">PY</span>
+          <span class="chip">PY</span>
           <h3>Инструменты — настоящие</h3>
           <p>Терминал, git и тесты, которые сами прогоняют домашку, — то, чем работают взрослые разработчики. Не учебная песочница, а настоящий Python на настоящем компьютере.</p>
         </div>
         <div class="how-card" style="--chip-color: var(--green)">
-          <span class="chip" style="--chip-color: var(--green)">1:1</span>
+          <span class="chip">1:1</span>
           <h3>Один на один</h3>
           <p>Ученик пишет код сам — преподаватель рядом. Теория блоками не дольше двух минут, остальное — руки на клавиатуре.</p>
         </div>
