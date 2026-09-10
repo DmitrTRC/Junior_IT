@@ -13,6 +13,12 @@
       "Bash(git checkout:*)",
       "Bash(git branch:*)",
       "Bash(python3 -m http.server:*)",
+      "Bash(tools/.venv/bin/python tools/validate_modules.py:*)",
+      "Bash(tools/.venv/bin/python tools/make_redirects.py:*)",
+      "Bash(tools/.venv/bin/python -m pytest:*)",
+      "Bash(.venv/bin/python validate_modules.py:*)",
+      "Bash(.venv/bin/python make_redirects.py:*)",
+      "Bash(.venv/bin/python -m pytest:*)",
       "Bash(npx live-server:*)",
       "Bash(graphify export:*)",
       "Bash(graphify benchmark:*)"
