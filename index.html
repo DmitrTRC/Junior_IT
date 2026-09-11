@@ -240,10 +240,13 @@
   }
   .course-map.course-map--lanes { display: block; }
   .track-card {
+    display: block;
     background: var(--card);
     border-left: 4px solid var(--track-color, var(--cyan));
     border-radius: 0 12px 12px 0;
     padding: 20px 22px;
+    text-decoration: none;
+    color: inherit;
   }
   .track-card .chip { background: var(--track-color, var(--cyan)); margin-bottom: 12px; }
   .track-card h3 { font-size: 17px; margin-bottom: 6px; }
@@ -483,40 +486,40 @@
     <div class="container">
       <h2>Карта курса</h2>
 
+      <div id="hub-extras"></div>
+
       <div id="course-map" class="course-map">
-        <div class="track-card" style="--track-color: var(--track-book)">
+        <a class="track-card" style="--track-color: var(--track-book)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/book">
           <span class="chip">BOOK</span>
           <h3>Учебник</h3>
           <p>теория по Босовой, 7–8 класс</p>
-        </div>
-        <div class="track-card" style="--track-color: var(--track-py)">
+        </a>
+        <a class="track-card" style="--track-color: var(--track-py)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/python">
           <span class="chip">PY</span>
           <h3>Python</h3>
           <p>основной язык курса</p>
-        </div>
-        <div class="track-card" style="--track-color: var(--track-pas)">
+        </a>
+        <a class="track-card" style="--track-color: var(--track-pas)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/pascal">
           <span class="chip">PAS</span>
           <h3>Pascal</h3>
           <p>второй диалект: тот же алгоритм, другой синтаксис</p>
-        </div>
-        <div class="track-card" style="--track-color: var(--track-ops)">
+        </a>
+        <a class="track-card" style="--track-color: var(--track-ops)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/devops">
           <span class="chip">OPS</span>
           <h3>DevOps</h3>
           <p>терминал, git, зелёная галка CI</p>
-        </div>
-        <div class="track-card" style="--track-color: var(--track-cs)">
+        </a>
+        <a class="track-card" style="--track-color: var(--track-cs)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/cs">
           <span class="chip">CS</span>
           <h3>Компьютер изнутри</h3>
           <p>как это всё устроено под капотом</p>
-        </div>
-        <div class="track-card" style="--track-color: var(--track-web)">
+        </a>
+        <a class="track-card" style="--track-color: var(--track-web)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/web">
           <span class="chip">WEB</span>
           <h3>Web (архив)</h3>
           <p>HTML/CSS/JS — по запросу</p>
-        </div>
+        </a>
       </div>
-
-      <div id="hub-extras"></div>
 
       <div class="hub-links">
         <span class="stub-plate">Тренажёр — скоро</span>
