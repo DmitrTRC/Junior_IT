@@ -1,285 +1,165 @@
 <div align="center">
 
 <a href="https://dmitrtrc.github.io/Junior_IT/">
-  <img src="https://github.com/DmitrTRC/Junior_IT/raw/refs/heads/main/.github/assets/banner.svg" alt="Junior_IT — курс программирования для подростков 11–14 лет" width="100%">
+  <img src=".github/assets/banner.svg" alt="Junior_IT — курс информатики и программирования для 7–8 классов" width="100%">
 </a>
 
 <br><br>
 
-**От первой строчки HTML до собственного сайта по реальной ссылке в интернете.**
-**Бесплатно. Без зубрёжки. Первый работающий сайт — за 75 минут.**
-
-<br>
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-ffd60a.svg?style=flat-square&labelColor=1a1a2e)](./LICENSE)
-[![GH Pages](https://img.shields.io/github/deployments/DmitrTRC/Junior_IT/github-pages?style=flat-square&label=GH%20Pages&logo=github&logoColor=white&labelColor=1a1a2e&color=00e676)](https://dmitrtrc.github.io/Junior_IT/)
-[![Last Commit](https://img.shields.io/github/last-commit/DmitrTRC/Junior_IT?style=flat-square&logo=git&logoColor=white&labelColor=1a1a2e&color=ff5722)](https://github.com/DmitrTRC/Junior_IT/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/DmitrTRC/Junior_IT?style=flat-square&labelColor=1a1a2e&color=0f3460)](#)
-[![Stars](https://img.shields.io/github/stars/DmitrTRC/Junior_IT?style=flat-square&logo=github&labelColor=1a1a2e&color=ffd60a)](https://github.com/DmitrTRC/Junior_IT/stargazers)
-
-[![HTML5](https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white&labelColor=1a1a2e)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/-CSS3-1572B6?style=flat-square&logo=css3&logoColor=white&labelColor=1a1a2e)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black&labelColor=1a1a2e)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-![Age 11-14](https://img.shields.io/badge/age-11--14-ff5722?style=flat-square&labelColor=1a1a2e)
-![Format](https://img.shields.io/badge/формат-вебинар-0f3460?style=flat-square&labelColor=1a1a2e)
-![Lessons](https://img.shields.io/badge/уроков-4-success?style=flat-square&labelColor=1a1a2e)
-![Status](https://img.shields.io/badge/статус-набор%20открыт-00e676?style=flat-square&labelColor=1a1a2e)
-
-<br>
-
-### 🌐 [&nbsp;Открыть лендинг&nbsp;](https://dmitrtrc.github.io/Junior_IT/) &nbsp;·&nbsp; [&nbsp;📚 Программа&nbsp;](#-программа) &nbsp;·&nbsp; [&nbsp;🚀 Все материалы&nbsp;](#-живые-материалы) &nbsp;·&nbsp; [&nbsp;🎬 Слайды урока 1&nbsp;](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/slides.html)
+[![Pages deploy](https://img.shields.io/github/actions/workflow/status/DmitrTRC/Junior_IT/deploy.yml?branch=main&style=flat-square&label=Pages%20deploy&logo=github&logoColor=white&labelColor=1a1a2e&color=00e676)](https://github.com/DmitrTRC/Junior_IT/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-ffd60a?style=flat-square&labelColor=1a1a2e)](LICENSE)
+[![Классы 7–8](https://img.shields.io/badge/классы-7--8-0f3460?style=flat-square&labelColor=1a1a2e)](#)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB?style=flat-square&logo=python&logoColor=white&labelColor=1a1a2e)](#-для-разработчиков)
+[![Tests](https://img.shields.io/badge/tests-60%20passed-00e676?style=flat-square&labelColor=1a1a2e)](#-для-разработчиков)
 
 </div>
 
 ---
 
-## ⚡ Если тебе 12–20 и ты это читаешь
+## 🎯 Суть
 
-Не «кружок информатики». За пару вечеров у тебя будет:
+**Junior_IT** — индивидуальный курс углублённой информатики и программирования
+для 7–8 классов. Опора курса — школьный учебник информатики (Босова), но ход —
+с опережением программы. Основной язык — Python. Инструменты — настоящие, те
+же, что у взрослых разработчиков: терминал, git, автоматическая проверка
+домашних заданий тестами.
 
-- 🌐 **Свой сайт по настоящей ссылке** — не файл в папке, а страница в интернете, которую можно скинуть другу.
-- 🧑‍💻 **Код на GitHub** — первая строчка портфолио ещё до того, как ты решишь, «программист ты или нет».
-- 💸 **Навык, который реально платят** — фронтенд это hard skill, а не хобби-поделка.
-- 🎨 **Сайт в твоём стиле** — геймерский, скейтерский, артовый. Шаблон один, характер твой.
+## 🗓️ Как устроено занятие
 
-Всё с нуля. Нужен только браузер и желание. Начни с [**лендинга**](https://dmitrtrc.github.io/Junior_IT/) или сразу с [**урока 1**](./lessons/lesson-01-html-css/).
+- Формат — один на один, через Zoom: за клавиатурой сидит ученик и делится
+  экраном, а не смотрит, как код пишет преподаватель.
+- Два занятия в неделю — среда и воскресенье.
+- 75 минут — потолок одного занятия.
+- Теория — блоками не дольше двух минут, дальше снова руки на клавиатуре.
 
----
+## 🔁 Как работает ученик
 
-## 🎯 О проекте
+```mermaid
+flowchart LR
+    Lesson["Занятие"] -->|"в конце"| Cheatsheet["Шпаргалка"]
+    Cheatsheet --> Homework["Домашка"]
+    Homework -->|"ветка + PR"| Repo["Свой репозиторий"]
+    Repo -->|"pytest"| CI{"Зелёная галка?"}
+    CI -->|"да"| Merge["Merge"] --> Reference["Два эталонных решения + разбор"]
+    CI -->|"нет"| Homework
+```
 
-**Junior_IT** — IT-направление при ЮДО (юношеский добровольческий отряд) на территории Отряда территориальной обороны при 128 отделе полиции, Всеволожский район Ленобласти.
+Git и автоматическая проверка включаются со второго занятия; до этого домашки
+сдаются в мессенджер.
 
-Курс собран на четырёх простых принципах:
+## 🧭 Треки курса
 
-|  | Принцип | Что это значит |
+| Чип | Трек | Что внутри | Статус |
+|---|---|---|---|
+| `BOOK` | Учебник | теория по Босовой, 7–8 класс, с опережением программы | идёт |
+| `PY` | Python | основной язык курса | идёт |
+| `PAS` | Pascal | второй диалект: та же задача, другой синтаксис — главы 4 и 5 учебника 8 класса зеркальны | впереди |
+| `OPS` | DevOps | терминал, git, автоматическая проверка домашних заданий по зелёной галке CI | идёт |
+| `CS` | Компьютер изнутри | как это всё устроено под капотом | идёт |
+| `WEB` | Web | архив первого сезона, выдаётся по запросу | архив |
+
+Живая карта модулей и статусов —
+[dmitrtrc.github.io/Junior_IT/#hub](https://dmitrtrc.github.io/Junior_IT/#hub).
+
+## 🗂️ Структура репозитория
+
+```
+tracks/         библиотека модулей — shared/ (на экране), student/ (ученику), teacher/ (преподавателю)
+playground/     журналы занятий
+textbook/       атлас соответствия учебнику и поправки к нему
+homework/       условия домашних заданий
+trainer/        тренажёр — в работе
+tools/          валидатор, генератор карты курса, сборка сайта
+meta/           методика и канон модуля
+docs/           гайды
+lessons/        редиректы со старых адресов уроков
+provisioning/   настройка учебного компьютера
+```
+
+Анатомия модуля — файлы, роли и конвенции — описана в
+[`meta/module-anatomy.md`](meta/module-anatomy.md).
+
+## 👀 Кто что видит
+
+| Слой | Кто видит | Что там |
 |---|---|---|
-| ⚡ | **Результат за 75 минут** | В конце первого урока — реальный работающий сайт. Не «теперь понятно», а буквально *«вот мой сайт»*. |
-| 🎧 | **Смотрим вместе — делаем дома** | На вебинаре не повторяем параллельно. Делает сам ребёнок дома, по шпаргалке и стартеру. |
-| 🚫 | **Без зубрёжки терминов** | Слова «семантика», «DOCTYPE», «парсинг», «DOM» появятся на 4-м уроке. На старте — теги, цвета, картинки. |
-| 🎨 | **Каждому — своя эстетика** | Геймер делает геймерский сайт. Скейтер — скейтерский. Художница — арт. Один шаблон → три характера. |
+| Сайт (GitHub Pages) | все | лендинг, слайды, демки, шпаргалки, тренажёр |
+| Публичный GitHub | любой, кто откроет репозиторий | + сценарии преподавателя, домашки, журналы занятий, инструменты |
+| Машина преподавателя | только преподаватель | учебники PDF, записи занятий, работы ученика, переписка с родителями, граф знаний |
 
----
+Методика открыта сознательно — сценарии занятий можно читать, это часть
+качества курса; эталонные решения домашних заданий в открытый репозиторий не
+попадают — ученик получает их после сдачи.
 
-## 📚 Программа
+Персональное — записи занятий, работы ученика, переписка — не покидает
+компьютера преподавателя.
 
-| № | Урок | Тема | Стек | Статус |
-|---|---|---|---|---|
-| **01** | [Первый сайт за 75 минут](./lessons/lesson-01-html-css/) | Личная страничка, теги, цвета, hover | `HTML` `CSS` | ✅ готов |
-| **02** | [Оживляем сайт](./lessons/lesson-02-js/) | Кнопки, счётчики, всплывашки | `JS` | ✅ готов |
-| **02b** | [Сам язык: консоль-калькулятор](./lessons/lesson-02b-js-console/) | Числа, переменные, текст, `prompt`/`alert` | `JS` | ✅ готов |
-| **02c** | [Программа решает: если…то](./lessons/lesson-02c-js-conditions/) | Сравнение, `if` / `else` / `else if` | `JS` | ✅ готов |
-| 03 | _События и анимация_ | Клики, движение, мини-взаимодействия | `JS` | 📋 планируется |
-| 04 | _Сайт в интернете_ | GH Pages, surge, реальная ссылка | `Git` `GitHub` | 📋 планируется |
-| 05+ | _Мини-проекты по интересам_ | По желанию группы | — | 🌱 далеко |
-
-> 💡 Уроки `02b` и `02c` — «мост» к чистому JavaScript в консоли: к нему откатились, когда `getElementById` оказался для детей стеной. Подробности — в [`meta/lesson-01-postmortem.md`](./meta/lesson-01-postmortem.md).
-
----
-
-## 🚀 Живые материалы
-
-Всё открывается прямо в браузере — ничего скачивать не нужно.
-
-### 🟡 Урок 1 — HTML + CSS
-[🌐 Лендинг](https://dmitrtrc.github.io/Junior_IT/) ·
-[📖 Шпаргалка](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/cheatsheet.html) ·
-[📝 Домашка](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/homework.html) ·
-[🎬 Слайды](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/slides.html) ·
-демки: [🌃 gamer](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/gamer.html) · [🛹 sport](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/sport.html) · [🎨 art](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/art.html)
-
-### 🟡 Урок 2 — Оживляем сайт (JS)
-[📖 Шпаргалка](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02-js/cheatsheet.html) ·
-[📝 Домашка](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02-js/homework.html) ·
-[🎬 Слайды](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02-js/slides.html)
-
-### 🟡 Урок 2b — Консоль-калькулятор (JS)
-[📖 Шпаргалка](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02b-js-console/cheatsheet.html) ·
-[📝 Домашка](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02b-js-console/homework.html) ·
-[🎬 Слайды](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02b-js-console/slides.html)
-
-### 🟡 Урок 2c — Программа решает: if/else (JS)
-[📖 Шпаргалка](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02c-js-conditions/cheatsheet.html) ·
-[📝 Домашка (калькуляторы ИМТ и бюджета)](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02c-js-conditions/homework.html) ·
-[🎬 Слайды](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-02c-js-conditions/slides.html)
-
-### ⚙️ Общее
-[⚙️ Гайд подготовки устройства](https://dmitrtrc.github.io/Junior_IT/docs/setup-guide.html) ·
-[🧠 Soft vs Hard Skills](https://dmitrtrc.github.io/Junior_IT/docs/soft-vs-hard-skills.html)
+## ❓ Вопросы
 
 <details>
-<summary><b>👨‍🏫 Материалы для преподавателя</b></summary>
-
+<summary>Сколько времени нужно вне занятий?</summary>
 <br>
-
-Каждый модуль — папка в [`tracks/`](./tracks/) с тремя ролями: `shared/`
-(слайды, живой код, демки) · `student/` (шпаргалка, словарик, домашка) ·
-`teacher/` (сценарий с таймингом, ответы).
-
-- 🎯 [Сценарий урока 1](./tracks/web/m-01-html-css/teacher/scenario.md) · [Живой код](./tracks/web/m-01-html-css/shared/live-code.md)
-- 🎯 [Сценарий урока 2b](./tracks/web/m-03-js-console/teacher/scenario.md) · [Живой код](./tracks/web/m-03-js-console/shared/live-code.md)
-- 🎯 [Сценарий урока 2c](./tracks/web/m-04-js-conditions/teacher/scenario.md) · [Живой код](./tracks/web/m-04-js-conditions/shared/live-code.md)
-
+Домашка занимает 30–60 минут между занятиями.
 </details>
 
----
+<details>
+<summary>Какой компьютер нужен?</summary>
+<br>
+Подойдёт любой не старше ~10 лет. Курс идёт на macOS, Windows — с оговорками,
+которые проговариваются на занятии.
+</details>
 
-## 🎮 Эталонные демки
+<details>
+<summary>Что ребёнок будет уметь через полгода?</summary>
+<br>
+Уверенный терминал и git, Python на уровне 8–9 класса углублённой программы,
+привычку к автоматической проверке кода и разбору решения. Подробнее о том,
+что стоит за этим списком помимо кода — на отдельной странице:
+<a href="https://dmitrtrc.github.io/Junior_IT/docs/soft-vs-hard-skills.html">софт- и хард-скилы</a>.
+</details>
 
-Один HTML-шаблон, три характера — чтобы каждый узнал себя:
+<details>
+<summary>Как проверяются домашки?</summary>
+<br>
+Тесты запускаются автоматически при отправке. Зелёная галка — домашка сдана,
+преподаватель смотрит только качество решения.
+</details>
 
-- [🌃 **MAX_LVL_99**](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/gamer.html) — для геймеров (неон, киберпанк)
-- [🛹 **Саня · скейтер**](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/sport.html) — для спортсменов (ярко, дерзко)
-- [🎨 **Лиза · рисует**](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/art.html) — для творческих (тепло, элегантно)
+<details>
+<summary>Что видно публично и безопасно ли это?</summary>
+<br>
+См. таблицу «Кто что видит» выше. Имя ребёнка, лицо, записи занятий — не
+публикуются.
+</details>
 
----
+<details>
+<summary>Мы не программисты — сможем ли помогать?</summary>
+<br>
+Помощь не нужна: материалы самодостаточны, преподаватель на связи. Лучший
+вклад со стороны семьи — время и место для занятий.
+</details>
 
-## 🛠 Стек и инструменты
+## 🛠 Для разработчиков
 
-<table>
-<tr>
-<td valign="top">
-
-**Языки и технологии**
-- HTML5, CSS3
-- JavaScript (vanilla, без фреймворков)
-- Markdown — для документации
-- Git + GitHub Pages — для деплоя
-
-</td>
-<td valign="top">
-
-**Инструменты для уроков**
-- VS Code + Live Server (Ritwick Dey)
-- MAX мессенджер (вебинар) / Zoom / Meet
-- Unsplash, Pexels — картинки
-- coolors.co — палитры
-
-</td>
-</tr>
-</table>
-
----
-
-## 🧩 Структура
-
-```
-Junior_IT/
-├── 📄 index.html              ← хаб курса (GH Pages root)
-├── 📄 README.md               ← вы здесь
-├── 📄 LICENSE                 ← MIT
-│
-├── 📂 docs/                   ← общие материалы (setup-guide, soft-vs-hard-skills)
-├── 📂 lessons/                ← уроки (lesson-01 … lesson-02c), у каждого один набор файлов
-├── 📂 meta/                   ← методология и постмортемы
-├── 📂 students/               ← работы учеников (gitignored)
-└── 📂 .github/                ← баннер, шаблоны, GH Pages auto-deploy
+```bash
+cd tools
+.venv/bin/python -m pytest              # 60 тестов
+.venv/bin/python validate_modules.py .. # схема и целостность модулей
+./build_site.sh                         # сборка публикуемой части в _site/
 ```
 
-Каждый урок устроен одинаково: `README · scenario · live-code · glossary · cheatsheet · homework · slides · index-final · demos/`.
+Плюс команда `/new-module` в Claude CLI — разворачивает новый модуль по
+канону из [`meta/module-anatomy.md`](meta/module-anatomy.md).
 
----
-
-## 🎬 Как пользоваться
-
-<details>
-<summary><b>👨‍🎓 Если вы ученик</b></summary>
-
-<br>
-
-1. После урока — открой **шпаргалку** своего урока (см. [Живые материалы](#-живые-материалы)). Там всё с примерами.
-2. Сделай **домашку**. Получилось — присылай скриншот.
-3. Непонятно слово — открой **глоссарий** урока, термины объяснены простыми словами.
-4. Залип — открой ту демку, что ближе по характеру ([gamer](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/gamer.html) · [sport](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/sport.html) · [art](https://dmitrtrc.github.io/Junior_IT/lessons/lesson-01-html-css/demos/art.html)), смотри как сделано. Копировать можно смело.
-
-</details>
-
-<details>
-<summary><b>👨‍👩‍👧 Если вы родитель</b></summary>
-
-<br>
-
-1. Прочитайте [гайд подготовки устройства](https://dmitrtrc.github.io/Junior_IT/docs/setup-guide.html) под свою платформу — iOS, Android, Windows или Mac.
-2. На занятии — ребёнок только смотрит и слушает, ничего повторять параллельно не нужно.
-3. После занятия откройте с ребёнком домашку — там пошаговая инструкция.
-4. Если интересно — [Soft vs Hard Skills](https://dmitrtrc.github.io/Junior_IT/docs/soft-vs-hard-skills.html) про то, что качается на курсе кроме самого кода.
-
-</details>
-
-<details>
-<summary><b>👨‍🏫 Если вы преподаёте по этим материалам</b></summary>
-
-<br>
-
-1. **За день до урока** — отправьте родителям [setup-guide](https://dmitrtrc.github.io/Junior_IT/docs/setup-guide.html). Дети ничего не устанавливают — просто смотрят.
-2. **За час** — откройте `scenario.md` и `live-code.md` нужного урока на втором экране.
-3. **В начале** — покажите слайды и все 3 демки.
-4. **Во время** — ведите живой кодинг по шагам из `live-code.md`.
-5. **В конце** — отправьте детям ссылки на шпаргалку и домашку.
-
-Подробнее — в [CONTRIBUTING.md](./CONTRIBUTING.md).
-
-</details>
-
----
-
-## 🎨 Дизайн-философия
-
-> Сайты курса — это **самореклама самого курса**. Если первая страница, которую видит подросток, выглядит как презентация из 2003 — он закроет вкладку и не вернётся.
-
-- 🎨 **Фирменная палитра:** `#1a1a2e` · `#ffd60a` · `#16213e` · `#0f3460`
-- 🔤 **Шрифты:** [Rubik](https://fonts.google.com/specimen/Rubik), [Manrope](https://fonts.google.com/specimen/Manrope), [JetBrains Mono](https://www.jetbrains.com/lp/mono/)
-- ✨ **Принципы:** градиенты, мягкие тени, плавные hover-эффекты, моноширинные акценты, минимум декора, максимум смысла.
-
----
-
-## 👤 Автор
-
-<table>
-<tr>
-<td>
-  <a href="https://github.com/DmitrTRC">
-    <img src="https://github.com/DmitrTRC.png" width="80" style="border-radius: 50%;" alt="Dmitry Morozov"/>
-  </a>
-</td>
-<td>
-
-**Дмитрий Морозов** ([@DmitrTRC](https://github.com/DmitrTRC))
-
-Senior разработчик · командир ЮДО · преподаватель IT-направления.<br>
-Стек по жизни: `ASM` `C` `C++` `Python` `JS` `Pascal` `Dart` `C#` `Java`
-
-📍 Хязельки (КП Лукоморье), Всеволожский район, ЛО
-
-</td>
-</tr>
-</table>
-
----
-
-## 🤝 Контрибьют и сообщество
-
-- **Использовать материалы** для своих занятий — берите, лицензия MIT.
-- **Нашли опечатку/ошибку в уроке** или **хотите предложить тему** — [откройте issue](https://github.com/DmitrTRC/Junior_IT/issues/new/choose) по шаблону.
-- Как помочь и по каким правилам общаемся — [CONTRIBUTING.md](./CONTRIBUTING.md) и [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
-- Вопросы приватности и безопасности (например, материалы с детьми) — [SECURITY.md](./SECURITY.md).
-
----
-
-## 📄 Лицензия
-
-Распространяется под лицензией [MIT](./LICENSE). Используйте, модифицируйте, распространяйте — главное, чтобы детям было полезно.
+PR извне не ожидаются — курс ведётся один на один и меняется под конкретного
+ученика, но методику и инструменты можно свободно переиспользовать:
+лицензия [MIT](LICENSE).
 
 ---
 
 <div align="center">
 
-**Сделано с ⚡ для детей, которые ещё не знают, что они уже программисты.**
-
-<br>
-
-[![Made in Russia](https://img.shields.io/badge/made_in-Ленобласть-ffd60a?style=flat-square&labelColor=1a1a2e)](#)
-[![Built with](https://img.shields.io/badge/built_with-VS_Code-007ACC?style=flat-square&logo=visualstudiocode&logoColor=white&labelColor=1a1a2e)](https://code.visualstudio.com)
-[![Hosted on](https://img.shields.io/badge/hosted_on-GitHub_Pages-181717?style=flat-square&logo=github&logoColor=white&labelColor=1a1a2e)](https://pages.github.com)
+Ведёт Дмитрий Морозов — senior-разработчик, 30+ лет в индустрии ·
+[GitHub](https://github.com/DmitrTRC) · [MIT](LICENSE)
 
 </div>
