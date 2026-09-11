@@ -285,6 +285,141 @@
     border-bottom: 1px dashed rgba(255, 214, 10, 0.4);
   }
   footer a:hover { color: var(--yellow); border-color: var(--yellow); }
+
+  /* ============ ХАБ: живая карта ============ */
+  .next-session {
+    background: var(--card);
+    border-left: 4px solid var(--yellow);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  .next-session h3 { font-size: 16px; margin-bottom: 6px; color: var(--yellow); }
+  .next-session ul { list-style: none; margin-top: 8px; }
+  .next-session li {
+    display: inline-block;
+    margin: 4px 8px 0 0;
+    padding: 4px 10px;
+    background: var(--card-2);
+    border-radius: 6px;
+    font-size: 13px;
+    color: #dfe3f5;
+  }
+
+  .counters-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .counter-plate {
+    background: var(--card-2);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 14px;
+    color: #dfe3f5;
+  }
+  .counter-plate strong { color: var(--cyan); }
+
+  .track-lane {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 14px;
+    align-items: stretch;
+    margin-bottom: 14px;
+  }
+  .track-lane-chip {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 6px;
+    background: var(--track-color, var(--cyan));
+    color: var(--bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+  .track-lane-chip .chip { background: var(--bg); color: var(--track-color, var(--cyan)); }
+  .track-lane-chip .track-title { font-size: 13px; }
+  .track-lane-nodes {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 2px;
+  }
+  .track-lane-empty {
+    display: flex;
+    align-items: center;
+    color: #7d84a6;
+    font-size: 13.5px;
+    font-style: italic;
+  }
+  .module-node {
+    flex: 0 0 auto;
+    min-width: 150px;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: var(--card-2);
+    border: 2px solid transparent;
+    text-decoration: none;
+    color: inherit;
+  }
+  .module-node .module-title { font-size: 13.5px; font-weight: 600; display: block; }
+  .module-node .module-minutes { font-size: 12px; color: #9aa0b5; }
+  .module-node[data-status="done"] {
+    background: var(--track-color, var(--cyan));
+    color: var(--bg);
+  }
+  .module-node[data-status="done"] .module-minutes { color: var(--bg); opacity: .75; }
+  .module-node[data-status="current"] {
+    border-color: var(--track-color, var(--cyan));
+    animation: node-pulse 1.6s ease-in-out infinite;
+  }
+  .module-node[data-status="planned"] { opacity: .45; }
+  @keyframes node-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--track-color, var(--cyan)); }
+    50% { box-shadow: 0 0 0 5px transparent; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .module-node[data-status="current"] { animation: none; }
+  }
+  @media (max-width: 720px) {
+    .track-lane { grid-template-columns: 1fr; }
+    .module-node { min-width: 128px; padding: 8px 10px; }
+  }
+
+  .archive-details {
+    margin-top: 8px;
+    background: var(--card-2);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .archive-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--cyan);
+  }
+  .archive-details .track-lane-nodes { margin-top: 12px; }
+
+  .quick-links {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 20px;
+  }
+  .quick-links h3 { font-size: 15px; margin-bottom: 10px; color: var(--yellow); }
+  .quick-links ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+  .quick-links a {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--card-2);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13.5px;
+    color: var(--cyan);
+  }
 </style>
 </head>
 <body>
@@ -465,6 +600,205 @@
       typeChar();
     }
     nextLine();
+  })();
+</script>
+
+<script>
+  (function () {
+    var TRACK_TOKENS = {
+      book: '--track-book', python: '--track-py', pascal: '--track-pas',
+      devops: '--track-ops', cs: '--track-cs', web: '--track-web'
+    };
+
+    var map = null;
+
+    function moduleTitle(id) {
+      var found = (map.modules || []).find(function (m) { return m.id === id; });
+      return found ? found.title : id;
+    }
+
+    function formatSessionDate(iso) {
+      var parts = iso.split('-').map(Number);
+      var dt = new Date(parts[0], parts[1] - 1, parts[2]);
+      var fmt = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'long', weekday: 'long' });
+      return fmt.format(dt);
+    }
+
+    function renderNextSession(ns) {
+      var hubExtras = document.getElementById('hub-extras');
+      if (!ns || !hubExtras) return;
+
+      var card = document.createElement('div');
+      card.className = 'next-session';
+
+      var heading = document.createElement('h3');
+      heading.textContent = 'Ближайшее занятие — ' + formatSessionDate(ns.date) + ', тема: ' + ns.theme;
+      card.appendChild(heading);
+
+      var list = document.createElement('ul');
+      (ns.modules || []).forEach(function (id) {
+        var li = document.createElement('li');
+        li.textContent = moduleTitle(id);
+        list.appendChild(li);
+      });
+      card.appendChild(list);
+
+      hubExtras.insertBefore(card, hubExtras.firstChild);
+    }
+
+    function renderCounters(c) {
+      var hubExtras = document.getElementById('hub-extras');
+      if (!c || !hubExtras) return;
+
+      var strip = document.createElement('div');
+      strip.className = 'counters-strip';
+
+      function plate(text) {
+        var p = document.createElement('div');
+        p.className = 'counter-plate';
+        p.textContent = text;
+        strip.appendChild(p);
+      }
+
+      plate('Модулей пройдено ' + c.modules_done + ' из ' + c.modules_core_total);
+      plate('Параграфов учебника закрыто ' + c.paragraphs_closed);
+      plate('Python — материал 8 класса, мы в 7-м');
+
+      hubExtras.appendChild(strip);
+    }
+
+    function moduleTooltip(m) {
+      var parts = [m.minutes + ' мин'];
+      if (m.textbook && m.textbook.length) parts.push('§' + m.textbook.join(', §'));
+      return parts.join(' · ');
+    }
+
+    function buildModuleNode(m, colorVar) {
+      var href = m.links && (m.links.slides || m.links.cheatsheet);
+      var node = document.createElement(href ? 'a' : 'div');
+      node.className = 'module-node';
+      node.dataset.status = m.status;
+      node.style.setProperty('--track-color', 'var(' + colorVar + ')');
+      node.title = moduleTooltip(m);
+      if (href) node.href = href;
+
+      var title = document.createElement('span');
+      title.className = 'module-title';
+      title.textContent = m.title;
+      node.appendChild(title);
+
+      var minutes = document.createElement('span');
+      minutes.className = 'module-minutes';
+      minutes.textContent = m.minutes + ' мин';
+      node.appendChild(minutes);
+
+      return node;
+    }
+
+    function buildLaneNodes(modules, colorVar) {
+      var nodes = document.createElement('div');
+      nodes.className = 'track-lane-nodes';
+      if (!modules.length) {
+        var empty = document.createElement('div');
+        empty.className = 'track-lane-empty';
+        empty.textContent = 'впереди';
+        nodes.appendChild(empty);
+      } else {
+        modules.forEach(function (m) { nodes.appendChild(buildModuleNode(m, colorVar)); });
+      }
+      return nodes;
+    }
+
+    function renderMap(map) {
+      var container = document.getElementById('course-map');
+      if (!container) return;
+      container.textContent = '';
+
+      var modulesByTrack = {};
+      (map.modules || []).forEach(function (m) {
+        (modulesByTrack[m.track] = modulesByTrack[m.track] || []).push(m);
+      });
+
+      (map.tracks || []).forEach(function (track) {
+        var allModules = modulesByTrack[track.id] || [];
+        var activeModules = allModules.filter(function (m) { return m.status !== 'library'; });
+        if (allModules.length && !activeModules.length) return; // трек целиком в архиве
+
+        var colorVar = TRACK_TOKENS[track.id] || '--cyan';
+
+        var lane = document.createElement('div');
+        lane.className = 'track-lane';
+
+        var chip = document.createElement('div');
+        chip.className = 'track-lane-chip';
+        chip.style.setProperty('--track-color', 'var(' + colorVar + ')');
+        var chipSpan = document.createElement('span');
+        chipSpan.className = 'chip';
+        chipSpan.textContent = track.chip;
+        var titleSpan = document.createElement('span');
+        titleSpan.className = 'track-title';
+        titleSpan.textContent = track.title;
+        chip.appendChild(chipSpan);
+        chip.appendChild(titleSpan);
+        lane.appendChild(chip);
+
+        lane.appendChild(buildLaneNodes(activeModules, colorVar));
+        container.appendChild(lane);
+      });
+
+      var libraryModules = (map.modules || []).filter(function (m) { return m.status === 'library'; });
+      if (libraryModules.length) {
+        var details = document.createElement('details');
+        details.className = 'archive-details';
+        var summary = document.createElement('summary');
+        summary.textContent = 'Архив web — по запросу';
+        details.appendChild(summary);
+        details.appendChild(buildLaneNodes(libraryModules, TRACK_TOKENS.web));
+        container.appendChild(details);
+      }
+    }
+
+    function renderQuickLinks(modules) {
+      var hubExtras = document.getElementById('hub-extras');
+      if (!hubExtras) return;
+      var withCheatsheets = (modules || [])
+        .filter(function (m) { return m.status === 'done' && m.links && m.links.cheatsheet; })
+        .slice(-3);
+      if (!withCheatsheets.length) return;
+
+      var box = document.createElement('div');
+      box.className = 'quick-links';
+
+      var heading = document.createElement('h3');
+      heading.textContent = 'Свежие шпаргалки';
+      box.appendChild(heading);
+
+      var list = document.createElement('ul');
+      withCheatsheets.forEach(function (m) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = m.links.cheatsheet;
+        a.textContent = m.title;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+      box.appendChild(list);
+
+      hubExtras.appendChild(box);
+    }
+
+    (async function () {
+      try {
+        const resp = await fetch('course-map.json');
+        if (!resp.ok) return;                 // fallback-блок остаётся
+        map = await resp.json();
+      } catch (e) { return; }
+
+      renderNextSession(map.next_session);
+      renderCounters(map.counters);
+      renderMap(map);
+      renderQuickLinks(map.modules);
+    })();
   })();
 </script>
 
