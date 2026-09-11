@@ -32,7 +32,7 @@ def test_internal_dirs_never_published(tmp_path):
     # Все каталоги, исключённые в build_site.sh (кроме _site/, .DS_Store,
     # __pycache__ — build-гигиена, а не публикуемый контент).
     for internal in (
-        ".git", ".github", ".claude",
+        ".git", ".github", ".claude", ".aos", ".vscode",
         "teacher", "tools", "meta", "refs", "homework", "playground",
         "provisioning", "print", "students", "recordings", "TO_PARENTS",
         "graphify-out", ".superpowers",

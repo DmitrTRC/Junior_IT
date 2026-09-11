@@ -264,7 +264,7 @@
   .stub-plate {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    color: #7d84a6;
+    color: #9aa0b5;
     border: 1px dashed rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     padding: 10px 16px;
@@ -353,11 +353,16 @@
     gap: 10px;
     overflow-x: auto;
     padding: 4px 2px;
+    scrollbar-color: var(--card-2) transparent;
+    scrollbar-width: thin;
   }
+  .track-lane-nodes::-webkit-scrollbar { height: 6px; }
+  .track-lane-nodes::-webkit-scrollbar-track { background: transparent; }
+  .track-lane-nodes::-webkit-scrollbar-thumb { background: var(--card-2); border-radius: 3px; }
   .track-lane-empty {
     display: flex;
     align-items: center;
-    color: #7d84a6;
+    color: #9aa0b5;
     font-size: 13.5px;
     font-style: italic;
   }
@@ -460,7 +465,7 @@
         <div class="how-card" style="--chip-color: var(--track-book)">
           <span class="chip">BOOK</span>
           <h3>Учебник — с опережением</h3>
-          <p>Идём по школьному учебнику информатики — на главу впереди класса по теории и на год по программированию. Тесты учебника сдаём все, плюс свои.</p>
+          <p>Идём по школьному учебнику информатики — на главу впереди класса по теории и на год по программированию. Сдаём все тесты учебника — и наши задачи сверх него.</p>
         </div>
         <div class="how-card" style="--chip-color: var(--track-py)">
           <span class="chip">PY</span>
@@ -532,6 +537,7 @@
 
 <footer>
   <p>Junior_IT · материалы открыты · MIT</p>
+  <p>Ведёт Дмитрий Морозов — senior-разработчик</p>
   <p><a href="https://github.com/DmitrTRC/Junior_IT">GitHub →</a></p>
   <p class="muted">Сделано без конструкторов: HTML, CSS и ванильный JS.</p>
 </footer>

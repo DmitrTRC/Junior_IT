@@ -13,6 +13,8 @@ rsync -a \
   --exclude '.git/' \
   --exclude '.github/' \
   --exclude '.claude/' \
+  --exclude '.aos/' \
+  --exclude '.vscode/' \
   --exclude '_site/' \
   --exclude 'teacher/' \
   --exclude 'live-code.md' \

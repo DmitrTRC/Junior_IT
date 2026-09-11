@@ -65,3 +65,10 @@ def test_fallback_tracks_present_without_js():
 
 def test_fetches_course_map():
     assert re.search(r"fetch\(['\"]course-map\.json['\"]\)", landing_text())
+
+
+def test_inline_tokens_match_brand_css():
+    css = (REPO / "meta" / "brand-tokens.css").read_text(encoding="utf-8")
+    landing = landing_text()
+    for name, value in re.findall(r"(--[\w-]+):\s*(#[0-9a-fA-F]{6})", css):
+        assert f"{name}: {value}" in landing, f"{name} разошёлся с brand-tokens.css"

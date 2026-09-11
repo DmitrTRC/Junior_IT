@@ -99,7 +99,7 @@
 `#7fd0ff` (вывод), фоны `#15151c`/`#0c0c11`. Это функциональный слой, не декор —
 в токены не входит, но единообразен по всей линейке. Не «чинить» в отдельном уроке.
 
-**Шрифты:** Headings — Rubik 700; Body — Manrope 400/500/600; Code/labels —
+**Шрифты:** Headings — Rubik 700; Body — Manrope 400/500/600/700; Code/labels —
 JetBrains Mono 400/700. Эстетики демок: спорт — `Arial Black` (под Bebas-вайб),
 арт — `Georgia` (под Fraunces-вайб), геймер — `Press Start 2P` + Manrope.
 ⚠️ **Новый шрифт с Google Fonts — сперва проверить сабсет `cyrillic`**, и только потом
