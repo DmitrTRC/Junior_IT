@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%230a0a14%27%2F%3E%3Ctext%20x%3D%274%27%20y%3D%2723%27%20font-family%3D%27monospace%27%20font-weight%3D%27700%27%20font-size%3D%2715%27%20fill%3D%27%2300ffc8%27%3E%26gt%3B_%3C%2Ftext%3E%3C%2Fsvg%3E">
 <style>
   /* Токены оформления — копия meta/brand-tokens.css, менять только там */
   :root {
@@ -237,6 +238,7 @@
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 16px;
   }
+  .course-map.course-map--lanes { display: block; }
   .track-card {
     background: var(--card);
     border-left: 4px solid var(--track-color, var(--cyan));
@@ -377,7 +379,7 @@
     border-color: var(--track-color, var(--cyan));
     animation: node-pulse 1.6s ease-in-out infinite;
   }
-  .module-node[data-status="planned"] { opacity: .45; }
+  .module-node[data-status="planned"] { opacity: .55; }
   @keyframes node-pulse {
     0%, 100% { box-shadow: 0 0 0 0 var(--track-color, var(--cyan)); }
     50% { box-shadow: 0 0 0 5px transparent; }
@@ -653,22 +655,34 @@
       var strip = document.createElement('div');
       strip.className = 'counters-strip';
 
-      function plate(text) {
+      function plate(fragments) {
         var p = document.createElement('div');
         p.className = 'counter-plate';
-        p.textContent = text;
+        fragments.forEach(function (frag) {
+          if (typeof frag === 'object') {
+            var strong = document.createElement('strong');
+            strong.textContent = frag.strong;
+            p.appendChild(strong);
+          } else {
+            p.appendChild(document.createTextNode(frag));
+          }
+        });
         strip.appendChild(p);
       }
 
-      plate('Модулей пройдено ' + c.modules_done + ' из ' + c.modules_core_total);
-      plate('Параграфов учебника закрыто ' + c.paragraphs_closed);
-      plate('Python — материал 8 класса, мы в 7-м');
+      plate(['Модулей пройдено ', { strong: c.modules_done }, ' из ', { strong: c.modules_core_total }]);
+      plate(['Параграфов учебника закрыто ', { strong: c.paragraphs_closed }]);
+      plate(['Python — материал 8 класса, мы в 7-м']);
 
       hubExtras.appendChild(strip);
     }
 
+    var STATUS_LABELS = {
+      done: 'пройден', current: 'ближайшее занятие', planned: 'впереди', library: 'архив'
+    };
+
     function moduleTooltip(m) {
-      var parts = [m.minutes + ' мин'];
+      var parts = [STATUS_LABELS[m.status] || m.status, m.minutes + ' мин'];
       if (m.textbook && m.textbook.length) parts.push('§' + m.textbook.join(', §'));
       return parts.join(' · ');
     }
@@ -713,6 +727,7 @@
       var container = document.getElementById('course-map');
       if (!container) return;
       container.textContent = '';
+      container.classList.add('course-map--lanes');
 
       var modulesByTrack = {};
       (map.modules || []).forEach(function (m) {
@@ -751,7 +766,8 @@
         var details = document.createElement('details');
         details.className = 'archive-details';
         var summary = document.createElement('summary');
-        summary.textContent = 'Архив web — по запросу';
+        var allWeb = libraryModules.every(function (m) { return m.track === 'web'; });
+        summary.textContent = allWeb ? 'Архив web — по запросу' : 'Архив — по запросу';
         details.appendChild(summary);
         details.appendChild(buildLaneNodes(libraryModules, TRACK_TOKENS.web));
         container.appendChild(details);
