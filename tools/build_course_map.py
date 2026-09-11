@@ -29,6 +29,8 @@ def load_modules(repo_root):
     modules = []
     for manifest in sorted(Path(repo_root).glob("tracks/*/*/module.yml")):
         data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            raise ValueError(f"битый манифест: {manifest}")
         data["_dir"] = manifest.parent
         modules.append(data)
     return modules
@@ -93,8 +95,12 @@ def build_course_map(repo_root, today):
     sessions = load_sessions(repo_root)
     statuses = module_statuses(modules, sessions, today)
 
+    track_ids = {t["id"] for t in TRACKS_META}
+
     out_modules = []
     for m in modules:
+        if m["track"] not in track_ids:
+            raise ValueError(f"модуль {m['id']}: неизвестный трек {m['track']!r}")
         out_modules.append({
             "id": m["id"], "track": m["track"], "title": m["title"],
             "level": m["level"], "minutes": m["minutes"],

@@ -183,3 +183,17 @@ def test_broken_session_fails_loudly(tmp_path):
     (session_dir / "session.yml").write_text("- просто список\n", encoding="utf-8")
     with pytest.raises(ValueError):
         load_sessions(tmp_path)
+
+
+def test_unknown_track_fails_loudly(tmp_path):
+    make_module(tmp_path, "algo/m-01-sort")
+    with pytest.raises(ValueError):
+        build_course_map(tmp_path, TODAY)
+
+
+def test_broken_manifest_fails_loudly(tmp_path):
+    module_dir = tmp_path / "tracks" / "book" / "m-01-bad"
+    module_dir.mkdir(parents=True)
+    (module_dir / "module.yml").write_text("- просто список\n", encoding="utf-8")
+    with pytest.raises(ValueError):
+        load_modules(tmp_path)
