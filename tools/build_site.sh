@@ -13,6 +13,8 @@ rsync -a \
   --exclude '.git/' \
   --exclude '.github/' \
   --exclude '.claude/' \
+  --exclude '.aos/' \
+  --exclude '.vscode/' \
   --exclude '_site/' \
   --exclude 'teacher/' \
   --exclude 'live-code.md' \
@@ -32,5 +34,8 @@ rsync -a \
   --exclude '.DS_Store' \
   --exclude '__pycache__/' \
   "$ROOT/" "$OUT/"
+
+PYBIN="${PYBIN:-$ROOT/tools/.venv/bin/python}"
+"$PYBIN" "$ROOT/tools/build_course_map.py" "$ROOT" "$OUT/course-map.json"
 
 echo "сайт собран: $OUT"

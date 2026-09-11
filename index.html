@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Junior_IT — курс программирования для подростков</title>
-<meta name="description" content="Бесплатный курс программирования для подростков 11–14 лет. HTML, CSS, JavaScript. Сценарии, шпаргалки, демки.">
+<title>Junior_IT — углублённая информатика и программирование</title>
+<meta name="description" content="Индивидуальный курс информатики и программирования для 7–8 классов: школьный учебник с опережением, Python, настоящие инструменты разработчика">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%230a0a14%27%2F%3E%3Ctext%20x%3D%274%27%20y%3D%2723%27%20font-family%3D%27monospace%27%20font-weight%3D%27700%27%20font-size%3D%2715%27%20fill%3D%27%2300ffc8%27%3E%26gt%3B_%3C%2Ftext%3E%3C%2Fsvg%3E">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* Токены оформления — копия meta/brand-tokens.css, менять только там */
   :root {
     --bg: #0a0a14;
-    --bg-light: #faf7f2;
     --card: #1a1a2e;
     --card-2: #16213e;
     --deep: #0f3460;
@@ -21,1212 +21,811 @@
     --green: #00e676;
     --cyan: #00ffc8;
     --magenta: #ff0096;
-    --text-on-dark: #e8ecf5;
-    --muted: #8892a8;
+    --bg-light: #faf7f2;
+
+    --track-book: #7aa2ff;
+    --track-book-ink: #2b4fa8;
+    --track-py: #00ffc8;
+    --track-py-ink: #00806a;
+    --track-pas: #ff5722;
+    --track-pas-ink: #b3350f;
+    --track-ops: #00e676;
+    --track-ops-ink: #00803d;
+    --track-cs: #ff0096;
+    --track-cs-ink: #a8005f;
+    --track-web: #8892b0;
+    --track-web-ink: #4a5568;
   }
-  html { scroll-behavior: smooth; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
   body {
     background: var(--bg);
-    color: var(--text-on-dark);
-    font-family: 'Manrope', sans-serif;
-    line-height: 1.55;
+    color: #e8e8f0;
+    font-family: 'Manrope', system-ui, sans-serif;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: 'Rubik', system-ui, sans-serif; font-weight: 700; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  section { padding: clamp(56px, 8vw, 96px) 0; }
+  .muted { color: #9aa0b5; }
 
   /* ============ HERO ============ */
   .hero {
-    min-height: 100vh;
-    padding: 80px 24px 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+    padding-top: clamp(72px, 12vw, 120px);
     background:
-      radial-gradient(ellipse 1200px 600px at 20% 20%, rgba(255,214,10,0.08), transparent 60%),
-      radial-gradient(ellipse 800px 600px at 80% 80%, rgba(255,0,150,0.06), transparent 60%),
+      radial-gradient(ellipse 1000px 560px at 15% 10%, rgba(0, 255, 200, 0.07), transparent 60%),
+      radial-gradient(ellipse 760px 560px at 85% 30%, rgba(255, 214, 10, 0.06), transparent 60%),
       var(--bg);
-    overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,214,10,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,214,10,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    mask-image: radial-gradient(ellipse at center, black, transparent 75%);
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
   }
-  .hero-inner {
-    max-width: 1100px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    z-index: 1;
+  @media (max-width: 780px) {
+    .hero-grid { grid-template-columns: 1fr; }
   }
-  .hero-kicker {
+
+  .badge-row {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     font-family: 'JetBrains Mono', monospace;
-    color: var(--yellow);
-    font-size: 13px;
-    letter-spacing: 4px;
+    font-size: 12px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    margin-bottom: 30px;
-    padding: 10px 20px;
+    font-weight: 700;
+    color: var(--cyan);
+    background: rgba(0, 255, 200, 0.08);
+    border: 1px solid rgba(0, 255, 200, 0.25);
     border-radius: 50px;
-    background: rgba(255,214,10,0.08);
-    border: 1px solid rgba(255,214,10,0.25);
-    font-weight: 700;
+    padding: 8px 18px;
+    margin-bottom: 28px;
   }
-  .hero-kicker .dot {
-    width: 8px; height: 8px;
-    background: var(--green);
-    border-radius: 50%;
-    box-shadow: 0 0 12px var(--green);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(0.85); }
-  }
-  .hero h1 {
-    font-family: 'Rubik', sans-serif;
-    font-size: clamp(44px, 8vw, 110px);
-    line-height: 0.95;
-    font-weight: 700;
-    letter-spacing: -3px;
-    margin-bottom: 24px;
-  }
-  .hero h1 .brand {
-    background: linear-gradient(135deg, #ffd60a 0%, #ff8a50 50%, #ff5722 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    display: inline-block;
-  }
-  .hero h1 .tagline {
-    display: block;
-    margin-top: 14px;
-    font-size: 0.42em;
-    font-weight: 500;
-    letter-spacing: -0.5px;
-    color: var(--muted);
-  }
-  .hero h1 .tagline em {
-    color: var(--yellow);
-    font-style: normal;
-    font-weight: 700;
-  }
-  .hero-sub {
-    font-size: clamp(16px, 2vw, 21px);
-    color: var(--muted);
-    max-width: 640px;
-    margin: 0 auto 36px;
-    line-height: 1.5;
-  }
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    margin-bottom: 48px;
-  }
-  .meta-pill {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-on-dark);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .meta-pill strong { color: var(--yellow); }
 
-  .hero-cta {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
+  .hero h1 {
+    font-size: clamp(48px, 8vw, 92px);
+    line-height: 0.98;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
   }
+  .hero .subtitle {
+    color: var(--yellow);
+    font-weight: 600;
+    font-size: clamp(18px, 2.2vw, 26px);
+    line-height: 1.35;
+    margin-bottom: 18px;
+    max-width: 26ch;
+  }
+  .hero .hook {
+    color: #dfe3f5;
+    font-size: clamp(16px, 1.7vw, 19px);
+    max-width: 42ch;
+    margin-bottom: 36px;
+  }
+
+  .btn-row { display: flex; gap: 14px; flex-wrap: wrap; }
   .btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 16px 28px;
-    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
     font-weight: 700;
     font-size: 15px;
-    text-decoration: none;
-    transition: 0.25s;
-    letter-spacing: 0.3px;
-  }
-  .btn-primary {
-    background: var(--yellow);
-    color: var(--bg);
-    box-shadow: 0 10px 30px rgba(255,214,10,0.25);
-  }
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 40px rgba(255,214,10,0.4);
-  }
-  .btn-ghost {
-    background: rgba(255,255,255,0.04);
-    color: var(--text-on-dark);
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-  .btn-ghost:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,214,10,0.4);
-  }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    text-transform: uppercase;
-    z-index: 2;
-  }
-  .scroll-hint::after {
-    content: '↓';
-    display: block;
-    text-align: center;
-    margin-top: 8px;
-    font-size: 16px;
-    animation: bounce 2s ease-in-out infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(6px); }
-  }
-
-  /* ============ SECTIONS ============ */
-  section {
-    padding: 90px 24px;
-    position: relative;
-  }
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--yellow);
-    font-size: 12px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    font-weight: 700;
-  }
-  h2 {
-    font-family: 'Rubik', sans-serif;
-    font-size: clamp(32px, 5vw, 56px);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -1.5px;
-    margin-bottom: 20px;
-  }
-  h2 em {
-    font-style: normal;
-    color: var(--yellow);
-  }
-  .section-lead {
-    font-size: 18px;
-    color: var(--muted);
-    max-width: 640px;
-    margin-bottom: 50px;
-    line-height: 1.6;
-  }
-
-  /* ============ ABOUT ============ */
-  .about-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin-top: 40px;
-  }
-  .principle {
-    background: var(--card);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 28px 26px;
-    border-radius: 18px;
-    transition: 0.3s;
-  }
-  .principle:hover {
-    border-color: rgba(255,214,10,0.3);
-    transform: translateY(-4px);
-  }
-  .principle .pn {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--yellow);
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    line-height: 1;
-  }
-  .principle h3 {
-    font-size: 18px;
-    margin-bottom: 8px;
-    color: var(--text-on-dark);
-  }
-  .principle p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-
-  /* ============ CURRENT LESSON ============ */
-  .lesson-card {
-    background: linear-gradient(135deg, var(--card) 0%, var(--card-2) 60%, var(--deep) 100%);
-    border-radius: 28px;
-    padding: 50px 44px;
-    border: 1px solid rgba(255,214,10,0.15);
-    position: relative;
-    overflow: hidden;
-    margin-top: 30px;
-  }
-  .lesson-card::before {
-    content: '01';
-    position: absolute;
-    right: -20px; top: -40px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 280px;
-    font-weight: 700;
-    color: var(--yellow);
-    opacity: 0.06;
-    line-height: 1;
-  }
-  .lesson-meta {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    position: relative;
-  }
-  .lesson-tag {
-    background: rgba(255,214,10,0.12);
-    border: 1px solid rgba(255,214,10,0.3);
-    color: var(--yellow);
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-  }
-  .lesson-tag.live {
-    background: rgba(0,230,118,0.12);
-    border-color: rgba(0,230,118,0.4);
-    color: var(--green);
-  }
-  .lesson-card h3 {
-    font-family: 'Rubik', sans-serif;
-    font-size: clamp(28px, 4vw, 44px);
-    line-height: 1.05;
-    font-weight: 700;
-    margin-bottom: 16px;
-    letter-spacing: -1px;
-    position: relative;
-  }
-  .lesson-card p.desc {
-    font-size: 17px;
-    color: var(--muted);
-    max-width: 560px;
-    margin-bottom: 32px;
-    line-height: 1.6;
-    position: relative;
-  }
-  .lesson-files {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    position: relative;
-  }
-  .file-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 18px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    text-decoration: none;
-    color: var(--text-on-dark);
-    font-weight: 600;
-    transition: 0.2s;
-    font-size: 14px;
-  }
-  .file-link:hover {
-    background: rgba(255,214,10,0.08);
-    border-color: rgba(255,214,10,0.35);
-    transform: translateX(4px);
-  }
-  .file-link .ic {
-    font-size: 22px;
-    line-height: 1;
-  }
-  .file-link .lbl {
-    flex: 1;
-  }
-  .file-link .lbl small {
-    display: block;
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 500;
-    margin-top: 2px;
-  }
-
-  /* ============ JS BLOCK ============ */
-  .js-lessons {
-    display: grid;
-    gap: 16px;
-    margin-top: 30px;
-  }
-  .js-lesson {
-    background: linear-gradient(135deg, var(--card) 0%, var(--card-2) 100%);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px;
-    padding: 26px 28px;
-    display: grid;
-    grid-template-columns: 88px 1fr;
-    gap: 22px;
-    align-items: start;
-    transition: 0.2s;
-  }
-  .js-lesson:hover { border-color: rgba(255,214,10,0.28); }
-  .js-lesson.next { border-color: rgba(0,230,118,0.35); }
-  .js-lesson .jn {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 34px;
-    font-weight: 700;
-    color: var(--yellow);
-    line-height: 1;
-  }
-  .js-lesson .jn small {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 400;
-    margin-top: 8px;
-  }
-  .js-lesson h4 {
-    font-family: 'Rubik', sans-serif;
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-  }
-  .js-lesson .badge {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--green);
-    background: rgba(0,230,118,0.1);
-    border: 1px solid rgba(0,230,118,0.4);
-    padding: 3px 9px;
-    border-radius: 50px;
-    margin-left: 10px;
-    vertical-align: middle;
-  }
-  .js-lesson p {
-    font-size: 14.5px;
-    color: var(--muted);
-    line-height: 1.55;
-    margin-bottom: 16px;
-  }
-  .js-lesson p code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px;
-    color: var(--yellow);
-    background: rgba(255,214,10,0.08);
-    padding: 2px 6px;
-    border-radius: 5px;
-  }
-  .js-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-  .js-links a {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 9px 14px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 26px;
     border-radius: 10px;
     text-decoration: none;
-    color: var(--text-on-dark);
-    font-size: 13px;
-    font-weight: 600;
-    transition: 0.2s;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
-  .js-links a:hover {
-    background: rgba(255,214,10,0.08);
-    border-color: rgba(255,214,10,0.35);
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--bg);
   }
-  .js-links .sep {
-    width: 1px;
-    height: 22px;
-    background: rgba(255,255,255,0.1);
-    margin: 0 4px;
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 255, 200, 0.25);
   }
-  .js-links a.chip { padding: 9px 12px; font-size: 15px; }
-  .js-links a.chip.g:hover { border-color: rgba(0,255,200,0.5); background: rgba(0,255,200,0.08); }
-  .js-links a.chip.s:hover { border-color: rgba(255,87,34,0.5); background: rgba(255,87,34,0.08); }
-  .js-links a.chip.a:hover { border-color: rgba(255,214,10,0.5); }
-  .js-links a.repo {
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    font-weight: 400;
+  .btn-outline {
+    background: transparent;
+    color: #e8e8f0;
+    border: 2px solid rgba(232, 232, 240, 0.25);
   }
-  .js-links .soon {
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    padding-left: 4px;
-  }
-  .js-links .grp {
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+  .btn-outline:hover {
+    border-color: var(--yellow);
+    color: var(--yellow);
+    transform: translateY(-2px);
   }
 
-  /* ============ DEMOS ============ */
-  .demos-section { background: rgba(255,255,255,0.015); }
-  .demos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
-    margin-top: 40px;
-  }
-  .demo {
-    border-radius: 20px;
-    padding: 32px 28px;
-    text-decoration: none;
-    color: inherit;
-    transition: 0.3s;
-    position: relative;
-    overflow: hidden;
-    min-height: 280px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .demo:hover {
-    transform: translateY(-6px) scale(1.01);
-  }
-  .demo.gamer {
-    background: linear-gradient(135deg, #0a0a14, #1a0a2e);
-    border: 1px solid rgba(0,255,200,0.2);
-    color: #fff;
-  }
-  .demo.gamer:hover {
-    border-color: rgba(0,255,200,0.5);
-    box-shadow: 0 14px 60px rgba(0,255,200,0.2);
-  }
-  .demo.sport {
-    background: linear-gradient(135deg, #ff5722, #ff8a50);
-    color: #fff;
-  }
-  .demo.sport:hover {
-    box-shadow: 0 14px 60px rgba(255,87,34,0.4);
-  }
-  .demo.art {
-    background: linear-gradient(135deg, #f5ede1, #e6d4ba);
-    color: #2a1f17;
-  }
-  .demo.art:hover {
-    box-shadow: 0 14px 60px rgba(201,149,109,0.3);
-  }
-  .demo .label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    opacity: 0.7;
-    margin-bottom: 14px;
-    font-weight: 700;
-  }
-  .demo h4 {
-    font-family: 'Rubik', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-  }
-  .demo p {
-    font-size: 14px;
-    opacity: 0.85;
-    line-height: 1.5;
-    margin-bottom: 20px;
-  }
-  .demo .view {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    align-self: flex-start;
-  }
-  .demo .view::after {
-    content: '→';
-    transition: transform 0.2s;
-  }
-  .demo:hover .view::after { transform: translateX(4px); }
-
-  /* ============ PARENTS ============ */
-  .parents-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
-    margin-top: 40px;
-  }
-  .parent-card {
+  /* ============ TERMINAL ============ */
+  .term-window {
     background: var(--card);
-    border-left: 4px solid var(--yellow);
-    border-radius: 0 16px 16px 0;
-    padding: 28px 30px;
-    text-decoration: none;
-    color: inherit;
-    transition: 0.25s;
-    display: block;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
   }
-  .parent-card:hover {
+  .term-bar {
     background: var(--card-2);
-    transform: translateX(6px);
+    padding: 12px 16px;
+    display: flex;
+    gap: 8px;
   }
-  .parent-card .icn {
-    font-size: 36px;
-    margin-bottom: 14px;
+  .term-bar span { width: 12px; height: 12px; border-radius: 50%; display: block; }
+  .term-bar span:nth-child(1) { background: #ff5f57; }
+  .term-bar span:nth-child(2) { background: #febc2e; }
+  .term-bar span:nth-child(3) { background: #28c840; }
+  .term-body {
+    background: #0c0c11;
+    padding: 26px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 1.5vw, 16px);
+    line-height: 1.85;
+    min-height: 190px;
   }
-  .parent-card h4 {
-    font-size: 19px;
-    margin-bottom: 8px;
-    color: var(--text-on-dark);
+  .term-body .line { white-space: pre-wrap; word-break: break-word; }
+  .term-body .prompt { color: #7fd0ff; }
+  .term-body .out { color: #e8e8f0; }
+  .term-body .ok { color: var(--green); }
+  .caret {
+    display: inline-block;
+    width: 0.5em;
+    height: 1em;
+    background: #7fd0ff;
+    vertical-align: -2px;
+    margin-left: 1px;
   }
-  .parent-card p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.55;
+  .caret.blink { animation: caret-blink 1s step-end infinite; }
+  @keyframes caret-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .caret { animation: none !important; opacity: 1; }
+  }
+
+  /* ============ КАРТОЧКИ СУТИ ============ */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 780px) {
+    .how-grid { grid-template-columns: 1fr; }
+  }
+  .how-card {
+    background: var(--card);
+    border-top: 4px solid var(--chip-color, var(--cyan));
+    border-radius: 14px;
+    padding: 30px 28px;
+  }
+  .chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--bg);
+    background: var(--chip-color, var(--cyan));
+    border-radius: 6px;
+    padding: 3px 9px;
     margin-bottom: 16px;
   }
-  .parent-card .open {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--yellow);
-    font-weight: 700;
-  }
+  .how-card h3 { font-size: 20px; margin-bottom: 10px; }
+  .how-card p { color: #dfe3f5; font-size: 15px; max-width: 40ch; }
 
-  /* ============ ROADMAP ============ */
-  .roadmap {
-    margin-top: 40px;
-    position: relative;
+  /* ============ КТО ВЕДЁТ ============ */
+  .teacher-strip { background: var(--card-2); padding: 44px 0; }
+  .teacher-strip p {
+    max-width: 62ch;
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: #dfe3f5;
   }
-  .roadmap::before {
-    content: '';
-    position: absolute;
-    left: 23px;
-    top: 0; bottom: 30px;
-    width: 2px;
-    background: linear-gradient(180deg, var(--yellow), rgba(255,214,10,0.1));
+  .teacher-strip a {
+    color: var(--cyan);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(0, 255, 200, 0.5);
   }
-  .rm-item {
-    display: flex;
-    gap: 22px;
-    margin-bottom: 28px;
-    position: relative;
+  .teacher-strip a:hover { border-color: var(--cyan); }
+
+  /* ============ ХАБ ============ */
+  #how, #hub { scroll-margin-top: 28px; }
+  #how h2, .hub h2 { font-size: clamp(28px, 3.6vw, 40px); margin-bottom: 28px; }
+  .course-map {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
   }
-  .rm-num {
-    flex-shrink: 0;
-    width: 48px; height: 48px;
-    border-radius: 50%;
+  .course-map.course-map--lanes { display: block; }
+  .track-card {
+    display: block;
     background: var(--card);
-    border: 2px solid rgba(255,214,10,0.3);
+    border-left: 4px solid var(--track-color, var(--cyan));
+    border-radius: 0 12px 12px 0;
+    padding: 20px 22px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .track-card .chip { background: var(--track-color, var(--cyan)); margin-bottom: 12px; }
+  .track-card h3 { font-size: 17px; margin-bottom: 6px; }
+  .track-card p { color: #9aa0b5; font-size: 13.5px; }
+
+  #hub-extras:empty { display: none; }
+
+  .hub-links {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .stub-plate {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--yellow);
-    z-index: 1;
-  }
-  .rm-item.done .rm-num {
-    background: var(--yellow);
-    color: var(--bg);
-    border-color: var(--yellow);
-  }
-  .rm-item.current .rm-num {
-    background: var(--green);
-    color: var(--bg);
-    border-color: var(--green);
-    box-shadow: 0 0 0 6px rgba(0,230,118,0.15);
-  }
-  .rm-body { flex: 1; padding-top: 8px; }
-  .rm-body .rm-status {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    font-weight: 700;
-  }
-  .rm-item.done .rm-status { color: var(--yellow); }
-  .rm-item.current .rm-status { color: var(--green); }
-  .rm-item.future .rm-status { color: var(--muted); }
-  .rm-body h4 {
-    font-size: 20px;
-    margin-bottom: 6px;
-    font-weight: 700;
-  }
-  .rm-body p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-  .rm-item.future .rm-body h4 { color: var(--muted); }
-
-  /* ============ FOOTER ============ */
-  footer {
-    padding: 60px 24px 50px;
-    text-align: center;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    background: rgba(0,0,0,0.2);
-  }
-  footer .author {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--yellow);
     font-size: 13px;
-    letter-spacing: 3px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    font-weight: 700;
+    color: #9aa0b5;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 10px 16px;
   }
-  footer p {
-    color: var(--muted);
+  .setup-link {
     font-size: 14px;
-    margin-bottom: 6px;
-  }
-  footer a {
-    color: var(--text-on-dark);
+    color: var(--yellow);
     text-decoration: none;
-    border-bottom: 1px dashed rgba(255,214,10,0.4);
-    transition: 0.2s;
+    border-bottom: 1px dashed rgba(255, 214, 10, 0.5);
+  }
+  .setup-link:hover { border-color: var(--yellow); }
+
+  /* ============ ПОДВАЛ ============ */
+  footer {
+    padding: 48px 0 60px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  footer p { color: #9aa0b5; font-size: 14px; margin-bottom: 8px; }
+  footer a {
+    color: #e8e8f0;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255, 214, 10, 0.4);
   }
   footer a:hover { color: var(--yellow); border-color: var(--yellow); }
-  footer .links-row {
-    margin-top: 20px;
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    flex-wrap: wrap;
+
+  /* ============ ХАБ: живая карта ============ */
+  .next-session {
+    background: var(--card);
+    border-left: 4px solid var(--yellow);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  .next-session h3 { font-size: 16px; margin-bottom: 6px; color: var(--yellow); }
+  .next-session ul { list-style: none; margin-top: 8px; }
+  .next-session li {
+    display: inline-block;
+    margin: 4px 8px 0 0;
+    padding: 4px 10px;
+    background: var(--card-2);
+    border-radius: 6px;
+    font-size: 13px;
+    color: #dfe3f5;
   }
 
-  @media (max-width: 600px) {
-    section { padding: 70px 20px; }
-    .hero { padding: 60px 20px 80px; }
-    .lesson-card { padding: 32px 24px; }
-    .js-lesson { grid-template-columns: 1fr; gap: 10px; padding: 24px 20px; }
-    .js-lesson .jn { font-size: 26px; }
-    .js-lesson .jn small { display: inline; margin: 0 0 0 10px; }
+  .counters-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .counter-plate {
+    background: var(--card-2);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 14px;
+    color: #dfe3f5;
+  }
+  .counter-plate strong { color: var(--cyan); }
+
+  .track-lane {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 14px;
+    align-items: stretch;
+    margin-bottom: 14px;
+  }
+  .track-lane-chip {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 6px;
+    background: var(--track-color, var(--cyan));
+    color: var(--bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+  .track-lane-chip .chip { background: var(--bg); color: var(--track-color, var(--cyan)); }
+  .track-lane-chip .track-title { font-size: 13px; }
+  .track-lane-nodes {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 2px;
+    scrollbar-color: var(--card-2) transparent;
+    scrollbar-width: thin;
+  }
+  .track-lane-nodes::-webkit-scrollbar { height: 6px; }
+  .track-lane-nodes::-webkit-scrollbar-track { background: transparent; }
+  .track-lane-nodes::-webkit-scrollbar-thumb { background: var(--card-2); border-radius: 3px; }
+  .track-lane-empty {
+    display: flex;
+    align-items: center;
+    color: #9aa0b5;
+    font-size: 13.5px;
+    font-style: italic;
+  }
+  .module-node {
+    flex: 0 0 auto;
+    min-width: 150px;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: var(--card-2);
+    border: 2px solid transparent;
+    text-decoration: none;
+    color: inherit;
+  }
+  .module-node .module-title { font-size: 13.5px; font-weight: 600; display: block; }
+  .module-node .module-minutes { font-size: 12px; color: #9aa0b5; }
+  .module-node[data-status="done"] {
+    background: var(--track-color, var(--cyan));
+    color: var(--bg);
+  }
+  .module-node[data-status="done"] .module-minutes { color: var(--bg); opacity: .75; }
+  .module-node[data-status="current"] {
+    border-color: var(--track-color, var(--cyan));
+    animation: node-pulse 1.6s ease-in-out infinite;
+  }
+  .module-node[data-status="planned"] { opacity: .55; }
+  @keyframes node-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--track-color, var(--cyan)); }
+    50% { box-shadow: 0 0 0 5px transparent; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .module-node[data-status="current"] { animation: none; }
+  }
+  @media (max-width: 720px) {
+    .track-lane { grid-template-columns: 1fr; }
+    .module-node { min-width: 128px; padding: 8px 10px; }
+  }
+
+  .archive-details {
+    margin-top: 8px;
+    background: var(--card-2);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .archive-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--cyan);
+  }
+  .archive-details .track-lane-nodes { margin-top: 12px; }
+
+  .quick-links {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 20px;
+  }
+  .quick-links h3 { font-size: 15px; margin-bottom: 10px; color: var(--yellow); }
+  .quick-links ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+  .quick-links a {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--card-2);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13.5px;
+    color: var(--cyan);
   }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-kicker">
-      <span class="dot"></span>
-      <span>// курс активен · набор открыт</span>
-    </div>
-    <h1>
-      <span class="brand">Junior_IT</span>
-      <span class="tagline">курс программирования <em>с нуля</em></span>
-    </h1>
-    <p class="hero-sub">
-      Программирование для подростков 11–14 лет. От первой строчки HTML до собственного сайта в интернете. Бесплатно, в формате вебинара.
-    </p>
-    <div class="hero-meta">
-      <div class="meta-pill">🎓 <span>возраст</span> <strong>11–14</strong></div>
-      <div class="meta-pill">⏱ <span>урок</span> <strong>75 мин</strong></div>
-      <div class="meta-pill">💻 <span>формат</span> <strong>вебинар</strong></div>
-      <div class="meta-pill">📦 <span>стек</span> <strong>HTML · CSS · JS</strong></div>
-    </div>
-    <div class="hero-cta">
-      <a href="#lesson" class="btn btn-primary">📖 Открыть урок 1</a>
-      <a href="https://github.com/DmitrTRC/Junior_IT" class="btn btn-ghost">⌥ GitHub репозиторий</a>
-    </div>
-  </div>
-  <div class="scroll-hint">scroll</div>
-</div>
+<main>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="container">
-    <div class="section-label">// о курсе</div>
-    <h2>Сделать <em>один настоящий сайт</em><br>важнее, чем выучить 20 терминов.</h2>
-    <p class="section-lead">
-      Этот курс собран на четырёх простых принципах. Они объясняют, почему дети не отваливаются после первого урока.
-    </p>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="badge-row">7–8 классы · два занятия в неделю · мини-группа 2–3</div>
+        <h1>Junior_IT</h1>
+        <p class="subtitle">Углублённая информатика и программирование · 7–8 классы</p>
+        <p class="hook">Школьный учебник — с опережением. Инструменты — настоящие.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#hub">Карта курса</a>
+          <a class="btn btn-outline" href="#how">Как проходят занятия</a>
+        </div>
+      </div>
 
-    <div class="about-grid">
-      <div class="principle">
-        <div class="pn">01</div>
-        <h3>Результат за 75 минут</h3>
-        <p>В конце первого урока ребёнок видит свой работающий сайт. Не «теперь понятно», а буквально «вот мой сайт».</p>
-      </div>
-      <div class="principle">
-        <div class="pn">02</div>
-        <h3>Смотрим вместе, делаем дома</h3>
-        <p>На вебинаре не повторяем параллельно — слушаем и впитываем. Делает сам ребёнок дома, по шпаргалке.</p>
-      </div>
-      <div class="principle">
-        <div class="pn">03</div>
-        <h3>Без зубрёжки терминов</h3>
-        <p>«Семантика», «DOCTYPE», «парсинг» — это для 4-го урока. На старте — теги, цвета, картинки.</p>
-      </div>
-      <div class="principle">
-        <div class="pn">04</div>
-        <h3>Каждому — своя эстетика</h3>
-        <p>Геймер делает геймерский сайт. Скейтер — скейтерский. Художница — арт. Один шаблон — три характера.</p>
+      <div class="hero-term" aria-hidden="true">
+        <div class="term-window">
+          <div class="term-bar"><span></span><span></span><span></span></div>
+          <div class="term-body" id="term-body"></div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CURRENT LESSON -->
-<section id="lesson">
-  <div class="container">
-    <div class="section-label">// базовый урок</div>
-    <h2>Lesson <em>01</em>: первый сайт за 75 минут</h2>
-    <p class="section-lead">
-      Всё для проведения занятия и для домашки. Открывай прямо в браузере — ничего скачивать не нужно.
-    </p>
-
-    <div class="lesson-card">
-      <div class="lesson-meta">
-        <span class="lesson-tag live">● готово к проведению</span>
-        <span class="lesson-tag">HTML</span>
-        <span class="lesson-tag">CSS</span>
-        <span class="lesson-tag">75 мин</span>
+  <section id="how">
+    <div class="container">
+      <h2>Как проходят занятия</h2>
+      <div class="how-grid">
+        <div class="how-card" style="--chip-color: var(--track-book)">
+          <span class="chip">BOOK</span>
+          <h3>Учебник — с опережением</h3>
+          <p>Идём по школьному учебнику информатики — на главу впереди класса по теории и на год по программированию. Сдаём все тесты учебника — и наши задачи сверх него.</p>
+        </div>
+        <div class="how-card" style="--chip-color: var(--track-py)">
+          <span class="chip">PY</span>
+          <h3>Инструменты — настоящие</h3>
+          <p>Терминал, git и тесты, которые сами прогоняют домашку, — то, чем работают взрослые разработчики. Не учебная песочница, а настоящий Python на настоящем компьютере.</p>
+        </div>
+        <div class="how-card" style="--chip-color: var(--green)">
+          <span class="chip">2–3</span>
+          <h3>Мини-группа</h3>
+          <p>Двое-трое учеников, каждый за своей клавиатурой. Каждый пишет код сам — преподаватель рядом. Теория блоками не дольше двух минут, остальное — руки на клавиатуре.</p>
+        </div>
       </div>
-      <h3>Личная страничка<br>на HTML + CSS</h3>
-      <p class="desc">
-        За один урок ребёнок собирает свою страничку: имя, фото, любимые штуки, ссылки. Учит 8 тегов, 14 CSS-свойств, делает hover-эффект и градиент.
-      </p>
+    </div>
+  </section>
 
-      <div class="lesson-files">
-        <a class="file-link" href="lessons/lesson-01-html-css/cheatsheet.html">
-          <span class="ic">📖</span>
-          <span class="lbl">Шпаргалка<small>все теги и свойства</small></span>
+  <section class="teacher-strip">
+    <div class="container">
+      <p>Ведёт Дмитрий Морозов — senior-разработчик, 30+ лет в индустрии: ASM, C/C++, Python, JS/TS, Go, Rust. Материалы курса открыты — <a href="https://github.com/DmitrTRC/Junior_IT">методику можно читать на GitHub</a>.</p>
+    </div>
+  </section>
+
+  <section id="hub" class="hub">
+    <div class="container">
+      <h2>Карта курса</h2>
+
+      <div id="hub-extras"></div>
+
+      <div id="course-map" class="course-map">
+        <a class="track-card" style="--track-color: var(--track-book)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/book">
+          <span class="chip">BOOK</span>
+          <h3>Учебник</h3>
+          <p>теория по Босовой, 7–8 класс</p>
         </a>
-        <a class="file-link" href="lessons/lesson-01-html-css/homework.html">
-          <span class="ic">📝</span>
-          <span class="lbl">Домашка<small>стартер для своего сайта</small></span>
+        <a class="track-card" style="--track-color: var(--track-py)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/python">
+          <span class="chip">PY</span>
+          <h3>Python</h3>
+          <p>основной язык курса</p>
         </a>
-        <a class="file-link" href="lessons/lesson-01-html-css/slides.html">
-          <span class="ic">🎬</span>
-          <span class="lbl">Слайды<small>3 слайда, ← / → переключение</small></span>
+        <a class="track-card" style="--track-color: var(--track-pas)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/pascal">
+          <span class="chip">PAS</span>
+          <h3>Pascal</h3>
+          <p>второй диалект: тот же алгоритм, другой синтаксис</p>
         </a>
-        <a class="file-link" href="https://github.com/DmitrTRC/Junior_IT/blob/main/tracks/web/m-01-html-css/student/glossary.md">
-          <span class="ic">📚</span>
-          <span class="lbl">Глоссарий<small>термины простыми словами</small></span>
+        <a class="track-card" style="--track-color: var(--track-ops)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/devops">
+          <span class="chip">OPS</span>
+          <h3>DevOps</h3>
+          <p>терминал, git, зелёная галка CI</p>
         </a>
-        <span class="file-link">
-          <span class="ic">🎯</span>
-          <span class="lbl">Сценарий<small>тайминг и реплики</small></span>
-        </span>
-        <a class="file-link" href="https://github.com/DmitrTRC/Junior_IT/blob/main/tracks/web/m-01-html-css/shared/live-code.md">
-          <span class="ic">💻</span>
-          <span class="lbl">Живой код<small>8 шагов в эфире</small></span>
+        <a class="track-card" style="--track-color: var(--track-cs)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/cs">
+          <span class="chip">CS</span>
+          <h3>Компьютер изнутри</h3>
+          <p>как это всё устроено под капотом</p>
+        </a>
+        <a class="track-card" style="--track-color: var(--track-web)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/web">
+          <span class="chip">WEB</span>
+          <h3>Web (архив)</h3>
+          <p>HTML/CSS/JS — по запросу</p>
         </a>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- JS BLOCK -->
-<section id="js">
-  <div class="container">
-    <div class="section-label">// блок javascript</div>
-    <h2>Дальше — <em>сам язык</em></h2>
-    <p class="section-lead">
-      Семь занятий: от первой кнопки до своего файла в настоящем редакторе. Шпаргалки и домашки открываются прямо в браузере — скачивать ничего не нужно.
-    </p>
-
-    <div class="js-lessons">
-
-      <div class="js-lesson">
-        <div class="jn">2<small>первые кнопки</small></div>
-        <div>
-          <h4>Оживляем сайт</h4>
-          <p>Страница начинает отвечать: кнопка меняет текст, считает клики, показывает всплывашку. Первое знакомство с JS прямо на своём сайте.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-02-js/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-02-js/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-02-js/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демки</span>
-            <a class="chip g" href="lessons/lesson-02-js/demos/gamer.html" title="демка для геймеров">🎮</a>
-            <a class="chip s" href="lessons/lesson-02-js/demos/sport.html" title="демка для спортсменов">🏀</a>
-            <a class="chip a" href="lessons/lesson-02-js/demos/art.html" title="демка для творческих">🎨</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02-js">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson">
-        <div class="jn">2.5<small>консоль</small></div>
-        <div>
-          <h4>Сам язык: консоль-калькулятор</h4>
-          <p>Уходим от кнопок к чистому языку. Консоль браузера как калькулятор: числа, переменные-коробочки, текст, вопрос человеку через <code>prompt</code>.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-02b-js-console/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-02b-js-console/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-02b-js-console/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демки</span>
-            <a class="chip g" href="lessons/lesson-02b-js-console/demos/gamer.html" title="демка для геймеров">🎮</a>
-            <a class="chip s" href="lessons/lesson-02b-js-console/demos/sport.html" title="демка для спортсменов">🏀</a>
-            <a class="chip a" href="lessons/lesson-02b-js-console/demos/art.html" title="демка для творческих">🎨</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02b-js-console">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson">
-        <div class="jn">2.6<small>условия</small></div>
-        <div>
-          <h4>Программа решает: если…то</h4>
-          <p>Программа перестаёт идти по прямой и начинает выбирать дорогу: сравнения, <code>if</code>, <code>else</code>, <code>else if</code>. Калькулятор ИМТ и бюджета.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-02c-js-conditions/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-02c-js-conditions/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-02c-js-conditions/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демки</span>
-            <a class="chip g" href="lessons/lesson-02c-js-conditions/demos/gamer.html" title="демка для геймеров">🎮</a>
-            <a class="chip s" href="lessons/lesson-02c-js-conditions/demos/sport.html" title="демка для спортсменов">🏀</a>
-            <a class="chip a" href="lessons/lesson-02c-js-conditions/demos/art.html" title="демка для творческих">🎨</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02c-js-conditions">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson">
-        <div class="jn">2.7<small>циклы</small></div>
-        <div>
-          <h4>Программа повторяет</h4>
-          <p>Компьютер не устаёт: <code>while</code>, счётчик, <code>for</code>. Обратный отсчёт, таблица умножения и растущий узор — одной командой.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-02d-js-loops/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-02d-js-loops/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-02d-js-loops/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демки</span>
-            <a class="chip g" href="lessons/lesson-02d-js-loops/demos/gamer.html" title="демка для геймеров">🎮</a>
-            <a class="chip s" href="lessons/lesson-02d-js-loops/demos/sport.html" title="демка для спортсменов">🏀</a>
-            <a class="chip a" href="lessons/lesson-02d-js-loops/demos/art.html" title="демка для творческих">🎨</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02d-js-loops">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson next">
-        <div class="jn">2.8<small>разминка</small></div>
-        <div>
-          <h4>Собираем тренажёр<span class="badge">● следующий</span></h4>
-          <p>Ни одного нового слова — но переменные, <code>if</code> и цикл впервые работают вместе. Из трёх знакомых кирпичей собирается тренажёр устного счёта со счётом очков.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-02e-js-recap/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-02e-js-recap/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-02e-js-recap/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демки</span>
-            <a class="chip g" href="lessons/lesson-02e-js-recap/demos/gamer.html" title="демка для геймеров">🎮</a>
-            <a class="chip s" href="lessons/lesson-02e-js-recap/demos/sport.html" title="демка для спортсменов">🏀</a>
-            <a class="chip a" href="lessons/lesson-02e-js-recap/demos/art.html" title="демка для творческих">🎨</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02e-js-recap">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson">
-        <div class="jn">2.9<small>функции</small></div>
-        <div>
-          <h4>Своя команда</h4>
-          <p>Последний шаг чистого языка: упаковать свой кусок кода в команду с именем и звать её, когда надо. Как <code>console.log</code>, только твоя собственная.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-02f-js-functions/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-02f-js-functions/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-02f-js-functions/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02f-js-functions">материалы →</a>
-            <span class="soon">демки в работе</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson">
-        <div class="jn">2.10<small>редактор</small></div>
-        <div>
-          <h4>Свой дом для кода: VS Code</h4>
-          <p>Код переезжает из консоли в настоящий файл. Ставим редактор, заводим папку проекта и <code>trenajer.js</code> — тренажёр с разминки больше не пропадает вместе с вкладкой.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-02g-vscode/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-02g-vscode/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-02g-vscode/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демки</span>
-            <a class="chip g" href="lessons/lesson-02g-vscode/demos/gamer.html" title="демка для геймеров">🎮</a>
-            <a class="chip s" href="lessons/lesson-02g-vscode/demos/sport.html" title="демка для спортсменов">🏀</a>
-            <a class="chip a" href="lessons/lesson-02g-vscode/demos/art.html" title="демка для творческих">🎨</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-02g-vscode">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- CS BLOCK -->
-<section id="cs">
-  <div class="container">
-    <div class="section-label">// блок «компьютер изнутри»</div>
-    <h2>Что <em>под капотом</em></h2>
-    <p class="section-lead">
-      Отступление от кода: как устроен компьютер и почему он понимает только нули и единицы. Можно писать код и без этого — но сильным программистом так не стать.
-    </p>
-    <div class="js-lessons">
-
-      <div class="js-lesson">
-        <div class="jn">cs·1<small>железо</small></div>
-        <div>
-          <h4>Компьютер изнутри</h4>
-          <p>Материнка, CPU с «часиками», RAM и SSD, шина на 64 «проводочка» — и что происходит за пару секунд между кнопкой Power и рабочим столом.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-cs-01-computer/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-cs-01-computer/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-cs-01-computer/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демка</span>
-            <a class="chip g" href="lessons/lesson-cs-01-computer/demos/boot.html" title="симулятор включения">⚙️</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-cs-01-computer">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson">
-        <div class="jn">cs·2<small>слои</small></div>
-        <div>
-          <h4>Слои: от железа до твоей программы</h4>
-          <p>Пирамида «железо → BIOS → ОС → приложение», биты-лампочки, счёт до 255 двумя цифрами — и почему <code>#ffd60a</code> из твоего CSS это три числа.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-cs-02-layers/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-cs-02-layers/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-cs-02-layers/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демка</span>
-            <a class="chip g" href="lessons/lesson-cs-02-layers/demos/bits.html" title="биты-лампочки">💡</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-cs-02-layers">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="js-lesson">
-        <div class="jn">cs·3<small>языки</small></div>
-        <div>
-          <h4>Языки программирования</h4>
-          <p>Кто переводит твой код: компилятор, интерпретатор, JIT. Одна задача на пяти языках — от 14 строк на ассемблере до одной на Python — и почему JS в браузере и в консоли умеет разное.</p>
-          <div class="js-links">
-            <a href="lessons/lesson-cs-03-languages/cheatsheet.html">📖 Шпаргалка</a>
-            <a href="lessons/lesson-cs-03-languages/homework.html">📝 Домашка</a>
-            <a href="lessons/lesson-cs-03-languages/slides.html">🎬 Слайды</a>
-            <span class="sep"></span>
-            <span class="grp">демка</span>
-            <a class="chip g" href="lessons/lesson-cs-03-languages/demos/languages.html" title="одна задача — пять языков">🔤</a>
-            <span class="sep"></span>
-            <a class="repo" href="https://github.com/DmitrTRC/Junior_IT/tree/main/lessons/lesson-cs-03-languages">материалы →</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- DEMOS -->
-<section id="demos" class="demos-section">
-  <div class="container">
-    <div class="section-label">// эталонные демки</div>
-    <h2>Один шаблон — <em>три характера</em></h2>
-    <p class="section-lead">
-      Показываем в начале урока, чтобы каждый ребёнок узнал себя. Дальше делает свой вариант — в любой эстетике.
-    </p>
-
-    <div class="demos">
-      <a class="demo gamer" href="lessons/lesson-01-html-css/demos/gamer.html">
-        <div>
-          <div class="label">// для геймеров</div>
-          <h4>MAX_LVL_99</h4>
-          <p>Тёмная, неоновая, с пиксельным шрифтом. Counter-Strike, Майнкрафт, Discord.</p>
-        </div>
-        <span class="view">открыть</span>
-      </a>
-
-      <a class="demo sport" href="lessons/lesson-01-html-css/demos/sport.html">
-        <div>
-          <div class="label">// для спортсменов</div>
-          <h4>Саня · скейтер</h4>
-          <p>Яркая, дерзкая, с резкими углами. Olllie, kickflip, споты в городе.</p>
-        </div>
-        <span class="view">открыть</span>
-      </a>
-
-      <a class="demo art" href="lessons/lesson-01-html-css/demos/art.html">
-        <div>
-          <div class="label">// для творческих</div>
-          <h4>Лиза · рисует</h4>
-          <p>Тёплая, элегантная, с засечками. Акварель, Билибин, Климт, мечты.</p>
-        </div>
-        <span class="view">открыть</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- PARENTS -->
-<section id="parents">
-  <div class="container">
-    <div class="section-label">// родителям</div>
-    <h2>Два документа, которые<br><em>стоит прочитать</em></h2>
-    <p class="section-lead">
-      Перед первым занятием — гайд по подготовке устройства. Второе — на всякий случай, для разговоров с ребёнком о навыках.
-    </p>
-
-    <div class="parents-grid">
-      <a class="parent-card" href="docs/setup-guide.html">
-        <div class="icn">⚙️</div>
-        <h4>Гайд подготовки устройства</h4>
-        <p>Для iPhone, Android, Windows, Mac — что поставить, как настроить. 5–15 минут.</p>
-        <span class="open">→ открыть</span>
-      </a>
-      <a class="parent-card" href="docs/soft-vs-hard-skills.html">
-        <div class="icn">🧠</div>
-        <h4>Soft vs Hard Skills</h4>
-        <p>Объяснение для подростка: что качает программирование, кроме самого программирования.</p>
-        <span class="open">→ открыть</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ROADMAP -->
-<section id="roadmap">
-  <div class="container">
-    <div class="section-label">// дорожная карта</div>
-    <h2>План <em>на семестр</em></h2>
-    <p class="section-lead">
-      Это направление пути. Темы могут сдвигаться по интересам группы.
-    </p>
-
-    <div class="roadmap">
-      <div class="rm-item done">
-        <div class="rm-num">01</div>
-        <div class="rm-body">
-          <div class="rm-status">пройдено</div>
-          <h4>HTML + CSS · первый сайт</h4>
-          <p>Личная страничка. Теги, цвета, картинки, hover, градиенты.</p>
-        </div>
-      </div>
-      <div class="rm-item current">
-        <div class="rm-num">02</div>
-        <div class="rm-body">
-          <div class="rm-status">сейчас идём</div>
-          <h4>JavaScript · сам язык</h4>
-          <p>Семь занятий: кнопки, консоль, условия, циклы, разминка, функции, редактор. От первой кнопки до своего файла в VS Code.</p>
-        </div>
-      </div>
-      <div class="rm-item future">
-        <div class="rm-num">03</div>
-        <div class="rm-body">
-          <div class="rm-status">планируется</div>
-          <h4>JS · события и анимация</h4>
-          <p>Реакция на клики, движение элементов, мини-игры.</p>
-        </div>
-      </div>
-      <div class="rm-item future">
-        <div class="rm-num">04</div>
-        <div class="rm-body">
-          <div class="rm-status">планируется</div>
-          <h4>Сайт в интернете</h4>
-          <p>GitHub Pages / surge. Ребёнок получает реальную ссылку, которой можно поделиться.</p>
-        </div>
-      </div>
-      <div class="rm-item future">
-        <div class="rm-num">05+</div>
-        <div class="rm-body">
-          <div class="rm-status">далеко</div>
-          <h4>Мини-проекты по интересам</h4>
-          <p>Кто во что: блог, портфолио, мини-игра, генератор чего-нибудь. По желанию группы.</p>
-        </div>
+      <div class="hub-links">
+        <span class="stub-plate">Тренажёр — скоро</span>
+        <a class="setup-link" href="docs/setup-guide.html">Настройка компьютера →</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
+</main>
+
 <footer>
-  <div class="author">// junior_it</div>
-  <p>Курс ведёт <a href="https://github.com/DmitrTRC">Dmitry Morozov</a> — командир ЮДО, senior dev.</p>
-  <p>ЮДО при ОТО · 128 отдел полиции · Всеволожский район, ЛО</p>
-  <div class="links-row">
-    <a href="https://github.com/DmitrTRC/Junior_IT">GitHub →</a>
-    <a href="https://github.com/DmitrTRC/Junior_IT/issues">Issues</a>
-    <a href="https://github.com/DmitrTRC/Junior_IT/blob/main/LICENSE">MIT License</a>
-  </div>
+  <p>Junior_IT · материалы открыты · MIT</p>
+  <p>Ведёт Дмитрий Морозов — senior-разработчик</p>
+  <p><a href="https://github.com/DmitrTRC/Junior_IT">GitHub →</a></p>
+  <p class="muted">Сделано без конструкторов: HTML, CSS и ванильный JS.</p>
 </footer>
+
+<script>
+  (function () {
+    var body = document.getElementById('term-body');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var script = [
+      [{ t: '$ python3 hello.py', cls: 'prompt' }],
+      [{ t: 'Привет! Я учусь программировать', cls: 'out' }],
+      [{ t: '$ git push', cls: 'prompt' }],
+      [{ t: '✓', cls: 'ok' }, { t: ' CI: все тесты пройдены', cls: 'out' }]
+    ];
+
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+
+    if (reduced) {
+      script.forEach(function (segs) {
+        var line = document.createElement('div');
+        line.className = 'line';
+        segs.forEach(function (seg) {
+          var span = document.createElement('span');
+          span.className = seg.cls;
+          span.textContent = seg.t;
+          line.appendChild(span);
+        });
+        body.appendChild(line);
+      });
+      body.lastChild.appendChild(caret);
+      return;
+    }
+
+    var CHAR_DELAY = 45;
+    var LINE_PAUSE = 700;
+    var li = 0;
+
+    function nextLine() {
+      if (li >= script.length) {
+        caret.classList.add('blink');
+        return;
+      }
+      var line = document.createElement('div');
+      line.className = 'line';
+      body.appendChild(line);
+
+      var segs = script[li];
+      var si = 0, ci = 0, curSpan = null, curCls = null;
+
+      function typeChar() {
+        if (si >= segs.length) {
+          li++;
+          setTimeout(nextLine, LINE_PAUSE);
+          return;
+        }
+        var seg = segs[si];
+        if (curCls !== seg.cls) {
+          curSpan = document.createElement('span');
+          curSpan.className = seg.cls;
+          line.appendChild(curSpan);
+          curCls = seg.cls;
+        }
+        curSpan.textContent += seg.t[ci];
+        line.appendChild(caret);
+        ci++;
+        if (ci >= seg.t.length) { si++; ci = 0; }
+        setTimeout(typeChar, CHAR_DELAY);
+      }
+      typeChar();
+    }
+    nextLine();
+  })();
+</script>
+
+<script>
+  (function () {
+    var TRACK_TOKENS = {
+      book: '--track-book', python: '--track-py', pascal: '--track-pas',
+      devops: '--track-ops', cs: '--track-cs', web: '--track-web'
+    };
+
+    var map = null;
+
+    function moduleTitle(id) {
+      var found = (map.modules || []).find(function (m) { return m.id === id; });
+      return found ? found.title : id;
+    }
+
+    function formatSessionDate(iso) {
+      var parts = iso.split('-').map(Number);
+      var dt = new Date(parts[0], parts[1] - 1, parts[2]);
+      var fmt = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'long', weekday: 'long' });
+      return fmt.format(dt);
+    }
+
+    function renderNextSession(ns) {
+      var hubExtras = document.getElementById('hub-extras');
+      if (!ns || !hubExtras) return;
+
+      var card = document.createElement('div');
+      card.className = 'next-session';
+
+      var heading = document.createElement('h3');
+      heading.textContent = 'Ближайшее занятие — ' + formatSessionDate(ns.date) + ', тема: ' + ns.theme;
+      card.appendChild(heading);
+
+      var list = document.createElement('ul');
+      (ns.modules || []).forEach(function (id) {
+        var li = document.createElement('li');
+        li.textContent = moduleTitle(id);
+        list.appendChild(li);
+      });
+      card.appendChild(list);
+
+      hubExtras.insertBefore(card, hubExtras.firstChild);
+    }
+
+    function renderCounters(c) {
+      var hubExtras = document.getElementById('hub-extras');
+      if (!c || !hubExtras) return;
+
+      var strip = document.createElement('div');
+      strip.className = 'counters-strip';
+
+      function plate(fragments) {
+        var p = document.createElement('div');
+        p.className = 'counter-plate';
+        fragments.forEach(function (frag) {
+          if (typeof frag === 'object') {
+            var strong = document.createElement('strong');
+            strong.textContent = frag.strong;
+            p.appendChild(strong);
+          } else {
+            p.appendChild(document.createTextNode(frag));
+          }
+        });
+        strip.appendChild(p);
+      }
+
+      plate(['Модулей пройдено ', { strong: c.modules_done }, ' из ', { strong: c.modules_core_total }]);
+      plate(['Параграфов учебника закрыто ', { strong: c.paragraphs_closed }]);
+      plate(['Python — материал 8 класса, мы в 7-м']);
+
+      hubExtras.appendChild(strip);
+    }
+
+    var STATUS_LABELS = {
+      done: 'пройден', current: 'ближайшее занятие', planned: 'впереди', library: 'архив'
+    };
+
+    function moduleTooltip(m) {
+      var parts = [STATUS_LABELS[m.status] || m.status, m.minutes + ' мин'];
+      if (m.textbook && m.textbook.length) parts.push('§' + m.textbook.join(', §'));
+      return parts.join(' · ');
+    }
+
+    function buildModuleNode(m, colorVar) {
+      var href = m.links && (m.links.slides || m.links.cheatsheet);
+      var node = document.createElement(href ? 'a' : 'div');
+      node.className = 'module-node';
+      node.dataset.status = m.status;
+      node.style.setProperty('--track-color', 'var(' + colorVar + ')');
+      node.title = moduleTooltip(m);
+      if (href) node.href = href;
+
+      var title = document.createElement('span');
+      title.className = 'module-title';
+      title.textContent = m.title;
+      node.appendChild(title);
+
+      var minutes = document.createElement('span');
+      minutes.className = 'module-minutes';
+      minutes.textContent = m.minutes + ' мин';
+      node.appendChild(minutes);
+
+      return node;
+    }
+
+    function buildLaneNodes(modules, colorVar) {
+      var nodes = document.createElement('div');
+      nodes.className = 'track-lane-nodes';
+      if (!modules.length) {
+        var empty = document.createElement('div');
+        empty.className = 'track-lane-empty';
+        empty.textContent = 'впереди';
+        nodes.appendChild(empty);
+      } else {
+        modules.forEach(function (m) { nodes.appendChild(buildModuleNode(m, colorVar)); });
+      }
+      return nodes;
+    }
+
+    function renderMap(map) {
+      var container = document.getElementById('course-map');
+      if (!container) return;
+      container.textContent = '';
+      container.classList.add('course-map--lanes');
+
+      var modulesByTrack = {};
+      (map.modules || []).forEach(function (m) {
+        (modulesByTrack[m.track] = modulesByTrack[m.track] || []).push(m);
+      });
+
+      (map.tracks || []).forEach(function (track) {
+        var allModules = modulesByTrack[track.id] || [];
+        var activeModules = allModules.filter(function (m) { return m.status !== 'library'; });
+        if (allModules.length && !activeModules.length) return; // трек целиком в архиве
+
+        var colorVar = TRACK_TOKENS[track.id] || '--cyan';
+
+        var lane = document.createElement('div');
+        lane.className = 'track-lane';
+
+        var chip = document.createElement('div');
+        chip.className = 'track-lane-chip';
+        chip.style.setProperty('--track-color', 'var(' + colorVar + ')');
+        var chipSpan = document.createElement('span');
+        chipSpan.className = 'chip';
+        chipSpan.textContent = track.chip;
+        var titleSpan = document.createElement('span');
+        titleSpan.className = 'track-title';
+        titleSpan.textContent = track.title;
+        chip.appendChild(chipSpan);
+        chip.appendChild(titleSpan);
+        lane.appendChild(chip);
+
+        lane.appendChild(buildLaneNodes(activeModules, colorVar));
+        container.appendChild(lane);
+      });
+
+      var libraryModules = (map.modules || []).filter(function (m) { return m.status === 'library'; });
+      if (libraryModules.length) {
+        var details = document.createElement('details');
+        details.className = 'archive-details';
+        var summary = document.createElement('summary');
+        var allWeb = libraryModules.every(function (m) { return m.track === 'web'; });
+        summary.textContent = allWeb ? 'Архив web — по запросу' : 'Архив — по запросу';
+        details.appendChild(summary);
+        details.appendChild(buildLaneNodes(libraryModules, TRACK_TOKENS.web));
+        container.appendChild(details);
+      }
+    }
+
+    function renderQuickLinks(modules) {
+      var hubExtras = document.getElementById('hub-extras');
+      if (!hubExtras) return;
+      var withCheatsheets = (modules || [])
+        .filter(function (m) { return m.status === 'done' && m.links && m.links.cheatsheet; })
+        .slice(-3);
+      if (!withCheatsheets.length) return;
+
+      var box = document.createElement('div');
+      box.className = 'quick-links';
+
+      var heading = document.createElement('h3');
+      heading.textContent = 'Свежие шпаргалки';
+      box.appendChild(heading);
+
+      var list = document.createElement('ul');
+      withCheatsheets.forEach(function (m) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = m.links.cheatsheet;
+        a.textContent = m.title;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+      box.appendChild(list);
+
+      hubExtras.appendChild(box);
+    }
+
+    (async function () {
+      try {
+        const resp = await fetch('course-map.json');
+        if (!resp.ok) return;                 // fallback-блок остаётся
+        map = await resp.json();
+      } catch (e) { return; }
+
+      renderNextSession(map.next_session);
+      renderCounters(map.counters);
+      renderMap(map);
+      renderQuickLinks(map.modules);
+    })();
+  })();
+</script>
 
 </body>
 </html>

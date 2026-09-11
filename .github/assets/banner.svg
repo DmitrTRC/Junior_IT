@@ -50,12 +50,12 @@
   <ellipse cx="600" cy="220" rx="280" ry="180" fill="url(#glow2)"/>
 
   <g font-family="ui-monospace, monospace" font-size="11" fill="#ffd60a" opacity="0.18">
-    <text x="40" y="50">&lt;!DOCTYPE html&gt;</text>
-    <text x="40" y="68">&lt;html lang="ru"&gt;</text>
-    <text x="40" y="86">  &lt;style&gt;</text>
-    <text x="40" y="104">    body { color: gold; }</text>
-    <text x="40" y="122">  &lt;/style&gt;</text>
-    <text x="40" y="140">&lt;/html&gt;</text>
+    <text x="40" y="50">$ python3 hello.py</text>
+    <text x="40" y="68">print("Привет!")</text>
+    <text x="40" y="86">def level_up():</text>
+    <text x="40" y="104">    skill += 1</text>
+    <text x="40" y="122">$ git add .</text>
+    <text x="40" y="140">$ git commit -m "done"</text>
   </g>
 
   <g font-family="ui-monospace, monospace" font-size="11" fill="#00ffc8" opacity="0.2">
@@ -66,7 +66,7 @@
 
   <g font-family="ui-monospace, monospace" font-size="14" fill="#ffd60a" letter-spacing="6">
     <rect x="400" y="85" width="400" height="32" rx="16" fill="#ffd60a" opacity="0.08"/>
-    <text x="600" y="106" text-anchor="middle" font-weight="700">// JUNIOR DEV TRAINING · 11 TO 14</text>
+    <text x="600" y="106" text-anchor="middle" font-weight="700">// ADVANCED CS COURSE · GRADES 7–8</text>
   </g>
 
   <g font-family="'Rubik', 'Helvetica Neue', Arial, sans-serif" font-weight="700">
@@ -77,35 +77,26 @@
   </g>
 
   <g font-family="'Rubik', 'Helvetica Neue', Arial, sans-serif">
-    <text x="600" y="252" text-anchor="middle" font-size="22" fill="#e8ecf5" font-weight="500">
-      HTML, CSS, JS and your first real website
+    <text x="600" y="252" text-anchor="middle" font-size="17" fill="#e8ecf5" font-weight="500">
+      Углублённая информатика и программирование · 7–8 классы
     </text>
-    <text x="600" y="280" text-anchor="middle" font-size="15" fill="#8892a8" font-weight="400">
-      Free webinar course · No cramming · One working site per lesson
+    <text x="600" y="280" text-anchor="middle" font-size="14" fill="#8892a8" font-weight="400">
+      Школьный учебник — с опережением. Инструменты — настоящие.
     </text>
   </g>
 
   <g font-family="'Rubik', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600">
-    <g transform="translate(380, 310)">
-      <rect width="86" height="34" rx="17" fill="#ff5722" opacity="0.95"/>
-      <text x="43" y="22" text-anchor="middle" fill="#fff">HTML</text>
+    <g transform="translate(437, 310)">
+      <rect width="110" height="34" rx="17" fill="#00ffc8" opacity="0.95"/>
+      <text x="55" y="22" text-anchor="middle" fill="#0a0a14" font-weight="700">PYTHON</text>
     </g>
-    <g transform="translate(476, 310)">
-      <rect width="76" height="34" rx="17" fill="#1572B6" opacity="0.95"/>
-      <text x="38" y="22" text-anchor="middle" fill="#fff">CSS</text>
+    <g transform="translate(557, 310)">
+      <rect width="66" height="34" rx="17" fill="#00e676" opacity="0.95"/>
+      <text x="33" y="22" text-anchor="middle" fill="#0a0a14" font-weight="700">GIT</text>
     </g>
-    <g transform="translate(562, 310)">
-      <rect width="62" height="34" rx="17" fill="#F7DF1E"/>
-      <text x="31" y="22" text-anchor="middle" fill="#0a0a14" font-weight="700">JS</text>
-    </g>
-    <g transform="translate(634, 310)">
-      <rect width="86" height="34" rx="17" fill="none" stroke="#ffd60a" stroke-width="1.5"/>
-      <text x="43" y="22" text-anchor="middle" fill="#ffd60a">75 MIN</text>
-    </g>
-    <g transform="translate(730, 310)">
-      <rect width="90" height="34" rx="17" fill="#00e676"/>
-      <circle cx="14" cy="17" r="4" fill="#0a0a14"/>
-      <text x="55" y="22" text-anchor="middle" fill="#0a0a14" font-weight="700">LIVE</text>
+    <g transform="translate(633, 310)">
+      <rect width="130" height="34" rx="17" fill="none" stroke="#ffd60a" stroke-width="1.5"/>
+      <text x="65" y="22" text-anchor="middle" fill="#ffd60a">TERMINAL</text>
     </g>
   </g>
 
