@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>История Python: версии и изменения языка</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a14'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='14' fill='%2300ffc8'%3E%26gt;_%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Токены — копия meta/brand-tokens.css (источник истины там) */
+  :root { --bg:#0a0a14; --card:#1a1a2e; --card-2:#16213e; --deep:#0f3460;
+    --yellow:#ffd60a; --green:#00e676; --cyan:#00ffc8; --magenta:#ff0096;
+    --bg-light:#faf7f2; --track:#00ffc8; --track-ink:#00806a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#dfe3f5;
+    font-family:Manrope,system-ui,sans-serif; line-height:1.65; font-size:16.5px; }
+  .wrap { max-width:46rem; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+  .chip { font-family:"JetBrains Mono",monospace; font-weight:700; font-size:.72rem;
+    letter-spacing:.1em; color:var(--bg); background:var(--track);
+    padding:.2rem .55rem; border-radius:.3rem; }
+  h1 { font-family:Rubik,system-ui,sans-serif; font-size:clamp(26px,4.5vw,38px);
+    line-height:1.2; color:var(--track); margin:.6rem 0 0; }
+  h2 { font-family:Rubik,system-ui,sans-serif; font-size:clamp(20px,3vw,26px);
+    color:#fff; margin:2.4rem 0 .6rem; padding-top:1.2rem;
+    border-top:1px solid var(--card-2); }
+  h3 { font-family:Rubik,system-ui,sans-serif; font-size:1.05rem;
+    color:var(--track); margin:1.6rem 0 .4rem; }
+  p { margin:.7rem 0; }
+  a { color:var(--track); }
+  blockquote { margin:1rem 0; padding:.8rem 1.1rem; background:var(--card);
+    border-left:4px solid var(--track); border-radius:.5rem; color:#aeb4cc; }
+  code { font-family:"JetBrains Mono",monospace; font-size:.86em;
+    background:var(--card); padding:.1em .35em; border-radius:.3em; color:var(--yellow); }
+  ul { padding-left:1.3rem; margin:.6rem 0; }
+  li { margin:.3rem 0; }
+  hr { border:0; height:1px; background:var(--card-2); margin:2rem 0; }
+  .tbl { overflow-x:auto; margin:1rem 0; border-radius:.6rem; }
+  table { border-collapse:collapse; width:100%; font-size:.92rem; }
+  th { text-align:left; background:var(--card-2); color:var(--track);
+    font-family:"JetBrains Mono",monospace; font-size:.78rem; letter-spacing:.05em; }
+  th, td { padding:.5rem .7rem; border-bottom:1px solid var(--card-2); vertical-align:top; }
+  tr:nth-child(even) td { background:rgba(22,33,62,.35); }
+  strong { color:#fff; }
+  footer { margin-top:3rem; color:#6b7190; font-size:.85rem; }
+  @media print {
+    body { background:var(--bg-light); color:#1a1a1a; }
+    h1,h3 { color:var(--track-ink); } h2 { color:#1a1a1a; border-top-color:#ddd; }
+    .chip { background:var(--track-ink); color:#fff; }
+    blockquote { background:#fff; border-left-color:var(--track-ink); color:#444; }
+    code { background:#f0ede8; color:#1a1a1a; }
+    th { background:#eee; color:var(--track-ink); } a { color:var(--track-ink); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<span class="chip">PY</span>
+<h1>История Python: версии и изменения языка</h1>
+<blockquote>
+Полная хронология от ABC и рождественских каникул 1989 года до Python 3.14<br>
+(октябрь 2025) и того, что заявлено в 3.15 (октябрь 2026).<br>
+Справочник для разработчика. Актуально на <strong>12 сентября 2026</strong>.<br>
+</blockquote>
+<hr>
+<h2>0. Как устроено версионирование и кто решает</h2>
+<h3>Имена и цифры</h3>
+<div class="tbl"><table><thead><tr><th>Термин</th><th>Что это</th></tr></thead><tbody><tr><td><strong>Python</strong></td><td>Имя языка. В честь «Monty Python's Flying Circus», не в честь змеи. Логотип со змеями появился позже и прижился.</td></tr><tr><td><strong>CPython</strong></td><td>Эталонная реализация на C. Когда говорят «Python 3.14 вышел» — речь про CPython.</td></tr><tr><td><strong>PEP</strong></td><td>Python Enhancement Proposal — документ, через который в язык попадает любое изменение. Аналог TC39-пропозалов у JavaScript, но со сквозной нумерацией с 2000 года.</td></tr><tr><td><strong>python.org / PSF</strong></td><td>Python Software Foundation — некоммерческий фонд, владеющий торговой маркой и инфраструктурой.</td></tr></tbody></table></div>
+<h3>Процесс PEP</h3>
+<div class="tbl"><table><thead><tr><th>Статус</th><th>Смысл</th></tr></thead><tbody><tr><td>Draft</td><td>Черновик, обсуждается</td></tr><tr><td>Accepted</td><td>Принят, ждёт реализации</td></tr><tr><td>Final</td><td>Реализован и вошёл в релиз</td></tr><tr><td>Rejected / Withdrawn</td><td>Отклонён или отозван автором</td></tr><tr><td>Deferred</td><td>Отложен до лучших времён</td></tr></tbody></table></div>
+<p>Ключевые «конституционные» PEP, которые стоит знать по номерам:</p>
+<ul>
+<li><strong>PEP 1</strong> — что такое PEP и как он живёт.</li>
+<li><strong>PEP 8</strong> — стиль кода. Самый цитируемый документ экосистемы.</li>
+<li><strong>PEP 20</strong> — The Zen of Python (<code>import this</code>), 19 афоризмов Тима Питерса.</li>
+<li><strong>PEP 13</strong> — устройство власти после ухода Гвидо (Steering Council).</li>
+<li><strong>PEP 387</strong> — политика обратной совместимости: депрекация минимум два релиза до удаления.</li>
+<li><strong>PEP 602</strong> — годовой цикл релизов (с 3.9).</li>
+</ul>
+<h3>Каденция и поддержка</h3>
+<p>С <strong>PEP 602</strong> (2019) релизы выходят <strong>каждый октябрь</strong>. Каждая версия живёт <strong>5 лет</strong>: примерно 2 года bugfix-релизов, затем только security-патчи. С 3.13 действует уточнение (PEP 602 rev.): полных bugfix-лет снова два, но первый год релиз считается «самым свежим стабильным», а прошлогодний — «рабочей лошадью». Для учебных целей это означает простое правило: <strong>ставить прошлогодний октябрьский релиз — всегда безопасно</strong>.</p>
+<hr>
+<h2>1. Предыстория: ABC и Амстердам (1980-е)</h2>
+<p>Гвидо ван Россум работал в CWI (Амстердам) над языком <strong>ABC</strong> — учебным языком, который должен был заменить BASIC. ABC дал Python почти всё узнаваемое: отступы вместо скобок, высокоуровневые типы (списки, словари, строки произвольной длины), интерактивный режим, принцип «язык должен читаться». Но ABC был закрытой монолитной системой без расширяемости — и провалился.</p>
+<p>Вторая составляющая — ОС <strong>Amoeba</strong>, для которой Гвидо нужен был скриптовый язык-клей. Третья — Modula-3, откуда пришла система исключений и модулей.</p>
+<p>На рождественских каникулах <strong>декабря 1989</strong> Гвидо начал писать интерпретатор «нового языка, наследника ABC, который понравился бы Unix/C-хакерам». Название взял с полки — по кассетам Monty Python.</p>
+<hr>
+<h2>2. Ранний период: 0.9 → 1.x (1991–1999)</h2>
+<h3>0.9.0 — 20 февраля 1991</h3>
+<p>Первая публикация — в юзнет-группу <code>alt.sources</code>. Уже были: классы с наследованием, исключения, функции, типы <code>list</code>, <code>dict</code>, <code>str</code>, модули. То есть Python родился почти узнаваемым — дальше язык не перестраивался, а наращивался.</p>
+<h3>1.0 — январь 1994</h3>
+<p>Функциональные инструменты: <code>lambda</code>, <code>map</code>, <code>filter</code>, <code>reduce</code> (внесены сторонним контрибьютором; Гвидо позже признавался, что не любил их).</p>
+<h3>1.4 — 1996 · 1.5.2 — 1999</h3>
+<p>Именованные аргументы, встроенная поддержка комплексных чисел, зачатки сокрытия имён (<code>_name</code> mangling). <strong>1.5.2</strong> — первая «народная» версия, которую многие старые книжки считают точкой отсчёта.</p>
+<h3>Драма лицензий: 1.6 и CNRI</h3>
+<p>Гвидо переехал из CWI в CNRI (Вирджиния), потом в BeOpen. Версии 1.6/2.0 выходили под юридически мутными лицензиями; сообщество нервничало. Всё закончилось хорошо: PSF License, совместимая с GPL, и создание фонда PSF (2001).</p>
+<hr>
+<h2>3. Эпоха Python 2 (2000–2010)</h2>
+<h3>2.0 — 16 октября 2000</h3>
+<ul>
+<li><strong>List comprehensions</strong> — <code>[x*x for x in xs if x &gt; 0]</code> (идея из Haskell).</li>
+<li>Полноценный <strong>сборщик мусора циклов</strong> вдобавок к подсчёту ссылок.</li>
+<li>Юникод-строки <code>u"…"</code> (отдельным типом — мина, которая рванёт в 3.0).</li>
+<li>Разработка переехала на открытый багтрекер — Python стал по-настоящему общественным проектом.</li>
+</ul>
+<h3>2.1 — 2001 · 2.2 — декабрь 2001</h3>
+<p>2.1: вложенные области видимости (замыкания стали работать как ожидаешь).</p>
+<p><strong>2.2 — самый важный релиз двойки:</strong></p>
+<ul>
+<li><strong>Объединение типов и классов</strong> («new-style classes», <code>object</code> как база) — до этого встроенные типы и пользовательские классы жили в разных мирах.</li>
+<li><strong>Генераторы</strong> (PEP 255) и протокол <strong>итераторов</strong> — <code>yield</code> появился здесь.</li>
+<li>Дескрипторы, <code>property</code>, <code>classmethod</code>, <code>staticmethod</code>, <code>super()</code>, метаклассы — вся современная объектная машинерия Python родом из 2.2.</li>
+</ul>
+<h3>2.3 — 2003 · 2.4 — 2004 · 2.5 — 2006</h3>
+<ul>
+<li>2.3: <code>enumerate()</code>, <code>sum()</code>, тип <code>bool</code> как отдельный, <code>sets</code> в stdlib, <code>logging</code>, <code>datetime</code>.</li>
+<li>2.4: <strong>декораторы</strong> <code>@</code> (PEP 318), генераторные выражения, <code>sorted()</code>, <code>set</code>/<code>frozenset</code> встроенными, <code>decimal</code>.</li>
+<li>2.5: <strong><code>with</code></strong> и контекстные менеджеры (PEP 343), тернарный <code>a if cond else b</code>, <code>try/except/finally</code> в одном блоке, абсолютные импорты (PEP 328), <code>ctypes</code>, <code>sqlite3</code> и <code>ElementTree</code> в stdlib.</li>
+</ul>
+<h3>2.6 — 2008 · 2.7 — 3 июля 2010</h3>
+<p>Обе версии — «мосты» к тройке: в них бэкпортировали синтаксис 3.x, чтобы код мог работать в обоих мирах. 2.7 получил словарные/множественные comprehensions, <code>str.format</code>, <code>argparse</code>, <code>OrderedDict</code>, <code>Counter</code>.</p>
+<p><strong>2.7 — версия-долгожитель.</strong> Поддержку продлевали дважды; официальная смерть — <strong>1 января 2020</strong>, почти десять лет жизни. Причина долголетия — болезненность перехода на тройку (см. ниже).</p>
+<hr>
+<h2>4. Раскол: Python 3000 (2008)</h2>
+<p><strong>3.0 — 3 декабря 2008.</strong> Единственный намеренно несовместимый релиз в истории языка. Гвидо копил список «ошибок дизайна» годами и исправил их разом:</p>
+<ul>
+<li><code>print</code> — функция, а не оператор.</li>
+<li>Строки: единый юникодный <code>str</code>, отдельный <code>bytes</code>. Главная и самая болезненная правка — но именно она сделала Python языком, где «строка — это текст, а не массив байтов».</li>
+<li><code>1/2 == 0.5</code> — честное деление; целочисленное — <code>//</code>.</li>
+<li><code>range</code>, <code>map</code>, <code>filter</code>, <code>dict.keys()</code> — ленивые, а не списки.</li>
+<li>Убраны старые классы, <code>&lt;&gt;</code>, <code>cmp</code>, неявные сравнения разнотипного.</li>
+</ul>
+<p><strong>Переход занял ~10 лет.</strong> Экосистема (NumPy, Django, библиотеки) мигрировала медленно, сидя на 2.7. Инструменты эпохи: <code>2to3</code>, <code>six</code>, «straddling code». Урок, который индустрия выучила: <strong>больших несовместимых версий больше не будет</strong> — это официальная позиция команды (никакого «Python 4»).</p>
+<h3>3.1 (2009) · 3.2 (2011)</h3>
+<p>Наведение порядка после раскола: <code>OrderedDict</code>, ускорение I/O; в 3.2 — <code>concurrent.futures</code>, стабильный ABI (PEP 384), <code>argparse</code>.</p>
+<hr>
+<h2>5. Тройка взрослеет: 3.3–3.4 (2012–2014)</h2>
+<ul>
+<li><strong>3.3</strong>: <code>yield from</code> (PEP 380 — фундамент будущего <code>await</code>), <code>venv</code> в stdlib, вернули литерал <code>u"…"</code> для облегчения миграции, пространства имён-пакеты (PEP 420), <code>unittest.mock</code>.</li>
+<li><strong>3.4</strong>: <strong><code>asyncio</code></strong> (PEP 3156, пока с <code>@coroutine</code>/<code>yield from</code>), <code>enum</code>, <code>pathlib</code>, <code>statistics</code>, <code>tracemalloc</code>, <code>ensurepip</code> — pip теперь идёт с языком.</li>
+</ul>
+<hr>
+<h2>6. Современный Python складывается: 3.5–3.9 (2015–2020)</h2>
+<h3>3.5 — сентябрь 2015</h3>
+<ul>
+<li><strong><code>async</code> / <code>await</code></strong> (PEP 492) — асинхронность становится синтаксисом.</li>
+<li><strong>Типизация: <code>typing</code></strong> (PEP 484) — аннотации получили смысл; начало крупнейшего сюжета последнего десятилетия.</li>
+<li>Оператор <code>@</code> для матриц (PEP 465 — реверанс NumPy-миру).</li>
+<li>Распаковка везде: <code>f(*a, *b)</code>, <code>{<strong>d1, </strong>d2}</code> (PEP 448).</li>
+</ul>
+<h3>3.6 — декабрь 2016</h3>
+<ul>
+<li><strong>f-строки</strong> (PEP 498) — самый любимый синтаксис современного Python.</li>
+<li>Словари стали компактными и <strong>сохраняют порядок вставки</strong> (пока как деталь реализации).</li>
+<li>Аннотации переменных (PEP 526), подчёркивания в числах <code>1_000_000</code>, <code>secrets</code>, протокол <code>__init_subclass__</code>, асинхронные генераторы.</li>
+</ul>
+<h3>3.7 — июнь 2018</h3>
+<ul>
+<li><strong><code>dataclasses</code></strong> (PEP 557).</li>
+<li>Порядок словарей — <strong>гарантия языка</strong>.</li>
+<li><code>breakpoint()</code>, отложенные аннотации по <code>from __future__ import annotations</code> (PEP 563 — сюжет с продолжением), контекстные переменные для asyncio (PEP 567).</li>
+</ul>
+<h3>3.8 — октябрь 2019</h3>
+<ul>
+<li><strong>Морж</strong> <code>:=</code> (PEP 572) — присваивание в выражении. Дискуссия вокруг него стоила Гвидо должности BDFL (см. §11).</li>
+<li>Позиционные параметры <code>/</code> (PEP 570), <code>f"{x=}"</code> для отладки, <code>functools.cached_property</code>, <code>Literal</code> и <code>Protocol</code> в typing.</li>
+</ul>
+<h3>3.9 — октябрь 2020</h3>
+<ul>
+<li><code>dict | dict</code> (PEP 584), <code>str.removeprefix/removesuffix</code> (PEP 616).</li>
+<li><strong>Дженерики строчными</strong>: <code>list[int]</code> вместо <code>List[int]</code> (PEP 585).</li>
+<li><code>zoneinfo</code> — часовые пояса в stdlib (PEP 615).</li>
+<li>Новый <strong>PEG-парсер</strong> (PEP 617) — снял ограничения старой грамматики и открыл дорогу <code>match</code> и мягким ключевым словам.</li>
+<li>Первая версия годовой каденции (PEP 602).</li>
+</ul>
+<hr>
+<h2>7. Наш диапазон: 3.10–3.13 (2021–2024)</h2>
+<p>Версии, которые реально стоят на машинах курса (правило курса — «3.10+»).</p>
+<h3>3.10 — октябрь 2021</h3>
+<ul>
+<li><strong><code>match</code> / <code>case</code></strong> — структурное сопоставление (PEP 634–636): не switch, а разбор формы данных с привязкой имён.</li>
+<li><code>int | str</code> в аннотациях (PEP 604).</li>
+<li><strong>Человеческие сообщения об ошибках</strong> — начало большой кампании: точное место, подсказки «did you mean». Для обучения детей это подарок — мы прямо строим на этом такт про чтение ошибок.</li>
+<li>Скобочные многострочные <code>with (a() as x, b() as y):</code>.</li>
+</ul>
+<h3>3.11 — октябрь 2022</h3>
+<ul>
+<li><strong>Скорость: в среднем +25%</strong> — первый плод проекта Faster CPython (специализирующий адаптивный интерпретатор, PEP 659).</li>
+<li><strong>Группы исключений</strong> и <code>except*</code> (PEP 654), <code>add_note()</code>.</li>
+<li>Точная подсветка места ошибки в трейсбеке (<code>~~~^~~~</code>, PEP 657) — вторая часть подарка для обучения.</li>
+<li><code>tomllib</code>, <code>Self</code> в typing, <code>asyncio.TaskGroup</code>.</li>
+</ul>
+<h3>3.12 — октябрь 2023</h3>
+<ul>
+<li><strong>Новый синтаксис дженериков</strong>: <code>def f<a href="x: T">T</a> -&gt; T</code>, <code>class C[T]:</code>, <code>type Alias = …</code> (PEP 695) — типизация без импортов из typing.</li>
+<li>f-строки формально в грамматике (PEP 701): любые кавычки внутри, многострочность — ограничения сняты.</li>
+<li>Пер-интерпретаторный GIL на C-уровне (PEP 684) — тихий фундамент free-threading-сюжета.</li>
+<li>Выпилен <code>distutils</code> (PEP 632); <code>pathlib.Path.walk()</code>.</li>
+</ul>
+<h3>3.13 — октябрь 2024</h3>
+<ul>
+<li><strong>Новый REPL</strong>: цвет, многострочное редактирование, F2-история — интерактив, который видят дети при <code>python3</code>, стал человеческим.</li>
+<li><strong>Free-threaded сборка (без GIL)</strong> — экспериментально (PEP 703), отдельным бинарём <code>python3.13t</code>.</li>
+<li><strong>JIT</strong> — экспериментальный copy-and-patch (PEP 744), по умолчанию выключен.</li>
+<li>«Мёртвые батарейки» удалены: 19 старых модулей (<code>cgi</code>, <code>telnetlib</code>…) покинули stdlib (финал PEP 594).</li>
+<li>iOS и Android — официально поддерживаемые платформы (PEP 730/738).</li>
+</ul>
+<hr>
+<h2>8. Текущий стабильный: 3.14 — 7 октября 2025</h2>
+<p>Число версии совпало с π — команда шутила про это весь цикл.</p>
+<ul>
+<li><strong>t-строки</strong> (PEP 750): <code>t"…"</code> — шаблонные литералы, которые вместо готовой строки дают структуру «текст + значения». База для безопасных SQL/HTML-шаблонов без инъекций.</li>
+<li><strong>Аннотации стали ленивыми по умолчанию</strong> (PEP 649/749) — двадцатилетний сюжет закрыт: аннотации больше не вычисляются при определении функции, <code>from __future__ import annotations</code> уходит в историю.</li>
+<li><strong>Free-threading — официально поддерживаемая опция</strong> (фаза II по PEP 779): уже не эксперимент, хоть и не сборка по умолчанию.</li>
+<li><strong>Субинтерпретаторы из Python</strong> — модуль <code>concurrent.interpreters</code> (PEP 734): изоляция как у процессов, цена как у потоков.</li>
+<li>Отладчик подключается к живому процессу: <code>python -m pdb -p PID</code> (PEP 768).</li>
+<li>Подсветка синтаксиса прямо в REPL; <code>compression.zstd</code> (PEP 784); UUID v6–v8; дальнейший прирост скорости (хвостовые вызовы в диспетчеризации интерпретатора на поддерживающих компиляторах).</li>
+</ul>
+<hr>
+<h2>9. Что заявлено в 3.15 (октябрь 2026)</h2>
+<p>Релиз ожидается в следующем месяце; сейчас в стадии RC. Из принятого:</p>
+<ul>
+<li><strong>UTF-8 по умолчанию</strong> (PEP 686): файлы открываются в UTF-8 на любой платформе — конец эпохи «на Windows прочиталось в cp1251».</li>
+<li>Продолжение free-threading (производительность однопоточного кода в свободнопоточной сборке) и JIT-раскачка.</li>
+<li>Точный состав фич фиксируется к RC — таблицу стоит обновить после релиза.</li>
+</ul>
+<hr>
+<h2>10. Сквозные сюжеты</h2>
+<h3>Скорость: Faster CPython → JIT</h3>
+<p>Десятилетиями CPython был «медленным, и ладно» — скорость разработчика важнее скорости программы. С 3.11 позиция изменилась: специализирующий интерпретатор (+25%), с 3.13 — экспериментальный JIT, в 3.14+ — его постепенное включение в строй. Итог для нас: <strong>школьные задачи летают на любой версии</strong>, но аргумент «Python медленный» устаревает на глазах.</p>
+<h3>GIL и free-threading</h3>
+<p>GIL — глобальная блокировка, из-за которой потоки CPython не исполняют байткод параллельно. Сага о его удалении шла с 1990-х (Gilectomy и др.) и завершается на наших глазах: PEP 703 (принят 2023) → экспериментальная сборка в 3.13 → официальная поддержка в 3.14 → цель — стать умолчанием (фаза III, срок не назначен). Для курса: рассказывая про потоки, честно говорим «правило меняется прямо сейчас».</p>
+<h3>Типизация</h3>
+<p>1991: типов в сигнатурах нет вовсе → 3.0: аннотации без смысла → 3.5: <code>typing</code> → 3.9: <code>list[int]</code> → 3.10: <code>X | Y</code> → 3.12: <code>def f<a href="…">T</a></code> → 3.14: ленивые аннотации. Питон остался динамическим — типы это инструменты проверки (mypy, pyright), а не рантайм. Наш курс держит типизацию за кадром до продвинутых модулей.</p>
+<h3>Упаковка и инструменты — кратко</h3>
+<p><code>distutils</code> (2000) → <code>setuptools</code>+<code>easy_install</code> → <strong><code>pip</code></strong> (2008, в комплекте с 3.4) → колёса <code>wheel</code> (PEP 427) → <code>pyproject.toml</code> (PEP 517/518) → <code>venv</code> в языке → современная волна на Rust: <code>uv</code>, <code>ruff</code> (2023+) — порядок наводится, но истории «десяти способов поставить пакет» хватит на отдельный документ.</p>
+<h3>Реализации, кроме CPython</h3>
+<div class="tbl"><table><thead><tr><th>Реализация</th><th>Зачем</th></tr></thead><tbody><tr><td><strong>PyPy</strong></td><td>JIT-реализация, в разы быстрее на долгих вычислениях</td></tr><tr><td><strong>MicroPython</strong></td><td>Микроконтроллеры (та же ESP32 на столе у радиолюбителя)</td></tr><tr><td><strong>Pyodide</strong></td><td>CPython в браузере через WebAssembly — наш кандидат для тренажёра, если появится группа без «своих» машин</td></tr><tr><td>Jython / IronPython</td><td>JVM / .NET, застряли на старых версиях</td></tr><tr><td>RustPython</td><td>Реализация на Rust, скорее исследовательская</td></tr></tbody></table></div>
+<hr>
+<h2>11. Власть: от BDFL к Steering Council</h2>
+<p>До 2018 Гвидо был <strong>BDFL</strong> — «великодушным пожизненным диктатором». В июле 2018, устав от токсичности споров вокруг моржа (PEP 572), он сложил полномочия одним письмом: «Now that PEP 572 is done, I don't ever want to have to fight so hard for a PEP…».</p>
+<p>Сообщество выбрало модель управления голосованием (PEP 8016 → PEP 13): <strong>Steering Council</strong> из пяти человек, переизбираемый на каждый релизный цикл. Гвидо входил в первый состав, сейчас — на пенсии (после паузы в Microsoft, где толкал Faster CPython). Модель работает: моржа пережили, free-threading принят без гражданской войны.</p>
+<hr>
+<h2>12. Таблица версий и сроков жизни</h2>
+<div class="tbl"><table><thead><tr><th>Версия</th><th>Релиз</th><th>Конец поддержки</th><th>Статус на сентябрь 2026</th></tr></thead><tbody><tr><td>2.7</td><td>07.2010</td><td>01.01.2020</td><td>мёртв (но встречается в дикой природе)</td></tr><tr><td>3.8</td><td>10.2019</td><td>10.2024</td><td>мёртв</td></tr><tr><td>3.9</td><td>10.2020</td><td>10.2025</td><td>мёртв</td></tr><tr><td>3.10</td><td>10.2021</td><td><strong>10.2026</strong></td><td>доживает последние недели security-поддержки</td></tr><tr><td>3.11</td><td>10.2022</td><td>10.2027</td><td>security</td></tr><tr><td>3.12</td><td>10.2023</td><td>10.2028</td><td>security</td></tr><tr><td>3.13</td><td>10.2024</td><td>10.2029</td><td>bugfix</td></tr><tr><td><strong>3.14</strong></td><td><strong>10.2025</strong></td><td>10.2030</td><td><strong>текущий стабильный</strong></td></tr><tr><td>3.15</td><td>~10.2026</td><td>10.2031</td><td>release candidate</td></tr></tbody></table></div>
+<hr>
+<h2>13. Что из этого видит наш курс</h2>
+<ul>
+<li><strong>Правило курса — «3.10 или новее»</strong>: нам нужны человеческие сообщения об ошибках (3.10/3.11) — на них построен такт про чтение трейсбека. Всё остальное в программе работает и на 3.10, и на 3.14.</li>
+<li>На маках курса ставится <strong>свежий стабильный</strong> (сейчас 3.14) — заранее, до занятия, по <code>provisioning/</code>.</li>
+<li>Тексты ошибок отличаются между версиями (например, у старых версий <code>EOL while scanning string literal</code> вместо <code>unterminated string literal</code>) — в материалах это оговорено.</li>
+<li><code>match</code>, моржа, типизацию и асинхронность курс сознательно держит за горизонтом первых модулей: сначала переменные, ветвления и циклы — ровно та часть языка, что не менялась с девяностых. Это, кстати, главный вывод всей хронологии: <strong>ядро, которое учит ребёнок, стабильно тридцать лет</strong> — меняется обвязка вокруг.</li>
+</ul>
+<footer>Junior_IT · материал уровня reading · md-версия рядом в репозитории</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>История Pascal: от Вирта до PascalABC.NET</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a14'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='14' fill='%23ff5722'%3E%26gt;_%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Токены — копия meta/brand-tokens.css (источник истины там) */
+  :root { --bg:#0a0a14; --card:#1a1a2e; --card-2:#16213e; --deep:#0f3460;
+    --yellow:#ffd60a; --green:#00e676; --cyan:#00ffc8; --magenta:#ff0096;
+    --bg-light:#faf7f2; --track:#ff5722; --track-ink:#b3350f; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#dfe3f5;
+    font-family:Manrope,system-ui,sans-serif; line-height:1.65; font-size:16.5px; }
+  .wrap { max-width:46rem; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+  .chip { font-family:"JetBrains Mono",monospace; font-weight:700; font-size:.72rem;
+    letter-spacing:.1em; color:var(--bg); background:var(--track);
+    padding:.2rem .55rem; border-radius:.3rem; }
+  h1 { font-family:Rubik,system-ui,sans-serif; font-size:clamp(26px,4.5vw,38px);
+    line-height:1.2; color:var(--track); margin:.6rem 0 0; }
+  h2 { font-family:Rubik,system-ui,sans-serif; font-size:clamp(20px,3vw,26px);
+    color:#fff; margin:2.4rem 0 .6rem; padding-top:1.2rem;
+    border-top:1px solid var(--card-2); }
+  h3 { font-family:Rubik,system-ui,sans-serif; font-size:1.05rem;
+    color:var(--track); margin:1.6rem 0 .4rem; }
+  p { margin:.7rem 0; }
+  a { color:var(--track); }
+  blockquote { margin:1rem 0; padding:.8rem 1.1rem; background:var(--card);
+    border-left:4px solid var(--track); border-radius:.5rem; color:#aeb4cc; }
+  code { font-family:"JetBrains Mono",monospace; font-size:.86em;
+    background:var(--card); padding:.1em .35em; border-radius:.3em; color:var(--yellow); }
+  ul { padding-left:1.3rem; margin:.6rem 0; }
+  li { margin:.3rem 0; }
+  hr { border:0; height:1px; background:var(--card-2); margin:2rem 0; }
+  .tbl { overflow-x:auto; margin:1rem 0; border-radius:.6rem; }
+  table { border-collapse:collapse; width:100%; font-size:.92rem; }
+  th { text-align:left; background:var(--card-2); color:var(--track);
+    font-family:"JetBrains Mono",monospace; font-size:.78rem; letter-spacing:.05em; }
+  th, td { padding:.5rem .7rem; border-bottom:1px solid var(--card-2); vertical-align:top; }
+  tr:nth-child(even) td { background:rgba(22,33,62,.35); }
+  strong { color:#fff; }
+  footer { margin-top:3rem; color:#6b7190; font-size:.85rem; }
+  @media print {
+    body { background:var(--bg-light); color:#1a1a1a; }
+    h1,h3 { color:var(--track-ink); } h2 { color:#1a1a1a; border-top-color:#ddd; }
+    .chip { background:var(--track-ink); color:#fff; }
+    blockquote { background:#fff; border-left-color:var(--track-ink); color:#444; }
+    code { background:#f0ede8; color:#1a1a1a; }
+    th { background:#eee; color:var(--track-ink); } a { color:var(--track-ink); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<span class="chip">PAS</span>
+<h1>История Pascal: от Вирта до PascalABC.NET</h1>
+<blockquote>
+Хронология языка, на котором написана половина учебников информатики:<br>
+Цюрих 1970 → ISO-стандарты → Turbo Pascal → Delphi → Free Pascal →<br>
+PascalABC.NET из главы 4 нашего учебника.<br>
+Справочник для разработчика. Актуально на <strong>12 сентября 2026</strong>.<br>
+</blockquote>
+<hr>
+<h2>0. Зачем этот документ курсу</h2>
+<p>В учебнике 8 класса главы 4 и 5 зеркальны: одна и та же программа на Паскале и на Python. Наш трек <code>pascal</code> — не отдельный курс, а «второй диалект»: показать, что алгоритм важнее синтаксиса. Для этого полезно понимать, <strong>какой именно Паскаль</strong> лежит в учебнике и как он соотносится с историческим языком.</p>
+<hr>
+<h2>1. Никлаус Вирт и рождение языка (1968–1974)</h2>
+<p><strong>Никлаус Вирт</strong> (ETH Zürich) проектировал Pascal в 1968–1969 как реакцию на комитетную распухшую разработку ALGOL 68: язык должен быть маленьким, строгим и <strong>пригодным для обучения структурному программированию</strong>. Название — в честь Блеза Паскаля.</p>
+<ul>
+<li><strong>1970</strong> — первый компилятор на CDC 6000.</li>
+<li><strong>1973</strong> — Revised Report; <strong>1974</strong> — книга Jensen &amp; Wirth «Pascal User Manual and Report», де-факто стандарт на десятилетие.</li>
+<li>Идеи, которые Pascal сделал мейнстримом: строгая типизация, <code>record</code>, множества <code>set of</code>, диапазоны <code>1..10</code>, вложенные процедуры, <code>begin…end</code> как операторные скобки.</li>
+</ul>
+<p>Вирт получил премию Тьюринга (1984) — формулировка прямо упоминает Pascal. Умер 1 января 2024 года, в 89 лет; некрологи писал весь мир системного программирования.</p>
+<p>Знаменитая шутка эпохи: европейцы зовут его «Никлаус Вирт» (по имени), американцы — «call by value» (по значению… фамилии: worth).</p>
+<h3>P-код и переносимость</h3>
+<p>Компилятор <strong>Pascal-P</strong> (1973–1976) генерировал байткод для виртуальной «P-машины» — язык стало возможно перенести на любую платформу, написав только интерпретатор. Эта идея — прямой предок JVM и питоновского байткода, и именно она разнесла Pascal по миру.</p>
+<hr>
+<h2>2. UCSD Pascal и Apple (1977–1985)</h2>
+<p>Университет Сан-Диего собрал на p-коде целую ОС — <strong>UCSD p-System</strong>. На ней Pascal пришёл на микрокомпьютеры, включая <strong>Apple II</strong> (Apple Pascal, 1979). У Apple роман с языком продолжился: системное ПО Lisa писалось на Pascal, ранний Macintosh Toolbox документировался в паскалевских сигнатурах, а в 1985–86 Apple вместе с Виртом сделала <strong>Object Pascal</strong> — первое объектное расширение языка.</p>
+<hr>
+<h2>3. Стандарты ISO (1983–1990) — и почему их все игнорировали</h2>
+<div class="tbl"><table><thead><tr><th>Стандарт</th><th>Год</th><th>Что фиксирует</th></tr></thead><tbody><tr><td><strong>ISO 7185</strong> (Standard Pascal)</td><td>1983, ревизия 1990</td><td>Язык Jensen &amp; Wirth, причёсанный; level 1 добавляет conformant arrays</td></tr><tr><td><strong>ISO 10206</strong> (Extended Pascal)</td><td>1990</td><td>Модули, строки переменной длины, комплексные числа, инициализация</td></tr></tbody></table></div>
+<p>Парадокс Pascal: стандарты вышли <strong>позже</strong>, чем индустрия ушла в диалекты. Standard Pascal не имел ни нормальных строк, ни раздельной компиляции — писать на нём серьёзный софт было нельзя, и все реальные Паскали (UCSD, Turbo, Delphi) стандарту <strong>не</strong> соответствуют. Знаменитая критика Кернигана «Why Pascal is Not My Favorite Programming Language» (1981) — ровно про этот академический Pascal, а не про то, чем язык стал позже.</p>
+<hr>
+<h2>4. Turbo Pascal: язык народа (1983–1995)</h2>
+<p><strong>Ноябрь 1983</strong>: Borland выпускает <strong>Turbo Pascal 1.0</strong> — компилятор Андерса Хейлсберга за <strong>$49.95</strong> (конкуренты стоили сотни), который компилировал мгновенно и целиком жил в памяти вместе с редактором. Это была первая массовая <strong>IDE</strong>: правка → компиляция → запуск без выхода из программы, на машине с 64 КБ.</p>
+<div class="tbl"><table><thead><tr><th>Версия</th><th>Год</th><th>Главное</th></tr></thead><tbody><tr><td>1.0–3.0</td><td>1983–86</td><td>Скорость, цена, IDE; язык — примерно UCSD-диалект</td></tr><tr><td><strong>4.0</strong></td><td>1987</td><td><strong>Юниты</strong> (<code>unit</code>/<code>uses</code>) — раздельная компиляция, вместо стандарта ISO</td></tr><tr><td>5.5</td><td>1989</td><td><strong>ООП</strong>: <code>object</code>, наследование, виртуальные методы</td></tr><tr><td>6.0</td><td>1990</td><td>Turbo Vision — оконный текстовый UI</td></tr><tr><td>7.0 / Borland Pascal</td><td>1992</td><td>Пик классики; тот самый синий экран, который до сих пор стоит в некоторых школах</td></tr></tbody></table></div>
+<p>Turbo Pascal — язык, на котором выучилось поколение программистов девяностых на постсоветском пространстве. Его диалект («паскаль с units, strings и OOP») и есть «народный Паскаль», от которого произошло всё живое сегодня.</p>
+<hr>
+<h2>5. Delphi: Object Pascal во взрослой лиге (1995–наши дни)</h2>
+<p><strong>Delphi 1</strong> (Borland, февраль 1995) — тот же Хейлсберг: язык дорос до полноценного Object Pascal (классы, свойства <code>property</code>, события, исключения <code>try…except</code>), а вокруг — визуальный конструктор форм и VCL. Для Windows-разработки середины девяностых это был удар уровня «Visual Basic, но со скоростью C».</p>
+<p>Дальше — Delphi 2…7 (расцвет), уход Хейлсберга в Microsoft (1996, где он сделал C# — «Delphi с точки зрения Java»), Kylix (провалившийся Linux), смена владельцев Borland → CodeGear → <strong>Embarcadero</strong> (2008). Delphi жив и сегодня (RAD Studio, ежегодные версии, мобильные платформы), занимая устойчивую нишу legacy и десктопа.</p>
+<p>Язык с 2000-х официально называется <strong>Delphi language</strong>; «Object Pascal» осталось общим зонтичным именем семейства.</p>
+<hr>
+<h2>6. Free Pascal и Lazarus: свободная ветка (1993–наши дни)</h2>
+<p><strong>Free Pascal (FPC)</strong> начат в 1993 студентом Флорианом Клемпфлем, когда Borland объявила, что Turbo Pascal развиваться не будет. Сегодня это главный живой компилятор семейства:</p>
+<ul>
+<li>режимы совместимости: TP7, Delphi, ObjFPC, ISO;</li>
+<li>десятки платформ — от Windows/Linux/macOS до AVR и WebAssembly;</li>
+<li><strong>Lazarus</strong> — свободный клон Delphi-IDE поверх FPC («write once, compile anywhere»);</li>
+<li>текущая стабильная линия — 3.2.x; ветка 3.3/4.0 в разработке годами (проект живёт в своём темпе, без годовой каденции).</li>
+</ul>
+<p>Именно FPC — честный ответ на вопрос «на чём сегодня компилировать классический Pascal».</p>
+<hr>
+<h2>7. PascalABC.NET: Паскаль нашего учебника (2002–наши дни)</h2>
+<p>Российская ветка, выросшая в ЮФУ (Ростов-на-Дону, команда С. С. Михалковича) из учебной системы Pascal ABC (2002). С 2007 — <strong>PascalABC.NET</strong>: полная реимплементация поверх .NET.</p>
+<p>Почему он в школьных учебниках (включая наш, Босова 8 класс, глава 4 и приложения 1–2):</p>
+<ul>
+<li>бесплатный, лёгкий, русскоязычная среда и сообщения об ошибках;</li>
+<li>диалект Delphi-семейства, <strong>осовремененный</strong>: <code>foreach</code>, кортежи, срезы, лямбды, <code>+=</code>, вывод типов <code>var x := 1</code>, автосборка мусора — дети пишут короче, чем в TP7;</li>
+<li>встроенные учебные модули — в учебнике используются <code>GraphABC</code> (приложение 2) и школьный исполнитель-черепаха.</li>
+</ul>
+<p>Важно понимать различие: <strong>PascalABC.NET — не «настоящий исторический Pascal»</strong>, а учебный диалект на виртуальной машине .NET. Это осознанный размен: меньше церемоний — быстрее к алгоритмам. Ровно тот же размен, который делает наш курс, выбирая Python.</p>
+<p>Проект жив: версии 3.x выходят регулярно, есть веб-среда без установки — удобный запасной вариант для занятия.</p>
+<hr>
+<h2>8. Хронология одной таблицей</h2>
+<div class="tbl"><table><thead><tr><th>Год</th><th>Событие</th></tr></thead><tbody><tr><td>1970</td><td>Первый компилятор Pascal, ETH Zürich</td></tr><tr><td>1974</td><td>Jensen &amp; Wirth — де-факто стандарт</td></tr><tr><td>1977</td><td>UCSD p-System; Pascal на микрокомпьютерах</td></tr><tr><td>1983</td><td>ISO 7185; <strong>Turbo Pascal 1.0</strong></td></tr><tr><td>1985</td><td>Object Pascal у Apple (с участием Вирта)</td></tr><tr><td>1987</td><td>TP 4.0 — юниты</td></tr><tr><td>1990</td><td>ISO 10206 Extended Pascal (опоздавший)</td></tr><tr><td>1992</td><td>Borland Pascal 7 — пик классики</td></tr><tr><td>1993</td><td>Начат Free Pascal</td></tr><tr><td>1995</td><td><strong>Delphi 1</strong></td></tr><tr><td>2002</td><td>Pascal ABC (Ростов, учебный)</td></tr><tr><td>2007</td><td>PascalABC.NET</td></tr><tr><td>2024</td><td>Смерть Никлауса Вирта (01.01)</td></tr><tr><td>2026</td><td>FPC 3.2.x, Delphi/RAD Studio и PascalABC.NET — три живые ветки</td></tr></tbody></table></div>
+<hr>
+<h2>9. Что из этого видит наш курс</h2>
+<ul>
+<li><strong>Наш «Паскаль» = PascalABC.NET</strong>, потому что он в учебнике: тесты главы 4 сдаются на нём, приложение 1 учебника описывает его отладчик.</li>
+<li>Курс использует Паскаль как <strong>второй диалект</strong>: та же задача, что на Python, другой синтаксис. Цель — показать, что <code>если/иначе</code> и циклы живут поверх любого синтаксиса, а не выучить второй язык.</li>
+<li>Полезная параллель для занятия: Python и Pascal — родственники по духу («язык для людей, читаемость важнее»), и оба родились как учебные. Разница судьбы: Pascal остался в образовании и нишах, Python стал индустрией. Почему так вышло — хороший вопрос ученикам после пары модулей обоих диалектов.</li>
+<li>Errata учебника уже фиксирует: модуль <code>Graph</code> из приложения 3 -- это PascalABC-шный мостик, которого нет в настоящем Python; обратное тоже верно — не всё из PascalABC.NET есть в FPC/Delphi. Диалекты.</li>
+</ul>
+<footer>Junior_IT · материал уровня reading · md-версия рядом в репозитории</footer>
+</div>
+</body>
+</html>
