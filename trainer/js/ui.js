@@ -58,7 +58,17 @@ function renderAttempts() {
 }
 
 async function init() {
-  app.bank = await loadBank();
+  const trainingBtn = document.getElementById('btn-training');
+  const examBtn = document.getElementById('btn-exam');
+  trainingBtn.disabled = true;
+  examBtn.disabled = true;
+  try {
+    app.bank = await loadBank();
+  } catch {
+    document.getElementById('bank-title').textContent =
+      'Не удалось загрузить банк вопросов — обнови страницу';
+    return;
+  }
   document.getElementById('bank-title').textContent =
     `7 класс · глава ${app.bank.meta.chapter}. ${app.bank.meta.title}`;
   const nameInput = document.getElementById('student-name');
@@ -68,11 +78,158 @@ async function init() {
   });
   renderScope(app.bank.parts);
   renderAttempts();
-  document.getElementById('btn-training').addEventListener('click', () => startTraining());
-  document.getElementById('btn-exam').addEventListener('click', () => startExam());
+  trainingBtn.addEventListener('click', () => startTraining());
+  examBtn.addEventListener('click', () => startExam());
+  trainingBtn.disabled = false;
+  examBtn.disabled = false;
 }
 
-function startTraining() { /* Task 7 */ }
+function renderQuestion(question) {
+  document.querySelector('#screen-question .card').classList.remove('right', 'wrong');
+  document.getElementById('q-source').textContent =
+    question.source === 'junior_it' ? 'Junior_IT' : question.source;
+  document.getElementById('q-text').textContent = question.q;
+  const body = document.getElementById('q-body');
+  body.innerHTML = '';
+  body.dataset.type = question.type;
+
+  if (question.type === 'single' || question.type === 'multi' || question.type === 'find-error') {
+    const inputType = question.type === 'multi' ? 'checkbox' : 'radio';
+    question.options.forEach((text, i) => {
+      const label = document.createElement('label');
+      label.className = question.type === 'find-error' ? 'option code' : 'option';
+      const input = Object.assign(document.createElement('input'),
+        { type: inputType, name: 'opt', value: String(i) });
+      label.append(input, ` ${text}`);
+      body.append(label);
+    });
+  } else if (question.type === 'number' || question.type === 'text') {
+    const input = Object.assign(document.createElement('input'), {
+      type: 'text', id: 'free-answer', autocomplete: 'off',
+      inputMode: question.type === 'number' ? 'numeric' : 'text',
+    });
+    body.append(input);
+    input.focus();
+  } else if (question.type === 'match') {
+    question.options.left.forEach((leftText, i) => {
+      const row = document.createElement('label');
+      row.className = 'match-row';
+      const select = document.createElement('select');
+      select.dataset.row = String(i);
+      select.append(new Option('—', ''));
+      question.options.right.forEach((rightText, j) =>
+        select.append(new Option(rightText, String(j))));
+      row.append(`${leftText} `, select);
+      body.append(row);
+    });
+  } else if (question.type === 'order') {
+    const list = document.createElement('ol');
+    list.id = 'order-list';
+    shuffle(question.options.map((text, i) => ({ text, i })), Math.random)
+      .forEach(({ text, i }) => {
+        const item = document.createElement('li');
+        item.dataset.index = String(i);
+        const up = Object.assign(document.createElement('button'), { textContent: '↑', type: 'button' });
+        const down = Object.assign(document.createElement('button'), { textContent: '↓', type: 'button' });
+        up.addEventListener('click', () => item.previousElementSibling && list.insertBefore(item, item.previousElementSibling));
+        down.addEventListener('click', () => item.nextElementSibling && list.insertBefore(item.nextElementSibling, item));
+        item.append(Object.assign(document.createElement('span'), { textContent: text }), up, down);
+        list.append(item);
+      });
+    body.append(list);
+  }
+}
+
+function readAnswer(question) {
+  const body = document.getElementById('q-body');
+  switch (question.type) {
+    case 'single':
+    case 'find-error': {
+      const checked = body.querySelector('input[name="opt"]:checked');
+      return checked ? Number(checked.value) : null;
+    }
+    case 'multi': {
+      const checked = [...body.querySelectorAll('input[name="opt"]:checked')];
+      return checked.length ? checked.map((c) => Number(c.value)) : null;
+    }
+    case 'number':
+    case 'text': {
+      const value = document.getElementById('free-answer').value.trim();
+      return value ? value : null;
+    }
+    case 'match': {
+      const values = [...body.querySelectorAll('select')].map((s) => s.value);
+      return values.every((v) => v !== '') ? values.map(Number) : null;
+    }
+    case 'order':
+      return [...body.querySelectorAll('#order-list li')].map((li) => Number(li.dataset.index));
+    default:
+      return null;
+  }
+}
+
+function trainingPool() {
+  const parts = app.scope === 'all'
+    ? app.bank.parts
+    : app.bank.parts.filter((p) => p.paragraph === app.scope);
+  return shuffle(
+    parts.flatMap((p) => p.questions.map((q) => ({ ...q, paragraph: p.paragraph }))),
+    Math.random,
+  );
+}
+
+function startTraining() {
+  app.mode = 'training';
+  app.ticket = trainingPool();
+  app.queue = app.ticket.map((_, i) => i);
+  showScreen('screen-question');
+  showTrainingQuestion();
+}
+
+function showTrainingQuestion() {
+  if (!app.queue.length) {
+    showScreen('screen-start');
+    renderAttempts();
+    return;
+  }
+  const question = app.ticket[app.queue[0]];
+  document.getElementById('progress-label').textContent = `Осталось: ${app.queue.length}`;
+  document.getElementById('progress-fill').style.width =
+    `${Math.round((1 - app.queue.length / app.ticket.length) * 100)}%`;
+  renderQuestion(question);
+  const why = document.getElementById('q-why');
+  why.hidden = true;
+  toggleButtons({ answer: true, next: false });
+  document.getElementById('btn-answer').onclick = () => {
+    const answer = readAnswer(question);
+    if (answer === null) return; // ответа нет — кнопка молчит
+    const ok = checkAnswer(question, answer);
+    markAnswer(ok);
+    why.textContent = question.why;
+    why.hidden = false;
+    document.getElementById('q-body').querySelectorAll('input,select,button')
+      .forEach((el) => { el.disabled = true; });
+    if (ok) {
+      app.queue.shift();
+    } else {
+      app.queue.push(app.queue.shift()); // неверный — в конец очереди
+    }
+    toggleButtons({ answer: false, next: true });
+    document.getElementById('btn-next').onclick = () => showTrainingQuestion();
+  };
+}
+
+function toggleButtons({ answer, next }) {
+  document.getElementById('btn-answer').hidden = !answer;
+  document.getElementById('btn-next').hidden = !next;
+}
+
+function markAnswer(ok) {
+  const card = document.querySelector('#screen-question .card');
+  card.classList.remove('right', 'wrong');
+  card.classList.add(ok ? 'right' : 'wrong');
+}
+
 function startExam() { /* Task 7–8 */ }
 
 init();
