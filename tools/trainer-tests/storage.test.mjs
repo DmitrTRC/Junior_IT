@@ -30,3 +30,19 @@ test('saveName и addAttempt: пишут и читаются обратно', ()
   assert.equal(reloaded.name, 'Имя');
   assert.deepEqual(reloaded.attempts, [attempt]);
 });
+
+test('saveName и addAttempt: не бросают, если setItem бросает (Safari private mode, квота)', () => {
+  const s = {
+    getItem: () => null,
+    setItem: () => { throw new Error('QuotaExceededError'); },
+  };
+  let state = loadState(s);
+  assert.doesNotThrow(() => { state = saveName(state, 'Имя', s); });
+  assert.equal(state.name, 'Имя');
+  const attempt = {
+    date: '2026-09-30', chapter: '07-1', size: 15, correct: 13,
+    byParagraph: { '1.1': [3, 3] }, passed: true,
+  };
+  assert.doesNotThrow(() => { state = addAttempt(state, attempt, s); });
+  assert.deepEqual(state.attempts, [attempt]);
+});

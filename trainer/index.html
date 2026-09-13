@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тренажёр · Junior_IT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="trainer.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="home" href="../">Junior_IT</a>
+    <span class="chip">BOOK</span>
+  </header>
+
+  <main>
+    <section id="screen-start" class="screen active">
+      <h1>Тренажёр</h1>
+      <p class="bank-title" id="bank-title"></p>
+      <label class="name-row">Как тебя зовут?
+        <input id="student-name" type="text" maxlength="30" autocomplete="off">
+      </label>
+      <fieldset class="scope" id="scope-box">
+        <legend>Что тренируем</legend>
+        <!-- радио «вся глава» + по одному на параграф, генерирует ui.js -->
+      </fieldset>
+      <div class="mode-buttons">
+        <button id="btn-training" class="big">Тренировка</button>
+        <button id="btn-exam" class="big accent">Зачёт</button>
+      </div>
+      <p class="hint">Зачёт — всегда по всей главе: билет из 15 вопросов,
+        по три с каждого параграфа. Сдано — от 12 верных.</p>
+      <div id="attempts" class="attempts"></div>
+    </section>
+
+    <section id="screen-question" class="screen">
+      <div class="progress"><span id="progress-label"></span>
+        <div class="progress-track"><div id="progress-fill"></div></div>
+      </div>
+      <article class="card">
+        <p class="source" id="q-source"></p>
+        <h2 id="q-text"></h2>
+        <div id="q-body"></div>
+        <div id="q-why" class="why" hidden></div>
+        <button id="btn-answer" class="big accent">Ответить</button>
+        <button id="btn-next" class="big" hidden>Дальше</button>
+      </article>
+    </section>
+
+    <section id="screen-result" class="screen">
+      <h1 id="result-verdict"></h1>
+      <p class="score-line" id="result-score"></p>
+      <ul id="result-breakdown"></ul>
+      <button id="btn-copy" class="big accent">Скопировать результат</button>
+      <button id="btn-again" class="big">Ещё раз</button>
+      <p class="hint">Скопированную строку отправь в MAX.</p>
+    </section>
+  </main>
+
+  <footer><p>Junior_IT · тренажёр по учебнику</p></footer>
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>

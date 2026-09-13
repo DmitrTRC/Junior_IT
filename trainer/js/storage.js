@@ -17,7 +17,11 @@ export function loadState(storage = window.localStorage) {
 }
 
 function persist(state, storage) {
-  storage.setItem(KEY, JSON.stringify(state));
+  try {
+    storage.setItem(KEY, JSON.stringify(state));
+  } catch {
+    // приватный режим Safari, переполненная квота — не повод терять состояние в памяти
+  }
   return state;
 }
 

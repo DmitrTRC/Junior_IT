@@ -1,0 +1,337 @@
+/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0 20px 40px;
+  background: var(--bg);
+  color: #e8eaf2;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+}
+
+h1, h2 {
+  font-family: 'Rubik', system-ui, sans-serif;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.bar {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.bar .home {
+  color: var(--track-book);
+  text-decoration: none;
+  font-weight: 700;
+  font-family: 'Rubik', system-ui, sans-serif;
+}
+
+.bar .home:hover {
+  text-decoration: underline;
+}
+
+.chip {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--track-book);
+  background: var(--card-2);
+  border: 1px solid var(--track-book);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+.bank-title {
+  color: #aeb4c9;
+  margin: 0 0 24px;
+}
+
+.name-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.name-row input {
+  background: var(--card);
+  border: 1px solid var(--card-2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: inherit;
+  font: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.name-row input:focus {
+  outline: none;
+  border-color: var(--track-book);
+}
+
+.scope {
+  background: var(--card);
+  border: 1px solid var(--card-2);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin: 0 0 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.scope legend {
+  font-weight: 700;
+  padding: 0 6px;
+  color: #aeb4c9;
+}
+
+.scope label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.scope label:hover {
+  background: var(--card-2);
+}
+
+.mode-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.big {
+  min-height: 56px;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  background: var(--card-2);
+  color: #e8eaf2;
+  font: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.big:hover {
+  background: var(--deep);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.big:active {
+  transform: translateY(1px);
+}
+
+.big.accent {
+  background: var(--track-book);
+  color: #0a0a14;
+}
+
+.big.accent:hover {
+  background: #91b0ff;
+}
+
+.hint {
+  color: #8890a8;
+  font-size: 14px;
+}
+
+.attempts h3 {
+  font-family: 'Rubik', system-ui, sans-serif;
+  margin: 24px 0 10px;
+}
+
+.attempt {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 13px;
+  background: var(--card);
+  border-left: 3px solid var(--card-2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 8px 0;
+}
+
+.attempt.ok {
+  border-left-color: var(--green);
+}
+
+/* Экран вопроса */
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+#progress-label {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 13px;
+  color: #aeb4c9;
+}
+
+.progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--card-2);
+  overflow: hidden;
+}
+
+#progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--track-book);
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.source {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 12px;
+  color: #8890a8;
+  margin: 0 0 8px;
+}
+
+#q-body label {
+  display: block;
+  padding: 14px 16px;
+  margin: 10px 0;
+  background: var(--card-2);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+#q-body label:hover {
+  background: var(--deep);
+}
+
+#q-body label.selected {
+  border-color: var(--track-book);
+}
+
+#q-body label.correct {
+  border-color: var(--green);
+}
+
+#q-body label.wrong {
+  border-color: var(--orange);
+}
+
+.why {
+  background: var(--card-2);
+  border-left: 4px solid var(--track-book);
+  border-radius: 0 12px 12px 0;
+  padding: 14px 16px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: #ccd1e0;
+}
+
+.card .big {
+  margin-top: 12px;
+}
+
+/* Экран результата */
+
+.score-line {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 15px;
+  color: #ccd1e0;
+}
+
+#result-breakdown {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+#result-breakdown li {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 14px;
+}
+
+footer {
+  max-width: 720px;
+  margin: 40px auto 0;
+  text-align: center;
+  color: #666e88;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .mode-buttons {
+    grid-template-columns: 1fr;
+  }
+}
