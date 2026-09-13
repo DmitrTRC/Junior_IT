@@ -187,6 +187,7 @@ function startTraining() {
 }
 
 function showTrainingQuestion() {
+  document.getElementById('btn-answer').textContent = 'Ответить'; // не протекает текст кнопки из Зачёта
   if (!app.queue.length) {
     showScreen('screen-start');
     renderAttempts();
@@ -265,8 +266,10 @@ function showExamQuestion() {
 
 function finishExam() {
   const result = score(app.ticket, app.answers);
+  const now = new Date();
+  const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   const attempt = {
-    date: new Date().toISOString().slice(0, 10),
+    date, // локальная дата, не UTC — toISOString отставал бы после местной полуночи
     chapter: BANK_ID,
     size: result.total,
     correct: result.correct,
@@ -287,9 +290,20 @@ function finishExam() {
     list.append(item);
   }
   const line = resultLine(attempt, app.state.name);
+  document.getElementById('result-fallback')?.remove();
   document.getElementById('btn-copy').onclick = async () => {
-    await navigator.clipboard.writeText(line);
-    document.getElementById('btn-copy').textContent = 'Скопировано';
+    try {
+      await navigator.clipboard.writeText(line);
+      document.getElementById('btn-copy').textContent = 'Скопировано';
+    } catch {
+      document.getElementById('btn-copy').textContent = 'Не вышло — скопируй руками';
+      document.getElementById('result-fallback')?.remove();
+      const fallback = document.createElement('p');
+      fallback.id = 'result-fallback';
+      fallback.className = 'score-line';
+      fallback.textContent = line;
+      document.getElementById('btn-again').insertAdjacentElement('afterend', fallback);
+    }
   };
   document.getElementById('btn-copy').textContent = 'Скопировать результат';
   document.getElementById('btn-again').onclick = () => {
