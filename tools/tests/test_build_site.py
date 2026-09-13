@@ -27,17 +27,40 @@ def test_landing_page_is_published(tmp_path):
     assert (out / "index.html").is_file()
 
 
+def test_trainer_is_published(tmp_path):
+    out = build(tmp_path)
+    assert (out / "trainer" / "index.html").is_file()
+    assert (out / "trainer" / "trainer.css").is_file()
+    assert (out / "trainer" / "js" / "engine.js").is_file()
+
+
+def test_quizzes_bank_is_published(tmp_path):
+    out = build(tmp_path)
+    assert (out / "textbook" / "quizzes" / "index.json").is_file()
+    assert (out / "textbook" / "quizzes" / "07-1.1.json").is_file()
+
+
+def test_quiz_review_not_published_before_proofread(tmp_path):
+    out = build(tmp_path)
+    assert not (out / "textbook" / "quizzes" / "REVIEW-07-1.md").exists()
+
+
 def test_internal_dirs_never_published(tmp_path):
     out = build(tmp_path)
-    # Все каталоги, исключённые в build_site.sh (кроме _site/, .DS_Store,
-    # __pycache__ — build-гигиена, а не публикуемый контент).
+    # Всё, что не перечислено в белом списке PUBLISH — не публикуется.
     for internal in (
         ".git", ".github", ".claude", ".aos", ".vscode",
-        "teacher", "tools", "meta", "refs", "homework", "playground",
+        "tools", "meta", "refs", "homework", "playground",
         "provisioning", "print", "students", "recordings", "TO_PARENTS",
         "graphify-out", ".superpowers",
     ):
         assert not (out / internal).exists(), f"{internal}/ не должен публиковаться"
+
+
+def test_internal_root_files_never_published(tmp_path):
+    out = build(tmp_path)
+    for internal in ("CLAUDE.md", "pyrightconfig.json"):
+        assert not (out / internal).exists(), f"{internal} не должен публиковаться"
 
 
 def test_nested_excluded_dir_never_published(tmp_path):
