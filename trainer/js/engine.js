@@ -60,7 +60,7 @@ export function score(ticket, answers) {
   let correct = 0;
   ticket.forEach((question, i) => {
     const given = answers[i];
-    const ok = given !== null && given !== undefined && checkAnswer(question, given);
+    const ok = given !== null && given !== undefined && given !== '' && checkAnswer(question, given);
     const bucket = byParagraph[question.paragraph] ?? (byParagraph[question.paragraph] = [0, 0]);
     bucket[1] += 1;
     if (ok) {

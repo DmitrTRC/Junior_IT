@@ -90,6 +90,11 @@ test('score: порог 80 процентов с округлением ввер
   assert.equal(score(ticket, [1, 1, 1, null, 0]).passed, false);
 });
 
+test('score: пустая строка не засчитывается даже для number с answer 0', () => {
+  const zero = { ...q({ type: 'number', options: undefined, answer: 0 }), paragraph: '1.5' };
+  assert.equal(score([zero], ['']).correct, 0);
+});
+
 test('resultLine: формат строки для MAX', () => {
   const attempt = {
     date: '2026-09-30', chapter: '07-1', size: 15, correct: 13,
