@@ -230,6 +230,73 @@ function markAnswer(ok) {
   card.classList.add(ok ? 'right' : 'wrong');
 }
 
-function startExam() { /* Task 7–8 */ }
+function startExam() {
+  app.mode = 'exam';
+  app.ticket = buildTicket(app.bank.parts, Math.random);
+  app.answers = new Array(app.ticket.length).fill(null);
+  app.current = 0;
+  showScreen('screen-question');
+  showExamQuestion();
+}
+
+function showExamQuestion() {
+  const question = app.ticket[app.current];
+  document.getElementById('progress-label').textContent =
+    `Вопрос ${app.current + 1} из ${app.ticket.length}`;
+  document.getElementById('progress-fill').style.width =
+    `${Math.round((app.current / app.ticket.length) * 100)}%`;
+  renderQuestion(question);
+  document.getElementById('q-why').hidden = true; // в зачёте why не показываем
+  toggleButtons({ answer: true, next: false });
+  const btn = document.getElementById('btn-answer');
+  btn.textContent = app.current + 1 === app.ticket.length ? 'Ответить и закончить' : 'Ответить';
+  btn.onclick = () => {
+    const answer = readAnswer(question);
+    if (answer === null) return;
+    app.answers[app.current] = answer;
+    app.current += 1;
+    if (app.current < app.ticket.length) {
+      showExamQuestion();
+    } else {
+      finishExam();
+    }
+  };
+}
+
+function finishExam() {
+  const result = score(app.ticket, app.answers);
+  const attempt = {
+    date: new Date().toISOString().slice(0, 10),
+    chapter: BANK_ID,
+    size: result.total,
+    correct: result.correct,
+    byParagraph: result.byParagraph,
+    passed: result.passed,
+  };
+  app.state = addAttempt(app.state, attempt);
+  document.getElementById('result-verdict').textContent =
+    result.passed ? 'Сдано' : 'Пока нет';
+  document.getElementById('result-score').textContent =
+    `${result.correct} из ${result.total} (${result.percent}%)`;
+  const list = document.getElementById('result-breakdown');
+  list.innerHTML = '';
+  for (const p of Object.keys(result.byParagraph).sort()) {
+    const [ok, total] = result.byParagraph[p];
+    const item = document.createElement('li');
+    item.textContent = `§${p}: ${ok} из ${total}`;
+    list.append(item);
+  }
+  const line = resultLine(attempt, app.state.name);
+  document.getElementById('btn-copy').onclick = async () => {
+    await navigator.clipboard.writeText(line);
+    document.getElementById('btn-copy').textContent = 'Скопировано';
+  };
+  document.getElementById('btn-copy').textContent = 'Скопировать результат';
+  document.getElementById('btn-again').onclick = () => {
+    showScreen('screen-start');
+    renderAttempts();
+  };
+  showScreen('screen-result');
+}
 
 init();
