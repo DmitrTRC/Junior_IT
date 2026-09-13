@@ -8,12 +8,13 @@
 import json
 import sys
 from pathlib import Path
+from typing import TypeGuard
 
 TYPES = {"single", "multi", "number", "text", "match", "order", "find-error"}
 MIN_QUESTIONS = 3
 
 
-def _is_str_list(value, minimum=2):
+def _is_str_list(value, minimum=2) -> TypeGuard[list[str]]:
     return (isinstance(value, list) and len(value) >= minimum
             and all(isinstance(v, str) and v.strip() for v in value))
 

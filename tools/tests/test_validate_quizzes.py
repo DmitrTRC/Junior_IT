@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 from validate_quizzes import validate
 
