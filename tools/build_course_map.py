@@ -78,6 +78,19 @@ def module_statuses(modules, sessions, today):
     return statuses
 
 
+def completion_dates(sessions, today):
+    """id модуля -> дата первого прошедшего занятия, где он завершён."""
+    dates = {}
+    for session in sessions:
+        if session["date"] >= today:
+            continue
+        done_ids = (session["completed"] or []) if "completed" in session \
+            else _playlist_ids(session)
+        for mid in done_ids:
+            dates.setdefault(mid, session["date"])
+    return dates
+
+
 def module_links(module):
     """Ссылки только на реально существующие публикуемые файлы."""
     module_dir = module["_dir"]
@@ -94,6 +107,7 @@ def build_course_map(repo_root, today):
     modules = load_modules(repo_root)
     sessions = load_sessions(repo_root)
     statuses = module_statuses(modules, sessions, today)
+    dates = completion_dates(sessions, today)
 
     track_ids = {t["id"] for t in TRACKS_META}
 
@@ -107,6 +121,7 @@ def build_course_map(repo_root, today):
             "textbook": m.get("textbook") or [],
             "status": statuses[m["id"]],
             "links": module_links(m),
+            "completed_on": dates[m["id"]].isoformat() if m["id"] in dates else None,
         })
 
     upcoming = [s for s in sessions if s["date"] >= today]

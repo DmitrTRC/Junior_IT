@@ -197,3 +197,21 @@ def test_broken_manifest_fails_loudly(tmp_path):
     (module_dir / "module.yml").write_text("- просто список\n", encoding="utf-8")
     with pytest.raises(ValueError):
         load_modules(tmp_path)
+
+
+def test_completed_on_from_first_completing_session(tmp_path):
+    make_module(tmp_path, "book/m-01-info")
+    make_module(tmp_path, "python/m-01-run")
+    make_session(tmp_path, date(2026, 9, 1), ["book/m-01-info"])
+    make_session(tmp_path, date(2026, 9, 8), ["book/m-01-info", "python/m-01-run"],
+                 completed=["python/m-01-run"])
+    course_map = build_course_map(tmp_path, TODAY)
+    by_id = {m["id"]: m for m in course_map["modules"]}
+    assert by_id["book/m-01-info"]["completed_on"] == "2026-09-01"
+    assert by_id["python/m-01-run"]["completed_on"] == "2026-09-08"
+
+
+def test_completed_on_none_for_unfinished(tmp_path):
+    make_module(tmp_path, "book/m-02-next")
+    course_map = build_course_map(tmp_path, TODAY)
+    assert course_map["modules"][0]["completed_on"] is None
