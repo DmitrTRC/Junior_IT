@@ -1,0 +1,6 @@
+# ~/.junior_it/zoom-pipeline.toml
+repo_root = "/Users/dmitrymorozov/Projects/Junior_IT"
+backup_dir = "/Volumes/backup/JuniorIT/recordings"
+retention_days = 30
+# стемы имён учеников: «Наст» накрывает Настя/Насте/Настю
+student_stems = ["placeholder_stem"]

@@ -32,6 +32,9 @@ recordings/
 # Переписка и памятки родителям — имена детей/родителей, личное, не в публичный репо
 TO_PARENTS/
 
+# Черновики Zoom-пайплайна — содержат ссылки с passcode
+meta/drafts/
+
 # Claude CLI — личные настройки (shared settings.json коммитим)
 .claude/settings.local.json
 

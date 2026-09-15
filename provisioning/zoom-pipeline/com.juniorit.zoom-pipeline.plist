@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.juniorit.zoom-pipeline</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/dmitrymorozov/Projects/Junior_IT/tools/.venv/bin/python</string>
+    <string>-m</string>
+    <string>zoom_pipeline.pipeline</string>
+    <string>--once</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/Users/dmitrymorozov/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>PYTHONPATH</key>
+    <string>/Users/dmitrymorozov/Projects/Junior_IT/tools</string>
+  </dict>
+  <key>WorkingDirectory</key>
+  <string>/Users/dmitrymorozov/Projects/Junior_IT/tools</string>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>StandardOutPath</key>
+  <string>/Users/dmitrymorozov/Library/Logs/junior-it-zoom.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/dmitrymorozov/Library/Logs/junior-it-zoom.log</string>
+</dict>
+</plist>
