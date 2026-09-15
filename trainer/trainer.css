@@ -269,6 +269,10 @@ main {
   margin: 0 0 8px;
 }
 
+#q-text {
+  white-space: pre-line;
+}
+
 #q-body label {
   display: block;
   padding: 14px 16px;
@@ -282,18 +286,6 @@ main {
 
 #q-body label:hover {
   background: var(--deep);
-}
-
-#q-body label.selected {
-  border-color: var(--track-book);
-}
-
-#q-body label.correct {
-  border-color: var(--green);
-}
-
-#q-body label.wrong {
-  border-color: var(--orange);
 }
 
 #q-body label.option.code {

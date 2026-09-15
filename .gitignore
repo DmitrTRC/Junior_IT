@@ -53,6 +53,9 @@ __pycache__/
 # Superpowers SDD — рабочие файлы исполнения планов
 .superpowers/
 
+# Browser automation logs — Playwright, тесты
+.playwright-mcp/
+
 # Учебники и производные OCR — чужой копирайт, десятки мегабайт
 refs/
 
