@@ -24,9 +24,11 @@ class State:
 
     def _save(self):
         self._path.parent.mkdir(parents=True, exist_ok=True)
-        self._path.write_text(
+        tmp = self._path.with_suffix(".json.tmp")
+        tmp.write_text(
             json.dumps(self._entries, ensure_ascii=False, indent=2),
             encoding="utf-8")
+        tmp.replace(self._path)
 
     def phase(self, uuid):
         return self._entries.get(uuid, {}).get("phase", "new")

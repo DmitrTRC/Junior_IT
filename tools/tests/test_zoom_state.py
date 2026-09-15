@@ -27,3 +27,11 @@ def test_uuids_in_phase(tmp_path):
     state.advance("u2", "analyzed", date="2026-09-13")
     assert state.uuids_in_phase("backed_up") == ["u1"]
     assert PHASES[-1] == "cloud_deleted"
+
+
+def test_advance_keeps_first_date_and_topic(tmp_path):
+    state = State.load(tmp_path / "s.json")
+    state.advance("u1", "downloaded", date="2026-09-16", topic="Python")
+    state.advance("u1", "backed_up", date="2026-01-01", topic="другое")
+    assert state.phase("u1") == "backed_up"
+    assert state.meta("u1") == {"date": "2026-09-16", "topic": "Python"}
