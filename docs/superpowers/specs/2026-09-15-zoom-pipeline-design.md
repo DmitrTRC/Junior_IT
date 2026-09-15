@@ -70,8 +70,9 @@ tools/zoom_pipeline/
    например `/Volumes/backup/JuniorIT/recordings/`). Шара не смонтирована
    или rsync упал → лог, фаза не продвигается, ретрай следующим тиком.
    Фазы дальше backup не идут, пока бэкап не подтверждён.
-4. **Transcribe:** whisper.cpp large-v3 по m4a → `transcript.txt` рядом с
-   записью (и в бэкап). Облачный vtt — fallback, если whisper недоступен.
+4. **Transcribe:** mlx-whisper (large-v3, Metal на M1 Ultra, запуск через
+   `uvx`) по m4a → `transcript.txt` рядом с записью (и в бэкап). Облачный
+   vtt — fallback, если whisper недоступен.
 5. **Analyze:** транскрипт → `anonymize` → `claude -p` с транскриптом и
    `playground/<дата>/session.yml` (если файла нет — анализ без сверки с
    планом, с пометкой). Выход: `meta/drafts/lesson-YYYY-MM-DD-analysis.md`:
