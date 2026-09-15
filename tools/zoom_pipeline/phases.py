@@ -16,17 +16,32 @@ def _meeting_date(meeting):
     return meeting.start_time[:10]
 
 
+def _meeting_time_hhmm(meeting):
+    """Извлечь HHMM из start_time (ISO 8601), например 17:00 -> 1700."""
+    return meeting.start_time[11:16].replace(":", "")
+
+
+def _safe_uuid(meeting):
+    """Безопасное имя uuid для использования в путях."""
+    return meeting.uuid.replace("/", "_")
+
+
 def _meeting_dir(cfg, meeting):
     return cfg.recordings_dir / _meeting_date(meeting)
+
+
+def _transcript_path(cfg, meeting):
+    """Путь к транскрипту для конкретной встречи."""
+    return _meeting_dir(cfg, meeting) / f"{_safe_uuid(meeting)}-transcript.txt"
 
 
 def _download(cfg, api, meeting):
     target = _meeting_dir(cfg, meeting)
     seen_names = {}
+    base_name = _safe_uuid(meeting)
     for f in meeting.files:
         if f.file_type not in {"MP4", "M4A", "TRANSCRIPT"}:
             continue
-        base_name = meeting.uuid.replace('/', '_')
         ext = f.extension or f.file_type.lower()
         name_key = f"{base_name}.{ext}"
         if name_key in seen_names:
@@ -51,9 +66,10 @@ def _backup(cfg, meeting, runner, log):
         return False
     return True
 
-def _find_file(meeting_dir, *suffixes):
+def _find_file(meeting_dir, prefix, *suffixes):
+    """Найти файл с заданным префиксом и одним из расширений."""
     for suffix in suffixes:
-        found = sorted(meeting_dir.glob(f"*.{suffix}"))
+        found = sorted(meeting_dir.glob(f"{prefix}*.{suffix}"))
         if found:
             return found[0]
     return None
@@ -61,8 +77,10 @@ def _find_file(meeting_dir, *suffixes):
 
 def _transcribe(cfg, meeting, runner, log):
     meeting_dir = _meeting_dir(cfg, meeting)
-    transcript = meeting_dir / "transcript.txt"
-    audio = _find_file(meeting_dir, "m4a", "mp4")
+    transcript = _transcript_path(cfg, meeting)
+    prefix = _safe_uuid(meeting)
+
+    audio = _find_file(meeting_dir, prefix, "m4a", "mp4")
     if audio is not None:
         result = runner([*cfg.whisper_cmd, "--output-dir", str(meeting_dir),
                          str(audio)], timeout=WHISPER_TIMEOUT)
@@ -74,7 +92,8 @@ def _transcribe(cfg, meeting, runner, log):
             log(f"whisper упал ({result.returncode}), пробую облачный vtt")
         else:
             log("whisper отработал, но выходной файл не появился, пробую облачный vtt")
-    vtt = _find_file(meeting_dir, "vtt", "transcript")
+
+    vtt = _find_file(meeting_dir, prefix, "vtt")
     if vtt is not None:
         transcript.write_text(
             "[транскрипт из облака Zoom — точность ниже]\n" +
@@ -106,7 +125,8 @@ def _analyze(cfg, meeting, transcript_path, runner, log):
         log(f"анализ: claude -p упал ({result.returncode})")
         return None
     cfg.drafts_dir.mkdir(parents=True, exist_ok=True)
-    draft = cfg.drafts_dir / f"lesson-{_meeting_date(meeting)}-analysis.md"
+    hhmm = _meeting_time_hhmm(meeting)
+    draft = cfg.drafts_dir / f"lesson-{_meeting_date(meeting)}-{hhmm}-analysis.md"
     draft.write_text(result.stdout, encoding="utf-8")
     return draft
 
@@ -164,10 +184,12 @@ def _process(cfg, api, state, runner, meeting, log):
         transcript = _transcribe(cfg, meeting, runner, log)
         if transcript is None:
             return
+        # Best-effort backup транскрипта, результат игнорируем
+        _backup(cfg, meeting, runner, log)
         state.advance(meeting.uuid, "transcribed", date=day, topic=topic)
         phase = "transcribed"
     if phase == "transcribed":
-        transcript = _meeting_dir(cfg, meeting) / "transcript.txt"
+        transcript = _transcript_path(cfg, meeting)
         draft = _analyze(cfg, meeting, transcript, runner, log)
         if draft is None:
             return

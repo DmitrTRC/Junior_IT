@@ -87,7 +87,7 @@ def test_full_pass_reaches_analyzed(tmp_path):
     assert any(c[0] == "rsync" for c in calls)
     assert any(c[0] == "uvx" for c in calls)
     assert any(c[0] == "claude" for c in calls)
-    draft = cfg.drafts_dir / "lesson-2026-09-16-analysis.md"
+    draft = cfg.drafts_dir / "lesson-2026-09-16-1700-analysis.md"
     assert draft.is_file()
     assert "Анализ" in draft.read_text(encoding="utf-8")
 
@@ -150,3 +150,39 @@ def test_download_filters_types_and_collisions(tmp_path):
     names = sorted(p.name for p in day_dir.iterdir())
     assert "https://dl/chat" not in api.downloaded  # CHAT не качали
     assert len([n for n in names if n.endswith(".mp4")]) == 2  # оба mp4 целы
+
+
+def test_two_meetings_same_date_different_times(tmp_path):
+    cfg = make_cfg(tmp_path)
+    cfg.backup_dir.mkdir(parents=True)
+    m1 = Meeting(
+        uuid="u1", topic="Встреча 1", start_time="2026-09-16T17:00:00Z",
+        share_url="s1", passcode="p1",
+        files=[RecFile("MP4", "mp4", "https://dl/v1"),
+               RecFile("M4A", "m4a", "https://dl/a1")],
+    )
+    m2 = Meeting(
+        uuid="u2", topic="Встреча 2", start_time="2026-09-16T18:30:00Z",
+        share_url="s2", passcode="p2",
+        files=[RecFile("MP4", "mp4", "https://dl/v2"),
+               RecFile("M4A", "m4a", "https://dl/a2")],
+    )
+    api = FakeApi([m1, m2])
+    state, _ = run(cfg, api, ok_runner([]))
+
+    # Обе встречи должны достичь analyzed
+    assert state.phase("u1") == "analyzed"
+    assert state.phase("u2") == "analyzed"
+
+    # В каталоге даты должны быть два разных транскрипта
+    day_dir = cfg.recordings_dir / "2026-09-16"
+    transcripts = sorted(p.name for p in day_dir.glob("*-transcript.txt"))
+    assert len(transcripts) == 2
+    assert "u1-transcript.txt" in transcripts
+    assert "u2-transcript.txt" in transcripts
+
+    # В drafts должны быть два черновика с разными временами
+    drafts = sorted(p.name for p in cfg.drafts_dir.glob("*.md"))
+    assert len(drafts) == 2
+    assert "lesson-2026-09-16-1700-analysis.md" in drafts
+    assert "lesson-2026-09-16-1830-analysis.md" in drafts
