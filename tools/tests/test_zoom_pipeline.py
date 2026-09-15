@@ -131,3 +131,22 @@ def test_retention_deletes_old_backed_up(tmp_path):
     assert api.deleted == ["old"]
     assert state.phase("old") == "cloud_deleted"
     assert state.phase("fresh") == "analyzed"
+
+
+def test_download_filters_types_and_collisions(tmp_path):
+    cfg = make_cfg(tmp_path)
+    cfg.backup_dir.mkdir(parents=True)
+    m = Meeting(
+        uuid="u9", topic="Т", start_time="2026-09-16T17:00:00Z",
+        share_url="s", passcode="p",
+        files=[RecFile("MP4", "mp4", "https://dl/v1"),
+               RecFile("MP4", "mp4", "https://dl/v2"),
+               RecFile("CHAT", "txt", "https://dl/chat"),
+               RecFile("M4A", "m4a", "https://dl/a")],
+    )
+    api = FakeApi([m])
+    run(cfg, api, ok_runner([]))
+    day_dir = cfg.recordings_dir / "2026-09-16"
+    names = sorted(p.name for p in day_dir.iterdir())
+    assert "https://dl/chat" not in api.downloaded  # CHAT не качали
+    assert len([n for n in names if n.endswith(".mp4")]) == 2  # оба mp4 целы

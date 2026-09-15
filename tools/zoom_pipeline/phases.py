@@ -22,8 +22,19 @@ def _meeting_dir(cfg, meeting):
 
 def _download(cfg, api, meeting):
     target = _meeting_dir(cfg, meeting)
+    seen_names = {}
     for f in meeting.files:
-        name = f"{meeting.uuid.replace('/', '_')}.{f.extension or f.file_type.lower()}"
+        if f.file_type not in {"MP4", "M4A", "TRANSCRIPT"}:
+            continue
+        base_name = meeting.uuid.replace('/', '_')
+        ext = f.extension or f.file_type.lower()
+        name_key = f"{base_name}.{ext}"
+        if name_key in seen_names:
+            seen_names[name_key] += 1
+            name = f"{base_name}-{seen_names[name_key]}.{ext}"
+        else:
+            seen_names[name_key] = 1
+            name = name_key
         api.download(f.download_url, target / name)
     return target
 
@@ -59,7 +70,10 @@ def _transcribe(cfg, meeting, runner, log):
         if result.returncode == 0 and produced.is_file():
             produced.replace(transcript)
             return transcript
-        log(f"whisper упал ({result.returncode}), пробую облачный vtt")
+        if result.returncode != 0:
+            log(f"whisper упал ({result.returncode}), пробую облачный vtt")
+        else:
+            log("whisper отработал, но выходной файл не появился, пробую облачный vtt")
     vtt = _find_file(meeting_dir, "vtt", "transcript")
     if vtt is not None:
         transcript.write_text(
