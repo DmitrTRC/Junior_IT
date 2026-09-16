@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Воркфлоу занятия · Junior_IT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Junior_IT — канон токенов оформления.
+       Источник истины для материалов и агента brand-guardian.
+       HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+       а не подключается ссылкой. */
+    :root {
+      --bg: #0a0a14;
+      --card: #1a1a2e;
+      --card-2: #16213e;
+      --deep: #0f3460;
+      --yellow: #ffd60a;
+      --orange: #ff5722;
+      --green: #00e676;
+      --cyan: #00ffc8;
+      --magenta: #ff0096;
+      --bg-light: #faf7f2;
+
+      /* Направления курса. Первый цвет — тёмный фон материалов,
+         второй (-ink) — печать шпаргалок на --bg-light. */
+      --track-book: #7aa2ff;
+      --track-book-ink: #2b4fa8;
+      --track-py: #00ffc8;
+      --track-py-ink: #00806a;
+      --track-pas: #ff5722;
+      --track-pas-ink: #b3350f;
+      --track-ops: #00e676;
+      --track-ops-ink: #00803d;
+      --track-cs: #ff0096;
+      --track-cs-ink: #a8005f;
+      --track-web: #8892b0;
+      --track-web-ink: #4a5568;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: #e8eaf2;
+      font-family: 'Manrope', system-ui, sans-serif;
+      line-height: 1.55;
+      padding: 32px 20px 64px;
+    }
+    main { max-width: 880px; margin: 0 auto; }
+    h1 {
+      font-family: 'Rubik', 'Arial Black', sans-serif;
+      font-size: 1.9rem;
+      margin-bottom: 6px;
+    }
+    .subtitle { color: #aeb4c9; margin-bottom: 28px; }
+    section {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+    }
+    section.today {
+      background: linear-gradient(135deg, var(--card) 0%, var(--card-2) 100%);
+      border-left: 4px solid var(--yellow);
+    }
+    h2 {
+      font-family: 'Rubik', 'Arial Black', sans-serif;
+      font-size: 1.15rem;
+      margin-bottom: 14px;
+      color: var(--track-book);
+    }
+    section.today h2 { color: var(--yellow); }
+    ul, ol { padding-left: 22px; }
+    li { margin-bottom: 9px; }
+    li::marker { color: var(--track-book); }
+    strong { color: #fff; }
+    code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: .86em;
+      background: #15151c;
+      color: #7fd0ff;
+      border-radius: 6px;
+      padding: 2px 7px;
+      overflow-wrap: anywhere;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .note {
+      background: var(--card-2);
+      border-left: 3px solid var(--track-book);
+      border-radius: 0 10px 10px 0;
+      padding: 10px 16px;
+      margin: 12px 0 4px;
+      color: #ccd1e0;
+    }
+    .warn { border-left-color: var(--orange); }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; margin-top: 6px; }
+    th, td {
+      text-align: left;
+      padding: 9px 12px;
+      border-bottom: 1px solid rgba(136, 146, 176, .22);
+      vertical-align: top;
+    }
+    th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #8890a8;
+    }
+    footer { color: #666e88; text-align: center; margin-top: 30px; font-size: .9rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Воркфлоу занятия</h1>
+  <p class="subtitle">От подготовки до разбора: что открыть, где искать, что не забыть.</p>
+
+  <section class="today">
+    <h2>Сегодня — среда 16.09.2026, 20:00</h2>
+    <ul>
+      <li><strong>Состав: трое</strong> — ученица 1 (book-01 уже прошла) + двое новых.</li>
+      <li><strong>План:</strong> повтор занятия 1 по объёму — book-01 сжато, devops-01 и python-01 дойти обязательно (13.09 до них не дошли).</li>
+      <li><strong>Время</strong> свободное, но внимание умирает к 75-й минуте — пауза или финиш.</li>
+      <li><strong>Ученице 1 — роль эксперта:</strong> отвечает первой, помогает новеньким, иначе заскучает на повторе.</li>
+      <li><strong>Уроки 13.09:</strong> от ЦАП/АЦП жёстко назад к метафоре «волна режется на числа»; жизненные отступления — не дольше 2–3 минут; домашку проговорить <strong>вслух</strong> до прощания.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Накануне или утром</h2>
+    <ol>
+      <li><strong>Родителям новеньких</strong> — ссылка на настройку компьютера: <a href="https://dmitrtrc.github.io/Junior_IT/docs/setup-guide.html">setup-guide</a>. Не успели — первые 10–15 минут занятия уйдут на сетап, заложи в план.</li>
+      <li><strong>План занятия</strong>: создать <code>playground/2026-09-16/session.yml</code> по образцу <code>playground/2026-09-13/session.yml</code> — плейлист, минуты, буфер, домашка, cutting plan. Карта курса на лендинге собирается из него.</li>
+      <li><strong>Перечитать сценарии</strong> (тайминги, «где залипнет»): <code>tracks/book/m-01-information-and-data/teacher/scenario.md</code> · <code>tracks/devops/m-01-terminal-first-steps/teacher/scenario.md</code> · <code>tracks/python/m-01-first-run/teacher/scenario.md</code></li>
+      <li><strong>Пайплайну — новые имена:</strong> в <code>~/.junior_it/zoom-pipeline.toml</code> дописать стемы имён обоих новеньких в <code>student_stems</code> (имя без окончания, не короче 4–5 букв).</li>
+    </ol>
+    <p class="note warn">Без стемов имена новых учеников не обезличатся в транскрипте перед анализом — сделать до конца занятия.</p>
+  </section>
+
+  <section>
+    <h2>За 10 минут до звонка</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Окно</th><th>Что</th><th>Где</th></tr>
+        <tr><td>Zoom</td><td>встреча курса</td><td>автозапись в облако включена в шаблоне — ничего не жать</td></tr>
+        <tr><td>Браузер 1</td><td>материалы для шаринга</td><td><a href="https://dmitrtrc.github.io/Junior_IT/">лендинг</a> → карточки модулей (слайды)</td></tr>
+        <tr><td>Браузер 2</td><td>тренажёр — показать новеньким</td><td><a href="https://dmitrtrc.github.io/Junior_IT/trainer/">trainer</a></td></tr>
+        <tr><td>Терминал</td><td>сценарии и live-code</td><td><code>teacher/scenario.md</code>, <code>shared/live-code.md</code></td></tr>
+        <tr><td>MAX</td><td>группа курса</td><td>ссылки и домашка после занятия</td></tr>
+      </table>
+    </div>
+    <p class="note">Запись, бэкап, транскрипт, анализ — автоматом (launchd, тик раз в час). Руками не запускается ничего.</p>
+  </section>
+
+  <section>
+    <h2>Проведение</h2>
+    <ul>
+      <li><strong>Дети пишут сами и шарят экран</strong> — ротация между тремя; свой код показываешь только короткими демо.</li>
+      <li><strong>Ритм:</strong> теория не дольше 2 минут подряд; каждые 3–5 минут переключение — вопрос, реакция, руки на клавиатуру.</li>
+      <li><strong>Тайм-чекпоинты и отсечения</strong> — по сегодняшнему <code>session.yml</code>; триггеры cutting plan срабатывают решением, не надеждой.</li>
+      <li><strong>Живой код сломался</strong> — эталоны в <code>shared/live-code.md</code> модуля.</li>
+      <li><strong>Финал:</strong> домашка вслух + анонс воскресенья 20:00 + напомнить про зачёт по главе 1 — 30.09, тренажёр уже на сайте.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Сразу после — 10 минут</h2>
+    <ol>
+      <li><strong>Домашка текстом в MAX</strong> — не откладывая до вечера.</li>
+      <li><strong><code>session.yml</code> → <code>completed:</code></strong> — фактически пройденные модули, иначе карта курса засчитает весь плейлист.</li>
+      <li><code>git add playground/2026-09-16 && git commit</code>; <code>/deploy</code> — когда захочешь обновить карту на сайте.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Через час-полтора — само придёт</h2>
+    <ol>
+      <li>Уведомление «Zoom-пайплайн: анализ готов» → читать <code>meta/drafts/lesson-2026-09-16-&lt;время&gt;-analysis.md</code>: тайминги против плана, где буксовали, рекомендации.</li>
+      <li>Там же — <strong>готовое сообщение в MAX</strong> со ссылкой на запись и кодом: подставить имена, отправить.</li>
+      <li>По настроению — <code>/postmortem</code> → канонический разбор в <code>meta/</code>.</li>
+      <li>Запись и транскрипт уже на NAS (<code>/Volumes/BACKUP-VIDEO/JuniorIT/recordings/</code>); при сбое пайплайн напишет в <code>~/Library/Logs/junior-it-zoom.log</code> и дотянет следующим тиком.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Куда смотреть, если забыл</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Что ищу</th><th>Где</th></tr>
+        <tr><td>Сценарий с таймингом</td><td><code>tracks/&lt;трек&gt;/&lt;модуль&gt;/teacher/scenario.md</code></td></tr>
+        <tr><td>Слайды для шаринга</td><td>сайт → карточка модуля, или <code>shared/slides.html</code></td></tr>
+        <tr><td>Эталон живого кода</td><td><code>shared/live-code.md</code></td></tr>
+        <tr><td>Шпаргалка ученику</td><td><code>student/cheatsheet.html</code> — есть на сайте</td></tr>
+        <tr><td>Домашка-стартер</td><td><code>homework/&lt;трек&gt;-NN-&lt;тема&gt;/</code></td></tr>
+        <tr><td>План и факт занятия</td><td><code>playground/&lt;дата&gt;/session.yml</code></td></tr>
+        <tr><td>Анализ записи</td><td><code>meta/drafts/lesson-&lt;дата&gt;-&lt;время&gt;-analysis.md</code></td></tr>
+        <tr><td>Методика и запреты</td><td><code>CLAUDE.md</code>, <code>meta/project-instructions.md</code></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <footer>Junior_IT · рабочий документ преподавателя · не публикуется на сайт</footer>
+</main>
+</body>
+</html>
