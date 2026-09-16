@@ -1,0 +1,41 @@
+# Повтор занятия 1 для расширенной группы: Неля прошла book-01 13.09 —
+# ей роль эксперта; Мария и Матвей видят всё впервые.
+date: 2026-09-16
+time: "20:00"
+duration: 75
+theme: "Терминал и первый Python — повтор для новой группы"
+playlist:
+  - {module: book/m-01-information-and-data, minutes: 10}
+  - {module: devops/m-01-terminal-first-steps, minutes: 25}
+  - {module: python/m-01-first-run, minutes: 25}
+buffer: 15
+homework:
+  due: 2026-09-20
+  items:
+    - homework/book-01-information-sources
+    - homework/devops-01-terminal
+    - homework/python-01-first-run
+
+# Уроки анализа 13.09: перерасход случился ВНУТРИ book-01, а не там, где
+# смотрел старый cutting plan — теперь у book-01 свой жёсткий лимит.
+cutting_plan:
+  book_hard_limit:
+    trigger: "book-01 идёт 12-я минута"
+    cut: "оборвать такт словами «остальное — в шпаргалке», сразу devops-01"
+    note: "ЦАП/АЦП не открывать вообще — метафора «волна режется на числа» и точка"
+  if_setup_stalls:
+    trigger: "сетап компьютера новенького съел больше 10 минут"
+    cut: "Неля ведёт первые шаги devops-01 по шпаргалке на своём шаринге, пока второй настраивается"
+  if_behind_5min:
+    trigger: "отставание 5 минут к концу devops"
+    cut: "devops-01 шаг 6 (проверка Python) — пропустить"
+    fallback: "python3 --version первым делом в python-01"
+  if_behind_10min:
+    trigger: "отставание 10 минут"
+    cut:
+      - "python-01 такт «Почему Python» — до одной минуты"
+      - "python-01 такт «Что дальше» — текстом в MAX со шпаргалкой"
+  never_cut:
+    - "python-01 шаг 5 — намеренная ошибка и чтение traceback: кульминация"
+    - "devops-01 живой код шаги 1–5: на нём держится всё дальше"
+  last_resort: "жертвуй вторым прогоном вокруг traceback, не самим показом ошибки"
