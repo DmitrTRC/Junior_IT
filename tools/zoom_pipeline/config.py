@@ -30,6 +30,8 @@ class Config:
         "uvx", "mlx_whisper", "--model",
         "mlx-community/whisper-large-v3-mlx", "--language", "ru",
         "--output-format", "txt",
+        # без этого whisper зацикливается на хвостовой тишине записи
+        "--condition-on-previous-text", "False",
     ])
     claude_cmd: list[str] = field(default_factory=lambda: [
         "claude", "-p", "--model", "sonnet",
