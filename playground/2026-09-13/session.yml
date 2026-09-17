@@ -9,6 +9,12 @@ playlist:
   - {module: devops/m-01-terminal-first-steps, minutes: 25}
   - {module: python/m-01-first-run, minutes: 25}
 buffer: 10
+
+# Факт (по разбору записи): занятие целиком ушло в book-01, devops и
+# python не начаты. Без этого поля карта курса засчитала бы весь плейлист.
+completed:
+  - book/m-01-information-and-data
+
 homework:
   due: 2026-09-16
   items:
