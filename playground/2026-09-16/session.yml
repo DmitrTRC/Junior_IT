@@ -9,6 +9,12 @@ playlist:
   - {module: devops/m-01-terminal-first-steps, minutes: 25}
   - {module: python/m-01-first-run, minutes: 25}
 buffer: 15
+# Факт 16.09: python-01 не начат вовсе (техпроблемы Маши съели половину
+# занятия; Матвей отсутствовал — догнал 17.09 индивидуально).
+completed:
+  - book/m-01-information-and-data
+  - devops/m-01-terminal-first-steps
+
 homework:
   due: 2026-09-20
   items:
