@@ -1,0 +1,36 @@
+version: 1
+cards:
+  - id: web
+    type: process
+    label: "http.server:8000"
+    start: "python3 -m http.server 8000"
+    ready: "curl -sf --max-time 3 localhost:8000 >/dev/null"
+    autostart: false
+
+  - id: graphify
+    type: process
+    label: "graphify watch"
+    start: "graphify watch ."
+
+  - id: zoom
+    type: schedule
+    label: "zoom-pipeline"
+    launchd: "com.dmitry.junior-it.zoom"
+
+  - id: pages
+    type: remote
+    label: "gh-pages"
+    status: "gh run list --workflow deploy.yml -L1 --json status,conclusion,createdAt"
+    open: "https://github.com/DmitrTRC/Junior_IT/actions"
+    interval: 120
+
+  - id: validate
+    type: task
+    label: "validate modules"
+    run: "cd tools && .venv/bin/python validate_modules.py .."
+
+  - id: students
+    type: status
+    label: "ученики"
+    status: "python3 tools/group_status.py"
+    interval: 300
