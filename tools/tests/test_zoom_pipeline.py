@@ -186,3 +186,20 @@ def test_two_meetings_same_date_different_times(tmp_path):
     assert len(drafts) == 2
     assert "lesson-2026-09-16-1700-analysis.md" in drafts
     assert "lesson-2026-09-16-1830-analysis.md" in drafts
+
+
+def test_processing_recording_does_not_advance(tmp_path):
+    # Zoom ещё готовит запись: в списке только служебные файлы
+    cfg = make_cfg(tmp_path)
+    cfg.backup_dir.mkdir(parents=True)
+    m = Meeting(
+        uuid="u5", topic="Т", start_time="2026-09-16T17:24:00Z",
+        share_url="s", passcode="p",
+        files=[RecFile("SUMMARY", "json", "https://dl/s"),
+               RecFile("TIMELINE", "json", "https://dl/t")],
+    )
+    api = FakeApi([m])
+    state, logs = run(cfg, api, ok_runner([]))
+    assert state.phase("u5") == "new"
+    assert api.downloaded == []
+    assert any("готовятся" in line for line in logs)

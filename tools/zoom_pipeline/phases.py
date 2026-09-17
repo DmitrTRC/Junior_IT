@@ -36,9 +36,11 @@ def _transcript_path(cfg, meeting):
 
 
 def _download(cfg, api, meeting):
+    """Возвращает число скачанных файлов; 0 = запись ещё готовится в Zoom."""
     target = _meeting_dir(cfg, meeting)
     seen_names = {}
     base_name = _safe_uuid(meeting)
+    downloaded = 0
     for f in meeting.files:
         if f.file_type not in {"MP4", "M4A", "TRANSCRIPT"}:
             continue
@@ -51,7 +53,8 @@ def _download(cfg, api, meeting):
             seen_names[name_key] = 1
             name = name_key
         api.download(f.download_url, target / name)
-    return target
+        downloaded += 1
+    return downloaded
 
 
 def _backup(cfg, meeting, runner, log):
@@ -172,7 +175,9 @@ def _process(cfg, api, state, runner, meeting, log):
     phase = state.phase(meeting.uuid)
     day, topic = _meeting_date(meeting), meeting.topic
     if phase == "new":
-        _download(cfg, api, meeting)
+        if _download(cfg, api, meeting) == 0:
+            log(f"встреча {meeting.uuid}: файлы записи ещё готовятся в Zoom, жду следующего тика")
+            return
         state.advance(meeting.uuid, "downloaded", date=day, topic=topic)
         phase = "downloaded"
     if phase == "downloaded":
