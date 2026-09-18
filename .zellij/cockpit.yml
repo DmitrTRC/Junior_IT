@@ -15,7 +15,7 @@ cards:
   - id: zoom
     type: schedule
     label: "zoom-pipeline"
-    launchd: "com.dmitry.junior-it.zoom"
+    launchd: "com.juniorit.zoom-pipeline"
 
   - id: pages
     type: remote
