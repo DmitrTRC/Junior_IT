@@ -50,3 +50,9 @@ def test_readiness_missing_module_and_homework(tmp_path):
 def test_readiness_empty_playlist():
     out = readiness.lines([], "/nonexistent", _ok)
     assert len(out) == 1 and out[0].text == "нет плейлиста" and out[0].style == "dim"
+
+
+def test_readiness_id_without_slash_is_module_missing(tmp_path):
+    out = readiness.lines(["python-01-first-run"], tmp_path, _ok)
+    assert len(out) == 1
+    assert out[0].text == "python-01-first-run · модуля нет" and out[0].style == "err"

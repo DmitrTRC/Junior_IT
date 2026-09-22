@@ -62,10 +62,11 @@ def run(argv, today: date | None = None) -> int:
     ap.add_argument("--students", help="каталог students/ (по умолчанию <repo>/students или $JUNIOR_IT_STUDENTS)")
     args = ap.parse_args(argv)
     day = args.today or today or date.today()
+    students_root = args.students or (str(Path(args.repo) / "students") if args.repo else None)
     try:
-        emit(build(args.box, args.repo or common.REPO_ROOT, args.students, day))
-    except (JournalError, ValueError, yaml.YAMLError) as exc:
-        print(f"info: {exc}", file=sys.stderr)
+        emit(build(args.box, args.repo or common.REPO_ROOT, students_root, day))
+    except (JournalError, ValueError, yaml.YAMLError, KeyError) as exc:
+        print(f"info: {str(exc).splitlines()[0] if str(exc) else type(exc).__name__}", file=sys.stderr)
         return 3
     return 0
 

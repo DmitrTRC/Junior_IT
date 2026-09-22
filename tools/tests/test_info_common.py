@@ -53,6 +53,10 @@ def test_hw_id_and_paths(tmp_path):
     assert scenario_target("python/m-01-first-run", tmp_path) == "tracks/python/m-01-first-run/teacher/scenario.md"
 
 
+def test_scenario_target_for_id_without_slash(tmp_path):
+    assert scenario_target("nope", tmp_path) == "tracks/nope/module.yml"
+
+
 def test_emit_prints_contract_json():
     buf = io.StringIO()
     emit([Line("занятие", open="playground/x/session.yml", style="ok"), Line("буфер")], out=buf)

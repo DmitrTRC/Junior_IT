@@ -60,7 +60,7 @@ def hw_id_from_ref(ref) -> str:
 
 
 def module_dir(module_id: str, repo_root=REPO_ROOT) -> Path:
-    track, name = str(module_id).split("/", 1)
+    track, _, name = str(module_id).partition("/")
     return Path(repo_root) / "tracks" / track / name
 
 

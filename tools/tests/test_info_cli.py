@@ -9,6 +9,7 @@ import yaml
 
 from conftest import TODAY
 from info.cli import BOXES, run
+from journal import store as journal_store
 from test_build_course_map import make_module
 
 CLI = Path(__file__).resolve().parents[1] / "info" / "cli.py"
@@ -55,7 +56,7 @@ def test_readiness_box_uses_real_validate(repo, journal_root, capsys):
     assert lines[0]["text"].startswith("python/m-01-first-run · scenario ✓") and lines[0]["style"] == "ok"
 
 
-def test_students_and_homework_without_roster(repo, tmp_path, capsys):
+def test_students_and_homework_without_roster(repo, tmp_path, capsys, monkeypatch, journal_root):
     empty = tmp_path / "no-students"
     empty.mkdir()
     _, out = _run("students", repo, empty, capsys)
@@ -63,6 +64,15 @@ def test_students_and_homework_without_roster(repo, tmp_path, capsys):
     _, out = _run("homework", repo, empty, capsys)
     lines = json.loads(out.out)["lines"]
     assert lines[0]["text"] == "python-01-first-run · не выдана"
+
+    # без --students дефолт должен браться из --repo, а не из
+    # $JUNIOR_IT_STUDENTS/реального REPO_ROOT — иначе читаем чужой ростер.
+    monkeypatch.setattr(journal_store, "REPO_ROOT", journal_root.parent)
+    code = run(["students", "--repo", str(repo), "--today", "2026-09-19"])
+    out = capsys.readouterr()
+    assert code == 0
+    lines = json.loads(out.out)["lines"]
+    assert lines[0]["style"] == "warn" and "roster.yml" in lines[0]["text"]
 
 
 def test_students_box_uses_journal(repo, journal_root, capsys):
@@ -90,6 +100,15 @@ def test_unknown_box_is_2_and_broken_plan_is_3(repo, journal_root, capsys):
     (repo / "playground" / "2026-09-20" / "session.yml").write_text("theme: [\n", encoding="utf-8")
     code, out = _run("lesson", repo, journal_root, capsys)
     assert code == 3 and out.err.startswith("info:")   # YAMLError из load_sessions без имени файла — известное ограничение
+
+
+def test_broken_roster_is_3_with_single_stderr_line(repo, journal_root, capsys):
+    (journal_root / "roster.yml").write_text(
+        "students:\n  - {id: alice, name: Алиса, contacts: {tg: '@alice', email: x@example.com}\n", encoding="utf-8")
+    code, out = _run("students", repo, journal_root, capsys)
+    assert code == 3
+    assert out.err.startswith("info:") and out.err.count("\n") == 1
+    assert "example.com" not in out.err
 
 
 def test_script_runs_from_repo_root(repo, journal_root):

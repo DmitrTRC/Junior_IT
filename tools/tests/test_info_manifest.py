@@ -18,3 +18,4 @@ def test_info_manifest_loads_in_engine():
     for box in manifest.placed():
         if box.type == "command":
             assert box.run.startswith("tools/.venv/bin/python tools/info/cli.py ")
+            assert box.run.endswith(" " + box.id)
