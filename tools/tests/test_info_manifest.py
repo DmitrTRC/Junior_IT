@@ -14,7 +14,12 @@ def test_info_manifest_loads_in_engine():
     from cockpit.info.manifest import load_info_manifest
     manifest = load_info_manifest(MANIFEST)
     assert manifest.warnings == []
-    assert [b.id for b in manifest.placed()] == ["lesson", "students", "clock", "homework", "readiness", "course", "git"]
+    assert [b.id for b in manifest.placed()] == [
+        "lesson", "students", "clock", "homework", "readiness", "course", "git", "news", "weather"]
+    news, weather = manifest.box("news"), manifest.box("weather")
+    assert [f.label for f in news.feeds] == ["Хабр·python", "Хабр·prog", "python.org", "ЕГЭ", "radio-t"]
+    assert all(f.url.startswith("https://") for f in news.feeds) and news.limit == 12
+    assert weather.place == "Хязельки" and 59 < weather.lat < 61 and 29 < weather.lon < 32
     for box in manifest.placed():
         if box.type == "command":
             assert box.run.startswith("tools/.venv/bin/python tools/info/cli.py ")

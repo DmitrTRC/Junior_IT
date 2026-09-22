@@ -4,6 +4,7 @@ version: 1
 layout:
   - [{box: lesson, weight: 2}, {box: students, weight: 2}, {box: clock, weight: 1}]
   - [{box: homework, weight: 2}, {box: readiness, weight: 3}, {box: course, weight: 1}, {box: git, weight: 1}]
+  - [{box: news, weight: 3}, {box: weather, weight: 1}]
 boxes:
   - id: clock
     type: clock
@@ -35,3 +36,19 @@ boxes:
     title: "курс"
     run: "tools/.venv/bin/python tools/info/cli.py course"
     interval: 600
+  - id: weather
+    type: weather
+    title: "погода"
+    label: "Хязельки"
+    lat: 59.93771
+    lon: 30.68874
+  - id: news
+    type: rss
+    title: "новости"
+    limit: 12
+    feeds:
+      - {label: "Хабр·python", url: "https://habr.com/ru/rss/hubs/python/articles/all/?fl=ru"}
+      - {label: "Хабр·prog", url: "https://habr.com/ru/rss/hubs/programming/articles/all/?fl=ru"}
+      - {label: "python.org", url: "https://blog.python.org/feeds/posts/default?alt=rss"}
+      - {label: "ЕГЭ", url: "https://news.google.com/rss/search?q=ЕГЭ+информатика&hl=ru&gl=RU&ceid=RU:ru"}
+      - {label: "radio-t", url: "https://radio-t.com/podcast.rss"}
