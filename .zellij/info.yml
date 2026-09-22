@@ -1,0 +1,37 @@
+# Вкладка info (tc-info): боксы курса. Провайдеры — tools/info/cli.py <box>.
+# Сетка — ряды с весами; clock и git даёт движок.
+version: 1
+layout:
+  - [{box: lesson, weight: 2}, {box: students, weight: 2}, {box: clock, weight: 1}]
+  - [{box: homework, weight: 2}, {box: readiness, weight: 3}, {box: course, weight: 1}, {box: git, weight: 1}]
+boxes:
+  - id: clock
+    type: clock
+  - id: git
+    type: git
+    title: "хвосты"
+  - id: lesson
+    type: command
+    title: "занятие"
+    run: "tools/.venv/bin/python tools/info/cli.py lesson"
+    interval: 300
+  - id: students
+    type: command
+    title: "ученики"
+    run: "tools/.venv/bin/python tools/info/cli.py students"
+    interval: 120
+  - id: homework
+    type: command
+    title: "домашки"
+    run: "tools/.venv/bin/python tools/info/cli.py homework"
+    interval: 300
+  - id: readiness
+    type: command
+    title: "готовность"
+    run: "tools/.venv/bin/python tools/info/cli.py readiness"
+    interval: 120
+  - id: course
+    type: command
+    title: "курс"
+    run: "tools/.venv/bin/python tools/info/cli.py course"
+    interval: 600
