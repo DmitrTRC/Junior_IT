@@ -1,3 +1,5 @@
 pyyaml>=6.0
 pytest>=8.0
 requests
+textual>=8,<9
+pytest-asyncio>=0.23
