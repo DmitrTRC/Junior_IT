@@ -61,6 +61,8 @@ def load_lessons(root=None, roster=None) -> list[LessonRecord]:
     ids = _ids(root, roster)
     lessons: list[LessonRecord] = []
     for path in sorted((students_root(root) / "journal").glob("*.yml")):
+        if path.name.startswith("."):
+            continue
         try:
             day = date.fromisoformat(path.stem)
         except ValueError:

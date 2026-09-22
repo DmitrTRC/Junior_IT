@@ -42,6 +42,11 @@ def test_broken_yaml_names_file(journal_root):
     assert info.value.path == str(bad)
 
 
+def test_load_lessons_skips_orphaned_temp_files(journal_root):
+    (journal_root / "journal" / ".tmp-abc.yml").write_text("date: 2026-09-20\n", encoding="utf-8")
+    assert [r.date for r in store.load_lessons(journal_root)] == [DAY]
+
+
 def test_bad_filename_is_error(journal_root):
     (journal_root / "journal" / "notes.yml").write_text("date: 2026-09-20\n", encoding="utf-8")
     with pytest.raises(JournalError, match="не дата"):

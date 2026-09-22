@@ -75,9 +75,28 @@ def test_set_homework_transitions_and_points(journal_root):
     assert _points(rec, "bob").count((3.0, "домашка принята: python-01-first-run", "teacher")) == 1
 
 
+def test_set_homework_records_by(journal_root):
+    hw, today = "python-01-first-run", date(2026, 9, 22)
+    rec = ops.set_homework(DAY, hw, "bob", "accepted", root=journal_root, today=today, by="telegram")
+    assert rec.homework[hw]["bob"].by == "telegram"
+    assert (3.0, "домашка принята: python-01-first-run", "telegram") in _points(rec, "bob")
+
+
+def test_set_homework_rejects_unknown_source(journal_root):
+    with pytest.raises(TransitionError, match="источник"):
+        ops.set_homework(DAY, "python-01-first-run", "bob", "accepted", root=journal_root, by="mail")
+
+
 def test_set_homework_unknown_hw(journal_root):
     with pytest.raises(TransitionError, match="не выдана"):
         ops.set_homework(DAY, "nope", "alice", "submitted", root=journal_root)
+
+
+def test_mark_attendance_by_and_removal_any_source(journal_root):
+    rec = ops.mark_attendance(NEW, "alice", "present", journal_root, by="zoom")
+    assert _points(rec, "alice") == [(2.0, "присутствие", "zoom")]
+    rec = ops.mark_attendance(NEW, "alice", "absent", journal_root)  # teacher по умолчанию — снимает любой by
+    assert _points(rec, "alice") == []
 
 
 def test_add_points_and_note(journal_root):

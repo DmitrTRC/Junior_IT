@@ -24,11 +24,12 @@ def build_parser() -> argparse.ArgumentParser:
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("attend", help="посещаемость")
     p.add_argument("date", type=_date); p.add_argument("student"); p.add_argument("status")
+    p.add_argument("--by", default="teacher")
     p = sub.add_parser("issue", help="выдать домашку (по плану или --hw)")
     p.add_argument("date", type=_date); p.add_argument("--hw"); p.add_argument("--students", nargs="*")
     p = sub.add_parser("hw", help="статус домашки")
     p.add_argument("date", type=_date); p.add_argument("hw_id"); p.add_argument("student")
-    p.add_argument("status"); p.add_argument("--note")
+    p.add_argument("status"); p.add_argument("--note"); p.add_argument("--by", default="teacher")
     p = sub.add_parser("points", help="баллы с причиной")
     p.add_argument("date", type=_date); p.add_argument("student"); p.add_argument("amount", type=float)
     p.add_argument("reason"); p.add_argument("--by", default="teacher")
@@ -71,11 +72,11 @@ def run(argv, today: date | None = None) -> int:
     root, repo = args.root, args.repo
     try:
         if args.cmd == "attend":
-            ops.mark_attendance(args.date, args.student, args.status, root)
+            ops.mark_attendance(args.date, args.student, args.status, root, args.by)
         elif args.cmd == "issue":
             ops.issue_homework(args.date, args.hw, args.students or None, root, repo)
         elif args.cmd == "hw":
-            ops.set_homework(args.date, args.hw_id, args.student, args.status, args.note, root, today)
+            ops.set_homework(args.date, args.hw_id, args.student, args.status, args.note, root, today, args.by)
         elif args.cmd == "points":
             ops.add_points(args.date, args.student, args.amount, args.reason, args.by, root)
         elif args.cmd == "note":

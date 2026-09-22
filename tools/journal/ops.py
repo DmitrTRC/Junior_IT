@@ -24,7 +24,7 @@ def _check_student(student: str, roster) -> None:
         raise TransitionError(f"ученика {student!r} нет в ростере")
 
 
-def mark_attendance(day: date, student: str, status: str, root=None) -> LessonRecord:
+def mark_attendance(day: date, student: str, status: str, root=None, by="teacher") -> LessonRecord:
     if status not in ATTENDANCE:
         raise TransitionError(f"неизвестный статус посещаемости {status!r}")
     roster = store.load_roster(root)
@@ -33,11 +33,11 @@ def mark_attendance(day: date, student: str, status: str, root=None) -> LessonRe
     rec = _record(day, root, roster)
     rec.attendance[student] = status
     rec.points = [p for p in rec.points
-                  if not (p.who == student and p.by == "teacher" and p.reason in _ATTEND_REASONS)]
+                  if not (p.who == student and p.reason in _ATTEND_REASONS)]
     if status == "present":
-        rec.points.append(PointEntry(student, tariff.presence, REASON_PRESENCE))
+        rec.points.append(PointEntry(student, tariff.presence, REASON_PRESENCE, by))
     elif status == "late":
-        rec.points.append(PointEntry(student, tariff.late, REASON_LATE))
+        rec.points.append(PointEntry(student, tariff.late, REASON_LATE, by))
     store.save_lesson(rec, root)
     return rec
 
@@ -65,9 +65,11 @@ def issue_homework(day: date, hw_id=None, students=None, root=None, repo_root=No
 
 
 def set_homework(day: date, hw_id: str, student: str, status: str, note=None,
-                 root=None, today=None) -> LessonRecord:
+                 root=None, today=None, by="teacher") -> LessonRecord:
     if status not in HW_STATUSES:
         raise TransitionError(f"неизвестный статус домашки {status!r}")
+    if by not in SOURCES:
+        raise TransitionError(f"неизвестный источник {by!r}")
     roster = store.load_roster(root)
     _check_student(student, roster)
     tariff = store.load_tariff(root)
@@ -85,6 +87,7 @@ def set_homework(day: date, hw_id: str, student: str, status: str, note=None,
         raise TransitionError(f"{hw_id} {student}: переход {mark.status} → {status} недопустим")
     mark.status = status
     mark.at = today or date.today()
+    mark.by = by
     if note is not None:
         mark.note = note
     if status == "rework":
@@ -93,7 +96,7 @@ def set_homework(day: date, hw_id: str, student: str, status: str, note=None,
         reason = (REASON_HW_REWORK if mark.reworked else REASON_HW).format(hw=hw_id)
         amount = tariff.homework_after_rework if mark.reworked else tariff.homework_accepted
         if not any(p.who == student and p.reason == reason for p in rec.points):
-            rec.points.append(PointEntry(student, amount, reason))
+            rec.points.append(PointEntry(student, amount, reason, by))
     store.save_lesson(rec, root)
     return rec
 

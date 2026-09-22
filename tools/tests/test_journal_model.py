@@ -77,6 +77,26 @@ def test_parse_lesson_errors(patch, needle):
         parse_lesson({**LESSON, **patch}, DAY, {"alice", "bob"}, path="l.yml")
 
 
+def test_homework_mark_by_round_trip():
+    data = {**LESSON, "homework": {"python-01": {
+        "alice": {"status": "accepted", "at": date(2026, 9, 22), "by": "telegram"},
+        "bob": {"status": "issued"},
+    }}}
+    rec = parse_lesson(data, DAY, {"alice", "bob"})
+    assert rec.homework["python-01"]["alice"].by == "telegram"
+    assert rec.homework["python-01"]["bob"].by == "teacher"
+    out = lesson_to_dict(rec)
+    assert out["homework"]["python-01"]["alice"]["by"] == "telegram"
+    assert "by" not in out["homework"]["python-01"]["bob"]
+    assert parse_lesson(out, DAY, {"alice", "bob"}) == rec
+
+
+def test_parse_lesson_rejects_unknown_homework_by():
+    data = {**LESSON, "homework": {"python-01": {"alice": {"status": "issued", "by": "mail"}}}}
+    with pytest.raises(JournalError, match="источник"):
+        parse_lesson(data, DAY, {"alice", "bob"}, path="l.yml")
+
+
 def test_lesson_round_trip_and_key_order():
     rec = parse_lesson(LESSON, DAY, {"alice", "bob"})
     data = lesson_to_dict(rec)
@@ -103,13 +123,29 @@ def test_num():
     ({"points": [{"who": "alice", "amount": True}]}, "числом"),
     ({"points": [{"who": "alice", "amount": "много"}]}, "числом"),
     ({"notes": ["x"]}, "notes должна быть mapping"),
+    ({"homework": {"h": {"alice": "accepted"}}}, "отметка должна быть mapping"),
 ])
 def test_parse_lesson_bad_section_shapes(patch, needle):
     with pytest.raises(JournalError, match=needle):
         parse_lesson({**LESSON, **patch}, DAY, {"alice", "bob"}, path="l.yml")
 
 
+@pytest.mark.parametrize("bad, needle", [
+    ({"students": [{"id": "a", "name": "x", "zoom_names": "Алиса"}]}, "zoom_names"),
+    ({"students": [{"id": "a", "name": "x", "contacts": "tg"}]}, "contacts"),
+    ({"students": [{"id": "a", "name": "x", "parent": "tg"}]}, "parent"),
+])
+def test_parse_roster_bad_field_shapes(bad, needle):
+    with pytest.raises(JournalError, match=needle):
+        parse_roster(bad, path="r.yml")
+
+
 @pytest.mark.parametrize("bad", [{"presence": "abc"}, {"late": True}, {"presence": None}])
 def test_parse_tariff_rejects_non_numeric(bad):
     with pytest.raises(JournalError, match="числом"):
         parse_tariff(bad)
+
+
+def test_parse_tariff_error_has_single_prefix():
+    with pytest.raises(JournalError, match=r"^points\.yml: presence"):
+        parse_tariff({"presence": "abc"})

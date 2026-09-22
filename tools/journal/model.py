@@ -49,6 +49,7 @@ class HomeworkMark:
     at: date | None = None
     note: str | None = None
     reworked: bool = False
+    by: str = "teacher"
 
 
 @dataclass
@@ -128,6 +129,13 @@ def parse_roster(data, path="roster.yml") -> list[Student]:
         status = raw.get("status", "active")
         if status not in STUDENT_STATUSES:
             raise JournalError(f"{path}: у {sid} неизвестный status {status!r}", path)
+        zoom_names = raw.get("zoom_names")
+        if zoom_names is not None and not isinstance(zoom_names, list):
+            raise JournalError(f"{path}: у {sid} zoom_names должен быть list", path)
+        for key in ("contacts", "parent"):
+            value = raw.get(key)
+            if value is not None and not isinstance(value, dict):
+                raise JournalError(f"{path}: у {sid} {key} должен быть mapping", path)
         students.append(Student(
             id=sid, name=str(raw["name"]), status=status,
             full_name=raw.get("full_name"), nick=raw.get("nick"),
@@ -148,7 +156,7 @@ def parse_tariff(data) -> Tariff:
     unknown = [k for k in data if k not in Tariff.__dataclass_fields__]
     if unknown:
         raise JournalError(f"points.yml: неизвестные ключи {unknown}", "points.yml")
-    return Tariff(**{k: _number(v, f"points.yml: {k}", "points.yml") for k, v in data.items()})
+    return Tariff(**{k: _number(v, k, "points.yml") for k, v in data.items()})
 
 
 def parse_lesson(data, file_date: date, roster_ids: set[str], path="lesson.yml") -> LessonRecord:
@@ -175,14 +183,19 @@ def parse_lesson(data, file_date: date, roster_ids: set[str], path="lesson.yml")
         homework[hw_id] = {}
         for sid, raw in (marks or {}).items():
             known(sid, f"homework {hw_id}")
+            if raw is not None and not isinstance(raw, dict):
+                raise JournalError(f"{path}: homework {hw_id} {sid}: отметка должна быть mapping", path)
             raw = raw or {}
             status = raw.get("status", "issued")
             if status not in HW_STATUSES:
                 raise JournalError(f"{path}: homework {hw_id} {sid}: неизвестный статус {status!r}", path)
+            by = raw.get("by", "teacher")
+            if by not in SOURCES:
+                raise JournalError(f"{path}: homework {hw_id} {sid}: неизвестный источник {by!r}", path)
             homework[hw_id][sid] = HomeworkMark(
                 status=status,
                 at=_as_date(raw["at"], f"at у {hw_id}/{sid}", path) if raw.get("at") else None,
-                note=raw.get("note"), reworked=bool(raw.get("reworked", False)))
+                note=raw.get("note"), reworked=bool(raw.get("reworked", False)), by=by)
     points: list[PointEntry] = []
     for raw in _section(data, "points", list, path):
         if not isinstance(raw, dict) or "who" not in raw or "amount" not in raw:
@@ -214,6 +227,8 @@ def lesson_to_dict(rec: LessonRecord) -> dict:
                 entry["note"] = m.note
             if m.reworked:
                 entry["reworked"] = True
+            if m.by != "teacher":
+                entry["by"] = m.by
             homework[hw_id][sid] = entry
     return {
         "date": rec.date,

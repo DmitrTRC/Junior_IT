@@ -32,6 +32,14 @@ def test_issue_points_note(journal_root, course_root):
     assert rec.points[-1].by == "telegram" and rec.notes == {"alice": "молодец"}
 
 
+def test_hw_by_flag(journal_root, course_root):
+    root, repo = str(journal_root), str(course_root)
+    assert run(["--root", root, "--repo", repo, "hw", DAY.isoformat(), "python-01-first-run", "bob",
+               "accepted", "--by", "telegram"], today=date(2026, 9, 22)) == 0
+    rec = store.load_lesson(DAY, journal_root)
+    assert rec.homework["python-01-first-run"]["bob"].by == "telegram"
+
+
 def test_report_and_json(journal_root, course_root, capsys):
     root, repo = str(journal_root), str(course_root)
     assert run(["--root", root, "--repo", repo, "report"], today=TODAY) == 0
