@@ -57,3 +57,21 @@ def test_homework_lines_not_issued_and_all_accepted(journal_root, course_root):
 def test_homework_lines_empty():
     out = homework.lines([], {}, TODAY)
     assert len(out) == 1 and out[0].text == "нет журнала" and out[0].style == "dim"
+
+
+def test_homework_lines_ignores_marks_of_left_students(journal_root, course_root):
+    import yaml
+    path = journal_root / "journal" / "2026-09-20.yml"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    data["homework"]["python-01-first-run"]["carol"] = {"status": "issued", "at": DAY}   # carol в ростере со status left
+    path.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    roster = store.load_roster(journal_root)
+    lessons = store.load_lessons(journal_root, roster)
+    plans = stats.load_plans(course_root)
+    unfiltered = homework.lines(lessons, plans, TODAY)
+    assert unfiltered[0].text.startswith("python-01-first-run · сдано 1/3 · принято 0/3")
+    active = {s.id for s in roster if s.status == "active"}
+    filtered = homework.lines(lessons, plans, TODAY, active_ids=active)
+    assert filtered[0].text.startswith("python-01-first-run · сдано 1/2 · принято 0/2")
+    only_carol = homework.lines(lessons, plans, TODAY, active_ids={"carol"})
+    assert [l.text for l in only_carol] == ["нет журнала"]
