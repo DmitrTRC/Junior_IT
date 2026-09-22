@@ -1,7 +1,7 @@
 # Провайдеры info-панели Junior_IT (info-providers)
 
 Дата: 2026-09-22.
-Статус: спека утверждена по секциям, реализация не начата.
+Статус: реализована (ветка feat/info-providers).
 Слой 2 info-панели: движок (terminal-commander, спека
 `2026-09-21-info-panel-design.md`) готов; журнал (`2026-09-22-student-journal-design.md`)
 готов. Здесь — только то, что живёт в репо курса: провайдеры и манифест.
@@ -25,16 +25,19 @@ CLI с подкомандами и модуль на бокс; чистые фу
 
 | бокс | строки (по порядку) | стиль | Enter |
 |---|---|---|---|
-| **занятие** | `ср 24.09 20:00 · через 2 дня`; тема; плейлист `python-01-first-run · 35 мин` на модуль; `домашка до 23.09: python-01-first-run`; `буфер N мин` | заголовок `ok` сегодня / `warn` если план устарел; буфер `dim` | план → `session.yml`; модуль → `teacher/scenario.md` (нет — `module.yml`); домашка → `homework/<id>/task.md` |
+| **занятие** | `ср 24.09 20:00 · через 2 дня`; тема; плейлист `python/m-01-first-run · 35 мин` на модуль; `домашка до 23.09: python-01-first-run`; `буфер N мин` | заголовок `ok` сегодня / `warn` если план устарел; буфер `dim` | план → `session.yml`; модуль → `teacher/scenario.md` (нет — `module.yml`); домашка → `homework/<id>/task.md` |
 | **ученики** | `журнал · N занятий`; на активного ученика `Неля · был 3/4 · дз 2/3 · 14 б`; `без журнала: 2026-09-13` на каждое | ученик `warn` при хвостах; без журнала `warn` | первая → `run:<tui>`; без журнала → `run:<tui> --date D`; ученик → `run:<tui>` |
 | **домашки** | по выданным в журнале, свежие сверху: `python-01-first-run · сдано 1/3 · принято 0/3 · до 23.09`; домашка ближайшего плана, ещё не выданная — `не выдана` | все приняты `ok`; просрочка (due < today и не все приняты) `warn`; не выдана `dim` | `homework/<id>/task.md` |
-| **готовность** | модуль плейлиста ближайшего занятия: `python-01 · scenario ✓ live-code ✓ slides ✓ cheatsheet ✓ glossary ✓ · validate ✓`; строка домашки плана `task.md ✓/✗` | все ✓ `ok`; нет файла `warn`; `validate_module` вернул ошибки — `err` с первой ошибкой в тексте | сценарий модуля (нет — `module.yml`); домашка → `task.md` |
+| **готовность** | модуль плейлиста ближайшего занятия: `python/m-01-first-run · scenario ✓ live-code ✓ slides ✓ cheatsheet ✓ glossary ✓ · validate ✓`; строка домашки плана `task.md ✓/✗` | все ✓ `ok`; нет файла `warn`; `validate_module` вернул ошибки — `err` с первой ошибкой в тексте | сценарий модуля (нет — `module.yml`); домашка → `task.md` |
 | **курс** | `занятий проведено: N`; `модулей: done/всего`; по трекам `python 1/2 · devops 1/1 · …` | `dim` | GH Pages `https://dmitrtrc.github.io/Junior_IT/` |
 | **clock**, **git** | движок | | |
 
-`<tui>` = `tools/.venv/bin/python tools/journal/tui.py`. Нет ростера —
-«ученики» печатает одну строку `warn` «нет students/roster.yml», «домашки» —
-`dim` «нет журнала»; это не ошибки.
+`<tui>` = `tools/.venv/bin/python tools/journal/tui.py`. «был» в «учениках» —
+`present + late`. «занятий проведено» в «курсе» — считает планы с датой
+раньше today. Нет ростера — «ученики» печатает одну строку `warn` «нет
+students/roster.yml»; «домашки» без ростера показывает домашку ближайшего
+плана как `не выдана` (`dim`), а `нет журнала` — только когда показать
+нечего вовсе. Это не ошибки.
 
 Файлы анатомии для «готовности»: `teacher/scenario.md`, `shared/live-code.md`,
 `shared/slides.html`, `student/cheatsheet.html`, `student/glossary.md`.
@@ -45,13 +48,18 @@ CLI с подкомандами и модуль на бокс; чистые фу
 - **`common.py`** — `REPO_ROOT`; `Line(text, open=None, style=None)`;
   `emit(lines)` печатает `{"lines": [...]}` (`ensure_ascii=False`);
   `next_session(sessions, today) -> (session | None, stale: bool)`;
-  `countdown(day, today) -> str`; `weekday_ru(day)`; `module_dir(module_id)`,
-  `scenario_path(module_id)`, `homework_task(hw_id)`. Ничего про экран.
+  `countdown(day, today) -> str`; `weekday_ru(day)`; `fmt_day(day)`;
+  `as_date(value)`; `hw_id_from_ref(ref)`;
+  `scenario_target(module_id, repo_root=REPO_ROOT)`,
+  `module_dir(module_id, repo_root=REPO_ROOT)`, `homework_task(hw_id)`.
+  Ничего про экран.
 - **`lesson.py`, `students.py`, `homework.py`, `readiness.py`, `course.py`** —
   по одной чистой функции `lines(...) -> list[Line]`:
-  `lesson.lines(session, stale, today)`, `students.lines(group, tui_cmd)`,
-  `homework.lines(lessons, plans, today)`,
-  `readiness.lines(playlist_modules, validate_fn, repo_root)`,
+  `lesson.lines(session, stale, today, repo_root=REPO_ROOT)`,
+  `students.lines(group, tui_cmd=TUI_CMD)`,
+  `homework.lines(lessons, plans, today, next_plan=None, active_ids=None)`
+  (отметки считает только по активным ученикам; строка домашки пропускается,
+  если отметок не осталось), `readiness.lines(module_ids, repo_root, validate_fn)`,
   `course.lines(modules, sessions, today)`.
 - **`cli.py <box> [--today D] [--repo P] [--students R]`** — грузит данные
   (`build_course_map.load_modules/load_sessions/module_statuses`,
@@ -66,6 +74,10 @@ CLI с подкомандами и модуль на бокс; чистые фу
 - Отсутствие ростера/журнала — не ошибка (см. таблицу).
 - Нет ни одного `session.yml` — «занятие» печатает `warn` «планов нет»,
   «готовность» — `dim` «нет плейлиста».
+- stderr — всегда одна строка (`info: <первая строка ошибки>`), без сниппетов
+  YAML и путей внутри — приватность.
+- id модуля без `/` (трек без имени) — не исключение, а строка «модуля нет»
+  (в «готовности» `err`), как отсутствующий каталог модуля.
 
 ## Приватность
 

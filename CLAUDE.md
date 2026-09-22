@@ -145,6 +145,7 @@ JetBrains Mono 400/700. Эстетики демок: спорт — `Arial Black
 - Анатомия модуля (набор файлов, роли `shared/student/teacher`, блок `cs`) —
   `meta/module-anatomy.md`. Читать перед созданием или ревью модуля.
 - Валидация модулей: `cd tools && .venv/bin/python validate_modules.py ..`.
+- Вкладка `info` (tc-info): манифест `.zellij/info.yml`, провайдеры `tools/info/cli.py <box>`; проверка манифеста — `tools/tests/test_info_manifest.py`.
 - Карта курса на лендинге собирается из `module.yml` и `session.yml` генератором
   `tools/build_course_map.py` — руками её не редактировать; после занятия при
   расхождении факта с планом — поле `completed:` в `session.yml`.
