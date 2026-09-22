@@ -93,3 +93,23 @@ def test_empty_lesson_serialises_with_all_sections():
 
 def test_num():
     assert num(2.0) == 2 and isinstance(num(2.0), int) and num(0.5) == 0.5
+
+
+@pytest.mark.parametrize("patch, needle", [
+    ({"attendance": ["alice"]}, "attendance должна быть mapping"),
+    ({"homework": ["h"]}, "homework должна быть mapping"),
+    ({"homework": {"h": ["alice"]}}, "homework h должна быть mapping"),
+    ({"points": {"who": "alice"}}, "points должна быть list"),
+    ({"points": [{"who": "alice", "amount": True}]}, "числом"),
+    ({"points": [{"who": "alice", "amount": "много"}]}, "числом"),
+    ({"notes": ["x"]}, "notes должна быть mapping"),
+])
+def test_parse_lesson_bad_section_shapes(patch, needle):
+    with pytest.raises(JournalError, match=needle):
+        parse_lesson({**LESSON, **patch}, DAY, {"alice", "bob"}, path="l.yml")
+
+
+@pytest.mark.parametrize("bad", [{"presence": "abc"}, {"late": True}, {"presence": None}])
+def test_parse_tariff_rejects_non_numeric(bad):
+    with pytest.raises(JournalError, match="числом"):
+        parse_tariff(bad)

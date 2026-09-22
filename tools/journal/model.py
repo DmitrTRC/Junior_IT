@@ -93,6 +93,22 @@ def _as_date(value, what: str, path) -> date:
         raise JournalError(f"{path}: {what} — не дата: {value!r}", path) from None
 
 
+def _section(data: dict, key: str, kind: type, path):
+    """Секция манифеста нужной формы; отсутствие/null — пустая секция."""
+    value = data.get(key)
+    if value is None:
+        return {} if kind is dict else []
+    if not isinstance(value, kind):
+        raise JournalError(f"{path}: {key} должна быть {'mapping' if kind is dict else 'list'}", path)
+    return value
+
+
+def _number(value, what: str, path) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise JournalError(f"{path}: {what} должен быть числом, а не {value!r}", path)
+    return float(value)
+
+
 def parse_roster(data, path="roster.yml") -> list[Student]:
     if not isinstance(data, dict) or not isinstance(data.get("students"), list):
         raise JournalError(f"{path}: нужен ключ students со списком", path)
@@ -132,7 +148,7 @@ def parse_tariff(data) -> Tariff:
     unknown = [k for k in data if k not in Tariff.__dataclass_fields__]
     if unknown:
         raise JournalError(f"points.yml: неизвестные ключи {unknown}", "points.yml")
-    return Tariff(**{k: float(v) for k, v in data.items()})
+    return Tariff(**{k: _number(v, f"points.yml: {k}", "points.yml") for k, v in data.items()})
 
 
 def parse_lesson(data, file_date: date, roster_ids: set[str], path="lesson.yml") -> LessonRecord:
@@ -147,13 +163,15 @@ def parse_lesson(data, file_date: date, roster_ids: set[str], path="lesson.yml")
             raise JournalError(f"{path}: {where} — ученика {sid!r} нет в ростере", path)
 
     attendance: dict[str, str] = {}
-    for sid, status in (data.get("attendance") or {}).items():
+    for sid, status in _section(data, "attendance", dict, path).items():
         known(sid, "attendance")
         if status not in ATTENDANCE:
             raise JournalError(f"{path}: attendance {sid}: неизвестный статус {status!r}", path)
         attendance[sid] = status
     homework: dict[str, dict[str, HomeworkMark]] = {}
-    for hw_id, marks in (data.get("homework") or {}).items():
+    for hw_id, marks in _section(data, "homework", dict, path).items():
+        if marks is not None and not isinstance(marks, dict):
+            raise JournalError(f"{path}: homework {hw_id} должна быть mapping", path)
         homework[hw_id] = {}
         for sid, raw in (marks or {}).items():
             known(sid, f"homework {hw_id}")
@@ -166,17 +184,17 @@ def parse_lesson(data, file_date: date, roster_ids: set[str], path="lesson.yml")
                 at=_as_date(raw["at"], f"at у {hw_id}/{sid}", path) if raw.get("at") else None,
                 note=raw.get("note"), reworked=bool(raw.get("reworked", False)))
     points: list[PointEntry] = []
-    for raw in data.get("points") or []:
+    for raw in _section(data, "points", list, path):
         if not isinstance(raw, dict) or "who" not in raw or "amount" not in raw:
             raise JournalError(f"{path}: запись points без who/amount", path)
         known(raw["who"], "points")
         by = raw.get("by", "teacher")
         if by not in SOURCES:
             raise JournalError(f"{path}: points {raw['who']}: неизвестный источник {by!r}", path)
-        points.append(PointEntry(who=raw["who"], amount=float(raw["amount"]),
+        points.append(PointEntry(who=raw["who"], amount=_number(raw["amount"], f"points {raw['who']}: amount", path),
                                  reason=str(raw.get("reason", "")), by=by))
     notes: dict[str, str] = {}
-    for sid, text in (data.get("notes") or {}).items():
+    for sid, text in _section(data, "notes", dict, path).items():
         known(sid, "notes")
         notes[sid] = str(text)
     return LessonRecord(date=rec_date, attendance=attendance, homework=homework,
