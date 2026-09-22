@@ -82,7 +82,10 @@ def run(argv, today: date | None = None) -> int:
         elif args.cmd == "note":
             ops.set_note(args.date, args.student, args.text, root)
         elif args.cmd == "report":
-            print(format_report(stats.collect(root, repo, today, args.since), args.student))
+            g = stats.collect(root, repo, today, args.since)
+            print(format_report(g, args.student))
+            if args.student and not any(s.id == args.student for s in g.students):
+                return 2
         elif args.cmd == "json":
             print(json.dumps(stats.to_json_dict(stats.collect(root, repo, today, args.since)),
                              ensure_ascii=False, indent=2))

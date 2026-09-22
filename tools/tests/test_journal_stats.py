@@ -1,7 +1,7 @@
 from datetime import date
 
 from conftest import DAY, TODAY
-from journal import ops, stats, store
+from journal import ops, stats
 
 
 def test_student_and_group_stats(journal_root, course_root):

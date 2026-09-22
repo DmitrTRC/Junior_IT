@@ -16,6 +16,10 @@ if [[ ! -d "$SRC" ]]; then
   echo "$stamp: нет источника $SRC, пропуск"
   exit 0
 fi
+if [[ ! -f "$SRC/roster.yml" ]]; then
+  echo "$stamp: в $SRC нет roster.yml — источник пуст, пропуск"
+  exit 0
+fi
 
 mkdir -p "$DEST" || { echo "$stamp: не создать $DEST"; exit 1; }
 if rsync -a --delete "$SRC/" "$DEST/"; then

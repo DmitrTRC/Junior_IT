@@ -51,6 +51,9 @@ def test_report_and_json(journal_root, course_root, capsys):
     assert run(["--root", root, "--repo", repo, "json"], today=TODAY) == 0
     data = json.loads(capsys.readouterr().out)
     assert data["students"][0]["id"] == "alice" and data["missing_journals"] == ["2026-09-13"]
+    assert run(["--root", root, "--repo", repo, "report", "zed"], today=TODAY) == 2
+    out = capsys.readouterr().out
+    assert "zed" in out and "нет в активном ростере" in out
 
 
 def test_broken_data_is_3(journal_root, capsys):

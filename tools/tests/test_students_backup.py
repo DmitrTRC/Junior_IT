@@ -16,6 +16,17 @@ def test_skips_when_share_not_mounted(tmp_path):
     assert proc.returncode == 0 and "не смонтирована" in proc.stdout
 
 
+def test_skips_when_source_is_empty(tmp_path):
+    src, share = tmp_path / "students", tmp_path / "share"
+    src.mkdir()
+    share.mkdir()
+    dest = share / "JuniorIT" / "students"
+    proc = _run({"JUNIOR_IT_STUDENTS": str(src), "STUDENTS_BACKUP_SHARE": str(share)}, tmp_path)
+    assert proc.returncode == 0, proc.stderr
+    assert "источник пуст" in proc.stdout
+    assert not dest.exists()
+
+
 def test_syncs_and_deletes_stale(tmp_path):
     src, share = tmp_path / "students", tmp_path / "share"
     (src / "journal").mkdir(parents=True)

@@ -12,7 +12,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 try:
     from journal import store
     from journal.model import JournalError
-except ModuleNotFoundError:  # системный python без pyyaml — карточка не должна падать
+except ModuleNotFoundError as exc:  # системный python без pyyaml — карточка не должна падать
+    if exc.name != "yaml":
+        raise
     print("группа: нужен tools/.venv (pyyaml)")
     raise SystemExit(0)
 
