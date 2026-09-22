@@ -19,8 +19,6 @@ def lines(lessons, plans: dict, today: date, next_plan: dict | None = None, acti
                 continue
             total = len(marks)
             submitted = sum(1 for m in marks.values() if m.status in SUBMITTED)
-            if not submitted:
-                continue
             accepted = sum(1 for m in marks.values() if m.status == "accepted")
             text = f"{hw_id} · сдано {submitted}/{total} · принято {accepted}/{total}"
             if due:

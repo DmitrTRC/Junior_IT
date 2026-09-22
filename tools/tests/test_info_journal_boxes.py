@@ -74,4 +74,6 @@ def test_homework_lines_ignores_marks_of_left_students(journal_root, course_root
     filtered = homework.lines(lessons, plans, TODAY, active_ids=active)
     assert filtered[0].text.startswith("python-01-first-run · сдано 1/2 · принято 0/2")
     only_carol = homework.lines(lessons, plans, TODAY, active_ids={"carol"})
-    assert [l.text for l in only_carol] == ["нет журнала"]
+    assert [l.text for l in only_carol] == ["python-01-first-run · сдано 0/1 · принято 0/1 · до 23.09"]
+    assert only_carol[0].style == "warn"                       # просрочена, ничего не принято
+    assert homework.lines(lessons, plans, TODAY, active_ids={"nobody"}) == homework.lines([], {}, TODAY)
