@@ -210,6 +210,10 @@ Fraunces, Rajdhani.
 - Шпаргалку + домашку отправлять В КОНЦЕ урока, не до
 - Скриншоты домашек собирать в `students/<имя>/`
 
+Журнал: `students/roster.yml` (шаблон `tools/journal/roster.example.yml`), занятия в
+`students/journal/<дата>.yml`, ввод — `tools/.venv/bin/python tools/journal/tui.py`,
+автоматика — `tools/journal/cli.py`; бэкап на NAS раз в час.
+
 ---
 
 ## 🔄 Что изменилось после первого урока

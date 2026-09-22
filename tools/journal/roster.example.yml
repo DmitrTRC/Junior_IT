@@ -1,0 +1,18 @@
+# Пример students/roster.yml — скопировать в students/roster.yml и заполнить своими учениками.
+# students/ приватен и не коммитится (.gitignore); этот файл — единственный пример в гите.
+students:
+  - id: alice            # [a-z0-9-], ключ везде
+    name: "Алиса"         # как обращаемся
+    full_name: "Алиса Комарова"   # опционально
+    nick: "alice_k"       # ник в Telegram/Zoom для автоматики
+    zoom_names: ["Алиса", "Alice K"]   # как Zoom подписывает участника
+    platform: mac         # mac | win
+    contacts: {tg: "@alice_k", email: "alice@example.com"}
+    parent: {name: "Мария Комарова", tg: "@maria_k", email: "maria@example.com"}
+    joined: 2026-09-09
+    status: active        # active | paused | left
+    notes: "любит доходить до сути сама"
+  - id: bob
+    name: "Боб"
+    platform: win
+    status: active

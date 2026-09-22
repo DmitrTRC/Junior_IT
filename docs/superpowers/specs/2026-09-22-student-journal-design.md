@@ -74,7 +74,9 @@ notes:
 
 - `date` обязателен и равен имени файла.
 - Все `id` учеников существуют в ростере — иначе ошибка загрузки.
-- `by` ∈ `teacher | zoom | telegram` — источник записи.
+- `by` ∈ `teacher | zoom | telegram` — источник записи; есть у записи `points`
+  и у отметки домашки (`homework.<hw>.<id>.by`, опционально, по умолчанию
+  `teacher`).
 - Статусы домашки: `issued → submitted → accepted | rework`, из `rework` снова
   `submitted`. Другие переходы — отказ.
 
@@ -111,14 +113,17 @@ quiz_per_correct: 0.25    # зачёт по тренажёру: балл за п
   атомарная (temp + rename), порядок ключей фиксирован — round-trip без диффа.
 - **`ops.py`** — операции; каждая идемпотентна, создаёт файл занятия при
   необходимости, возвращает изменённую запись:
-  - `mark_attendance(date, student, status)` — при `present`/`late`
-    начисляет тарифный балл «присутствие»/«опоздание», если такой записи
-    от `teacher` за этот день ещё нет; при смене на `absent` — снимает её.
+  - `mark_attendance(date, student, status, by="teacher")` — при `present`/
+    `late` начисляет тарифный балл «присутствие»/«опоздание» с источником
+    `by`, если такой записи за этот день ещё нет; при смене статуса —
+    снимает предыдущую запись независимо от того, каким `by` она была
+    начислена.
   - `issue_homework(date, hw_id=None, students=None)` — по умолчанию
     `homework.items` из `session.yml` × присутствовавшие (`present|late|recording`).
-  - `set_homework(date, hw_id, student, status, note=None)` — проверка
-    перехода; `accepted` начисляет `homework_accepted` (или
-    `homework_after_rework`, если до этого был `rework`), однократно.
+  - `set_homework(date, hw_id, student, status, note=None, by="teacher")` —
+    проверка перехода; `accepted` начисляет `homework_accepted` (или
+    `homework_after_rework`, если до этого был `rework`), однократно, с
+    источником `by`.
   - `add_points(date, student, amount, reason, by="teacher")` — только
     дописывает.
   - `set_note(date, student, text)`.
@@ -161,6 +166,10 @@ Textual (добавить в `tools/requirements.txt`). Три экрана, б�
 Цвета — роли темы (`green`/`yellow`/`red`/`dim`), без хексов.
 
 ## Стыковка с info-панелью
+
+Реализация `tools/info/students.py` — часть слоя 2 info-панели (отдельная
+работа, не этой спеки); здесь фиксируется только формат, который он должен
+отдавать.
 
 - `tools/info/students.py` (слой 2 info-панели) печатает JSON lines: строка на
   ученика `Алиса · 3/4 · дз 2/3 · 14 б` (`warn` при хвосте), первая строка
