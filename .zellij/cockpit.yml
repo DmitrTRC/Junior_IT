@@ -27,5 +27,10 @@ cards:
   - id: students
     type: status
     label: "ученики"
-    status: "python3 tools/group_status.py"
+    status: "tools/.venv/bin/python tools/group_status.py"
     interval: 300
+
+  - id: students-backup
+    type: schedule
+    label: "students → NAS"
+    launchd: "com.juniorit.students-backup"
