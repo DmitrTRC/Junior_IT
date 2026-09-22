@@ -32,8 +32,6 @@
       "Bash(sqlite3 *)",
       "Bash(mysql *)"
     ],
-    "deny": [
-      "Read(./students/**)"
-    ]
+    "deny": []
   }
 }
