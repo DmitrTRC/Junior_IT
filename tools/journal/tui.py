@@ -21,7 +21,7 @@ from textual.screen import Screen  # noqa: E402
 from textual.widgets import DataTable, Footer, Header, Input, Label, ListItem, ListView, Static  # noqa: E402
 
 from journal import ops, stats, store  # noqa: E402
-from journal.model import JournalError, LessonRecord, TransitionError, num  # noqa: E402
+from journal.model import JournalError, LessonRecord, num  # noqa: E402
 
 GLYPH = {"present": "●", "late": "◐", "absent": "○", "recording": "▶"}
 HISTORY = 6
@@ -55,7 +55,8 @@ class JournalApp(App):
 
     def on_mount(self) -> None:
         try:
-            store.load_lessons(self.root)
+            stats.collect(self.root, self.repo_root, self.today)
+            store.load_tariff(self.root)
         except JournalError as exc:
             self.push_screen(ErrorScreen(exc))
             return
@@ -71,6 +72,8 @@ class JournalApp(App):
             self._opener(["tc-edit", str(path)])
         except Exception as exc:  # opener не найден — тост, не падение
             self.say(f"tc-edit: {exc}", "error")
+        else:
+            self.say(f"открываю {path.name}")
 
 
 class ErrorScreen(Screen):
@@ -116,6 +119,7 @@ class GroupScreen(Screen):
     def reload(self) -> None:
         app = self.app
         table = self.query_one(DataTable)
+        keep = table.cursor_row
         table.clear()
         g = stats.collect(app.root, app.repo_root, app.today)
         lessons = store.load_lessons(app.root)[-HISTORY:]
@@ -123,6 +127,8 @@ class GroupScreen(Screen):
             glyphs = "".join(GLYPH.get(rec.attendance.get(s.id), "·") for rec in lessons)
             tails = Text(str(len(s.tails)), style="yellow" if s.tails else "dim")
             table.add_row(s.name, glyphs, str(num(s.points_total)), f"{s.hw_accepted}/{s.hw_issued}", tails, key=s.id)
+        if keep is not None and table.row_count:
+            table.move_cursor(row=min(keep, table.row_count - 1))
         self.sub_title = f"занятий {g.lessons_total}" + (
             f" · без журнала: {len(g.missing_journals)}" if g.missing_journals else "")
 
@@ -202,8 +208,9 @@ class LessonScreen(Screen):
         table = self.query_one(DataTable)
         keep = table.cursor_row
         table.clear()
-        roster = [s for s in store.load_roster(app.root) if s.status == "active"]
-        self.rec = store.load_lesson(self.day, app.root, roster) or LessonRecord(date=self.day)
+        full = store.load_roster(app.root)
+        self.rec = store.load_lesson(self.day, app.root, full) or LessonRecord(date=self.day)
+        roster = [s for s in full if s.status == "active"]
         for s in roster:
             status = self.rec.attendance.get(s.id)
             hw = ", ".join(f"{hid}: {marks[s.id].status}"
@@ -229,6 +236,7 @@ class LessonScreen(Screen):
     def action_attend(self) -> None:
         sid = _selected_key(self.query_one(DataTable))
         if sid is None:
+            self.app.say("нет ученика в фокусе", "warning")
             return
         new = ATTEND_CYCLE[self.rec.attendance.get(sid)]
         if self._do(ops.mark_attendance, self.day, sid, new, self.app.root):
@@ -237,6 +245,7 @@ class LessonScreen(Screen):
     def action_hw_next(self) -> None:
         sid = _selected_key(self.query_one(DataTable))
         if sid is None:
+            self.app.say("нет ученика в фокусе", "warning")
             return
         ids = self._hw_ids(sid)
         if not ids:
@@ -255,10 +264,12 @@ class LessonScreen(Screen):
     def action_hw_rework(self) -> None:
         sid = _selected_key(self.query_one(DataTable))
         if sid is None:
+            self.app.say("нет ученика в фокусе", "warning")
             return
         ids = self._hw_ids(sid)
         if not ids:
             self.app.say(f"{sid}: домашка не выдана", "warning")
+            return
         for hid in ids:
             if self._do(ops.set_homework, self.day, hid, sid, "rework", None, self.app.root, self.app.today):
                 self.app.say(f"{hid} {sid}: rework")
@@ -266,6 +277,7 @@ class LessonScreen(Screen):
     def _prompt(self, mode: str, placeholder: str) -> None:
         sid = _selected_key(self.query_one(DataTable))
         if sid is None:
+            self.app.say("нет ученика в фокусе", "warning")
             return
         self.mode, self.mode_sid = mode, sid
         prompt = self.query_one(Input)

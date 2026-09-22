@@ -93,6 +93,72 @@ async def test_invalid_transition_is_a_toast_not_a_crash(journal_root, course_ro
 
 
 @pytest.mark.asyncio
+async def test_lesson_screen_tolerates_left_student_records(journal_root, course_root):
+    import yaml
+    path = journal_root / "journal" / "2026-09-20.yml"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    data["attendance"]["carol"] = "present"      # carol в ростере со status left
+    path.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    app = _app(journal_root, course_root, date_arg=DAY)
+    async with app.run_test(size=(120, 30)) as pilot:
+        await pilot.pause()
+        assert isinstance(app.screen, LessonScreen)
+        table = app.screen.query_one("#lesson", DataTable)
+        assert table.row_count == 2                # alice, bob; carol не показывается
+
+
+@pytest.mark.asyncio
+async def test_lesson_actions_toast_when_no_student_focused(journal_root, course_root):
+    import yaml
+    path = journal_root / "roster.yml"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    for s in data["students"]:
+        s["status"] = "left"
+    path.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    app = _app(journal_root, course_root, date_arg=DAY)
+    async with app.run_test(size=(120, 30)) as pilot:
+        await pilot.pause()
+        table = app.screen.query_one("#lesson", DataTable)
+        assert table.row_count == 0
+        await pilot.press("space")
+        await pilot.pause()
+        await pilot.press("h")
+        await pilot.pause()
+        await pilot.press("r")
+        await pilot.pause()
+        await pilot.press("plus")
+        await pilot.pause()
+        assert _toasts(app).count("нет ученика в фокусе") == 4
+
+
+@pytest.mark.asyncio
+async def test_group_screen_reload_keeps_cursor(journal_root, course_root):
+    app = _app(journal_root, course_root)
+    async with app.run_test(size=(120, 30)) as pilot:
+        await pilot.pause()
+        table = app.screen.query_one("#group", DataTable)
+        table.move_cursor(row=1)
+        await pilot.pause()
+        await pilot.press("enter")
+        await pilot.pause()
+        assert isinstance(app.screen, StudentScreen)
+        await pilot.press("escape")
+        await pilot.pause()
+        assert isinstance(app.screen, GroupScreen)
+        assert app.screen.query_one("#group", DataTable).cursor_row == 1
+
+
+@pytest.mark.asyncio
+async def test_error_screen_on_broken_plan(journal_root, course_root):
+    (course_root / "playground" / "2026-09-13" / "session.yml").write_text("theme: [\n", encoding="utf-8")
+    app = _app(journal_root, course_root)
+    async with app.run_test(size=(120, 30)) as pilot:
+        await pilot.pause()
+        assert isinstance(app.screen, ErrorScreen)
+        assert "2026-09-13" in str(app.screen.error)
+
+
+@pytest.mark.asyncio
 async def test_error_screen_on_broken_roster(journal_root, course_root):
     (journal_root / "roster.yml").write_text("students: [\n", encoding="utf-8")
     opened = []
@@ -103,4 +169,5 @@ async def test_error_screen_on_broken_roster(journal_root, course_root):
         await pilot.press("e")
         await pilot.pause()
         assert opened == [["tc-edit", str(journal_root / "roster.yml")]]
+        assert any("открываю roster.yml" in m for m in _toasts(app))
         await pilot.press("q")
