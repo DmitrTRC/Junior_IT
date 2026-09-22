@@ -7,11 +7,6 @@ cards:
     ready: "curl -sf --max-time 3 localhost:8000 >/dev/null"
     autostart: false
 
-  - id: graphify
-    type: process
-    label: "graphify watch"
-    start: "graphify watch ."
-
   - id: zoom
     type: schedule
     label: "zoom-pipeline"
