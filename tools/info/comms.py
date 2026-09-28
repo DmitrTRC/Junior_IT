@@ -8,9 +8,16 @@ STALE_MIN = 5
 
 
 def _age_min(ts: str | None, now: datetime) -> int | None:
+    """Возраст метки в минутах. Наивную метку считаем местным временем, мусор — отсутствием метки."""
     if not ts:
         return None
-    return max(0, int((now - datetime.fromisoformat(ts)).total_seconds() // 60))
+    try:
+        stamp = datetime.fromisoformat(ts)
+    except (ValueError, TypeError):
+        return None
+    if stamp.tzinfo is None:
+        stamp = stamp.astimezone()
+    return max(0, int((now.astimezone() - stamp).total_seconds() // 60))
 
 
 def lines(status: dict | None, last_tick: dict | None, now: datetime) -> list[Line]:

@@ -280,3 +280,15 @@ def test_teacher_claude_command(ctx, tmp_path):
 
 def test_plain():
     assert apply.plain("<b>Итог</b> &amp; <a href=\"u\">ссылка</a>") == "Итог & ссылка"
+
+
+def test_apply_skips_traversal_name(ctx, tmp_path, journal_root):
+    it = item(tmp_path, **{"from": ctx.identity.by_student("alice").comms_id, "kind": "document",
+                           "files": ["../evil.py", "ok.py"]})
+    (it.files_dir.parent / "evil.py").write_bytes(b"evil")
+    (it.files_dir / "ok.py").write_bytes(b"print(1)")
+    apply.apply_item(it, ctx)
+    assert any("вложение с подозрительным именем пропущено" in s["text"] for s in staged(ctx))
+    kept = sorted(p.name for p in (journal_root / "submissions").rglob("*") if p.is_file())
+    assert kept == ["ok.py"]
+    assert not list((ctx.cfg.local_dir / "pending").rglob("evil.py"))

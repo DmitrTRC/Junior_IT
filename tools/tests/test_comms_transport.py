@@ -12,8 +12,8 @@ from comms.transport import TransportError, pull, push
 class FakeRunner:
     """Записывает команды; rsync inbox имитирует приход элемента, push — успех/провал по флагу."""
 
-    def __init__(self, local: Path, fail_push=False):
-        self.calls, self.local, self.fail_push = [], local, fail_push
+    def __init__(self, local: Path, fail_push=False, fail_json=False):
+        self.calls, self.local, self.fail_push, self.fail_json = [], local, fail_push, fail_json
 
     def __call__(self, cmd, *, timeout, stdin_text=None):
         self.calls.append(cmd)
@@ -21,8 +21,9 @@ class FakeRunner:
         if cmd[0] == "rsync" and cmd[-1].endswith("/inbox/"):
             (self.local / "inbox").mkdir(parents=True, exist_ok=True)
             (self.local / "inbox" / "00000000T000000000000-aaaaaaaa.json").write_text('{"id":"x","kind":"text"}', encoding="utf-8")
-        if cmd[0] == "rsync" and "/outbox/" in cmd[-1] and self.fail_push:
-            rc = 23
+        if cmd[0] == "rsync" and "/outbox/" in cmd[-1]:
+            if self.fail_push or (self.fail_json and "--include" in cmd):
+                rc = 23
         return subprocess.CompletedProcess(cmd, rc, "", "rsync error" if rc else "")
 
 
@@ -36,20 +37,33 @@ def test_pull_fetches_inbox_status_and_touches_marker(tmp_path):
     assert pull(c, r) == 1
     rsync_inbox, ssh_cleanup, rsync_status = r.calls[0], r.calls[1], r.calls[2]
     assert rsync_inbox[:3] == ["rsync", "-a", "--remove-source-files"]
+    assert rsync_inbox[rsync_inbox.index("--exclude") + 1] == "*.tmp"
     assert rsync_inbox[-2] == "courier@hp:/srv/courier/queue/inbox/" and rsync_inbox[-1] == str(tmp_path / "local" / "inbox") + "/"
-    assert ssh_cleanup[0] == "ssh" and "touch /srv/courier/queue/.last_pull" in ssh_cleanup[-1] and "-empty -delete" in ssh_cleanup[-1]
+    assert ssh_cleanup[0] == "ssh" and "touch /srv/courier/queue/.last_pull" in ssh_cleanup[-1]
+    assert "-empty -mmin +1 -delete" in ssh_cleanup[-1]
     assert rsync_status[-2] == "courier@hp:/srv/courier/queue/status.json"
 
 
 def test_push_two_passes_then_clears_staging(tmp_path):
     c, r = cfg(tmp_path), FakeRunner(tmp_path / "local")
-    Outbox(c.local_dir / "outbox-staging").teacher("x", files={"a.py": b"1"})
+    item_id = Outbox(c.local_dir / "outbox-staging").teacher("x", files={"a.py": b"1"})
     assert push(c, r) == 1
     first, second = [call for call in r.calls if call[0] == "rsync"]
     assert "--exclude" in first and first[first.index("--exclude") + 1] == "*.json"
+    assert "--remove-source-files" not in first
     assert second[second.index("--include") + 1] == "*.json" and second[second.index("--exclude") + 1] == "*"
+    assert "--remove-source-files" in second               # JSON убирает сам rsync, только переданный
     assert first[-1] == "courier@hp:/srv/courier/queue/outbox/"
-    assert read_items(c.local_dir / "outbox-staging") == []
+    assert not (c.local_dir / "outbox-staging" / item_id).exists()
+
+
+def test_push_partial_failure_keeps_only_untransferred(tmp_path):
+    c, r = cfg(tmp_path), FakeRunner(tmp_path / "local", fail_json=True)
+    item_id = Outbox(c.local_dir / "outbox-staging").teacher("x", files={"a.py": b"1"})
+    with pytest.raises(TransportError):
+        push(c, r)
+    assert len(read_items(c.local_dir / "outbox-staging")) == 1
+    assert (c.local_dir / "outbox-staging" / item_id / "a.py").is_file()
 
 
 def test_push_failure_keeps_staging(tmp_path):

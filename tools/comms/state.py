@@ -8,7 +8,8 @@ from pathlib import Path
 class State:
     def __init__(self, path: Path):
         self.path = Path(path)
-        self.data: dict = {"processed": {}, "pending": {}, "github": {}, "tick": 0,
+        self.fresh = not self.path.is_file()              # первый запуск: файла состояния ещё не было
+        self.data: dict = {"processed": {}, "pending": {}, "github": {}, "failures": {}, "tick": 0,
                            "reminder_sent_for": None, "digest_sent_on": None, "drafts_seen": []}
         if self.path.is_file():
             self.data.update(json.loads(self.path.read_text(encoding="utf-8")))

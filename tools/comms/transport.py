@@ -23,10 +23,11 @@ def pull(cfg: Config, runner) -> int:
     local_inbox.mkdir(parents=True, exist_ok=True)
     before = {i.id for i in read_items(local_inbox)}
     remote = f"{cfg.hp_host}:{cfg.hp_queue_dir}"
-    _ok(runner(["rsync", "-a", "--remove-source-files", "-e", " ".join(SSH),
+    _ok(runner(["rsync", "-a", "--remove-source-files", "--exclude", "*.tmp", "-e", " ".join(SSH),
                 f"{remote}/inbox/", f"{local_inbox}/"], timeout=RSYNC_TIMEOUT), "rsync inbox")
-    _ok(runner([*SSH, cfg.hp_host,
-                f"find {cfg.hp_queue_dir}/inbox -mindepth 1 -type d -empty -delete; touch {cfg.hp_queue_dir}/.last_pull"],
+    _ok(runner([*SSH, cfg.hp_host,                        # -mmin +1: каталог моложе минуты ещё наполняется
+                f"find {cfg.hp_queue_dir}/inbox -mindepth 1 -type d -empty -mmin +1 -delete; "
+                f"touch {cfg.hp_queue_dir}/.last_pull"],
                timeout=RSYNC_TIMEOUT), "ssh cleanup")
     runner(["rsync", "-a", "-e", " ".join(SSH), f"{remote}/status.json", str(cfg.local_dir / "status.json")],
            timeout=RSYNC_TIMEOUT)                      # статус — best effort
@@ -41,8 +42,9 @@ def push(cfg: Config, runner) -> int:
     remote = f"{cfg.hp_host}:{cfg.hp_queue_dir}/outbox/"
     _ok(runner(["rsync", "-a", "--exclude", "*.json", "-e", " ".join(SSH), f"{staging}/", remote],
                timeout=RSYNC_TIMEOUT), "rsync вложений")
-    _ok(runner(["rsync", "-a", "--include", "*.json", "--exclude", "*", "-e", " ".join(SSH), f"{staging}/", remote],
-               timeout=RSYNC_TIMEOUT), "rsync json")
-    for child in staging.iterdir():
-        shutil.rmtree(child) if child.is_dir() else child.unlink()
+    _ok(runner(["rsync", "-a", "--remove-source-files", "--include", "*.json", "--exclude", "*", "-e", " ".join(SSH),
+                f"{staging}/", remote], timeout=RSYNC_TIMEOUT), "rsync json")
+    for child in staging.iterdir():                      # каталоги вложений: их содержимое уже уехало
+        if child.is_dir():
+            shutil.rmtree(child)
     return len(items)

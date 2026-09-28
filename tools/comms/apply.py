@@ -48,6 +48,11 @@ class Context:
         return self.cfg.local_dir / "pending" / item_id
 
 
+def suspicious_name(name: str) -> bool:
+    """Имя вложения, которому нельзя доверять: путь, точки, скрытый файл."""
+    return name != Path(name).name or name in (".", "..") or name.startswith(".")
+
+
 def plain(html_text: str) -> str:
     return html.unescape(re.sub(r"<[^>]+>", "", html_text))
 
@@ -85,6 +90,8 @@ def _stash_files(ctx: Context, item_id: str, files: dict[str, bytes]) -> None:
     target = ctx.pending_dir(item_id)
     target.mkdir(parents=True, exist_ok=True)
     for name, content in files.items():
+        if suspicious_name(name):
+            continue
         (target / name).write_bytes(content)
 
 
@@ -155,7 +162,11 @@ def _handle_person(ctx: Context, item: Item) -> None:
     if item.data.get("download_error"):
         ctx.outbox.teacher(f"{esc(name)}: файл не дошёл до бота ({esc(item.data['download_error'])}), сдача не записана")
         return
-    files = {n: (item.files_dir / n).read_bytes() for n in item.data.get("files") or [] if (item.files_dir / n).is_file()}
+    names = list(item.data.get("files") or [])
+    clean = [n for n in names if not suspicious_name(n)]
+    if len(clean) != len(names):
+        ctx.outbox.teacher(f"{esc(name)}: вложение с подозрительным именем пропущено")
+    files = {n: (item.files_dir / n).read_bytes() for n in clean if (item.files_dir / n).is_file()}
     is_submission = (person.role == "student" and ctx.cfg.telegram_fallback
                      and item.data["kind"] in ("photo", "document"))
     if is_submission:
@@ -171,6 +182,8 @@ def _handle_person(ctx: Context, item: Item) -> None:
         keep = ctx.cfg.students_root / "submissions" / person.student / hw_id / item.id
         keep.mkdir(parents=True, exist_ok=True)
         for n, content in files.items():
+            if suspicious_name(n):
+                continue
             (keep / n).write_bytes(content)
         summary = f"telegram: {', '.join(files) or 'без файлов'}"
         try:

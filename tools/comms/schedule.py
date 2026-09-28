@@ -7,7 +7,7 @@ from pathlib import Path
 from comms import course
 from comms.config import Config
 from comms.drafts import lesson_date, max_section, new_drafts
-from comms.homework_text import homework_block
+from comms.homework_text import _balance, homework_block
 from comms.outbox import Outbox, esc
 from comms.state import State
 from info.common import next_session, weekday_ru
@@ -15,10 +15,12 @@ from journal import stats as journal_stats
 
 TAIL_RE = re.compile(r"^(?P<hw>[^:]+): просрочена с (?P<since>\d{4}-\d{2}-\d{2})$")
 SEND_BUTTONS = [("отправить в группу", "send:{id}"), ("отбросить", "discard:{id}")]
+PREVIEW_LIMIT = 3900                                      # предпросмотр Димасу: с запасом до 4096 Telegram
+POST_LIMIT = 4000                                         # сам пост в группу с домашками
 
 
 def _stage_post(state: State, outbox: Outbox, cfg: Config, text: str, files: dict[str, bytes], max_copy: bool) -> str:
-    preview = text if len(text) < 3900 else text[:3900] + "…"
+    preview = text if len(text) < PREVIEW_LIMIT else _balance(text[:PREVIEW_LIMIT]).rstrip() + "…"
     item_id = outbox.teacher_with_self_buttons(preview, SEND_BUTTONS, files=files or None)
     pending_dir = cfg.local_dir / "pending" / item_id
     if files:
@@ -74,7 +76,11 @@ def _reminder(cfg: Config, state: State, outbox: Outbox, now: datetime) -> bool:
 
 def _posts(cfg: Config, state: State, outbox: Outbox) -> list[str]:
     done = []
-    for path in new_drafts(course.drafts_dir(cfg.repo_root), state.data["drafts_seen"]):
+    drafts_dir = course.drafts_dir(cfg.repo_root)
+    if state.fresh and not state.data["drafts_seen"]:     # первый запуск: старые черновики не рассылаем
+        state.data["drafts_seen"] = [p.name for p in new_drafts(drafts_dir, [])]
+        return done
+    for path in new_drafts(drafts_dir, state.data["drafts_seen"]):
         state.data["drafts_seen"].append(path.name)
         section = max_section(path.read_text(encoding="utf-8"))
         if not section:
@@ -82,9 +88,12 @@ def _posts(cfg: Config, state: State, outbox: Outbox) -> list[str]:
         day = lesson_date(path)
         plan = course.plan_for(cfg.repo_root, day) if day else None
         blocks, files = [], {}
-        for hw_id in (course.homework_ids(plan) if plan else []):
+        hw_ids = course.homework_ids(plan) if plan else []
+        budget = max(800, POST_LIMIT - len(esc(section)) - 200) // max(1, len(hw_ids))
+        for hw_id in hw_ids:
             url = course.page_url(cfg.pages_url, hw_id)
-            blocks.append(homework_block(course.task_text(cfg.repo_root, hw_id), hw_id, course.due(plan), url))
+            blocks.append(homework_block(course.task_text(cfg.repo_root, hw_id), hw_id, course.due(plan), url,
+                                         limit=budget))
             files.update(course.attachments(cfg.repo_root, hw_id))
         _stage_post(state, outbox, cfg, post_text(section, blocks), files, max_copy=True)
         done.append(f"post:{path.name}")
@@ -95,8 +104,8 @@ def _digest(cfg: Config, state: State, outbox: Outbox, now: datetime, tails_fn) 
     today = now.date().isoformat()
     if now.hour < cfg.digest_hour or state.data.get("digest_sent_on") == today:
         return False
+    tails = tails_fn()                                    # сперва журнал: его ошибка не должна съесть день
     state.data["digest_sent_on"] = today
-    tails = tails_fn()
     if not tails:
         return False
     spec = [(f"напомнить: {t['name']}", f"remind:{n}:{{id}}") for n, t in enumerate(tails)]

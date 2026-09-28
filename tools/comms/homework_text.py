@@ -87,6 +87,6 @@ def telegram_html(md: str, limit: int = 3500, more_url: str | None = None) -> st
     return head.rstrip() + tail
 
 
-def homework_block(task_md: str, hw_id: str, due: date | None, url: str) -> str:
+def homework_block(task_md: str, hw_id: str, due: date | None, url: str, limit: int = 3500) -> str:
     title = f"<b>Домашка до {WEEKDAYS[due.weekday()]} {due.strftime('%d.%m')}</b>" if due else "<b>Домашка</b>"
-    return f"{title}\n{telegram_html(task_md, more_url=url)}\n\nСтраница: {url}"
+    return f"{title}\n{telegram_html(task_md, limit=limit, more_url=url)}\n\nСтраница: {url}"

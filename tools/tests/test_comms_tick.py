@@ -128,6 +128,61 @@ def test_second_tick_is_skipped_while_locked(tmp_path, journal_root, course_root
         os.close(lock_fd)
 
 
+def test_tick_waits_for_missing_attachment(tmp_path, journal_root, course_root, monkeypatch):
+    cfg = make_cfg(tmp_path, journal_root, course_root)
+    no_transport(monkeypatch)
+    inbox = cfg.local_dir / "inbox"
+    item_id = write_item(inbox, {"kind": "text", "from": "teacher", "text": "/status"}, files={"a.py": b"1"})
+    (inbox / item_id / "a.py").unlink()                   # JSON доехал, вложение ещё нет
+    logs = []
+    counts = tick.run_tick(cfg, NOW, runner, log=logs.append)
+    assert counts["applied"] == 0 and counts["errors"] == 0
+    assert [i.id for i in read_items(inbox)] == [item_id]
+    assert any("вложения ещё не доехали" in m for m in logs)
+    assert not State(cfg.state_path).processed(item_id)
+
+
+def test_poison_item_goes_to_dead_after_three_failures(tmp_path, journal_root, course_root, monkeypatch):
+    cfg = make_cfg(tmp_path, journal_root, course_root)
+    no_transport(monkeypatch)
+    inbox = cfg.local_dir / "inbox"
+    item_id = write_item(inbox, {"kind": "text", "from": "teacher", "text": "/status"}, files={"a.py": b"1"})
+
+    def boom(item, ctx):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(apply, "apply_item", boom)
+    for _ in range(2):
+        tick.run_tick(cfg, NOW, runner, log=lambda m: None)
+    assert [i.id for i in read_items(inbox)] == [item_id]
+    counts = tick.run_tick(cfg, NOW, runner, log=lambda m: None)
+    assert counts["errors"] == 1 and read_items(inbox) == []
+    assert (cfg.local_dir / "dead" / f"{item_id}.json").is_file()
+    assert (cfg.local_dir / "dead" / item_id / "a.py").is_file()
+    staged = [i.data["text"] for i in read_items(cfg.local_dir / "outbox-staging")]
+    assert any("отложен после 3 ошибок" in text and "boom" in text for text in staged)
+
+
+def test_failure_counter_resets_after_success(tmp_path, journal_root, course_root, monkeypatch):
+    cfg = make_cfg(tmp_path, journal_root, course_root)
+    no_transport(monkeypatch)
+    item_id = write_item(cfg.local_dir / "inbox", {"kind": "text", "from": "teacher", "text": "/status"})
+    original = apply.apply_item
+    calls = []
+
+    def flaky(item, ctx):
+        calls.append(item.id)
+        if len(calls) == 1:
+            raise RuntimeError("журнал занят")
+        return original(item, ctx)
+
+    monkeypatch.setattr(apply, "apply_item", flaky)
+    tick.run_tick(cfg, NOW, runner, log=lambda m: None)
+    assert State(cfg.state_path).data["failures"] == {item_id: 1}
+    tick.run_tick(cfg, NOW, runner, log=lambda m: None)
+    assert State(cfg.state_path).data["failures"] == {}
+
+
 def test_main_bad_config_exits_2(tmp_path, capsys):
     assert tick.main(["--config", str(tmp_path / "missing.toml")]) == 2
     assert "comms:" in capsys.readouterr().err

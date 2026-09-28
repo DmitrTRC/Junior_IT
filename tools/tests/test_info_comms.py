@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from info import cli, comms
 
@@ -23,6 +23,16 @@ def test_lines_stale_offline_and_missing():
     none = comms.lines(None, None, NOW)
     assert none[0].text == "почтальон: статус не забирали" and none[0].style == "warn"
     assert none[1].text == "мозг: тик не запускался" and none[1].style == "warn"
+
+
+def test_age_min_handles_aware_and_garbage():
+    msk = timezone(timedelta(hours=3))
+    now = datetime(2026, 9, 28, 12, 10, tzinfo=msk)
+    assert comms._age_min("2026-09-28T12:00:00+03:00", now) == 10
+    assert comms._age_min("2026-09-28T08:10:00+00:00", now) == 60
+    assert comms._age_min("2026-09-28T12:00:00", datetime(2026, 9, 28, 12, 10)) == 10
+    assert comms._age_min("не время", now) is None and comms._age_min(12345, now) is None
+    assert comms._age_min(None, now) is None
 
 
 def test_cli_box_reads_dir(tmp_path, monkeypatch, capsys):

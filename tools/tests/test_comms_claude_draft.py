@@ -38,3 +38,10 @@ def test_draft_failure_returns_none(tmp_path):
         return subprocess.CompletedProcess(cmd, 0, "  \n", "")
 
     assert claude_draft.draft("review", {}, cfg(tmp_path), empty) is None
+
+
+def test_draft_timeout_returns_none(tmp_path):
+    def slow(cmd, *, timeout, stdin_text=None):
+        raise subprocess.TimeoutExpired(cmd, timeout)
+
+    assert claude_draft.draft("answer", {"question": "?"}, cfg(tmp_path), slow) is None
