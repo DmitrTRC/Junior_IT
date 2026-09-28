@@ -1,0 +1,13 @@
+# courier/systemd/sslocal.service — /etc/systemd/system/sslocal.service
+[Unit]
+Description=shadowsocks client (Outline key) -> SOCKS5 127.0.0.1:1080
+After=network-online.target
+
+[Service]
+User=courier
+ExecStart=/usr/local/bin/sslocal -c /srv/courier/sslocal.json
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

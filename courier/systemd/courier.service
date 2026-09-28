@@ -1,0 +1,15 @@
+# courier/systemd/courier.service — /etc/systemd/system/courier.service
+[Unit]
+Description=Junior_IT courier (Telegram <-> queues)
+After=network-online.target sslocal.service
+Wants=network-online.target
+
+[Service]
+User=courier
+WorkingDirectory=/srv/courier
+ExecStart=/srv/courier/venv/bin/courier --config /srv/courier/courier.toml --env /srv/courier/courier.env
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
