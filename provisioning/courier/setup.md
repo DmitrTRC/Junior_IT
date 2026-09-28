@@ -6,6 +6,7 @@ Debian 12 netinst на HP Elite 800, hostname `hp`, статический IP п
 на роутере.
 
 ```bash
+apt update
 apt install git rsync openssh-server curl
 ```
 
@@ -14,7 +15,11 @@ apt install git rsync openssh-server curl
 ```bash
 useradd -r -m -d /srv/courier -s /bin/bash courier
 mkdir -p /srv/courier/queue
+chown -R courier:courier /srv/courier
 ```
+
+Без `chown` каталоги остаются за root: `courier.service` работает от `User=courier`,
+`Queue()` не сможет создать подкаталоги очереди и упадёт на первом старте.
 
 SSH-ключ с Мака — единственный в `authorized_keys`, вход по паролю выключен:
 
@@ -73,7 +78,7 @@ curl --max-time 30 --socks5-hostname 127.0.0.1:1080 https://api.telegram.org
 ```bash
 cp /srv/courier/src/courier/courier.toml.example /srv/courier/courier.toml
 cp /srv/courier/src/courier/courier.env.example /srv/courier/courier.env
-chmod 600 /srv/courier/courier.env
+chmod 600 /srv/courier/courier.toml /srv/courier/courier.env
 ```
 
 `group_chat_id` — добавить бота в группу курса, вызвать `getUpdates`, взять `chat.id`
