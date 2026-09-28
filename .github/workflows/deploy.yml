@@ -36,7 +36,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Setup Python for course map
-        run: pip install pyyaml
+        run: pip install pyyaml markdown
       - name: Build site
         run: PYBIN=python3 ./tools/build_site.sh _site
       - name: Upload artifact

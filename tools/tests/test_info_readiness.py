@@ -20,8 +20,28 @@ def test_readiness_all_green(tmp_path):
     out = readiness.lines(["python/m-01-first-run"], tmp_path, _ok)
     assert out[0].text == "python/m-01-first-run · scenario ✓ live-code ✓ slides ✓ cheatsheet ✓ glossary ✓ · validate ✓"
     assert out[0].style == "ok" and out[0].open == "tracks/python/m-01-first-run/teacher/scenario.md"
-    assert out[1].text == "  домашка python-01-first-run: task.md ✓" and out[1].style == "ok"
+    assert out[1].text == "  домашка python-01-first-run: task.md ✓ · страница ✓" and out[1].style == "ok"
     assert out[1].open == "homework/python-01-first-run/task.md"
+
+
+def test_readiness_homework_line_reports_page(tmp_path):
+    d = make_module(tmp_path, "python/m-01-first-run", **FULL)
+    manifest = yaml.safe_load((d / "module.yml").read_text(encoding="utf-8"))
+    manifest["homework"] = "homework/python-01-first-run"
+    (d / "module.yml").write_text(yaml.safe_dump(manifest, allow_unicode=True), encoding="utf-8")
+    (tmp_path / "homework" / "python-01-first-run").mkdir(parents=True)
+    (tmp_path / "homework" / "python-01-first-run" / "task.md").write_text("# Д\n\nтекст", encoding="utf-8")
+    out = readiness.lines(["python/m-01-first-run"], tmp_path, _ok)
+    assert out[1].text == "  домашка python-01-first-run: task.md ✓ · страница ✓" and out[1].style == "ok"
+
+
+def test_readiness_homework_without_task_is_warn(tmp_path):
+    d = make_module(tmp_path, "python/m-01-first-run", **FULL)
+    manifest = yaml.safe_load((d / "module.yml").read_text(encoding="utf-8"))
+    manifest["homework"] = "homework/python-01-first-run"
+    (d / "module.yml").write_text(yaml.safe_dump(manifest, allow_unicode=True), encoding="utf-8")
+    out = readiness.lines(["python/m-01-first-run"], tmp_path, _ok)
+    assert out[1].text == "  домашка python-01-first-run: task.md ✗ · страница ✗" and out[1].style == "warn"
 
 
 def test_readiness_missing_file_is_warn(tmp_path):
@@ -43,7 +63,7 @@ def test_readiness_missing_module_and_homework(tmp_path):
     manifest["homework"] = "homework/python-01-first-run"
     (d / "module.yml").write_text(yaml.safe_dump(manifest, allow_unicode=True), encoding="utf-8")
     out = readiness.lines(["python/m-01-first-run", "python/m-09-nope"], tmp_path, _ok)
-    assert out[1].text == "  домашка python-01-first-run: task.md ✗" and out[1].style == "warn"
+    assert out[1].text == "  домашка python-01-first-run: task.md ✗ · страница ✗" and out[1].style == "warn"
     assert out[2].text == "python/m-09-nope · модуля нет" and out[2].style == "err"
 
 

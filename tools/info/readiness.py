@@ -46,7 +46,19 @@ def lines(module_ids: list[str], repo_root, validate_fn) -> list[Line]:
         hw_id = module_homework(directory)
         if hw_id:
             task = homework_task(hw_id)
-            present = (root / task).is_file()
-            out.append(Line(f"  домашка {hw_id}: task.md {'✓' if present else '✗'}",
-                            open=task, style="ok" if present else "warn"))
+            task_path = root / task
+            present = task_path.is_file()
+            renders = present and _renders(task_path, hw_id)
+            style = "ok" if present and renders else "warn"
+            out.append(Line(f"  домашка {hw_id}: task.md {'✓' if present else '✗'} · страница {'✓' if renders else '✗'}",
+                            open=task, style=style))
     return out
+
+
+def _renders(task_path: Path, hw_id: str) -> bool:
+    try:
+        from build_homework_pages import render_task
+        render_task(task_path.read_text(encoding="utf-8"), hw_id, [])
+        return True
+    except Exception:
+        return False

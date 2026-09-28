@@ -48,9 +48,11 @@ def test_quiz_review_not_published_before_proofread(tmp_path):
 def test_internal_dirs_never_published(tmp_path):
     out = build(tmp_path)
     # Всё, что не перечислено в белом списке PUBLISH — не публикуется.
+    # homework/ здесь нет: генератор публикует его выборочно (см.
+    # test_homework_pages_are_published_without_tests).
     for internal in (
         ".git", ".github", ".claude", ".aos", ".vscode",
-        "tools", "meta", "refs", "homework", "playground",
+        "tools", "meta", "refs", "playground",
         "provisioning", "print", "students", "recordings", "TO_PARENTS",
         "graphify-out", ".superpowers",
     ):
@@ -78,3 +80,10 @@ def test_course_map_generated_and_valid(tmp_path):
     out = build(tmp_path)
     data = json.loads((out / "course-map.json").read_text(encoding="utf-8"))
     assert data["modules"], "карта не должна быть пустой на живом репо"
+
+
+def test_homework_pages_are_published_without_tests(tmp_path):
+    out = build(tmp_path)
+    page = out / "homework" / "python-01-first-run" / "index.html"
+    assert page.is_file() and (page.parent / "broken.py").is_file()
+    assert not (page.parent / "task.md").exists() and not (page.parent / "tests").exists()
