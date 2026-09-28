@@ -149,3 +149,8 @@ def test_parse_tariff_rejects_non_numeric(bad):
 def test_parse_tariff_error_has_single_prefix():
     with pytest.raises(JournalError, match=r"^points\.yml: presence"):
         parse_tariff({"presence": "abc"})
+
+
+def test_github_is_a_known_source():
+    from journal.model import SOURCES
+    assert "github" in SOURCES

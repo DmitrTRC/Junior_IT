@@ -11,7 +11,7 @@ HW_TRANSITIONS = {
     "rework": {"submitted"},
     "accepted": set(),
 }
-SOURCES = ("teacher", "zoom", "telegram")
+SOURCES = ("teacher", "zoom", "telegram", "github")
 STUDENT_STATUSES = ("active", "paused", "left")
 _ID_RE = re.compile(r"^[a-z0-9-]+$")
 
