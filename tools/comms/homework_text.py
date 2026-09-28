@@ -8,9 +8,22 @@ WEEKDAYS = ("пн", "вт", "ср", "чт", "пт", "сб", "вс")
 
 
 def _inline(line: str) -> str:
-    line = re.sub(r"`([^`]+)`", r"<code>\1</code>", line)
+    """Применяет разметку, защищая код-спаны от обработки."""
+    code_spans = []
+
+    def save_code(match):
+        idx = len(code_spans)
+        content = match.group(1)
+        code_spans.append(f"<code>{content}</code>")
+        return f"\x00{idx}\x00"
+
+    line = re.sub(r"`([^`]+)`", save_code, line)
     line = re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", line)
     line = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", r'<a href="\2">\1</a>', line)
+
+    for idx, span in enumerate(code_spans):
+        line = line.replace(f"\x00{idx}\x00", span)
+
     return line
 
 
@@ -41,6 +54,26 @@ def _blocks(md: str) -> list[str]:
     return out
 
 
+def _balance(head: str) -> str:
+    """Гарантирует, что все теги закрыты; обрезает до последнего открытого тега."""
+    for tag in ("pre", "b", "code", "a"):
+        while head.count(f"<{tag}>") > head.count(f"</{tag}>"):
+            pos = head.rfind(f"<{tag}>")
+            if pos >= 0:
+                head = head[:pos].rstrip()
+            else:
+                break
+
+    last_close = head.rfind(">")
+    last_open = head.rfind("<", 0, last_close) if last_close >= 0 else -1
+    if last_open >= 0 and last_close > last_open:
+        pass
+    elif last_open >= 0:
+        head = head[:last_open].rstrip()
+
+    return head
+
+
 def telegram_html(md: str, limit: int = 3500, more_url: str | None = None) -> str:
     text = "\n".join(_blocks(md)).strip()
     text = re.sub(r"\n{3,}", "\n\n", text)
@@ -52,6 +85,7 @@ def telegram_html(md: str, limit: int = 3500, more_url: str | None = None) -> st
     head = text[:cut if cut > 0 else budget]
     if head.count("<pre>") != head.count("</pre>"):
         head = head[:head.rfind("<pre>")].rstrip()
+    head = _balance(head)
     return head.rstrip() + tail
 
 

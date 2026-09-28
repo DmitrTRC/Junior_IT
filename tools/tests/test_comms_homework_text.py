@@ -37,3 +37,16 @@ def test_homework_block():
     assert out.startswith("<b>Домашка до ср 30.09</b>\n") and "текст" in out
     assert out.endswith("Страница: https://s/homework/python-01-first-run/")
     assert "до " not in homework_block("# Д\n\nт", "x", None, "https://s/")
+
+
+def test_code_span_keeps_double_asterisks():
+    out = telegram_html("x `{**a, **b}` y")
+    assert out == "x <code>{**a, **b}</code> y"
+
+
+def test_truncation_single_long_line_keeps_tags_balanced():
+    md = "**жирно** " + "x" * 3990 + " `код`"
+    out = telegram_html(md, limit=3500, more_url="https://s/")
+    assert len(out) <= 3600 and out.endswith("…\nПолностью: https://s/")
+    for tag in ("b", "code", "a", "pre"):
+        assert out.count(f"<{tag}>") == out.count(f"</{tag}>")
