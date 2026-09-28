@@ -2,6 +2,7 @@ repo_root = "/Users/dmitrymorozov/Projects/Junior_IT"
 hp_host = "courier@hp"                 # ssh-алиас или user@host HP
 hp_queue_dir = "/srv/courier/queue"
 local_dir = "~/.junior_it/comms"       # inbox/, outbox-staging/, status.json, state.json
+# pages_url = "https://dmitrtrc.github.io/Junior_IT/"   # по умолчанию; менять, если сайт переехал
 github_poll_every = 5                  # каждый пятый тик (тик — минута)
 reminder_hour = 12
 digest_hour = 18

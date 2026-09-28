@@ -8,7 +8,12 @@ Debian 12 netinst на HP Elite 800, hostname `hp`, статический IP п
 ```bash
 apt update
 apt install git rsync openssh-server curl
+timedatectl set-timezone Europe/Moscow
+timedatectl set-ntp true
 ```
+
+Часовой пояс и NTP — обязательно: метки времени в очередях и `status.json`
+сравниваются с Маком, при расхождении часов info-панель покажет ерунду.
 
 ## 2. Пользователь courier
 
@@ -39,11 +44,19 @@ chmod 600 /srv/courier/.ssh/authorized_keys
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.local/bin/env
 uv python install 3.12
-uv venv /srv/courier/venv --python 3.12
+uv venv --seed --python 3.12 /srv/courier/venv
 git clone <URL репозитория> /srv/courier/src
 /srv/courier/venv/bin/pip install /srv/courier/src/courier
 ```
+
+Установщик кладёт `uv` в `~/.local/bin` — до `source ~/.local/bin/env`
+(или перелогина) команды `uv` в этой сессии нет.
+
+`--seed` ставит в окружение `pip`: без него последней строки не существует,
+и пакет придётся ставить через `uv pip install --python /srv/courier/venv/bin/python
+/srv/courier/src/courier`.
 
 ## 4. shadowsocks-rust (обход блокировок Telegram)
 
@@ -64,6 +77,12 @@ git clone <URL репозитория> /srv/courier/src
 }
 ```
 
+В файле пароль от прокси — права строго на владельца:
+
+```bash
+chmod 600 /srv/courier/sslocal.json
+```
+
 Проверка после запуска `sslocal` (см. шаг 6):
 
 ```bash
@@ -79,6 +98,13 @@ curl --max-time 30 --socks5-hostname 127.0.0.1:1080 https://api.telegram.org
 cp /srv/courier/src/courier/courier.toml.example /srv/courier/courier.toml
 cp /srv/courier/src/courier/courier.env.example /srv/courier/courier.env
 chmod 600 /srv/courier/courier.toml /srv/courier/courier.env
+```
+
+`getUpdates` с HP ходит только через прокси из шага 4 (`sslocal` уже запущен):
+
+```bash
+curl --max-time 30 --socks5-hostname 127.0.0.1:1080 \
+  "https://api.telegram.org/bot<BOT_TOKEN>/getUpdates"
 ```
 
 `group_chat_id` — добавить бота в группу курса, вызвать `getUpdates`, взять `chat.id`

@@ -66,7 +66,7 @@ tools/.venv/bin/python tools/comms/cli.py code <student> --parent
 
 ## 5. GitHub
 
-Один раз — шаблон для домашек (`<owner>` — куда создаётся репозиторий-шаблон):
+Один раз — шаблон для домашек (`<owner>` — аккаунт Димаса, `DmitrTRC`):
 
 ```bash
 gh repo create <owner>/junior-it-homework-template --private --add-readme --clone
@@ -79,17 +79,20 @@ git push
 gh api -X PATCH repos/<owner>/junior-it-homework-template -F is_template=true
 ```
 
-На каждого ученика (`<owner>` — тот же, что и выше, `<nick>` — ник ученика в
-репозиториях):
+На каждого ученика репозиторий заводит Димас у себя (`DmitrTRC`), а ученика
+добавляет коллаборатором с правом push — так опрос не зависит от детских
+аккаунтов. `<nick>` — ник ученика в репозиториях, `<student-login>` — его логин
+на GitHub:
 
 ```bash
-gh repo create <owner>/jit-hw-<nick> --private --template <owner>/junior-it-homework-template
-gh api -X PUT repos/<owner>/jit-hw-<nick>/collaborators/DmitrTRC
-tools/.venv/bin/python tools/comms/cli.py github <student> <owner>/jit-hw-<nick>
+gh repo create DmitrTRC/jit-hw-<nick> --private --template DmitrTRC/junior-it-homework-template
+gh api -X PUT repos/DmitrTRC/jit-hw-<nick>/collaborators/<student-login> -f permission=push
+tools/.venv/bin/python tools/comms/cli.py github <student> DmitrTRC/jit-hw-<nick>
 ```
 
-Приглашение в коллабораторы нужно принять до первого опроса — иначе `gh repo clone`
-упадёт, и ученик будет пропущен с предупреждением в логе.
+Порядок важен: ученик принимает приглашение (письмо от GitHub или
+https://github.com/notifications) до первого опроса — иначе он не сможет
+запушить домашку.
 
 ## 6. Проверка приёмки
 
