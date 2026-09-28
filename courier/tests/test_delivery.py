@@ -1,4 +1,5 @@
 import asyncio
+from pathlib import Path
 from types import SimpleNamespace as NS
 
 from courier.config import Config
@@ -20,7 +21,9 @@ class FakeBot:
         return NS(message_id=self.next_id)
 
     async def send_document(self, chat_id, document, caption=None):
-        self.docs.append((chat_id, document.path if hasattr(document, "path") else document, caption))
+        path = document.path if hasattr(document, "path") else document
+        assert Path(path).is_file()                       # вложение должно существовать на момент отправки
+        self.docs.append((chat_id, path, caption))
         return NS(message_id=0)
 
 
