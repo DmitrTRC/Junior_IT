@@ -55,21 +55,21 @@ def _blocks(md: str) -> list[str]:
 
 
 def _balance(head: str) -> str:
-    """Гарантирует, что все теги закрыты; обрезает до последнего открытого тега."""
-    for tag in ("pre", "b", "code", "a"):
-        while head.count(f"<{tag}>") > head.count(f"</{tag}>"):
-            pos = head.rfind(f"<{tag}>")
-            if pos >= 0:
-                head = head[:pos].rstrip()
-            else:
-                break
+    """Гарантирует, что все теги закрыты; обрезает неполные теги и балансирует открывающие/закрывающие."""
+    # Шаг 1: обрезаем неполный тег в конце (dangling partial tag like <a href="…)
+    last_lt = head.rfind("<")
+    last_gt = head.rfind(">")
+    if last_lt > last_gt:
+        head = head[:last_lt]
 
-    last_close = head.rfind(">")
-    last_open = head.rfind("<", 0, last_close) if last_close >= 0 else -1
-    if last_open >= 0 and last_close > last_open:
-        pass
-    elif last_open >= 0:
-        head = head[:last_open].rstrip()
+    # Шаг 2: для каждого тега балансируем открывающие и закрывающие
+    for tag in ("pre", "b", "code", "a"):
+        while True:
+            opens = [m.start() for m in re.finditer(rf"<{tag}(?=[\s>])", head)]
+            closes = head.count(f"</{tag}>")
+            if len(opens) <= closes:
+                break
+            head = head[:opens[-1]].rstrip()
 
     return head
 
@@ -83,8 +83,6 @@ def telegram_html(md: str, limit: int = 3500, more_url: str | None = None) -> st
     budget = limit - len(tail)
     cut = text.rfind("\n", 0, budget)
     head = text[:cut if cut > 0 else budget]
-    if head.count("<pre>") != head.count("</pre>"):
-        head = head[:head.rfind("<pre>")].rstrip()
     head = _balance(head)
     return head.rstrip() + tail
 

@@ -1,6 +1,6 @@
 from datetime import date
 
-from comms.homework_text import homework_block, telegram_html
+from comms.homework_text import homework_block, telegram_html, _balance
 
 MD = "# Домашка\n\nК модулю **python-01**.\n\n## Что делать\n\n1. Создай `hello.py`\n2. Запусти\n\n" \
      "> На Windows `python`.\n\n```python\nprint('hi')\n```\n\nСм. [страницу](https://s/x/)\n"
@@ -50,3 +50,17 @@ def test_truncation_single_long_line_keeps_tags_balanced():
     assert len(out) <= 3600 and out.endswith("…\nПолностью: https://s/")
     for tag in ("b", "code", "a", "pre"):
         assert out.count(f"<{tag}>") == out.count(f"</{tag}>")
+
+
+def test_balance_anchor_and_partial_tag():
+    assert _balance('text <a href="https://e/">link and more').rstrip() == "text"
+    assert _balance('before <b>bold</b> middle <cod').rstrip() == "before <b>bold</b> middle"
+    assert _balance('text <a href="https://exa').rstrip() == "text"
+
+
+def test_link_at_truncation_boundary_is_dropped_cleanly():
+    out = telegram_html("текст с [ссылкой](https://example.com/very/long/path/that/keeps/going/on) и текст", limit=40, more_url="https://s/")
+    assert "href=\"" not in out or out.count("<a ") == out.count("</a>")
+    assert "<a href=\"" not in out or out.count("<a ") == out.count("</a>")
+    assert out.count("<") == out.count(">")
+    assert out.endswith("…\nПолностью: https://s/")
