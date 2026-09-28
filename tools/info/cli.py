@@ -2,8 +2,10 @@
 """info — провайдеры боксов info-панели. Печатает JSON lines по контракту command."""
 from __future__ import annotations
 import argparse
+import json
+import os
 import sys
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # tools/
@@ -11,14 +13,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # tools/
 import yaml  # noqa: E402
 
 from build_course_map import load_modules, load_sessions  # noqa: E402
-from info import common, course, homework, lesson, readiness, students  # noqa: E402
+from info import comms, common, course, homework, lesson, readiness, students  # noqa: E402
 from info.common import Line, emit  # noqa: E402
 from journal import stats as journal_stats  # noqa: E402
 from journal import store as journal_store  # noqa: E402
 from journal.model import JournalError  # noqa: E402
 from module_schema import validate_module  # noqa: E402
 
-BOXES = ("lesson", "students", "homework", "readiness", "course")
+BOXES = ("lesson", "students", "homework", "readiness", "course", "comms")
+
+
+def _load_json(path: Path) -> dict | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
 
 
 def _playlist_ids(session: dict | None) -> list[str]:
@@ -38,6 +47,9 @@ def build(box: str, repo_root, students_root, today: date) -> list[Line]:
     if box == "readiness":
         session, _ = common.next_session(load_sessions(repo_root), today)
         return readiness.lines(_playlist_ids(session), repo_root, validate_module)
+    if box == "comms":
+        local = Path(os.environ.get("JUNIOR_IT_COMMS_DIR") or Path.home() / ".junior_it" / "comms")
+        return comms.lines(_load_json(local / "status.json"), _load_json(local / "last_tick.json"), datetime.now())
     roster_path = journal_store.students_root(students_root) / "roster.yml"
     if box == "students":
         group = journal_stats.collect(students_root, repo_root, today) if roster_path.exists() else None

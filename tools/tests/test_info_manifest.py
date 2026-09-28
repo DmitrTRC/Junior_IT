@@ -15,7 +15,7 @@ def test_info_manifest_loads_in_engine():
     manifest = load_info_manifest(MANIFEST)
     assert manifest.warnings == []
     assert [b.id for b in manifest.placed()] == [
-        "lesson", "students", "clock", "homework", "readiness", "course", "git", "news", "weather"]
+        "lesson", "students", "clock", "homework", "readiness", "course", "git", "comms", "news", "weather"]
     news, weather = manifest.box("news"), manifest.box("weather")
     assert [f.label for f in news.feeds] == ["Хабр·python", "Хабр·prog", "python.org", "ЕГЭ", "radio-t"]
     assert all(f.url.startswith("https://") for f in news.feeds) and news.limit == 12

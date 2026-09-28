@@ -3,7 +3,7 @@
 version: 1
 layout:
   - [{box: lesson, weight: 2}, {box: students, weight: 2}, {box: clock, weight: 1}]
-  - [{box: homework, weight: 2}, {box: readiness, weight: 3}, {box: course, weight: 1}, {box: git, weight: 1}]
+  - [{box: homework, weight: 2}, {box: readiness, weight: 3}, {box: course, weight: 1}, {box: git, weight: 1}, {box: comms, weight: 2}]
   - [{box: news, weight: 3}, {box: weather, weight: 1}]
 boxes:
   - id: clock
@@ -36,6 +36,11 @@ boxes:
     title: "курс"
     run: "tools/.venv/bin/python tools/info/cli.py course"
     interval: 600
+  - id: comms
+    type: command
+    title: "связь"
+    run: "tools/.venv/bin/python tools/info/cli.py comms"
+    interval: 60
   - id: weather
     type: weather
     title: "погода"
