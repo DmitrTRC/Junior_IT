@@ -22,3 +22,8 @@ def test_missing_key(tmp_path):
     (tmp_path / "c.toml").write_text('repo_root = "x"\n', encoding="utf-8")
     with pytest.raises(ConfigError):
         load_config(tmp_path / "c.toml")
+
+
+def test_github_poll_every_zero_clamped_to_one(tmp_path):
+    (tmp_path / "c.toml").write_text(TOML.format(r=tmp_path) + "github_poll_every = 0\n", encoding="utf-8")
+    assert load_config(tmp_path / "c.toml").github_poll_every == 1

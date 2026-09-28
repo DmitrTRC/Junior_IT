@@ -43,7 +43,7 @@ def load_config(toml_path: Path) -> Config:
             state_path=Path(data.get("state_path") or local_dir / "state.json").expanduser(),
             pages_url=str(data.get("pages_url") or Config.pages_url),
             claude_cmd=list(data.get("claude_cmd") or ["claude", "-p", "--model", "sonnet"]),
-            github_poll_every=int(data.get("github_poll_every", 5)),
+            github_poll_every=max(1, int(data.get("github_poll_every", 5))),
             reminder_hour=int(data.get("reminder_hour", 12)),
             digest_hour=int(data.get("digest_hour", 18)),
             telegram_fallback=bool(data.get("telegram_fallback", True)),

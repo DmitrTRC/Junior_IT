@@ -1,4 +1,6 @@
+import fcntl
 import json
+import os
 from datetime import datetime
 
 from comms import apply, github_poll, schedule, tick, transport
@@ -94,3 +96,38 @@ def test_dry_run_prints_state(tmp_path, journal_root, course_root, monkeypatch, 
         f'local_dir = "{cfg.local_dir}"\n', encoding="utf-8")
     assert tick.main(["--config", str(tmp_path / "c.toml"), "--dry-run"]) == 0
     assert "ожидают кнопок" in capsys.readouterr().out
+
+
+def test_state_saved_when_push_raises(tmp_path, journal_root, course_root, monkeypatch):
+    cfg = make_cfg(tmp_path, journal_root, course_root)
+    no_transport(monkeypatch)
+
+    def broken_push(cfg, runner):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(transport, "push", broken_push)
+    write_item(cfg.local_dir / "inbox", {"kind": "text", "from": "teacher", "text": "/status"})
+    counts = tick.run_tick(cfg, NOW, runner, log=lambda m: None)
+    assert counts["applied"] == 1
+    assert State(cfg.state_path).tick == 1
+    assert (cfg.local_dir / "last_tick.json").is_file()
+
+
+def test_second_tick_is_skipped_while_locked(tmp_path, journal_root, course_root, monkeypatch):
+    cfg = make_cfg(tmp_path, journal_root, course_root)
+    no_transport(monkeypatch)
+    cfg.local_dir.mkdir(parents=True, exist_ok=True)
+    lock_fd = os.open(cfg.local_dir / "tick.lock", os.O_CREAT | os.O_RDWR)
+    fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    try:
+        counts = tick.run_tick(cfg, NOW, runner, log=lambda m: None)
+        assert counts["locked"] is True
+        assert not (cfg.local_dir / "last_tick.json").is_file()
+    finally:
+        fcntl.flock(lock_fd, fcntl.LOCK_UN)
+        os.close(lock_fd)
+
+
+def test_main_bad_config_exits_2(tmp_path, capsys):
+    assert tick.main(["--config", str(tmp_path / "missing.toml")]) == 2
+    assert "comms:" in capsys.readouterr().err

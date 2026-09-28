@@ -36,16 +36,23 @@ cp provisioning/comms/comms.toml.example ~/.junior_it/comms.toml
 
 ## 3. Автозапуск
 
-```bash
-cp provisioning/comms/com.juniorit.comms.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.juniorit.comms.plist
-```
-
 Первый тик руками, до автозапуска — увидеть ошибки конфигурации сразу, а не в логе:
 
 ```bash
 cd tools && .venv/bin/python -m comms.tick --once
 ```
+
+Затем — в launchd:
+
+```bash
+cp provisioning/comms/com.juniorit.comms.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.juniorit.comms.plist
+```
+
+Живой ли тик — смотри лог `~/Library/Logs/junior-it-comms.log`, либо без обращения к
+HP: `cd tools && .venv/bin/python -m comms.tick --dry-run` (очередь, ожидающие
+кнопки, время последнего тика) и `tools/.venv/bin/python tools/comms/cli.py status`
+(почтальон, очереди, люди без Telegram).
 
 ## 4. Коды регистрации
 
@@ -59,23 +66,30 @@ tools/.venv/bin/python tools/comms/cli.py code <student> --parent
 
 ## 5. GitHub
 
-Один раз — шаблон для домашек:
+Один раз — шаблон для домашек (`<owner>` — куда создаётся репозиторий-шаблон):
 
 ```bash
-gh repo create DmitrTRC/junior-it-homework-template --private --template=false
+gh repo create <owner>/junior-it-homework-template --private --add-readme --clone
+cd junior-it-homework-template
+mkdir hw
+touch hw/.gitkeep
+git add hw/.gitkeep
+git commit -m "hw skeleton"
+git push
+gh api -X PATCH repos/<owner>/junior-it-homework-template -F is_template=true
 ```
 
-В новом репозитории — `README.md` и `hw/.gitkeep`, затем в настройках репозитория
-включить «Template repository».
-
-На каждого ученика (`<owner>` — куда создаётся репозиторий ученика, `<nick>` — его
-ник в репозиториях):
+На каждого ученика (`<owner>` — тот же, что и выше, `<nick>` — ник ученика в
+репозиториях):
 
 ```bash
-gh repo create <owner>/jit-hw-<nick> --private --template DmitrTRC/junior-it-homework-template
+gh repo create <owner>/jit-hw-<nick> --private --template <owner>/junior-it-homework-template
 gh api -X PUT repos/<owner>/jit-hw-<nick>/collaborators/DmitrTRC
 tools/.venv/bin/python tools/comms/cli.py github <student> <owner>/jit-hw-<nick>
 ```
+
+Приглашение в коллабораторы нужно принять до первого опроса — иначе `gh repo clone`
+упадёт, и ученик будет пропущен с предупреждением в логе.
 
 ## 6. Проверка приёмки
 
