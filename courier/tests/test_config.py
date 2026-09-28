@@ -1,4 +1,6 @@
 import pytest
+import tomllib
+from pathlib import Path
 
 from courier.config import ConfigError, load_config
 
@@ -31,3 +33,17 @@ def test_missing_key_is_error(tmp_path):
     (tmp_path / "c.env").write_text("BOT_TOKEN=t\n", encoding="utf-8")
     with pytest.raises(ConfigError):
         load_config(tmp_path / "c.toml", tmp_path / "c.env")
+
+
+def test_non_integer_value_is_error(tmp_path):
+    (tmp_path / "c.toml").write_text(TOML.format(q=tmp_path).replace("group_chat_id = -1001", 'group_chat_id = "not-an-int"'), encoding="utf-8")
+    (tmp_path / "c.env").write_text("BOT_TOKEN=t\n", encoding="utf-8")
+    with pytest.raises(ConfigError):
+        load_config(tmp_path / "c.toml", tmp_path / "c.env")
+
+
+def test_example_toml_parses():
+    example_path = Path(__file__).resolve().parents[1] / "courier.toml.example"
+    with open(example_path, "rb") as fh:
+        data = tomllib.load(fh)
+    assert "queue_dir" in data

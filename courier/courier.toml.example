@@ -2,7 +2,7 @@
 queue_dir = "/srv/courier/queue"
 registry_path = "/srv/courier/registry.json"
 group_chat_id = -1000000000000      # id группы курса (бот должен быть в ней)
-teacher_telegram_id = 000000000     # telegram id Димаса
+teacher_telegram_id = 0   # заменить на свой telegram id
 proxy = "socks5://127.0.0.1:1080"   # sslocal с Outline-ключом; пусто — напрямую
 outbox_poll_seconds = 5
 brain_silent_minutes = 30

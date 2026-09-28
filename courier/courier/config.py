@@ -59,3 +59,5 @@ def load_config(toml_path: Path, env_path: Path) -> Config:
         )
     except KeyError as exc:
         raise ConfigError(f"в {toml_path} нет ключа {exc}") from exc
+    except (ValueError, TypeError) as exc:
+        raise ConfigError(f"в {toml_path}: {exc}") from exc
