@@ -95,6 +95,20 @@ def test_brain_silent_notified_once_until_pull(tmp_path):
     assert wd.brain_silent_notified is False
 
 
+def test_missing_marker_counts_as_silent_after_threshold(tmp_path):
+    cfg, q, bot, wd = setup(tmp_path)
+    (q.root / ".last_pull").unlink()          # свежая очередь: Mac ещё ни разу не забирал
+    wd.last_heartbeat_day = datetime(2026, 9, 28).date()
+    t0 = datetime(2026, 9, 28, 12, 0)
+    assert run(wd.tick(t0)) == [] and wd.started_at == t0
+    notices = run(wd.tick(t0 + timedelta(minutes=31)))
+    assert len(notices) == 1 and "молчит" in notices[0]
+    assert run(wd.tick(t0 + timedelta(minutes=32))) == []
+    pulled_at(q, t0 + timedelta(minutes=33))
+    run(wd.tick(t0 + timedelta(minutes=33)))
+    assert wd.brain_silent_notified is False
+
+
 def test_write_status(tmp_path):
     cfg, q, bot, wd = setup(tmp_path)
     path = write_status(q, cfg, datetime(2026, 9, 28, 12, 0), online=True, outage_since=None)

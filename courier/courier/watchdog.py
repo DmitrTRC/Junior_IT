@@ -30,6 +30,7 @@ class Watchdog:
         self.outage_since: datetime | None = None
         self.last_heartbeat_day: date | None = None
         self.brain_silent_notified = False
+        self.started_at: datetime | None = None
 
     async def _say(self, text: str, notices: list[str]) -> None:
         try:
@@ -40,6 +41,8 @@ class Watchdog:
 
     async def tick(self, now: datetime) -> list[str]:
         notices: list[str] = []
+        if self.started_at is None:
+            self.started_at = now
         try:
             await self.bot.get_me()
             online = True
@@ -62,8 +65,11 @@ class Watchdog:
             sizes = self.queue.sizes()
             await self._say(f"Почтальон жив. Очередь: исходящих {sizes['outbox']}, входящих {sizes['inbox']}, "
                             f"не доставлено {sizes['failed']}.", notices)
+        threshold = self.cfg.brain_silent_minutes * 60
         age = self.queue.last_pull_age(now)
-        silent = age is not None and age > self.cfg.brain_silent_minutes * 60
+        if age is None:
+            age = (now - self.started_at).total_seconds()
+        silent = age > threshold
         if silent and not self.brain_silent_notified:
             self.brain_silent_notified = True
             await self._say(f"Мозг молчит {int(age // 60)} мин: Mac не забирал очередь.", notices)
