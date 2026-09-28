@@ -1,6 +1,7 @@
+import pytest
 import yaml
 
-from comms.identity import Identity
+from comms.identity import Identity, IdentityError
 
 
 def test_ensure_creates_ids_and_codes(tmp_path):
@@ -25,3 +26,17 @@ def test_bind_and_github(tmp_path):
     again = Identity(tmp_path / "comms.yml")
     assert again.by_comms_id(alice.comms_id).github == "owner/jit-hw-alice"
     assert again.by_student("alice", role="parent") is None
+
+
+def test_corrupt_yaml_raises_identity_error(tmp_path):
+    path = tmp_path / "comms.yml"
+    path.write_text("people: [unclosed", encoding="utf-8")
+    with pytest.raises(IdentityError):
+        Identity(path)
+
+
+def test_non_mapping_person_raises(tmp_path):
+    path = tmp_path / "comms.yml"
+    path.write_text(yaml.safe_dump({"people": ["just a string"]}, allow_unicode=True), encoding="utf-8")
+    with pytest.raises(IdentityError):
+        Identity(path)

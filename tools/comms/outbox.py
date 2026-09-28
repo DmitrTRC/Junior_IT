@@ -16,7 +16,7 @@ class Outbox:
 
     def _put(self, to: str, text: str, buttons=None, files=None, **extra) -> str:
         data = {"to": to, "text": text, "parse_mode": "HTML", "reply_to": None, "attempts": 0,
-                "buttons": [{"label": label, "data": data} for label, data in (buttons or [])], **extra}
+                "buttons": [{"label": label, "data": callback} for label, callback in (buttons or [])], **extra}
         return write_item(self.staging, data, files)
 
     def teacher(self, text: str, buttons=None, files=None) -> str:

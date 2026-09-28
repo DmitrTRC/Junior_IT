@@ -31,3 +31,10 @@ def test_github_and_status(tmp_path, journal_root, capsys):
     (local / "status.json").write_text(json.dumps({"online": True, "sizes": {"outbox": 0, "inbox": 2, "failed": 0}}), encoding="utf-8")
     assert cli.run(["status"], students_root=journal_root, local_dir=local) == 0
     assert "входящих 2" in capsys.readouterr().out
+
+
+def test_status_with_corrupt_comms_yml_exits_3(tmp_path, journal_root, capsys):
+    local = tmp_path / "comms"
+    (journal_root / "comms.yml").write_text("people: [unclosed", encoding="utf-8")
+    assert cli.run(["status"], students_root=journal_root, local_dir=local) == 3
+    assert capsys.readouterr().err.startswith("comms:")

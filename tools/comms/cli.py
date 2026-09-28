@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # tools/ — чтобы работал python3 tools/comms/cli.py
 
-from comms.identity import Identity  # noqa: E402
+from comms.identity import Identity, IdentityError  # noqa: E402
 from comms.outbox import Outbox  # noqa: E402
 from journal import store as journal_store  # noqa: E402
 from journal.model import JournalError  # noqa: E402
@@ -28,7 +28,11 @@ def run(argv, students_root=None, local_dir: Path | None = None) -> int:
     args = ap.parse_args(argv)
     root = journal_store.students_root(students_root)
     local = Path(local_dir or DEFAULT_LOCAL)
-    ident = Identity(root / "comms.yml")
+    try:
+        ident = Identity(root / "comms.yml")
+    except IdentityError as exc:
+        print(f"comms: {exc}", file=sys.stderr)
+        return 3
     if args.cmd in ("code", "github"):
         try:
             known = {s.id for s in journal_store.load_roster(students_root)}

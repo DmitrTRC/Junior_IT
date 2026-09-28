@@ -8,6 +8,11 @@ from pathlib import Path
 import yaml
 
 ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"   # без 0/O, 1/I
+REQUIRED_FIELDS = {"role", "student", "comms_id"}
+
+
+class IdentityError(Exception):
+    """comms.yml битый: не разобрался YAML или не хватает обязательных полей."""
 
 
 @dataclass
@@ -25,9 +30,20 @@ class Identity:
         self.path = Path(path)
         self.people: list[Person] = []
         if self.path.is_file():
-            data = yaml.safe_load(self.path.read_text(encoding="utf-8")) or {}
-            self.people = [Person(**{k: v for k, v in raw.items() if k in Person.__dataclass_fields__})
-                           for raw in data.get("people") or []]
+            try:
+                data = yaml.safe_load(self.path.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError as exc:
+                raise IdentityError(f"{self.path}: битый YAML: {exc}") from exc
+            if not isinstance(data, dict):
+                raise IdentityError(f"{self.path}: ожидался словарь верхнего уровня")
+            raw_people = data.get("people") or []
+            if not isinstance(raw_people, list):
+                raise IdentityError(f"{self.path}: people должен быть списком")
+            for raw in raw_people:
+                if not isinstance(raw, dict) or not REQUIRED_FIELDS <= raw.keys():
+                    raise IdentityError(f"{self.path}: запись в people должна быть словарём "
+                                         f"с полями {sorted(REQUIRED_FIELDS)}")
+                self.people.append(Person(**{k: v for k, v in raw.items() if k in Person.__dataclass_fields__}))
 
     def by_student(self, student_id: str, role: str = "student") -> Person | None:
         return next((p for p in self.people if p.student == student_id and p.role == role), None)
@@ -49,6 +65,8 @@ class Identity:
         return person
 
     def new_code(self, person: Person) -> str:
+        # коды не проверяются на уникальность: 32^5 ≈ 33 млн вариантов,
+        # коллизия на группе из трёх человек практически исключена
         chars = [secrets.choice(ALPHABET) for _ in range(5)]
         person.code = "".join(chars[:3]) + "-" + "".join(chars[3:])
         self.save()
