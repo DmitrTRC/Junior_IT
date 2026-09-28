@@ -3,7 +3,7 @@ from __future__ import annotations
 import html
 from pathlib import Path
 
-from comms.queue import write_item
+from comms.queue import new_id, write_item
 
 
 def esc(text: str) -> str:
@@ -30,3 +30,9 @@ class Outbox:
 
     def control_add_code(self, code: str, comms_id: str) -> str:
         return self._put("courier", "", action="add_code", code=code, comms_id=comms_id)
+
+    def teacher_with_self_buttons(self, text: str, spec: list[tuple[str, str]], files=None) -> str:
+        """spec — (подпись, data с {id}); id генерируется заранее и подставляется в кнопки."""
+        item_id = new_id()
+        buttons = [(label, data.format(id=item_id)) for label, data in spec]
+        return self._put("teacher", text, buttons, files, id=item_id)
