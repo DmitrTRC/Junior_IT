@@ -31,16 +31,24 @@ def apply_control(data: dict, registry: Registry) -> str:
     if data.get("action") == "add_code":
         registry.add_code(str(data["code"]), str(data["comms_id"]))
         return "код добавлен"
-    return f"неизвестное control-действие {data.get('action')!r}"
+    raise ValueError(f"неизвестное control-действие {data.get('action')!r}")
 
 
-async def _send(item: Item, chat_id: int, bot) -> int:
-    message = await bot.send_message(
-        chat_id, item.data.get("text") or "", parse_mode=item.data.get("parse_mode") or "HTML",
-        reply_markup=keyboard(item.data.get("buttons")), reply_to_message_id=item.data.get("reply_to"))
+async def _send(item: Item, chat_id: int, bot, queue: Queue) -> None:
+    """Досылает текст (если ещё не уходил) и оставшиеся вложения; уже отправленное не повторяет."""
+    if item.data.get("message_id") is None:
+        message = await bot.send_message(
+            chat_id, item.data.get("text") or "", parse_mode=item.data.get("parse_mode") or "HTML",
+            reply_markup=keyboard(item.data.get("buttons")), reply_to_message_id=item.data.get("reply_to"))
+        item.data["message_id"] = message.message_id
+        queue.save(item, "sending")
+    sent_files = item.data.setdefault("sent_files", [])
     for name in item.data.get("files") or []:
+        if name in sent_files:
+            continue
         await bot.send_document(chat_id, FSInputFile(item.files_dir / name), caption=None)
-    return message.message_id
+        sent_files.append(name)
+        queue.save(item, "sending")
 
 
 async def _notify_teacher(bot, cfg: Config, text: str) -> None:
@@ -56,7 +64,14 @@ async def deliver_once(queue: Queue, bot, cfg: Config, registry: Registry) -> in
     for item in queue.items("outbox"):
         to = item.data.get("to", "")
         if to == "courier":
-            log.info("control %s: %s", item.id, apply_control(item.data, registry))
+            try:
+                result = apply_control(item.data, registry)
+            except Exception as exc:
+                queue.move(item.id, "outbox", "failed")
+                await _notify_teacher(bot, cfg, f"Control-элемент {item.id} не применён: {exc}")
+                log.warning("control %s не применён: %s", item.id, exc)
+                continue
+            log.info("control %s: %s", item.id, result)
             queue.move(item.id, "outbox", "sent")
             continue
         chat_id = resolve_chat(to, cfg, registry)
@@ -67,7 +82,7 @@ async def deliver_once(queue: Queue, bot, cfg: Config, registry: Registry) -> in
         queue.move(item.id, "outbox", "sending")
         item = queue.load("sending", item.id)               # files_dir после move должен указывать на новый каталог
         try:
-            item.data["message_id"] = await _send(item, chat_id, bot)
+            await _send(item, chat_id, bot, queue)
         except Exception as exc:
             item.data["attempts"] = int(item.data.get("attempts", 0)) + 1
             item.data["last_error"] = str(exc)[:200]
@@ -79,7 +94,6 @@ async def deliver_once(queue: Queue, bot, cfg: Config, registry: Registry) -> in
                 queue.move(item.id, "sending", "outbox")
             log.warning("доставка %s не удалась: %s", item.id, exc)
             continue
-        queue.save(item, "sending")
         queue.move(item.id, "sending", "sent")
         delivered += 1
     return delivered

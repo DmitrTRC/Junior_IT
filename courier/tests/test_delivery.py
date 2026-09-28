@@ -2,6 +2,8 @@ import asyncio
 from pathlib import Path
 from types import SimpleNamespace as NS
 
+import pytest
+
 from courier.config import Config
 from courier.delivery import apply_control, deliver_once, keyboard, resolve_chat
 from courier.queue import Queue
@@ -9,8 +11,9 @@ from courier.registry import Registry
 
 
 class FakeBot:
-    def __init__(self, fail_times=0):
-        self.sent, self.docs, self.fail_times, self.next_id = [], [], fail_times, 100
+    def __init__(self, fail_times=0, fail_document_times=0):
+        self.sent, self.docs, self.next_id = [], [], 100
+        self.fail_times, self.fail_document_times = fail_times, fail_document_times
 
     async def send_message(self, chat_id, text, parse_mode=None, reply_markup=None, reply_to_message_id=None):
         if self.fail_times:
@@ -21,6 +24,9 @@ class FakeBot:
         return NS(message_id=self.next_id)
 
     async def send_document(self, chat_id, document, caption=None):
+        if self.fail_document_times:
+            self.fail_document_times -= 1
+            raise RuntimeError("network")
         path = document.path if hasattr(document, "path") else document
         assert Path(path).is_file()                       # вложение должно существовать на момент отправки
         self.docs.append((chat_id, path, caption))
@@ -61,6 +67,19 @@ def test_deliver_text_with_buttons_and_file(tmp_path):
     assert sent.data["message_id"] == 101 and q.sizes()["outbox"] == 0
 
 
+def test_attachment_failure_does_not_duplicate_text(tmp_path):
+    cfg, q, reg = setup(tmp_path)
+    item_id = q.put("outbox", {"to": "teacher", "text": "с вложениями"},
+                    files={"a.txt": b"1", "b.txt": b"2"})
+    bot = FakeBot(fail_document_times=1)
+    asyncio.run(deliver_once(q, bot, cfg, reg))            # текст ушёл, первое вложение упало
+    asyncio.run(deliver_once(q, bot, cfg, reg))            # текст не повторяется, вложения дошли
+    assert len(bot.sent) == 1
+    assert [Path(d[1]).name for d in bot.docs] == ["a.txt", "b.txt"]
+    sent = q.load("sent", item_id)
+    assert sent.data["message_id"] is not None
+
+
 def test_failure_keeps_item_and_counts_attempts(tmp_path):
     cfg, q, reg = setup(tmp_path, max_attempts=2)
     item_id = q.put("outbox", {"to": "group", "text": "x"})
@@ -85,4 +104,14 @@ def test_control_add_code(tmp_path):
     q.put("outbox", {"to": "courier", "action": "add_code", "code": "ZZ-1", "comms_id": "p-3"})
     asyncio.run(deliver_once(q, FakeBot(), cfg, reg))
     assert reg.codes["ZZ-1"] == "p-3" and q.sizes()["sent"] == 1
-    assert apply_control({"action": "nope"}, reg).startswith("неизвестное")
+    with pytest.raises(ValueError):
+        apply_control({"action": "nope"}, reg)
+
+
+def test_control_unknown_action_goes_to_failed(tmp_path):
+    cfg, q, reg = setup(tmp_path)
+    q.put("outbox", {"to": "courier", "action": "nope"})
+    bot = FakeBot()
+    asyncio.run(deliver_once(q, bot, cfg, reg))
+    assert q.sizes()["failed"] == 1
+    assert len(bot.sent) == 1 and bot.sent[0][0] == 42
