@@ -34,16 +34,25 @@ def run(coro):
     return asyncio.run(coro)
 
 
+def pulled_at(q, when: datetime):
+    """Ставит маркер последнего pull ровно на синтетическое время тика,
+    чтобы last_pull_age не подглядывал в реальные часы."""
+    q.touch_pull()
+    ts = when.timestamp()
+    os.utime(q.root / ".last_pull", (ts, ts))
+
+
 def test_heartbeat_once_per_day_after_hour(tmp_path):
     cfg, q, bot, wd = setup(tmp_path)
+    pulled_at(q, datetime(2026, 9, 28, 8, 59))
     assert run(wd.tick(datetime(2026, 9, 28, 8, 59))) == []
+    pulled_at(q, datetime(2026, 9, 28, 9, 0))
     notices = run(wd.tick(datetime(2026, 9, 28, 9, 0)))
     assert len(notices) == 1 and "жив" in notices[0]
+    pulled_at(q, datetime(2026, 9, 28, 15, 0))
     assert run(wd.tick(datetime(2026, 9, 28, 15, 0))) == []
     next_day = datetime(2026, 9, 29, 9, 30)
-    # last_pull_age сверяется с реальным mtime маркера; синхронизируем его с условным
-    # "завтра", иначе тест ловит побочное «мозг молчит» — не то, что здесь проверяется.
-    os.utime(q.root / ".last_pull", (next_day.timestamp(),) * 2)
+    pulled_at(q, next_day)
     assert len(run(wd.tick(next_day))) == 1
 
 
@@ -51,9 +60,12 @@ def test_outage_then_recovery_notifies(tmp_path):
     cfg, q, bot, wd = setup(tmp_path)
     wd.last_heartbeat_day = datetime(2026, 9, 28).date()
     bot.online = False
+    pulled_at(q, datetime(2026, 9, 28, 12, 0))
     assert run(wd.tick(datetime(2026, 9, 28, 12, 0))) == [] and wd.outage_since == datetime(2026, 9, 28, 12, 0)
+    pulled_at(q, datetime(2026, 9, 28, 12, 1))
     run(wd.tick(datetime(2026, 9, 28, 12, 1)))
     bot.online = True
+    pulled_at(q, datetime(2026, 9, 28, 12, 8))
     notices = run(wd.tick(datetime(2026, 9, 28, 12, 8)))
     assert len(notices) == 1 and "8 мин" in notices[0] and wd.outage_since is None
 
@@ -62,8 +74,10 @@ def test_short_outage_is_silent(tmp_path):
     cfg, q, bot, wd = setup(tmp_path)
     wd.last_heartbeat_day = datetime(2026, 9, 28).date()
     bot.online = False
+    pulled_at(q, datetime(2026, 9, 28, 12, 0))
     run(wd.tick(datetime(2026, 9, 28, 12, 0)))
     bot.online = True
+    pulled_at(q, datetime(2026, 9, 28, 12, 1))
     assert run(wd.tick(datetime(2026, 9, 28, 12, 1))) == []
 
 
