@@ -120,6 +120,9 @@ def _stage_draft(ctx: Context, text: str, target: str, max_copy: bool, files: di
 
 def handle_github(ctx: Context, submissions: list[Submission]) -> None:
     for sub in submissions:
+        if ctx.identity.by_student(sub.student) is None:
+            ctx.outbox.teacher(f"Сдача {esc(sub.student)} {esc(sub.hw_id)}: ученик не заведён в comms.yml")
+            continue
         total = sub.passed + sub.failed
         summary = f"github {sub.sha[:7]}: тесты {sub.passed}/{total}" if total else f"github {sub.sha[:7]}: тестов нет"
         try:
@@ -127,7 +130,7 @@ def handle_github(ctx: Context, submissions: list[Submission]) -> None:
         except JournalError as exc:
             ctx.outbox.teacher(f"Сдача {esc(sub.student)} {esc(sub.hw_id)} не записана: {esc(str(exc))}")
             continue
-        _notify_submission(ctx, sub.student, sub.hw_id, day, summary + ("\n" + esc(sub.log[-600:]) if sub.failed else ""), {})
+        _notify_submission(ctx, sub.student, sub.hw_id, day, summary + ("\n" + sub.log[-600:] if sub.failed else ""), {})
 
 
 def _handle_registered(ctx: Context, item: Item) -> None:
@@ -148,6 +151,9 @@ def _handle_person(ctx: Context, item: Item) -> None:
     if item.data.get("unsupported"):
         ctx.outbox.teacher(f"{esc(name)} прислал(а) {UNSUPPORTED_RU.get(item.data['unsupported'], 'что-то нечитаемое')} — "
                            f"бот такое не читает, ответь в Telegram сам.")
+        return
+    if item.data.get("download_error"):
+        ctx.outbox.teacher(f"{esc(name)}: файл не дошёл до бота ({esc(item.data['download_error'])}), сдача не записана")
         return
     files = {n: (item.files_dir / n).read_bytes() for n in item.data.get("files") or [] if (item.files_dir / n).is_file()}
     is_submission = (person.role == "student" and ctx.cfg.telegram_fallback
@@ -202,12 +208,15 @@ def _handle_callback(ctx: Context, item: Item) -> None:
         if not meta or meta.get("kind") != "digest":
             ctx.outbox.teacher("Уже сделано.")
             return
-        tail = meta["tails"][int(index)]
-        person = ctx.identity.by_student(tail["student"])
-        url = course.page_url(ctx.cfg.pages_url, tail["hw_id"])
-        ctx.outbox.person(person.comms_id, f"Напоминаю: домашка {esc(tail['hw_id'])} ждёт, срок был {tail['since']}. "
-                                           f"Страница: {url}")
-        ctx.outbox.teacher(f"Напомнил(а) {esc(tail['name'])}.")
+        try:
+            tail = meta["tails"][int(index)]
+            person = ctx.identity.by_student(tail["student"])
+            url = course.page_url(ctx.cfg.pages_url, tail["hw_id"])
+            ctx.outbox.person(person.comms_id, f"Напоминаю: домашка {esc(tail['hw_id'])} ждёт, срок был {tail['since']}. "
+                                               f"Страница: {url}")
+            ctx.outbox.teacher(f"Напомнил(а) {esc(tail['name'])}.")
+        except (ValueError, IndexError, AttributeError):
+            ctx.outbox.teacher("Уже сделано.")
         return
     item_id = rest
     meta = ctx.state.pending.get(item_id)
@@ -221,13 +230,13 @@ def _handle_callback(ctx: Context, item: Item) -> None:
         _drop_pending(ctx, item_id)
         ctx.outbox.teacher("Отброшено.")
     elif action == "accept" and meta["kind"] == "submission":
-        _drop_pending(ctx, item_id)
         try:
             ops.set_homework(date.fromisoformat(meta["day"]), meta["hw_id"], meta["student"], "accepted",
                              None, ctx.cfg.students_root, ctx.today, "teacher")
         except JournalError as exc:
             ctx.outbox.teacher(f"Не принято: {esc(str(exc))}")
             return
+        _drop_pending(ctx, item_id)
         ctx.outbox.person(meta["comms_id"], f"Домашка {esc(meta['hw_id'])} принята. Молодец!")
         ctx.outbox.teacher(f"Принято: {esc(ctx.name(meta['student']))}, {esc(meta['hw_id'])}.")
     elif action == "rework" and meta["kind"] == "submission":
@@ -270,13 +279,13 @@ def _handle_reply(ctx: Context, item: Item) -> None:
         ctx.outbox.teacher("Не нашёл, к чему этот ответ — сообщение уже обработано.")
         return
     if meta["kind"] == "submission" and meta.get("await_reply"):
-        _drop_pending(ctx, item.data["reply_to_item"])
         try:
             ops.set_homework(date.fromisoformat(meta["day"]), meta["hw_id"], meta["student"], "rework",
                              text, ctx.cfg.students_root, ctx.today, "teacher")
         except JournalError as exc:
             ctx.outbox.teacher(f"Статус не изменён: {esc(str(exc))}")
             return
+        _drop_pending(ctx, item.data["reply_to_item"])
         ctx.outbox.person(meta["comms_id"], f"Домашка {esc(meta['hw_id'])} — доработать:\n{esc(text)}\n— Димас")
         ctx.outbox.teacher(f"Отправлено {esc(ctx.name(meta['student']))}, статус «доработать».")
     elif meta["kind"] == "question":

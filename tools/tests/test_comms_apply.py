@@ -11,7 +11,7 @@ from comms.identity import Identity
 from comms.outbox import Outbox
 from comms.queue import Item, read_items
 from comms.state import State
-from journal import store
+from journal import ops, store
 
 NOW = datetime(2026, 9, 25, 15, 0)
 
@@ -132,6 +132,39 @@ def test_rework_needs_teacher_reply(ctx, tmp_path, journal_root):
     assert "Добавь третий print" in to_bob[0]["text"] and notice_id not in ctx.state.pending
 
 
+def test_failed_transition_keeps_pending(ctx, tmp_path, journal_root):
+    it = item(tmp_path, **{"from": ctx.identity.by_student("alice").comms_id, "kind": "photo", "files": ["photo.jpg"]})
+    (it.files_dir / "photo.jpg").write_bytes(b"\xff\xd8")
+    apply.apply_item(it, ctx)
+    notice_id = staged(ctx)[0]["id"]
+    ops.set_homework(date(2026, 9, 20), "python-01-first-run", "alice", "accepted", None,
+                     journal_root, NOW.date(), "teacher")
+    clear(ctx)
+    apply.apply_item(item(tmp_path, kind="callback", callback=f"rework:{notice_id}"), ctx)
+    clear(ctx)
+    apply.apply_item(item(tmp_path, kind="reply", text="текст", reply_to_item=notice_id), ctx)
+    assert "Статус не изменён" in staged(ctx)[0]["text"]
+    assert notice_id in ctx.state.pending
+    assert ctx.pending_dir(notice_id).is_dir()
+
+
+def test_accept_failed_transition_keeps_pending(ctx, tmp_path, journal_root):
+    import yaml
+    sub = item(tmp_path, **{"from": ctx.identity.by_student("bob").comms_id, "kind": "document", "files": ["h.py"]})
+    (sub.files_dir / "h.py").write_text("x", encoding="utf-8")
+    apply.apply_item(sub, ctx)
+    notice_id = staged(ctx)[0]["id"]
+    lesson = journal_root / "journal" / "2026-09-20.yml"
+    data = yaml.safe_load(lesson.read_text(encoding="utf-8"))
+    del data["homework"]["python-01-first-run"]["bob"]          # отметку убрали из-под кнопки
+    lesson.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    clear(ctx)
+    apply.apply_item(item(tmp_path, kind="callback", callback=f"accept:{notice_id}"), ctx)
+    assert "Не принято" in staged(ctx)[0]["text"]
+    assert notice_id in ctx.state.pending
+    assert ctx.pending_dir(notice_id).is_dir()
+
+
 def test_question_claude_draft_then_send(ctx, tmp_path):
     alice = ctx.identity.by_student("alice").comms_id
     apply.apply_item(item(tmp_path, **{"from": alice, "kind": "text", "text": "зачем >>>?"}), ctx)
@@ -191,10 +224,27 @@ def test_remind_from_digest(ctx, tmp_path):
     assert "d1" in ctx.state.pending                    # кнопок несколько — сводка живёт
 
 
+def test_remind_bad_index_is_already_done(ctx, tmp_path):
+    ctx.state.pending["d1"] = {"kind": "digest", "tails": [
+        {"student": "alice", "name": "Алиса", "hw_id": "python-01-first-run", "since": "2026-09-23"}]}
+    apply.apply_item(item(tmp_path, kind="callback", callback="remind:9:d1"), ctx)
+    assert "Уже сделано" in staged(ctx)[0]["text"]
+    assert "d1" in ctx.state.pending
+
+
 def test_unsupported_content_is_reported(ctx, tmp_path):
     alice = ctx.identity.by_student("alice").comms_id
     apply.apply_item(item(tmp_path, **{"from": alice, "kind": "text", "text": "", "unsupported": "voice"}), ctx)
     assert "голосовое" in staged(ctx)[0]["text"] and ctx.state.pending == {}
+
+
+def test_download_error_is_not_a_submission(ctx, tmp_path, journal_root):
+    alice = ctx.identity.by_student("alice").comms_id
+    it = item(tmp_path, **{"from": alice, "kind": "photo", "files": [], "download_error": "timeout"})
+    apply.apply_item(it, ctx)
+    assert "файл не дошёл" in staged(ctx)[0]["text"]
+    assert mark(journal_root, "python-01-first-run", "alice").status == "issued"
+    assert ctx.state.pending == {}
 
 
 def test_github_submission(ctx, journal_root):
@@ -204,6 +254,21 @@ def test_github_submission(ctx, journal_root):
     assert m.status == "submitted" and m.by == "github" and "abc1234" in m.note
     notice = staged(ctx)[0]
     assert "тесты 2/2" in notice["text"] and ctx.state.pending[notice["id"]]["kind"] == "submission"
+
+
+def test_github_submission_log_escaped_once(ctx, journal_root):
+    alice = ctx.identity.by_student("alice").comms_id
+    apply.handle_github(ctx, [Submission("alice", alice, "python-01-first-run", "abc1234def", 1, 1,
+                                         "assert 1 < 2\nFAILED")])
+    notice = staged(ctx)[0]
+    assert notice["text"].count("&lt;") == 1 and "&amp;lt;" not in notice["text"]
+
+
+def test_github_unknown_student_is_skipped(ctx, journal_root):
+    apply.handle_github(ctx, [Submission("zed", "s-unknown", "python-01-first-run", "abc1234def", 2, 0, "2 passed")])
+    notice = staged(ctx)[0]
+    assert notice["to"] == "teacher" and "zed" in notice["text"] and "не заведён" in notice["text"]
+    assert ctx.state.pending == {}
 
 
 def test_teacher_claude_command(ctx, tmp_path):
