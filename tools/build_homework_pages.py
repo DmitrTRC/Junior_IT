@@ -16,6 +16,15 @@ SKIP_FILES = {"task.md", "index.html"}
 SKIP_DIRS = {"tests"}
 SITE_URL = "https://dmitrtrc.github.io/Junior_IT/"
 
+TRACK_COLORS = {
+    "book": ("#7aa2ff", "#2b4fa8"),
+    "python": ("#00ffc8", "#00806a"),
+    "pascal": ("#ff5722", "#b3350f"),
+    "devops": ("#00e676", "#00803d"),
+    "cs": ("#ff0096", "#a8005f"),
+    "web": ("#8892b0", "#4a5568"),
+}
+
 PAGE = """<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -32,7 +41,7 @@ PAGE = """<!DOCTYPE html>
   .container {{ max-width: 820px; margin: 0 auto; }}
   header {{ background: linear-gradient(135deg, #1a1a2e, #16213e 60%, #0f3460); color: #fff;
             padding: 36px 30px; border-radius: 24px; margin-bottom: 24px; }}
-  .kicker {{ font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #00ffc8; letter-spacing: .08em; }}
+  .kicker {{ font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {track_color}; letter-spacing: .08em; }}
   h1 {{ font-family: 'Rubik', sans-serif; font-size: 30px; margin-top: 8px; }}
   main h2 {{ font-family: 'Rubik', sans-serif; font-size: 22px; margin: 28px 0 10px; }}
   main h3 {{ font-family: 'Rubik', sans-serif; font-size: 18px; margin: 22px 0 8px; }}
@@ -46,11 +55,11 @@ PAGE = """<!DOCTYPE html>
   td, th {{ border: 1px solid #d9d2c5; padding: 6px 10px; }}
   .files {{ margin-top: 32px; padding: 18px 20px; background: #fff; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,.06); }}
   .files h2 {{ margin-top: 0; }}
-  a.file {{ display: inline-block; font-family: 'JetBrains Mono', monospace; background: #1a1a2e; color: #00ffc8;
+  a.file {{ display: inline-block; font-family: 'JetBrains Mono', monospace; background: #1a1a2e; color: {track_color};
             padding: 8px 14px; border-radius: 10px; text-decoration: none; margin: 6px 8px 0 0; }}
   a.file:hover {{ background: #0f3460; }}
   footer {{ margin-top: 40px; font-size: 14px; color: #666; }}
-  footer a {{ color: #2b4fa8; }}
+  footer a {{ color: {track_ink}; }}
 </style>
 </head>
 <body>
@@ -75,6 +84,12 @@ FILES = """<section class="files">
 </section>"""
 
 
+def track_colors(hw_id: str) -> tuple[str, str]:
+    """Извлечь цвета трека из hw_id по префиксу (всё до первого '-'). Неизвестный трек → жёлтый/чёрный."""
+    track = hw_id.split("-")[0] if "-" in hw_id else hw_id
+    return TRACK_COLORS.get(track, ("#ffd60a", "#1a1a1a"))
+
+
 def split_title(md_text: str) -> tuple[str, str]:
     """Первый заголовок первого уровня — в шапку; из тела он убирается."""
     match = re.search(r"^# (.+)$", md_text, flags=re.MULTILINE)
@@ -91,7 +106,9 @@ def render_task(md_text: str, hw_id: str, attachments: list[str]) -> str:
         f'<a class="file" href="{html.escape(name, quote=True)}" download>{html.escape(name)}</a>'
         for name in attachments)
     files = FILES.format(links=links) if attachments else ""
-    return PAGE.format(title=html.escape(title), hw_id=html.escape(hw_id), body=body, files=files, site=SITE_URL)
+    track_color, track_ink = track_colors(hw_id)
+    return PAGE.format(title=html.escape(title), hw_id=html.escape(hw_id), body=body, files=files, site=SITE_URL,
+                       track_color=track_color, track_ink=track_ink)
 
 
 def attachments_for(hw_dir: Path) -> list[Path]:

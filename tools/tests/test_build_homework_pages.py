@@ -47,3 +47,15 @@ def test_build_writes_page_and_copies_attachments(tmp_path):
 
 def test_build_without_homework_dir_returns_empty(tmp_path):
     assert pages.build(tmp_path, tmp_path / "site") == []
+
+
+def test_track_colors_by_prefix():
+    assert pages.track_colors("devops-01-terminal") == ("#00e676", "#00803d")
+    assert pages.track_colors("python-01-first-run") == ("#00ffc8", "#00806a")
+    assert pages.track_colors("zzz-01-x") == ("#ffd60a", "#1a1a1a")
+
+
+def test_render_uses_track_colours():
+    html = pages.render_task("# Д\n\nт", "devops-01-terminal", [])
+    assert "#00e676" in html and "#00803d" in html
+    assert "#00ffc8" not in html
