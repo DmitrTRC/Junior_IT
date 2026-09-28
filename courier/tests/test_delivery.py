@@ -3,6 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace as NS
 
 import pytest
+from aiogram.exceptions import TelegramNetworkError, TelegramRetryAfter
 
 from courier.config import Config
 from courier.delivery import apply_control, deliver_once, keyboard, resolve_chat
@@ -106,6 +107,46 @@ def test_control_add_code(tmp_path):
     assert reg.codes["ZZ-1"] == "p-3" and q.sizes()["sent"] == 1
     with pytest.raises(ValueError):
         apply_control({"action": "nope"}, reg)
+
+
+class NetworkBot:
+    """Сеть лежит: каждый send_message падает сетевой ошибкой Telegram."""
+
+    def __init__(self, exc):
+        self.calls, self.exc = 0, exc
+
+    async def send_message(self, chat_id, text, **kw):
+        self.calls += 1
+        raise self.exc
+
+
+def test_network_errors_do_not_burn_attempts(tmp_path):
+    cfg, q, reg = setup(tmp_path, max_attempts=2)
+    item_id = q.put("outbox", {"to": "group", "text": "x"})
+    bot = NetworkBot(TelegramNetworkError(method=None, message="connection reset"))
+    for _ in range(10):
+        assert asyncio.run(deliver_once(q, bot, cfg, reg)) == 0
+    assert bot.calls == 10                                # одна попытка на проход, Димаса не будим
+    assert q.sizes() == {"outbox": 1, "sending": 0, "sent": 0, "inbox": 0, "failed": 0}
+    assert q.load("outbox", item_id).data.get("attempts", 0) == 0
+
+
+def test_retry_after_sleeps_capped_and_keeps_item(tmp_path, monkeypatch):
+    cfg, q, reg = setup(tmp_path)
+    q.put("outbox", {"to": "group", "text": "x"})
+    q.put("outbox", {"to": "group", "text": "y"})
+    slept = []
+    monkeypatch.setattr(asyncio, "sleep", _record(slept))
+    bot = NetworkBot(TelegramRetryAfter(method=None, message="flood", retry_after=600))
+    assert asyncio.run(deliver_once(q, bot, cfg, reg)) == 0
+    assert slept == [60] and bot.calls == 1               # второй элемент в этот проход не трогаем
+    assert q.sizes()["outbox"] == 2
+
+
+def _record(slept):
+    async def fake_sleep(seconds):
+        slept.append(seconds)
+    return fake_sleep
 
 
 def test_control_unknown_action_goes_to_failed(tmp_path):

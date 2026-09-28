@@ -1,7 +1,8 @@
 from types import SimpleNamespace as NS
 
 from courier.config import Config
-from courier.handlers import attachment_of, classify_sender, inbox_from_callback, inbox_from_message, parse_start
+from courier.handlers import (attachment_of, classify_sender, inbox_from_callback, inbox_from_message, parse_start,
+                              safe_name)
 from courier.queue import Queue
 from courier.registry import Registry
 
@@ -101,3 +102,17 @@ def test_callback(tmp_path):
     cb = NS(id="cb1", from_user=NS(id=42), data="send:01X", message=NS(message_id=9, chat=NS(id=42, type="private")))
     item = inbox_from_callback(cb, registry(tmp_path), cfg(tmp_path))
     assert item == {**item, "from": "teacher", "kind": "callback", "callback": "send:01X", "message_id": 9, "chat": "private"}
+
+
+def test_safe_name():
+    assert safe_name("../../x.py") == "x.py"
+    assert safe_name("/etc/passwd") == "passwd"
+    assert safe_name("") == "file.bin" and safe_name("..") == "file.bin" and safe_name(".") == "file.bin"
+    assert safe_name(".ssh_config") == "ssh_config"
+    assert safe_name("отчёт.py") == "_____.py"
+    assert len(safe_name("y" * 200 + ".py")) == 80
+
+
+def test_document_name_is_sanitized():
+    doc = msg(text=None, document=NS(file_id="d3", file_name="../../../etc/cron.d/evil"))
+    assert attachment_of(doc) == ("d3", "evil")

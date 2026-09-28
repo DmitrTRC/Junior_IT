@@ -1,6 +1,7 @@
 """Входящие из Telegram -> элементы inbox. Чистые сборщики отдельно от aiogram-обвязки."""
 from __future__ import annotations
 import logging
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -14,6 +15,14 @@ from courier.registry import Registry
 log = logging.getLogger("courier.handlers")
 
 UNSUPPORTED = (("voice", "voice"), ("sticker", "sticker"), ("video", "video"), ("video_note", "video"))
+NAME_LIMIT = 80
+
+
+def safe_name(name: str) -> str:
+    """Имя файла из Telegram -> безопасное: без каталогов, без скрытых, только ASCII-алфавит."""
+    base = Path(name or "").name.lstrip(".")
+    cleaned = re.sub(r"[^A-Za-z0-9._-]", "_", base)[:NAME_LIMIT]
+    return cleaned if cleaned.strip("._") else "file.bin"
 
 
 def parse_start(text: str | None) -> str | None:
@@ -34,7 +43,7 @@ def attachment_of(msg) -> tuple[str, str] | None:
         return msg.photo[-1].file_id, "photo.jpg"
     doc = getattr(msg, "document", None)
     if doc:
-        return doc.file_id, (doc.file_name or "file.bin")
+        return doc.file_id, safe_name(doc.file_name or "file.bin")
     return None
 
 
@@ -109,7 +118,7 @@ def build_router(queue: Queue, registry: Registry, cfg: Config, bot_username: st
         download_failed = False
         if attachment:
             file_id, name = attachment
-            tmp = Path(cfg.queue_dir) / ".download" / f"{message.message_id}-{name}"
+            tmp = Path(cfg.queue_dir) / ".download" / f"{message.chat.id}-{message.message_id}-{name}"
             tmp.parent.mkdir(parents=True, exist_ok=True)
             try:
                 await message.bot.download(file_id, destination=tmp)

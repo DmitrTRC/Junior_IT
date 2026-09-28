@@ -109,6 +109,20 @@ def test_missing_marker_counts_as_silent_after_threshold(tmp_path):
     assert wd.brain_silent_notified is False
 
 
+def test_heartbeat_rotates_old_sent_items(tmp_path):
+    cfg, q, bot, wd = setup(tmp_path)
+    now = datetime(2026, 9, 28, 9, 0)
+    old = q.put("sent", {"to": "teacher", "text": "старое"}, files={"a.txt": b"1"})
+    fresh = q.put("sent", {"to": "teacher", "text": "свежее"})
+    stamp = (now - timedelta(days=8)).timestamp()
+    os.utime(q.root / "sent" / f"{old}.json", (stamp, stamp))
+    os.utime(q.root / "sent" / old, (stamp, stamp))
+    pulled_at(q, now)
+    assert len(run(wd.tick(now))) == 1                     # heartbeat, вместе с ним ротация
+    assert [i.id for i in q.items("sent")] == [fresh]
+    assert not (q.root / "sent" / old).exists()
+
+
 def test_write_status(tmp_path):
     cfg, q, bot, wd = setup(tmp_path)
     path = write_status(q, cfg, datetime(2026, 9, 28, 12, 0), online=True, outage_since=None)

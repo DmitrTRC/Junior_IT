@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import os
 import secrets
+import shutil
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -40,6 +41,9 @@ class Queue:
 
     def put(self, box: str, data: dict, files: dict[str, bytes] | None = None) -> str:
         directory = self._box(box)
+        for name in files or {}:
+            if not name or name != Path(name).name or name in (".", ".."):
+                raise ValueError(f"недопустимое имя вложения {name!r}")
         item_id = data.get("id") or new_id()
         data = {**data, "id": item_id, "files": sorted((files or {}).keys())}
         if files:
@@ -66,6 +70,7 @@ class Queue:
         src_dir, dst_dir = self._box(src), self._box(dst)
         files = src_dir / item_id
         if files.is_dir():
+            shutil.rmtree(dst_dir / item_id, ignore_errors=True)   # хвост прошлой попытки мешает rename
             os.rename(files, dst_dir / item_id)
         os.rename(src_dir / f"{item_id}.json", dst_dir / f"{item_id}.json")
 

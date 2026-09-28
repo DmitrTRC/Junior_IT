@@ -37,6 +37,17 @@ def test_move_renames_json_and_files_dir(tmp_path):
     assert q.load("sent", item_id).data["text"] == "x"
 
 
+def test_move_over_existing_dir(tmp_path):
+    q = Queue(tmp_path)
+    item_id = q.put("outbox", {"to": "group", "text": "x"}, files={"a.txt": b"new"})
+    stale = tmp_path / "sent" / item_id
+    stale.mkdir()
+    (stale / "old.txt").write_bytes(b"old")               # хвост прошлой попытки в целевом каталоге
+    q.move(item_id, "outbox", "sent")
+    assert (tmp_path / "sent" / item_id / "a.txt").read_bytes() == b"new"
+    assert not (tmp_path / "sent" / item_id / "old.txt").exists()
+
+
 def test_save_rewrites_json(tmp_path):
     q = Queue(tmp_path)
     item = q.load("outbox", q.put("outbox", {"to": "group", "text": "x", "attempts": 0}))
@@ -71,3 +82,11 @@ def test_sizes_and_boxes_created(tmp_path):
 def test_move_unknown_box_raises(tmp_path):
     with pytest.raises(ValueError):
         Queue(tmp_path).move("x", "outbox", "nowhere")
+
+
+@pytest.mark.parametrize("bad", ["../evil.py", "sub/evil.py", "..", ".", ""])
+def test_put_rejects_traversal(tmp_path, bad):
+    q = Queue(tmp_path)
+    with pytest.raises(ValueError):
+        q.put("inbox", {"kind": "document"}, files={bad: b"x"})
+    assert not (tmp_path / "evil.py").exists() and q.sizes()["inbox"] == 0

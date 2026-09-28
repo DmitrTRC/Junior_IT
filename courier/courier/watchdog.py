@@ -4,6 +4,7 @@ import asyncio
 import json
 import logging
 import os
+import shutil
 from datetime import date, datetime
 from pathlib import Path
 
@@ -11,12 +12,27 @@ from courier.config import Config
 from courier.queue import Queue
 
 log = logging.getLogger("courier.watchdog")
+SENT_KEEP_DAYS = 7
+
+
+def rotate_sent(queue: Queue, now: datetime, days: int = SENT_KEEP_DAYS) -> int:
+    """Чистит sent/: имена детей проходят через HP транзитом и не лежат дольше недели."""
+    sent = queue.root / "sent"
+    edge = now.timestamp() - days * 86400
+    removed = 0
+    for path in sorted(sent.glob("*.json")):
+        if path.stat().st_mtime >= edge:
+            continue
+        shutil.rmtree(sent / path.stem, ignore_errors=True)
+        path.unlink()
+        removed += 1
+    return removed
 
 
 def write_status(queue: Queue, cfg: Config, now: datetime, online: bool, outage_since: datetime | None) -> Path:
     path = queue.root / "status.json"
-    data = {"ts": now.isoformat(timespec="seconds"), "online": online,
-            "outage_since": outage_since.isoformat(timespec="seconds") if outage_since else None,
+    data = {"ts": now.astimezone().isoformat(timespec="seconds"), "online": online,
+            "outage_since": outage_since.astimezone().isoformat(timespec="seconds") if outage_since else None,
             "sizes": queue.sizes(), "last_pull_age_s": queue.last_pull_age(now)}
     tmp = path.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
@@ -62,6 +78,9 @@ class Watchdog:
                                 f"входящих {sizes['inbox']}.", notices)
         if now.hour >= self.cfg.heartbeat_hour and self.last_heartbeat_day != now.date():
             self.last_heartbeat_day = now.date()
+            rotated = rotate_sent(self.queue, now)
+            if rotated:
+                log.info("ротация sent/: удалено %s", rotated)
             sizes = self.queue.sizes()
             await self._say(f"Почтальон жив. Очередь: исходящих {sizes['outbox']}, входящих {sizes['inbox']}, "
                             f"не доставлено {sizes['failed']}.", notices)

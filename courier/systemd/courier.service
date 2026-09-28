@@ -10,6 +10,11 @@ WorkingDirectory=/srv/courier
 ExecStart=/srv/courier/venv/bin/courier --config /srv/courier/courier.toml --env /srv/courier/courier.env
 Restart=always
 RestartSec=10
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/srv/courier/queue /srv/courier/registry.json
 
 [Install]
 WantedBy=multi-user.target

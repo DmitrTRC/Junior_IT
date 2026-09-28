@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 
+from aiogram.exceptions import TelegramNetworkError, TelegramRetryAfter, TelegramServerError
 from aiogram.types import FSInputFile, InlineKeyboardButton, InlineKeyboardMarkup
 
 from courier.config import Config
@@ -10,6 +11,7 @@ from courier.queue import Item, Queue
 from courier.registry import Registry
 
 log = logging.getLogger("courier.delivery")
+RETRY_AFTER_CAP = 60
 
 
 def resolve_chat(to: str, cfg: Config, registry: Registry) -> int | None:
@@ -83,6 +85,12 @@ async def deliver_once(queue: Queue, bot, cfg: Config, registry: Registry) -> in
         item = queue.load("sending", item.id)               # files_dir после move должен указывать на новый каталог
         try:
             await _send(item, chat_id, bot, queue)
+        except (TelegramNetworkError, TelegramServerError, TelegramRetryAfter) as exc:
+            queue.move(item.id, "sending", "outbox")      # сеть, а не элемент: попытку не тратим
+            log.warning("сеть при доставке %s: %s", item.id, exc)
+            if isinstance(exc, TelegramRetryAfter):
+                await asyncio.sleep(min(int(exc.retry_after), RETRY_AFTER_CAP))
+            break
         except Exception as exc:
             item.data["attempts"] = int(item.data.get("attempts", 0)) + 1
             item.data["last_error"] = str(exc)[:200]
