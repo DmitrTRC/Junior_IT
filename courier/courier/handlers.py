@@ -1,5 +1,6 @@
 """Входящие из Telegram -> элементы inbox. Чистые сборщики отдельно от aiogram-обвязки."""
 from __future__ import annotations
+import logging
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -9,6 +10,8 @@ from aiogram.types import CallbackQuery, Message
 from courier.config import Config
 from courier.queue import Queue
 from courier.registry import Registry
+
+log = logging.getLogger("courier.handlers")
 
 UNSUPPORTED = (("voice", "voice"), ("sticker", "sticker"), ("video", "video"), ("video_note", "video"))
 
@@ -64,7 +67,6 @@ def inbox_from_message(msg, registry: Registry, cfg: Config, bot_username: str, 
         return None
     if chat == "group" and not _addressed_to_bot(msg, bot_username):
         return None
-    attachment = attachment_of(msg)
     kind = "photo" if getattr(msg, "photo", None) else "document" if getattr(msg, "document", None) else "text"
     text = msg.text or msg.caption or ""
     item = _item(sender, chat, kind, text, msg)
@@ -91,7 +93,7 @@ def inbox_from_callback(cb, registry: Registry, cfg: Config) -> dict:
 def _item(sender: str, chat: str, kind: str, text: str, msg) -> dict:
     return {"from": sender, "chat": chat, "kind": kind, "text": text, "message_id": msg.message_id,
             "reply_to_message_id": None, "reply_to_item": None, "callback": None, "unsupported": None,
-            "ts": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+            "download_error": None, "ts": datetime.now(timezone.utc).isoformat(timespec="seconds")}
 
 
 def build_router(queue: Queue, registry: Registry, cfg: Config, bot_username: str) -> Router:
@@ -104,23 +106,37 @@ def build_router(queue: Queue, registry: Registry, cfg: Config, bot_username: st
             return
         files: dict[str, bytes] = {}
         attachment = attachment_of(message)
+        download_failed = False
         if attachment:
             file_id, name = attachment
-            tmp = Path(cfg.queue_dir) / ".download" / name
+            tmp = Path(cfg.queue_dir) / ".download" / f"{message.message_id}-{name}"
             tmp.parent.mkdir(parents=True, exist_ok=True)
-            await message.bot.download(file_id, destination=tmp)
-            files[name] = tmp.read_bytes()
-            tmp.unlink()
+            try:
+                await message.bot.download(file_id, destination=tmp)
+                files[name] = tmp.read_bytes()
+            except Exception as exc:
+                log.warning("не смог скачать вложение %s: %s", name, exc)
+                item["download_error"] = str(exc)[:200]
+                download_failed = True
+            finally:
+                if tmp.exists():
+                    tmp.unlink()
         queue.put("inbox", item, files)
         if item["kind"] == "registered":
             await message.answer("Привязал. Теперь сюда можно присылать домашки и вопросы.")
         elif item["chat"] == "private" and item["from"] != "teacher":
-            await message.answer("Получил, передал Димасу.")
+            if download_failed:
+                await message.answer("Файл не дошёл до бота, пришли ещё раз.")
+            else:
+                await message.answer("Получил, передал Димасу.")
 
     @router.callback_query(F.data)
     async def on_callback(callback: CallbackQuery):
         if callback.from_user.id != cfg.teacher_telegram_id:
             await callback.answer("Кнопки — только для преподавателя.")
+            return
+        if callback.message is None:
+            await callback.answer("Кнопка устарела.")
             return
         queue.put("inbox", inbox_from_callback(callback, registry, cfg))
         await callback.answer("Принято.")

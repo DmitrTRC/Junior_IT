@@ -42,6 +42,7 @@ def test_private_text_from_registered(tmp_path):
     item = inbox_from_message(msg(text="не работает"), registry(tmp_path, **{"s-1": 7}), cfg(tmp_path), "jitbot")
     assert item["from"] == "s-1" and item["chat"] == "private" and item["kind"] == "text"
     assert item["text"] == "не работает" and item["message_id"] == 1 and item["ts"]
+    assert item["download_error"] is None
 
 
 def test_private_from_unknown_is_ignored(tmp_path):
@@ -66,6 +67,10 @@ def test_photo_and_document(tmp_path):
     assert item["kind"] == "photo" and item["text"] == "вот" and attachment_of(photo) == ("big", "photo.jpg")
     doc = msg(text=None, document=NS(file_id="d1", file_name="hello.py"))
     assert attachment_of(doc) == ("d1", "hello.py") and inbox_from_message(doc, reg, cfg(tmp_path), "jitbot")["kind"] == "document"
+
+
+def test_document_without_name_falls_back():
+    assert attachment_of(msg(text=None, document=NS(file_id="d2", file_name=None))) == ("d2", "file.bin")
 
 
 def test_unsupported_content_becomes_note(tmp_path):
