@@ -1,0 +1,8 @@
+repo_root = "/Users/dmitrymorozov/Projects/Junior_IT"
+hp_host = "courier@hp"                 # ssh-алиас или user@host HP
+hp_queue_dir = "/srv/courier/queue"
+local_dir = "~/.junior_it/comms"       # inbox/, outbox-staging/, status.json, state.json
+github_poll_every = 5                  # каждый пятый тик (тик — минута)
+reminder_hour = 12
+digest_hour = 18
+telegram_fallback = true               # сдача файлом боту — до урока про git
