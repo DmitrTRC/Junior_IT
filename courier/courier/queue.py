@@ -9,7 +9,7 @@ import json
 import os
 import secrets
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 BOXES = ("outbox", "sending", "sent", "inbox", "failed")
@@ -17,7 +17,7 @@ PULL_MARKER = ".last_pull"
 
 
 def new_id() -> str:
-    return datetime.utcnow().strftime("%Y%m%dT%H%M%S%f") + "-" + secrets.token_hex(4)
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f") + "-" + secrets.token_hex(4)
 
 
 @dataclass
