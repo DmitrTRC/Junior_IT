@@ -116,3 +116,37 @@ def test_student_without_repo_is_skipped(tmp_path):
 
     assert gp.poll(cfg, ident, state, runner, datetime(2026, 9, 28)) == []
     assert all("bob" not in " ".join(c) for c in calls)
+
+
+def test_missing_binary_is_logged_and_skipped(tmp_path, caplog):
+    """Отсутствующий gh/git — FileNotFoundError (OSError) — не роняет цикл по ученикам."""
+    cfg, ident, state = setup(tmp_path)
+    ident.set_github("bob", "owner/jit-hw-bob")
+
+    def runner(cmd, *, timeout, stdin_text=None):
+        raise FileNotFoundError("gh")
+
+    with caplog.at_level("WARNING"):
+        subs = gp.poll(cfg, ident, state, runner, datetime(2026, 9, 28))
+    assert subs == []
+    assert "alice" in caplog.text
+
+
+def test_suspicious_hw_id_is_skipped(tmp_path):
+    """hw_id из чужого репозитория — только курс-подобные id, остальное отбрасывается."""
+    work = make_student_repo(tmp_path)
+    (work / "hw" / "python-01-first-run" / "hello.py").write_text(
+        "print(11)\nprint(2)\nprint(3)\n", encoding="utf-8")
+    (work / "hw" / "Weird Name").mkdir(parents=True)
+    (work / "hw" / "Weird Name" / "x.txt").write_text("x\n", encoding="utf-8")
+    (work / "hw" / "UPPER").mkdir(parents=True)
+    (work / "hw" / "UPPER" / "x.txt").write_text("x\n", encoding="utf-8")
+    git("add", ".", cwd=work)
+    git("commit", "-q", "-m", "weird paths", cwd=work)
+    sha = git("rev-parse", "HEAD", cwd=work).stdout.strip()
+    assert gp.changed_hw_ids(work, sha, real_runner) == ["python-01-first-run"]
+
+    cfg, ident, state = setup(tmp_path)
+    subs = gp.poll(cfg, ident, state, local_runner(work), datetime(2026, 9, 28, 12, 0))
+    assert [s.hw_id for s in subs] == ["python-01-first-run"]
+    assert (subs[0].passed, subs[0].failed) == (2, 0)

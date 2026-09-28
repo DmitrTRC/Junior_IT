@@ -17,6 +17,7 @@ from comms.state import State
 log = logging.getLogger("comms.github")
 GIT_TIMEOUT = 60
 HW_PATH_RE = re.compile(r"^hw/([^/]+)/")
+HW_ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 
 @dataclass
@@ -33,7 +34,7 @@ class Submission:
 def _run(cmd, runner, timeout=GIT_TIMEOUT) -> str:
     result = runner(cmd, timeout=timeout)
     if result.returncode != 0:
-        raise RuntimeError(f"{' '.join(cmd[:3])}: код {result.returncode}: {(result.stderr or '').strip()[:200]}")
+        raise RuntimeError(f"{' '.join(cmd[:4])}: код {result.returncode}: {(result.stderr or '').strip()[:200]}")
     return result.stdout or ""
 
 
@@ -57,9 +58,16 @@ def commits_since(dest: Path, since: str | None, runner) -> list[str]:
 def changed_hw_ids(dest: Path, sha: str, runner) -> list[str]:
     out: list[str] = []
     for path in _run(["git", "-C", str(dest), "show", "--name-only", "--format=", sha], runner).splitlines():
-        m = HW_PATH_RE.match(path.strip())
-        if m and m.group(1) not in out:
-            out.append(m.group(1))
+        path = path.strip()
+        m = HW_PATH_RE.match(path)
+        if not m:
+            continue
+        hw_id = m.group(1)
+        if not HW_ID_RE.match(hw_id):
+            log.warning("пропущен подозрительный путь %s", path)
+            continue
+        if hw_id not in out:
+            out.append(hw_id)
     return out
 
 
@@ -116,6 +124,6 @@ def poll(cfg: Config, identity: Identity, state: State, runner, now: datetime) -
                     passed, failed, output = run_tests(cfg.repo_root, hw_id, subtree, runner, cfg.tests_timeout_s)
                 submissions.append(Submission(person.student, person.comms_id, hw_id, head, passed, failed, output))
             state.github[person.comms_id] = {"sha": head, "polled": now.isoformat(timespec="seconds")}
-        except (RuntimeError, subprocess.TimeoutExpired, subprocess.CalledProcessError) as exc:
+        except (RuntimeError, subprocess.TimeoutExpired, subprocess.CalledProcessError, OSError) as exc:
             log.warning("github %s: %s", person.student, exc)
     return submissions
