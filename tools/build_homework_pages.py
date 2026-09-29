@@ -1,4 +1,5 @@
-"""Страницы домашек для сайта: homework/<id>/task.md -> <out>/homework/<id>/index.html.
+"""Страницы домашек и словариков для сайта: homework/<id>/task.md -> <out>/homework/<id>/index.html,
+tracks/<track>/<module>/student/glossary.md -> тот же путь с .html.
 
 Публикуются страница и вложения (стартовые файлы); task.md и tests/ — нет.
 Запуск: build_homework_pages.py <repo_root> <out_dir>
@@ -60,12 +61,19 @@ PAGE = """<!DOCTYPE html>
   a.file:hover {{ background: #0f3460; }}
   footer {{ margin-top: 40px; font-size: 14px; color: #666; }}
   footer a {{ color: {track_ink}; }}
+  @media (max-width: 600px) {{
+    table, tbody, tr, td {{ display: block; width: 100%; }}
+    thead {{ display: none; }}
+    tr {{ border: 1px solid #d9d2c5; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }}
+    td {{ border: 0; border-top: 1px solid #eee9e0; }}
+    td:first-child {{ border-top: 0; font-weight: 700; background: #f3efe7; }}
+  }}
 </style>
 </head>
 <body>
 <div class="container">
 <header>
-  <div class="kicker">ДОМАШКА · {hw_id}</div>
+  <div class="kicker">{kicker}</div>
   <h1>{title}</h1>
 </header>
 <main>
@@ -84,10 +92,14 @@ FILES = """<section class="files">
 </section>"""
 
 
-def track_colors(hw_id: str) -> tuple[str, str]:
-    """Извлечь цвета трека из hw_id по префиксу (всё до первого '-'). Неизвестный трек → жёлтый/чёрный."""
-    track = hw_id.split("-")[0] if "-" in hw_id else hw_id
+def colors_for_track(track: str) -> tuple[str, str]:
+    """Пара цветов трека (яркий для тёмного фона, чернильный для светлого). Неизвестный трек → жёлтый/чёрный."""
     return TRACK_COLORS.get(track, ("#ffd60a", "#1a1a1a"))
+
+
+def track_colors(hw_id: str) -> tuple[str, str]:
+    """Цвета трека по префиксу hw_id (всё до первого '-')."""
+    return colors_for_track(hw_id.split("-")[0] if "-" in hw_id else hw_id)
 
 
 def split_title(md_text: str) -> tuple[str, str]:
@@ -99,16 +111,25 @@ def split_title(md_text: str) -> tuple[str, str]:
     return match.group(1).strip(), body.lstrip("\n")
 
 
-def render_task(md_text: str, hw_id: str, attachments: list[str]) -> str:
+def render_page(md_text: str, kicker: str, track: str, attachments: list[str]) -> str:
+    """Страница ученика в бренде: шапка с подписью-кикером, тело из Markdown, вложения."""
     title, body_md = split_title(md_text)
     body = markdown.markdown(body_md, extensions=["fenced_code", "tables"])
     links = "\n  ".join(
         f'<a class="file" href="{html.escape(name, quote=True)}" download>{html.escape(name)}</a>'
         for name in attachments)
     files = FILES.format(links=links) if attachments else ""
-    track_color, track_ink = track_colors(hw_id)
-    return PAGE.format(title=html.escape(title), hw_id=html.escape(hw_id), body=body, files=files, site=SITE_URL,
+    track_color, track_ink = colors_for_track(track)
+    return PAGE.format(title=html.escape(title), kicker=html.escape(kicker), body=body, files=files, site=SITE_URL,
                        track_color=track_color, track_ink=track_ink)
+
+
+def render_task(md_text: str, hw_id: str, attachments: list[str]) -> str:
+    return render_page(md_text, f"ДОМАШКА · {hw_id}", hw_id.split("-")[0], attachments)
+
+
+def render_glossary(md_text: str, module_id: str) -> str:
+    return render_page(md_text, f"СЛОВАРИК · {module_id}", module_id.split("/")[0], [])
 
 
 def attachments_for(hw_dir: Path) -> list[Path]:
@@ -135,13 +156,26 @@ def build(repo_root: Path, out_dir: Path) -> list[Path]:
     return written
 
 
+def build_glossaries(repo_root: Path, out_dir: Path) -> list[Path]:
+    """tracks/<track>/<module>/student/glossary.md -> <out>/tracks/<track>/<module>/student/glossary.html."""
+    repo_root, written = Path(repo_root), []
+    for md in sorted(repo_root.glob("tracks/*/*/student/glossary.md")):
+        module_id = f"{md.parents[2].name}/{md.parents[1].name}"
+        page = Path(out_dir) / md.relative_to(repo_root).with_suffix(".html")
+        page.parent.mkdir(parents=True, exist_ok=True)
+        page.write_text(render_glossary(md.read_text(encoding="utf-8"), module_id), encoding="utf-8")
+        written.append(page)
+    return written
+
+
 def main(argv=None) -> int:
     args = argv if argv is not None else sys.argv[1:]
     if len(args) != 2:
         print("usage: build_homework_pages.py <repo_root> <out_dir>", file=sys.stderr)
         return 2
     pages = build(Path(args[0]), Path(args[1]))
-    print(f"домашки: {len(pages)} страниц")
+    glossaries = build_glossaries(Path(args[0]), Path(args[1]))
+    print(f"домашки: {len(pages)} страниц, словарики: {len(glossaries)}")
     return 0
 
 

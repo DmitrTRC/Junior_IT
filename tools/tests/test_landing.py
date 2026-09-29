@@ -53,7 +53,7 @@ def test_no_links_to_unpublished():
     text = landing_text()
     assert "teacher/" not in text
     assert "live-code.md" not in text
-    assert "homework/" not in text
+    assert "homework/" not in text.split('<script')[0]      # в разметке ссылок нет; JS строит их из карты
 
 
 def test_fallback_tracks_present_without_js():
@@ -72,3 +72,27 @@ def test_inline_tokens_match_brand_css():
     landing = landing_text()
     for name, value in re.findall(r"(--[\w-]+):\s*(#[0-9a-fA-F]{6})", css):
         assert f"{name}: {value}" in landing, f"{name} разошёлся с brand-tokens.css"
+
+
+def test_module_nodes_link_to_all_materials():
+    js = landing_text().split("<script")[-1]
+    for key, label in (("slides", "слайды"), ("cheatsheet", "шпаргалка"), ("glossary", "словарик"), ("homework", "домашка")):
+        assert re.search(r"links\.%s\b" % key, js), key
+        assert label in js, label
+    assert "module-links" in landing_text()
+
+
+def test_homework_now_block_rendered_from_map():
+    js = landing_text().split("<script")[-1]
+    assert "homework_now" in js and "Домашка сейчас" in js
+
+
+def test_fallback_track_cards_link_to_site():
+    text = landing_text()
+    for track in ("book", "python", "devops", "cs", "web"):
+        assert f"github.com/DmitrTRC/Junior_IT/tree/main/tracks/{track}" not in text, track
+
+
+def test_hero_gets_homework_button_from_map():
+    js = landing_text().split("<script")[-1]
+    assert "hero-homework" in js and "btn-row" in js

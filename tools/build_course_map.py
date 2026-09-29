@@ -7,6 +7,7 @@ playground/*/session.yml. Атлас и прочие документы не ч�
 """
 
 import json
+import re
 import sys
 from datetime import date
 from pathlib import Path
@@ -14,6 +15,8 @@ from pathlib import Path
 import yaml
 
 POSITIONING = "Углублённая информатика и программирование · 7–8 классы"
+H1_RE = re.compile(r"^# (.+)$", re.MULTILINE)
+HOMEWORK_PREFIX_RE = re.compile(r"^домашка\s*[:\-—–]\s*", re.IGNORECASE)
 
 TRACKS_META = [
     {"id": "book", "title": "Учебник", "chip": "BOOK"},
@@ -100,7 +103,48 @@ def module_links(module):
         links["slides"] = f"{rel}/shared/slides.html"
     if (module_dir / "student" / "cheatsheet.html").is_file():
         links["cheatsheet"] = f"{rel}/student/cheatsheet.html"
+    if (module_dir / "student" / "glossary.md").is_file():
+        links["glossary"] = f"{rel}/student/glossary.html"   # HTML собирает build_homework_pages
+    hw_id = _hw_id(module.get("homework"))
+    if hw_id and (module_dir.parents[2] / "homework" / hw_id / "task.md").is_file():
+        links["homework"] = f"homework/{hw_id}/"
     return links
+
+
+def _hw_id(ref):
+    return str(ref).rstrip("/").split("/")[-1] if ref else None
+
+
+def homework_title(repo_root, hw_id):
+    """Заголовок H1 из task.md; None, если домашки нет на диске."""
+    task = Path(repo_root) / "homework" / hw_id / "task.md"
+    if not task.is_file():
+        return None
+    match = H1_RE.search(task.read_text(encoding="utf-8"))
+    if not match:
+        return hw_id
+    title = HOMEWORK_PREFIX_RE.sub("", match.group(1).strip())   # на лендинге слово «Домашка» уже в заголовке блока
+    return title[:1].upper() + title[1:] if title else hw_id
+
+
+def homework_now(sessions, repo_root, today):
+    """Домашка последнего прошедшего занятия, у которого она есть: срок и ссылки на страницы."""
+    for session in sorted(sessions, key=lambda s: s["date"], reverse=True):
+        if session["date"] > today:
+            continue
+        homework = session.get("homework") or {}
+        items = []
+        for ref in homework.get("items") or []:
+            hw_id = _hw_id(ref)
+            title = homework_title(repo_root, hw_id)
+            if title is None:
+                continue
+            items.append({"id": hw_id, "title": title, "url": f"homework/{hw_id}/"})
+        if items:
+            due = homework.get("due")
+            return {"due": due.isoformat() if hasattr(due, "isoformat") else (str(due) if due else None),
+                    "items": items}
+    return None
 
 
 def build_course_map(repo_root, today):
@@ -142,6 +186,7 @@ def build_course_map(repo_root, today):
         "tracks": TRACKS_META,
         "modules": out_modules,
         "next_session": next_session,
+        "homework_now": homework_now(sessions, repo_root, today),
         "counters": {"modules_done": len(done),
                      "modules_core_total": core_total,
                      "paragraphs_closed": len(paragraphs)},

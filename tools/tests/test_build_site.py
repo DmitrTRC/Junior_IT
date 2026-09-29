@@ -87,3 +87,9 @@ def test_homework_pages_are_published_without_tests(tmp_path):
     page = out / "homework" / "python-01-first-run" / "index.html"
     assert page.is_file() and (page.parent / "broken.py").is_file()
     assert not (page.parent / "task.md").exists() and not (page.parent / "tests").exists()
+
+
+def test_glossary_pages_are_published(tmp_path):
+    out = build(tmp_path)
+    page = out / "tracks" / "python" / "m-01-first-run" / "student" / "glossary.html"
+    assert page.is_file() and "СЛОВАРИК" in page.read_text(encoding="utf-8")

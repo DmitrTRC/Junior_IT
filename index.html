@@ -370,6 +370,16 @@
   }
   .module-node .module-title { font-size: 13.5px; font-weight: 600; display: block; }
   .module-node .module-minutes { font-size: 12px; color: #9aa0b5; }
+  .module-node .module-title a { color: inherit; text-decoration: none; }
+  .module-node .module-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .module-node .module-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 8px; border-radius: 6px;
+    background: rgba(255,255,255,.08); color: inherit; text-decoration: none; white-space: nowrap;
+  }
+  .module-node[data-status="done"] .module-links a { background: rgba(0,0,0,.18); }
+  .module-node .module-links a:hover { background: var(--track-color, var(--cyan)); color: var(--bg); }
+  .homework-now { border: 1px solid var(--yellow); }
+  .hero-homework { border-color: var(--yellow); color: var(--yellow); }
   .module-node[data-status="done"] {
     background: var(--track-color, var(--cyan));
     color: var(--bg);
@@ -486,12 +496,12 @@
       <div id="hub-extras"></div>
 
       <div id="course-map" class="course-map">
-        <a class="track-card" style="--track-color: var(--track-book)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/book">
+        <a class="track-card" style="--track-color: var(--track-book)" href="tracks/book/m-01-information-and-data/student/cheatsheet.html">
           <span class="chip">BOOK</span>
           <h3>Учебник</h3>
           <p>теория по Босовой, 7–8 класс</p>
         </a>
-        <a class="track-card" style="--track-color: var(--track-py)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/python">
+        <a class="track-card" style="--track-color: var(--track-py)" href="tracks/python/m-01-first-run/student/cheatsheet.html">
           <span class="chip">PY</span>
           <h3>Python</h3>
           <p>основной язык курса</p>
@@ -501,17 +511,17 @@
           <h3>Pascal</h3>
           <p>второй диалект: тот же алгоритм, другой синтаксис</p>
         </a>
-        <a class="track-card" style="--track-color: var(--track-ops)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/devops">
+        <a class="track-card" style="--track-color: var(--track-ops)" href="tracks/devops/m-01-terminal-first-steps/student/cheatsheet.html">
           <span class="chip">OPS</span>
           <h3>DevOps</h3>
           <p>терминал, git, зелёная галка CI</p>
         </a>
-        <a class="track-card" style="--track-color: var(--track-cs)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/cs">
+        <a class="track-card" style="--track-color: var(--track-cs)" href="tracks/cs/m-01-computer/student/cheatsheet.html">
           <span class="chip">CS</span>
           <h3>Компьютер изнутри</h3>
           <p>как это всё устроено под капотом</p>
         </a>
-        <a class="track-card" style="--track-color: var(--track-web)" href="https://github.com/DmitrTRC/Junior_IT/tree/main/tracks/web">
+        <a class="track-card" style="--track-color: var(--track-web)" href="tracks/web/m-01-html-css/student/cheatsheet.html">
           <span class="chip">WEB</span>
           <h3>Web (архив)</h3>
           <p>HTML/CSS/JS — по запросу</p>
@@ -649,6 +659,48 @@
       hubExtras.insertBefore(card, hubExtras.firstChild);
     }
 
+    function formatDueDate(iso) {
+      var parts = iso.split('-').map(Number);
+      var dt = new Date(parts[0], parts[1] - 1, parts[2]);
+      var day = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'long' }).format(dt);
+      var weekday = new Intl.DateTimeFormat('ru', { weekday: 'long' }).format(dt);
+      return day + ' (' + weekday + ')';
+    }
+
+    function renderHomeworkNow(hn) {
+      var hubExtras = document.getElementById('hub-extras');
+      if (!hn || !hubExtras || !(hn.items || []).length) return;
+
+      var btnRow = document.querySelector('.hero .btn-row');
+      if (btnRow) {
+        var heroLink = document.createElement('a');
+        heroLink.className = 'btn btn-outline hero-homework';
+        heroLink.href = hn.items[0].url;
+        heroLink.textContent = 'Домашка сейчас';
+        btnRow.appendChild(heroLink);
+      }
+
+      var box = document.createElement('div');
+      box.className = 'quick-links homework-now';
+
+      var heading = document.createElement('h3');
+      heading.textContent = 'Домашка сейчас' + (hn.due ? ' — до ' + formatDueDate(hn.due) : '');
+      box.appendChild(heading);
+
+      var list = document.createElement('ul');
+      hn.items.forEach(function (item) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = item.url;
+        a.textContent = item.title;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+      box.appendChild(list);
+
+      hubExtras.appendChild(box);
+    }
+
     function renderCounters(c) {
       var hubExtras = document.getElementById('hub-extras');
       if (!c || !hubExtras) return;
@@ -689,23 +741,44 @@
     }
 
     function buildModuleNode(m, colorVar) {
-      var href = m.links && (m.links.slides || m.links.cheatsheet);
-      var node = document.createElement(href ? 'a' : 'div');
+      var links = m.links || {};
+      var node = document.createElement('div');
       node.className = 'module-node';
       node.dataset.status = m.status;
       node.style.setProperty('--track-color', 'var(' + colorVar + ')');
       node.title = moduleTooltip(m);
-      if (href) node.href = href;
 
       var title = document.createElement('span');
       title.className = 'module-title';
-      title.textContent = m.title;
+      if (links.slides) {
+        var titleLink = document.createElement('a');
+        titleLink.href = links.slides;
+        titleLink.textContent = m.title;
+        title.appendChild(titleLink);
+      } else {
+        title.textContent = m.title;
+      }
       node.appendChild(title);
 
       var minutes = document.createElement('span');
       minutes.className = 'module-minutes';
       minutes.textContent = m.minutes + ' мин';
       node.appendChild(minutes);
+
+      var row = document.createElement('span');
+      row.className = 'module-links';
+      function addLink(href, label) {
+        if (!href) return;
+        var a = document.createElement('a');
+        a.href = href;
+        a.textContent = label;
+        row.appendChild(a);
+      }
+      addLink(links.slides, 'слайды');
+      addLink(links.cheatsheet, 'шпаргалка');
+      addLink(links.glossary, 'словарик');
+      addLink(links.homework, 'домашка');
+      if (row.childNodes.length) node.appendChild(row);
 
       return node;
     }
@@ -812,6 +885,7 @@
       } catch (e) { return; }
 
       renderNextSession(map.next_session);
+      renderHomeworkNow(map.homework_now);
       renderCounters(map.counters);
       renderMap(map);
       renderQuickLinks(map.modules);

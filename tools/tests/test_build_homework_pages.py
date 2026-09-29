@@ -59,3 +59,26 @@ def test_render_uses_track_colours():
     html = pages.render_task("# Д\n\nт", "devops-01-terminal", [])
     assert "#00e676" in html and "#00803d" in html
     assert "#00ffc8" not in html
+
+
+def test_render_glossary_uses_module_track_colours():
+    html = pages.render_glossary("# Словарик python-01\n\n**REPL** — командный режим", "python/m-01-first-run")
+    assert "<title>Словарик python-01 · Junior_IT</title>" in html
+    assert "СЛОВАРИК · python/m-01-first-run" in html and "#00ffc8" in html and "#00806a" in html
+    assert "Вложения" not in html and "<strong>REPL</strong>" in html
+
+
+def test_build_glossaries_writes_html_next_to_md(tmp_path):
+    student = tmp_path / "tracks" / "devops" / "m-01-terminal-first-steps" / "student"
+    student.mkdir(parents=True)
+    (student / "glossary.md").write_text("# Словарик\n\n**pwd** — где я", encoding="utf-8")
+    out = tmp_path / "site"
+    written = pages.build_glossaries(tmp_path, out)
+    page = out / "tracks" / "devops" / "m-01-terminal-first-steps" / "student" / "glossary.html"
+    assert written == [page] and "#00e676" in page.read_text(encoding="utf-8")
+    assert pages.build_glossaries(tmp_path / "empty", out) == []
+
+
+def test_page_tables_stack_on_phone_width():
+    html = pages.render_glossary("# Словарик\n\n| а | б |\n|---|---|\n| 1 | 2 |", "python/m-01-first-run")
+    assert "@media (max-width: 600px)" in html and "thead { display: none; }" in html

@@ -31,7 +31,7 @@ def make_module(repo_root, module_id, level="core", minutes=25, textbook=None,
     return module_dir
 
 
-def make_session(repo_root, day, modules, completed=None, theme="Тема"):
+def make_session(repo_root, day, modules, completed=None, theme="Тема", homework=None):
     session_dir = repo_root / "playground" / day.isoformat()
     session_dir.mkdir(parents=True)
     data = {
@@ -40,6 +40,8 @@ def make_session(repo_root, day, modules, completed=None, theme="Тема"):
     }
     if completed is not None:
         data["completed"] = completed
+    if homework is not None:
+        data["homework"] = homework
     (session_dir / "session.yml").write_text(
         yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
 
@@ -215,3 +217,59 @@ def test_completed_on_none_for_unfinished(tmp_path):
     make_module(tmp_path, "book/m-02-next")
     course_map = build_course_map(tmp_path, TODAY)
     assert course_map["modules"][0]["completed_on"] is None
+
+
+def make_homework(repo_root, hw_id, title="Первая программа"):
+    hw = repo_root / "homework" / hw_id
+    hw.mkdir(parents=True)
+    (hw / "task.md").write_text(f"# {title}\n\nтекст", encoding="utf-8")
+    return hw
+
+
+def test_links_include_glossary_and_homework(tmp_path):
+    d = make_module(tmp_path, "python/m-01-first-run", student=("cheatsheet.html", "glossary.md"))
+    manifest = yaml.safe_load((d / "module.yml").read_text(encoding="utf-8"))
+    manifest["homework"] = "homework/python-01-first-run"
+    (d / "module.yml").write_text(yaml.safe_dump(manifest, allow_unicode=True), encoding="utf-8")
+    make_homework(tmp_path, "python-01-first-run")
+    links = build_course_map(tmp_path, TODAY)["modules"][0]["links"]
+    assert links["glossary"] == "tracks/python/m-01-first-run/student/glossary.html"
+    assert links["homework"] == "homework/python-01-first-run/"
+
+
+def test_homework_link_needs_task_md(tmp_path):
+    d = make_module(tmp_path, "python/m-01-first-run")
+    manifest = yaml.safe_load((d / "module.yml").read_text(encoding="utf-8"))
+    manifest["homework"] = "homework/python-01-first-run"
+    (d / "module.yml").write_text(yaml.safe_dump(manifest, allow_unicode=True), encoding="utf-8")
+    links = build_course_map(tmp_path, TODAY)["modules"][0]["links"]
+    assert "homework" not in links and "glossary" not in links
+
+
+def test_homework_now_from_last_past_session_with_homework(tmp_path):
+    make_module(tmp_path, "python/m-01-first-run")
+    make_homework(tmp_path, "python-01-first-run", title="Первая программа и первая починка")
+    make_session(tmp_path, date(2026, 9, 13), ["python/m-01-first-run"])
+    make_session(tmp_path, date(2026, 9, 20), ["python/m-01-first-run"],
+                 homework={"due": "2026-09-23", "items": ["homework/python-01-first-run"]})
+    now = build_course_map(tmp_path, date(2026, 9, 25))["homework_now"]
+    assert now == {"due": "2026-09-23", "items": [
+        {"id": "python-01-first-run", "title": "Первая программа и первая починка",
+         "url": "homework/python-01-first-run/"}]}
+    assert build_course_map(tmp_path, date(2026, 9, 15))["homework_now"] is None
+
+
+def test_homework_now_skips_items_without_task(tmp_path):
+    make_module(tmp_path, "python/m-01-first-run")
+    make_session(tmp_path, date(2026, 9, 20), ["python/m-01-first-run"],
+                 homework={"due": "2026-09-23", "items": ["homework/nope-01"]})
+    assert build_course_map(tmp_path, date(2026, 9, 25))["homework_now"] is None
+
+
+def test_homework_now_title_drops_domashka_prefix(tmp_path):
+    make_module(tmp_path, "python/m-01-first-run")
+    make_homework(tmp_path, "python-01-first-run", title="Домашка: первая программа и первая починка")
+    make_session(tmp_path, date(2026, 9, 20), ["python/m-01-first-run"],
+                 homework={"due": "2026-09-23", "items": ["homework/python-01-first-run"]})
+    now = build_course_map(tmp_path, date(2026, 9, 25))["homework_now"]
+    assert now["items"][0]["title"] == "Первая программа и первая починка"
