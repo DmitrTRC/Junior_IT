@@ -139,3 +139,53 @@ def build_program(repo_root, today):
         "current_month": today.strftime("%Y-%m"),
         "blocks": blocks,
     }
+
+
+def program_text(program, view):
+    if view not in ("student", "parents"):
+        raise ValueError(f"ракурс должен быть student или parents: {view!r}")
+    lines = [f"Программа Junior_IT {program['year']}", program["goal"][view], program["disclaimer"], ""]
+    for block in program["blocks"]:
+        lines.append(f"{block['label']} — {block['title']}")
+        if view == "parents":
+            lines.append(block["outcome"])
+            refs = [item["label"] for item in block["textbook"]]
+            if refs:
+                lines.append("Учебник: " + ", ".join(refs))
+        else:
+            lines.extend(f"- {module['title']}" for module in block["modules"])
+            lines.extend(f"- {event}" for event in block["events"])
+        lines.append("")
+    if view == "parents":
+        lines.append(program["next_year"])
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def main(argv=None):
+    args = sys.argv[1:] if argv is None else list(argv)
+    view = None
+    if "--text" in args:
+        at = args.index("--text")
+        if at + 1 >= len(args):
+            print("usage: build_program.py <repo_root> [<out_dir>] [--text student|parents]", file=sys.stderr)
+            return 2
+        view = args[at + 1]
+        del args[at:at + 2]
+    repo_root = Path(args[0]) if args else Path(__file__).resolve().parent.parent
+    try:
+        program = build_program(repo_root, date.today())
+        if view is not None:
+            print(program_text(program, view), end="")
+            return 0
+    except (yaml.YAMLError, KeyError, ValueError, OSError) as exc:
+        print(f"program: не удалось собрать программу ({exc})", file=sys.stderr)
+        return 1
+    out_dir = Path(args[1]) if len(args) > 1 else repo_root
+    out_path = out_dir / "program.json"
+    out_path.write_text(json.dumps(program, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"программа курса: {out_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

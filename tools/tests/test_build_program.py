@@ -167,3 +167,47 @@ def test_every_core_module_must_appear_once(tmp_path):
                              block("2026-10", modules=["python/m-01-first-run"])])
     with pytest.raises(ValueError, match="дважды"):
         build_program(tmp_path, TODAY)
+
+
+from build_program import main, program_text  # noqa: E402
+
+
+def test_program_text_parents_and_student(tmp_path):
+    make_module(tmp_path, "python/m-01-first-run")
+    write_program(tmp_path, [
+        block("2026-09", modules=["python/m-01-first-run"], textbook=["8:5.1"]),
+        block("2027-05", events=["демо-день"]),
+    ])
+    program = build_program(tmp_path, TODAY)
+    parents = program_text(program, "parents")
+    lines = parents.splitlines()
+    assert lines[0] == "Программа Junior_IT 2026/27"
+    assert lines[1] == "Ребёнок пишет программы на Python."
+    assert lines[2] == "Программа живая: темп подстраивается под учеников."
+    assert "Сентябрь — Тема 2026-09" in parents and "Результат 2026-09" in parents
+    assert "Учебник: 8 кл §5.1" in parents and "Восьмой класс: Python глубже." in parents
+    assert "**" not in parents and "#" not in parents
+    student = program_text(program, "student")
+    assert "- Тест m-01-first-run (test)" in student and "- демо-день" in student
+    assert "Результат 2026-09" not in student
+    with pytest.raises(ValueError):
+        program_text(program, "teacher")
+
+
+def test_main_writes_json_or_prints_text(tmp_path, capsys):
+    make_module(tmp_path, "python/m-01-first-run")
+    write_program(tmp_path, [block("2026-09", modules=["python/m-01-first-run"])])
+    out = tmp_path / "site"
+    out.mkdir()
+    assert main([str(tmp_path), str(out)]) == 0
+    data = json.loads((out / "program.json").read_text(encoding="utf-8"))
+    assert data["year"] == "2026/27" and data["blocks"][0]["modules"][0]["id"] == "python/m-01-first-run"
+    assert main([str(tmp_path), "--text", "student"]) == 0
+    assert "Тест m-01-first-run (test)" in capsys.readouterr().out
+    assert not (tmp_path / "program.json").exists()
+
+
+def test_main_reports_broken_program(tmp_path, capsys):
+    write_program(tmp_path, [block("2026-10", modules=["python/m-02-variables"])])
+    assert main([str(tmp_path), str(tmp_path)]) == 1
+    assert "python/m-02-variables" in capsys.readouterr().err
