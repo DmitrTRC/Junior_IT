@@ -12,4 +12,5 @@ terms:
   - {ru: вывод, en: output}
   - {ru: строка, en: string, note: "текст в кавычках"}
   - {ru: ошибка, en: traceback, note: "читается снизу вверх"}
+  - {ru: переменная, en: variable, note: "коробка с именем; = — «положи», не «равно»"}
 homework: homework/python-01-first-run
