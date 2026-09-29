@@ -211,3 +211,19 @@ def test_main_reports_broken_program(tmp_path, capsys):
     write_program(tmp_path, [block("2026-10", modules=["python/m-02-variables"])])
     assert main([str(tmp_path), str(tmp_path)]) == 1
     assert "python/m-02-variables" in capsys.readouterr().err
+
+
+REPO = Path(__file__).resolve().parents[2]
+FORBIDDEN = ("дружин", "отряд", "контрол", "проверк", "инспекц")
+KID_NAMES = ("Неля", "Маша", "Мария", "Матвей")
+
+
+def test_real_program_builds_and_is_clean():
+    program = build_program(REPO, date.today())
+    ids = [m["id"] for b in program["blocks"] for m in b["modules"]]
+    assert "python/m-01-first-run" in ids and "cs/m-03-languages" in ids
+    assert program["blocks"][0]["month"] == "2026-09" and program["blocks"][-1]["month"] == "2027-05"
+    raw = (REPO / "meta" / "program.yml").read_text(encoding="utf-8")
+    assert not any(word in raw.lower() for word in FORBIDDEN)
+    assert not any(name in raw for name in KID_NAMES)
+    assert "живая" in program["disclaimer"]

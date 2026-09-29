@@ -1,3 +1,4 @@
+import json
 import subprocess
 from pathlib import Path
 
@@ -93,3 +94,9 @@ def test_glossary_pages_are_published(tmp_path):
     out = build(tmp_path)
     page = out / "tracks" / "python" / "m-01-first-run" / "student" / "glossary.html"
     assert page.is_file() and "СЛОВАРИК" in page.read_text(encoding="utf-8")
+
+
+def test_program_json_is_published(tmp_path):
+    out = build(tmp_path)
+    data = json.loads((out / "program.json").read_text(encoding="utf-8"))
+    assert data["year"] == "2026/27" and len(data["blocks"]) == 9

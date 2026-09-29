@@ -41,6 +41,7 @@ rsync -a \
 
 PYBIN="${PYBIN:-$ROOT/tools/.venv/bin/python}"
 "$PYBIN" "$ROOT/tools/build_course_map.py" "$ROOT" "$OUT/course-map.json"
+"$PYBIN" "$ROOT/tools/build_program.py" "$ROOT" "$OUT"
 "$PYBIN" "$ROOT/tools/build_homework_pages.py" "$ROOT" "$OUT"
 
 echo "сайт собран: $OUT"
