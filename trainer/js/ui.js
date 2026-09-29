@@ -1,4 +1,4 @@
-import { buildTicket, checkAnswer, score, resultLine, shuffle } from './engine.js';
+import { examTicket, checkAnswer, score, resultLine, shuffle } from './engine.js';
 import { loadState, saveName, addAttempt } from './storage.js';
 
 const BANK_BASE = '../textbook/quizzes/';
@@ -233,7 +233,7 @@ function markAnswer(ok) {
 
 function startExam() {
   app.mode = 'exam';
-  app.ticket = buildTicket(app.bank.parts, Math.random);
+  app.ticket = examTicket(app.bank.parts, app.scope, Math.random);
   app.answers = new Array(app.ticket.length).fill(null);
   app.current = 0;
   showScreen('screen-question');

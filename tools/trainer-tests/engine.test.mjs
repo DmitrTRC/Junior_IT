@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  normalizeText, checkAnswer, shuffle, buildTicket, score, resultLine,
+  normalizeText, checkAnswer, shuffle, buildTicket, examTicket, score, resultLine,
 } from '../../trainer/js/engine.js';
 
 // Детерминированный rng: выдаёт значения по кругу.
@@ -106,4 +106,20 @@ test('resultLine: формат строки для MAX', () => {
   );
   assert.ok(resultLine({ ...attempt, passed: false }, '').endsWith('30.09.2026'));
   assert.ok(resultLine({ ...attempt, passed: false }, '').includes('пока нет'));
+});
+
+test('examTicket: вся глава — по три с параграфа, один параграф — до шести его вопросов', () => {
+  const bank = [
+    { paragraph: '1.1', questions: Array.from({ length: 8 }, (_, i) => q({ id: `a${i}` })) },
+    { paragraph: '1.2', questions: [q({ id: 'b1' }), q({ id: 'b2' }), q({ id: 'b3' })] },
+  ];
+  const whole = examTicket(bank, 'all', cycleRng([0.1, 0.5, 0.9]));
+  assert.equal(whole.length, 6);
+  assert.equal(whole.filter((t) => t.paragraph === '1.2').length, 3);
+  const solo = examTicket(bank, '1.1', cycleRng([0.1, 0.5, 0.9]));
+  assert.equal(solo.length, 6);
+  assert.ok(solo.every((t) => t.paragraph === '1.1'));
+  // параграф короче шести вопросов — берём все его вопросы
+  const short = examTicket(bank, '1.2', cycleRng([0.3]));
+  assert.equal(short.length, 3);
 });

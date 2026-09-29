@@ -55,6 +55,17 @@ export function buildTicket(bank, rng, perParagraph = 3) {
   return shuffle(picked, rng);
 }
 
+const SOLO_PARAGRAPH_TICKET = 6;
+
+export function examTicket(bank, scope, rng) {
+  if (scope === 'all') {
+    return buildTicket(bank, rng);
+  }
+  const parts = bank.filter((part) => part.paragraph === scope);
+  const perParagraph = Math.min(SOLO_PARAGRAPH_TICKET, ...parts.map((part) => part.questions.length));
+  return buildTicket(parts, rng, perParagraph);
+}
+
 export function score(ticket, answers) {
   const byParagraph = {};
   let correct = 0;
