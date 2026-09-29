@@ -100,3 +100,8 @@ def test_program_json_is_published(tmp_path):
     out = build(tmp_path)
     data = json.loads((out / "program.json").read_text(encoding="utf-8"))
     assert data["year"] == "2026/27" and len(data["blocks"]) == 9
+
+
+def test_program_page_is_published(tmp_path):
+    out = build(tmp_path)
+    assert (out / "program.html").is_file()

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Программа года · Junior_IT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+    --yellow: #ffd60a; --cyan: #00ffc8; --text: #e8e8f0; --muted: #9aa0b5;
+    --track-book: #7aa2ff; --track-py: #00ffc8; --track-pas: #ff5722;
+    --track-ops: #00e676; --track-cs: #ff0096; --track-web: #8892b0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Manrope', sans-serif; line-height: 1.55; }
+  body { padding: 20px 16px 60px; }
+  .container { max-width: 760px; margin: 0 auto; }
+  h1, h2, h3 { font-family: 'Rubik', sans-serif; }
+  header h1 { font-size: clamp(26px, 6vw, 34px); }
+  .kicker { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; color: var(--yellow); text-transform: uppercase; }
+  .goal { margin-top: 10px; font-size: 17px; font-weight: 600; }
+  .disclaimer { margin-top: 8px; font-size: 13px; color: var(--muted); }
+  .switch { display: flex; gap: 6px; margin: 20px 0; padding: 4px; background: var(--card); border-radius: 14px;
+            position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; }
+  .switch button { flex: 1; padding: 10px 6px; border: 0; border-radius: 10px; background: transparent; color: var(--muted);
+                   font: 600 14px 'Manrope', sans-serif; cursor: pointer; }
+  .switch button[aria-pressed="true"] { background: var(--deep); color: var(--text); }
+  .principles, .month, .next-year { background: var(--card); border-radius: 16px; padding: 16px 18px; margin-bottom: 12px; }
+  .principles li { margin: 6px 0 6px 18px; }
+  .month { border: 1px solid transparent; }
+  .month[data-status="current"] { border-color: var(--yellow); }
+  .month[data-status="done"] { opacity: .72; }
+  .month-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .month-head h2 { font-size: 18px; }
+  .month-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+  .month-label.now { color: var(--yellow); }
+  .outcome, .why { margin-top: 8px; }
+  .meta-line { margin-top: 8px; font-size: 13px; color: var(--muted); }
+  .modules { list-style: none; margin-top: 10px; }
+  .module { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid rgba(255,255,255,.06); }
+  .module-title { flex: 1 1 200px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 2px 7px; border-radius: 6px;
+          background: rgba(255,255,255,.08); color: var(--track-color, var(--cyan)); }
+  .status { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+  .status[data-status="done"] { color: var(--track-ops); }
+  .status[data-status="current"] { color: var(--yellow); }
+  .links { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; }
+  .links a { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 8px; border-radius: 6px;
+             background: rgba(255,255,255,.08); color: inherit; text-decoration: none; }
+  .links a:hover { background: var(--track-color, var(--cyan)); color: var(--bg); }
+  .events { margin-top: 8px; font-size: 14px; color: var(--muted); }
+  .next-year { background: var(--card-2); }
+  footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
+  footer a { color: var(--yellow); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="kicker">Junior_IT · программа года</div>
+    <h1 id="title">Программа года</h1>
+    <p class="goal" id="goal"></p>
+    <p class="disclaimer" id="disclaimer"></p>
+  </header>
+
+  <div class="switch" role="group" aria-label="Ракурс">
+    <button type="button" data-view="student">Ученику</button>
+    <button type="button" data-view="parents">Родителям</button>
+    <button type="button" data-view="why">Почему так</button>
+  </div>
+
+  <main id="program"><p class="meta-line">Загружаю программу…</p></main>
+
+  <footer>Junior_IT · <a href="index.html">на главную</a> · <a href="index.html#hub">карта курса</a></footer>
+</div>
+
+<script>
+  (function () {
+    var VIEWS = ['student', 'parents', 'why'];
+    var TRACK_TOKENS = { book: '--track-book', python: '--track-py', pascal: '--track-pas',
+                         devops: '--track-ops', cs: '--track-cs', web: '--track-web' };
+    var TRACK_CHIPS = { book: 'BOOK', python: 'PY', pascal: 'PAS', devops: 'OPS', cs: 'CS', web: 'WEB' };
+    var MODULE_STATUS = { done: 'пройден', current: 'сейчас', planned: 'впереди', library: 'архив' };
+    var BLOCK_STATUS = { done: 'прошли', current: 'сейчас', upcoming: 'впереди' };
+    var MATERIALS = [['slides', 'слайды'], ['cheatsheet', 'шпаргалка'], ['glossary', 'словарик'], ['homework', 'домашка']];
+    var program = null;
+
+    function currentView() {
+      var fromHash = location.hash.replace('#', '');
+      if (VIEWS.indexOf(fromHash) !== -1) return fromHash;
+      try {
+        var saved = localStorage.getItem('program-view');
+        if (VIEWS.indexOf(saved) !== -1) return saved;
+      } catch (e) {}
+      return 'parents';
+    }
+
+    function el(tag, className, text) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text) node.textContent = text;
+      return node;
+    }
+
+    function renderModule(m) {
+      var li = el('li', 'module');
+      li.style.setProperty('--track-color', 'var(' + (TRACK_TOKENS[m.track] || '--cyan') + ')');
+      li.appendChild(el('span', 'chip', TRACK_CHIPS[m.track] || m.track));
+      li.appendChild(el('span', 'module-title', m.title));
+      var status = el('span', 'status', MODULE_STATUS[m.status] || m.status);
+      status.dataset.status = m.status;
+      li.appendChild(status);
+      var links = m.links || {};
+      var row = el('span', 'links');
+      MATERIALS.forEach(function (pair) {
+        if (!links[pair[0]]) return;
+        var a = el('a', null, pair[1]);
+        a.href = links[pair[0]];
+        row.appendChild(a);
+      });
+      if (row.childNodes.length) li.appendChild(row);
+      return li;
+    }
+
+    function renderBlock(block, view) {
+      var card = el('section', 'month');
+      card.dataset.status = block.status;
+      var head = el('div', 'month-head');
+      head.appendChild(el('h2', null, block.label + ' · ' + block.title));
+      var label = el('span', 'month-label' + (block.status === 'current' ? ' now' : ''), BLOCK_STATUS[block.status] || '');
+      head.appendChild(label);
+      card.appendChild(head);
+
+      if (view === 'student') {
+        if (block.modules.length) {
+          var list = el('ul', 'modules');
+          block.modules.forEach(function (m) { list.appendChild(renderModule(m)); });
+          card.appendChild(list);
+        }
+        if (block.events.length) card.appendChild(el('p', 'events', block.events.join(' · ')));
+      } else if (view === 'parents') {
+        card.appendChild(el('p', 'outcome', block.outcome));
+        if (block.textbook.length) {
+          card.appendChild(el('p', 'meta-line', 'Учебник: ' + block.textbook.map(function (t) { return t.label; }).join(', ')));
+        }
+        if (block.trainer.length) {
+          card.appendChild(el('p', 'meta-line', 'Зачёт: ' + block.trainer.map(function (t) { return t.label; }).join(', ')));
+        }
+      } else {
+        card.appendChild(el('p', 'why', block.why));
+      }
+      return card;
+    }
+
+    function render(view) {
+      var root = document.getElementById('program');
+      root.textContent = '';
+      document.getElementById('goal').textContent = view === 'student' ? program.goal.student : program.goal.parents;
+      if (view === 'why') {
+        var box = el('div', 'principles');
+        box.appendChild(el('h3', null, 'Принципы'));
+        var ul = el('ul');
+        program.principles.forEach(function (p) { ul.appendChild(el('li', null, p)); });
+        box.appendChild(ul);
+        root.appendChild(box);
+      }
+      program.blocks.forEach(function (b) { root.appendChild(renderBlock(b, view)); });
+      if (view === 'why') {
+        var next = el('div', 'next-year');
+        next.appendChild(el('h3', null, 'Куда дальше'));
+        next.appendChild(el('p', null, program.next_year));
+        root.appendChild(next);
+      }
+    }
+
+    function setView(view) {
+      if (location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
+      try { localStorage.setItem('program-view', view); } catch (e) {}
+      document.querySelectorAll('.switch button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.view === view));
+      });
+      if (program) render(view);
+    }
+
+    document.querySelectorAll('.switch button').forEach(function (b) {
+      b.addEventListener('click', function () { setView(b.dataset.view); });
+    });
+    window.addEventListener('hashchange', function () { setView(currentView()); });
+    setView(currentView());
+
+    fetch('program.json')
+      .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+      .then(function (data) {
+        program = data;
+        document.getElementById('title').textContent = 'Программа года ' + data.year;
+        document.getElementById('disclaimer').textContent = data.disclaimer;
+        render(currentView());
+      })
+      .catch(function () {
+        document.getElementById('program').textContent = 'Программа пока не собрана — загляни позже.';
+      });
+  })();
+</script>
+</body>
+</html>

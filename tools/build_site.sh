@@ -12,6 +12,7 @@ mkdir -p "$OUT"
 # Белый список публикации: на сайт попадает только перечисленное.
 PUBLISH=(
   index.html
+  program.html
   README.md
   LICENSE
   CHANGELOG.md
