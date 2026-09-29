@@ -77,3 +77,65 @@ def load_program(repo_root):
     if months != sorted(months):
         raise ValueError("program.yml: месяцы должны идти по возрастанию")
     return data
+
+
+def resolve_module(entry, modules_by_id, statuses):
+    if isinstance(entry, str):
+        entry = {"id": entry}
+    if not isinstance(entry, dict) or not entry.get("id"):
+        raise ValueError(f"program.yml: модуль без id: {entry!r}")
+    module_id = str(entry["id"])
+    existing = modules_by_id.get(module_id)
+    if existing is not None:
+        extra = [key for key in ("title", "track") if key in entry]
+        if extra:
+            raise ValueError(f"program.yml: {module_id} есть в tracks/, поля {extra} лишние")
+        return {"id": module_id, "title": existing["title"], "track": existing["track"],
+                "status": statuses[module_id], "minutes": existing["minutes"],
+                "links": module_links(existing)}
+    missing = [key for key in ("title", "track") if not entry.get(key)]
+    if missing:
+        raise ValueError(f"program.yml: будущий модуль {module_id} без полей {missing}")
+    track = entry["track"]
+    if track not in TRACK_IDS:
+        raise ValueError(f"program.yml: {module_id}: неизвестный трек {track!r}")
+    if not module_id.startswith(track + "/"):
+        raise ValueError(f"program.yml: {module_id}: id не совпадает с треком {track!r}")
+    return {"id": module_id, "title": entry["title"], "track": track,
+            "status": "planned", "minutes": None, "links": {}}
+
+
+def build_program(repo_root, today):
+    program = load_program(repo_root)
+    modules = load_modules(repo_root)
+    sessions = load_sessions(repo_root)
+    statuses = module_statuses(modules, sessions, today)
+    modules_by_id = {m["id"]: m for m in modules}
+
+    blocks, seen = [], set()
+    for block in program["blocks"]:
+        resolved = [resolve_module(entry, modules_by_id, statuses) for entry in block["modules"]]
+        for module in resolved:
+            if module["id"] in seen:
+                raise ValueError(f"program.yml: модуль {module['id']} встречается дважды")
+            seen.add(module["id"])
+        blocks.append({
+            "month": block["month"], "label": month_label(block["month"]),
+            "status": block_status(block["month"], today),
+            "title": block["title"], "outcome": block["outcome"], "why": block["why"],
+            "textbook": [{"ref": ref, "label": textbook_label(ref)} for ref in block["textbook"]],
+            "trainer": [{"ref": ref, "label": textbook_label(ref)} for ref in block["trainer"]],
+            "events": block["events"], "modules": resolved,
+        })
+    core = [m["id"] for m in modules
+            if m["level"] in ("core", "deep") and m["track"] not in ARCHIVE_TRACKS]
+    forgotten = sorted(set(core) - seen)
+    if forgotten:
+        raise ValueError(f"program.yml: модули из tracks/ не вошли в программу: {forgotten}")
+    return {
+        "generated_at": today.isoformat(), "year": program["year"], "goal": program["goal"],
+        "disclaimer": program["disclaimer"], "next_year": program["next_year"],
+        "principles": list(program["principles"]),
+        "current_month": today.strftime("%Y-%m"),
+        "blocks": blocks,
+    }
