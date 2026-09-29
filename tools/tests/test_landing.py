@@ -96,3 +96,9 @@ def test_fallback_track_cards_link_to_site():
 def test_hero_gets_homework_button_from_map():
     js = landing_text().split("<script")[-1]
     assert "hero-homework" in js and "btn-row" in js
+
+
+def test_landing_links_to_program_page():
+    text = landing_text()
+    assert text.count('href="program.html"') >= 2
+    assert "Программа года" in text
