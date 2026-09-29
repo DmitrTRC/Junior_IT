@@ -3,7 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace as NS
 
 import pytest
-from aiogram.exceptions import TelegramNetworkError, TelegramRetryAfter
+from aiogram.exceptions import TelegramEntityTooLarge, TelegramNetworkError, TelegramRetryAfter
 
 from courier.config import Config
 from courier.delivery import apply_control, deliver_once, keyboard, resolve_chat
@@ -156,3 +156,24 @@ def test_control_unknown_action_goes_to_failed(tmp_path):
     asyncio.run(deliver_once(q, bot, cfg, reg))
     assert q.sizes()["failed"] == 1
     assert len(bot.sent) == 1 and bot.sent[0][0] == 42
+
+
+class TooLargeBot(FakeBot):
+    """Telegram отвечает 413 на элемент с текстом «x»; остальное уходит нормально."""
+
+    async def send_message(self, chat_id, text, parse_mode=None, reply_markup=None, reply_to_message_id=None):
+        if text == "x":
+            raise TelegramEntityTooLarge(method=None, message="Request Entity Too Large")
+        return await super().send_message(chat_id, text, parse_mode, reply_markup, reply_to_message_id)
+
+
+def test_entity_too_large_counts_attempt_and_does_not_stall(tmp_path):
+    cfg, q, reg = setup(tmp_path, max_attempts=2)
+    poison = q.put("outbox", {"to": "group", "text": "x"})
+    q.put("outbox", {"to": "group", "text": "y"})
+    bot = TooLargeBot()
+    asyncio.run(deliver_once(q, bot, cfg, reg))           # x: попытка 1, y доставлен в тот же проход
+    assert q.load("outbox", poison).data["attempts"] == 1 and q.sizes()["sent"] == 1
+    asyncio.run(deliver_once(q, bot, cfg, reg))           # x: попытка 2 -> failed + заметка Димасу
+    assert q.sizes() == {"outbox": 0, "sending": 0, "sent": 1, "inbox": 0, "failed": 1}
+    assert [s[0] for s in bot.sent] == [-100, 42] and "после 2 попыток" in bot.sent[1][1]

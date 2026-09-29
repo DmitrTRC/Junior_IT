@@ -14,7 +14,7 @@ NoNewPrivileges=yes
 PrivateTmp=yes
 ProtectSystem=strict
 ProtectHome=read-only
-ReadWritePaths=/srv/courier/queue /srv/courier/registry.json
+ReadWritePaths=/srv/courier
 
 [Install]
 WantedBy=multi-user.target

@@ -3,7 +3,8 @@ from __future__ import annotations
 import asyncio
 import logging
 
-from aiogram.exceptions import TelegramNetworkError, TelegramRetryAfter, TelegramServerError
+from aiogram.exceptions import (TelegramEntityTooLarge, TelegramNetworkError, TelegramRetryAfter,
+                                TelegramServerError)
 from aiogram.types import FSInputFile, InlineKeyboardButton, InlineKeyboardMarkup
 
 from courier.config import Config
@@ -61,6 +62,19 @@ async def _notify_teacher(bot, cfg: Config, text: str) -> None:
         log.warning("не смог уведомить преподавателя: %s", exc)
 
 
+async def _count_attempt(item: Item, exc: Exception, queue: Queue, bot, cfg: Config) -> None:
+    """Ошибка самого элемента: считаем попытку, после max_attempts — failed и заметка Димасу."""
+    item.data["attempts"] = int(item.data.get("attempts", 0)) + 1
+    item.data["last_error"] = str(exc)[:200]
+    queue.save(item, "sending")
+    if item.data["attempts"] >= cfg.max_attempts:
+        queue.move(item.id, "sending", "failed")
+        await _notify_teacher(bot, cfg, f"Не доставлено {item.id} после {cfg.max_attempts} попыток: {exc}")
+    else:
+        queue.move(item.id, "sending", "outbox")
+    log.warning("доставка %s не удалась: %s", item.id, exc)
+
+
 async def deliver_once(queue: Queue, bot, cfg: Config, registry: Registry) -> int:
     delivered = 0
     for item in queue.items("outbox"):
@@ -85,6 +99,10 @@ async def deliver_once(queue: Queue, bot, cfg: Config, registry: Registry) -> in
         item = queue.load("sending", item.id)               # files_dir после move должен указывать на новый каталог
         try:
             await _send(item, chat_id, bot, queue)
+        except TelegramEntityTooLarge as exc:
+            # 413 наследует TelegramNetworkError, но это вечный отказ элемента, а не сети
+            await _count_attempt(item, exc, queue, bot, cfg)
+            continue
         except (TelegramNetworkError, TelegramServerError, TelegramRetryAfter) as exc:
             queue.move(item.id, "sending", "outbox")      # сеть, а не элемент: попытку не тратим
             log.warning("сеть при доставке %s: %s", item.id, exc)
@@ -92,15 +110,7 @@ async def deliver_once(queue: Queue, bot, cfg: Config, registry: Registry) -> in
                 await asyncio.sleep(min(int(exc.retry_after), RETRY_AFTER_CAP))
             break
         except Exception as exc:
-            item.data["attempts"] = int(item.data.get("attempts", 0)) + 1
-            item.data["last_error"] = str(exc)[:200]
-            queue.save(item, "sending")
-            if item.data["attempts"] >= cfg.max_attempts:
-                queue.move(item.id, "sending", "failed")
-                await _notify_teacher(bot, cfg, f"Не доставлено {item.id} после {cfg.max_attempts} попыток: {exc}")
-            else:
-                queue.move(item.id, "sending", "outbox")
-            log.warning("доставка %s не удалась: %s", item.id, exc)
+            await _count_attempt(item, exc, queue, bot, cfg)
             continue
         queue.move(item.id, "sending", "sent")
         delivered += 1
