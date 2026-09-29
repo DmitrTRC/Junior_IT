@@ -67,6 +67,7 @@ _site/
 
 # Артефакт сборки карты курса
 course-map.json
+program.json
 
 # Виртуальное окружение инструментов
 tools/.venv/

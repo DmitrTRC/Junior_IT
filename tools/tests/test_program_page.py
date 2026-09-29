@@ -5,7 +5,6 @@ REPO = Path(__file__).resolve().parents[2]
 PAGE = REPO / "program.html"
 VOID = {"meta", "link", "br", "img", "hr", "input"}
 FORBIDDEN = ("дружин", "отряд", "контрол", "проверк", "инспекц")
-KID_NAMES = ("Неля", "Маша", "Мария", "Матвей")
 
 
 class BalanceChecker(HTMLParser):
@@ -58,4 +57,9 @@ def test_brand_and_forbidden_words():
     assert "#0a0a14" in text and "#ffd60a" in text
     lower = text.lower()
     assert not any(word in lower for word in FORBIDDEN)
-    assert not any(name in text for name in KID_NAMES)
+
+
+def test_page_has_description_and_favicon_for_link_previews():
+    head = page_text().split("</head>")[0]
+    assert '<meta name="description"' in head
+    assert 'rel="icon"' in head

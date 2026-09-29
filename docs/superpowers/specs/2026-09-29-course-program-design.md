@@ -114,8 +114,8 @@ blocks:
 не двигаем.
 
 Плоский текст для мессенджера: `program_text(program, view)` с `view`
-`student` или `parents`, без markdown, короткими абзацами по месяцам,
-с оговоркой первой строкой. CLI: `build_program.py <repo_root> <out_dir>`
+`student` или `parents`, без markdown, короткими абзацами по месяцам;
+первые три строки — заголовок, цель года под ракурс, оговорка «курс живой». CLI: `build_program.py <repo_root> <out_dir>`
 пишет `program.json`; флаг `--text student|parents` печатает текст в stdout
 вместо записи.
 
