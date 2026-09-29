@@ -174,6 +174,33 @@ SyntaxError: unterminated string literal (detected at line 1)
 
 ---
 
+## 🪟 Если у ученика Windows (PowerShell в Windows Terminal)
+
+Шаги те же, меняются четыре слова. Окружение — по
+`provisioning/setup-windows.md`, рабочая папка `~\code\junior_it` уже
+создана при настройке. Таблица — для PowerShell; после переезда на Git
+Bash (текущая редакция setup-windows.md) `python3`, `touch` и `nano`
+работают как на маке, остаются только путь `/c/Users/…` и приглашение `$`.
+
+| На маке | На Windows |
+|---|---|
+| `python3`, `python3 hello.py` | `python`, `python hello.py` |
+| `touch hello.py` | `ni hello.py` |
+| `nano hello.py`, `Ctrl+O`/`Ctrl+X` | `notepad hello.py`, `Ctrl+S`, закрыть окно |
+| приглашение `%` | приглашение `PS C:\Users\имя\code\junior_it>` |
+
+- **Маркер «где я»** тот же: `>>>` — внутри Python, `>` на конце
+  приглашения — обычная оболочка.
+- **Traceback в шаге 5** совпадает слово в слово, кроме первой строки:
+  `File "C:\Users\имя\code\junior_it\hello.py", line 1`. Стрелочка и
+  `SyntaxError` — на месте.
+- **`notepad` открывается отдельным окном поверх терминала** — после
+  сохранения окно закрыть, иначе на шаринге терминала не видно. Кодировку
+  Блокнот ставит UTF-8 сам — кириллица в `print` печатается как есть.
+- **`python` открыл Microsoft Store** вместо `>>>` — это не решается на
+  уроке (псевдонимы выполнения приложений, см. setup-windows.md шаг 2);
+  проверяется скриншотом `python --version` накануне, как и у всех.
+
 ## 🆘 Если живой код встал
 
 - **В шаге 1 версия `python3` ниже 3.10 (например, системная `3.9.6`):**
