@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Слайды · Информационные процессы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&amp;family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+:root { --track: var(--track-book); --track-ink: var(--track-book-ink); }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: #fff; font-family: Manrope, system-ui, sans-serif; line-height: 1.55; }
+h1,h2,h3 { font-family: Rubik, system-ui, sans-serif; line-height: 1.15; }
+h1,h2 { margin: .5rem 0 1.25rem; }
+h1 { font-size: clamp(2rem,5vw,4.8rem); } h2 { font-size: clamp(1.7rem,4vw,3.8rem); }
+h3 { margin: 0 0 .6rem; font-size: 1.2em; }
+p { margin: .65rem 0; }
+.chip { display: inline-block; background: var(--track); color: var(--bg); border-radius: .4rem; padding: .2rem .6rem; font: 700 .8rem 'JetBrains Mono',monospace; }
+.label { font: 700 .8rem 'JetBrains Mono',monospace; letter-spacing: .07em; color: var(--yellow); }
+.accent { color: var(--track); } .muted { opacity: .75; }
+.cards { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+.card { background: linear-gradient(135deg,var(--card),var(--card-2)); border: 1px solid var(--deep); border-radius: 1.1rem; padding: 1.15rem 1.4rem; }
+.prompt { margin-top: 1.2rem; padding: .85rem 1.2rem; border-left: 4px solid var(--yellow); background: var(--card); border-radius: .5rem; }
+.flow { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap: .7rem; margin: 1.2rem 0; }
+.flow b { background:var(--card-2); border: 1px solid var(--track); border-radius:.8rem; padding:.7rem 1rem; }
+.flow span { color:var(--track); }
+code,pre { font-family: 'JetBrains Mono',monospace; }
+code { font-size: .9em; background:var(--card-2); border-radius:.3rem; padding:.1rem .3rem; }
+pre { overflow:auto; background:#15151c; padding:1rem 1.25rem; border-radius:.8rem; font-size:1.05rem; }
+.kw { color:#8be9fd; } .str { color:#f1fa8c; }
+table { width:100%; border-collapse:collapse; } td,th { text-align:left; border-bottom:1px solid var(--deep); padding:.65rem; }
+button,a { -webkit-tap-highlight-color:transparent; }
+button { cursor:pointer; font:700 1rem Manrope,system-ui,sans-serif; border:1px solid var(--track); border-radius:.6rem; padding:.6rem 1rem; background:var(--card-2); color:#fff; transition:background .15s; }
+button:hover { background:var(--deep); } button:disabled { opacity:.4; cursor:default; } button:focus-visible,a:focus-visible { outline:3px solid var(--yellow); outline-offset:3px; }
+@media(max-width:650px) { .cards { grid-template-columns:1fr; } }
+
+.deck { max-width:75rem; margin:0 auto; }
+.slide { min-height:calc(100svh - 5rem); padding:clamp(1.2rem,4vw,4rem); font-size:clamp(1rem,2vw,1.7rem); }
+.slide[hidden] { display:none; }
+.slide > .label { margin-top:1rem; }
+nav { display:flex; justify-content:space-between; align-items:center; gap:.75rem; padding:.8rem 1.2rem; border-top:1px solid var(--deep); }
+#count { font-family:'JetBrains Mono',monospace; font-size:.85rem; }
+@media print { body { background:var(--bg-light); color:var(--bg); } .slide[hidden] { display:block; } .slide { min-height:0; break-after:page; } nav { display:none; } .card,.prompt,pre,code,.flow b { background:transparent; color:var(--bg); } .accent,.label,.flow span { color:var(--track-ink); } .chip { background:var(--track-ink); color:#fff; } }
+</style>
+</head>
+<body>
+<main class="deck">
+<section class="slide" aria-label="Слайд 1"><span class="chip">BOOK</span><p class="label">Информационные процессы</p><h1>Что мы делаем<br>с <span class="accent">информацией?</span></h1><p>Собираем → обрабатываем → храним → передаём.</p><p class="muted">§1.2 · Босова, 7 класс · 12 минут</p><div class="prompt">Ты узнал время встречи и написал его другу. Какие действия уже произошли?</div></section>
+<section class="slide" aria-label="Слайд 2" hidden><span class="chip">BOOK</span><p class="label">Информационные процессы</p><h2>Четыре действия — один день</h2><div class="cards"><div class="card"><h3>Сбор <span class="accent">(collection)</span></h3><p>Узнал время встречи из расписания.</p></div><div class="card"><h3>Обработка <span class="accent">(processing)</span></h3><p>Рассчитал, когда выходить из дома.</p></div><div class="card"><h3>Хранение <span class="accent">(storage)</span></h3><p>Записал время в календарь.</p></div><div class="card"><h3>Передача <span class="accent">(transmission)</span></h3><p>Отправил время другу.</p></div></div><div class="prompt">Ты увидел температуру и записал её в тетрадь. Назови два процесса.</div></section>
+<section class="slide" aria-label="Слайд 3" hidden><span class="chip">BOOK</span><p class="label">Информационные процессы</p><h2>Обработка бывает <span class="accent">двух типов</span></h2><div class="cards"><div class="card"><h3>Получили новое содержание</h3><p>Две покупки: 120 и 80 рублей.</p><p>Вычислили итог: <b class="accent">200 рублей</b>.</p></div><div class="card"><h3>Изменили форму</h3><p>Было: «встреча в восемь вечера».</p><p>Стало: <b class="accent">«встреча в 20:00»</b>.</p></div></div><div class="prompt">Список результатов превратили в таблицу. Содержание изменилось или только форма?</div></section>
+<section class="slide" aria-label="Слайд 4" hidden><span class="chip">BOOK</span><p class="label">Информационные процессы</p><h2>Сообщение должно <span class="accent">дойти</span></h2><div class="flow" aria-label="Источник, затем канал связи, затем приёмник"><b>Источник<br><small>source</small></b><span>→</span><b>Канал связи<br><small>channel</small></b><span>→</span><b>Приёмник<br><small>receiver</small></b></div><p>Ты отправляешь другу время встречи в чате.</p><div class="prompt">Назови источник, канал и приёмник. Затем поменяйтесь ролями: друг отвечает тебе.</div><p class="muted" style="font-size:.7em">В полной схеме учебника: источник → кодирующее устройство → канал связи → декодирующее устройство → приёмник. В чате преобразованием занимаются устройства и программы.</p></section>
+<section class="slide" aria-label="Слайд 5" hidden><span class="chip">BOOK</span><p class="label">Информационные процессы</p><h2>А если есть <span class="accent">помеха?</span></h2><div class="card"><p>На улице шумно. Друг услышал «в восемь» вместо «в шесть».</p><p><b>Шум / помеха (noise / interference)</b> мешает передаче или восприятию сообщения.</p></div><div class="prompt">Как уточнить сообщение? Предложи один способ, затем назови всё время встречи целиком.</div><p class="muted">Повторить: «Встречаемся в 18:00, в шесть вечера». Собеседник подтверждает время. Слово «помеха» не означает, что любая ошибка возникла в сети.</p></section>
+<section class="slide" aria-label="Слайд 6" hidden><span class="chip">BOOK</span><p class="label">Информационные процессы</p><h2>Сегодня эта схема <span class="accent">оживёт</span></h2><div class="card"><p><b>Ввод данных</b> — человек сообщает программе исходные данные.</p><p><b>Обработка</b> — Python вычисляет результат; <code>print()</code> выводит его на экран.</p><p><b>Хранение</b> — сохраняем файл на накопителе.</p><p><b>Передача</b> — отправляем изменения через интернет в GitHub.</p></div><div class="prompt">Назови процесс: термометр измерил температуру; программа нашла сумму; файл сохранили; сообщение отправили.</div><p class="muted">В природе тоже: пчела сообщает другим пчёлам, где корм. В технике: термостат получает температуру и решает, включать ли отопление.</p></section>
+</main>
+<nav aria-label="Переключение слайдов"><button id="previous" type="button">← Назад</button><span id="count" role="status" aria-live="polite"></span><button id="next" type="button">Дальше →</button></nav>
+<script>
+
+const slides = [...document.querySelectorAll('.slide')];
+const previous = document.getElementById('previous');
+const next = document.getElementById('next');
+const count = document.getElementById('count');
+let current = 0;
+function show(index) {
+  current = Math.max(0, Math.min(slides.length - 1, index));
+  slides.forEach((slide, position) => { slide.hidden = position !== current; });
+  previous.disabled = current === 0;
+  next.disabled = current === slides.length - 1;
+  count.textContent = `${current + 1} / ${slides.length}`;
+}
+previous.addEventListener('click', () => show(current - 1));
+next.addEventListener('click', () => show(current + 1));
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+    event.preventDefault();
+    show(current + (event.key === 'ArrowRight' ? 1 : -1));
+  }
+});
+show(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+id: book/m-03-representation
+title: "Представление информации (information representation)"
+track: book
+level: core
+minutes: 8
+textbook: ["7:1.3"]
+requires: [book/m-02-information-processes]
+terms:
+  - {ru: знак, en: sign}
+  - {ru: пиктограмма, en: pictogram}
+  - {ru: символ, en: symbol}
+  - {ru: знаковая система, en: sign system}
+  - {ru: алфавит, en: alphabet}
+  - {ru: естественный язык, en: natural language}
+  - {ru: формальный язык, en: formal language}
+  - {ru: представление информации, en: information representation}
+  - {ru: восприятие, en: perception}
+  - {ru: кодирование, en: encoding}
+  - {ru: декодирование, en: decoding}

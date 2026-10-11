@@ -1,0 +1,20 @@
+id: book/m-02-information-processes
+title: "Информационные процессы (information processes)"
+track: book
+level: core
+minutes: 12
+textbook: ["7:1.2"]
+requires: [book/m-01-information-and-data]
+terms:
+  - {ru: информационные процессы, en: information processes}
+  - {ru: информационная деятельность, en: information activity}
+  - {ru: сбор информации, en: information collection}
+  - {ru: обработка информации, en: information processing}
+  - {ru: структурирование, en: structuring}
+  - {ru: хранение информации, en: information storage}
+  - {ru: носитель информации, en: storage medium}
+  - {ru: передача информации, en: information transmission}
+  - {ru: источник, en: source}
+  - {ru: канал связи, en: communication channel}
+  - {ru: приёмник, en: receiver}
+  - {ru: помеха, en: interference}
