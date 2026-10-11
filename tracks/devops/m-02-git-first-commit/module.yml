@@ -1,0 +1,13 @@
+id: devops/m-02-git-first-commit
+title: "Git: первый коммит и GitHub (commit, GitHub)"
+track: devops
+level: core
+minutes: 20
+textbook: []
+requires: [devops/m-01-terminal-first-steps]
+terms:
+  - {ru: репозиторий, en: repository, note: "папка проекта с историей изменений"}
+  - {ru: подготовленные изменения, en: staging area, note: "то, что войдёт в ближайший коммит"}
+  - {ru: коммит, en: commit, note: "сохранённая версия выбранных файлов с сообщением"}
+  - {ru: история, en: history}
+  - {ru: удалённый репозиторий, en: remote repository}

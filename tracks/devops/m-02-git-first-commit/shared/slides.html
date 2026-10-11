@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Git: первые коммиты · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+:root { --track: var(--track-ops); --track-ink: var(--track-ops-ink); }
+* { box-sizing: border-box; }
+body { margin: 0; color: white; background: var(--bg); font-family: Manrope, sans-serif; line-height: 1.55; }
+h1,h2 { font-family: Rubik, sans-serif; line-height: 1.15; }
+a { color: var(--track); } a:hover { color: var(--yellow); }
+code,pre,.chip { font-family: "JetBrains Mono", monospace; }
+.chip { display: inline-block; background: var(--track); color: var(--bg); border-radius: 6px; padding: 4px 12px; font-weight: 700; }
+pre { text-align: left; padding: 18px 24px; border-radius: 16px; background: #15151c; color: #7fd0ff; overflow-x: auto; }
+.card { background: var(--card); border-left: 4px solid var(--track); border-radius: 16px; padding: 20px 26px; }
+
+.slide { display: none; min-height: 100svh; padding: 6vh 6vw 110px; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+.slide.active { display: flex; }
+h1,h2 { font-size: clamp(30px,4vw,66px); margin: 8px 0; }
+p,.card { font-size: clamp(18px,2vw,28px); max-width: 980px; margin: 0; }
+pre { font-size: clamp(15px,1.8vw,26px); max-width: 100%; }
+nav { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 18px; padding: 10px 18px; background: var(--card-2); border-radius: 40px; }
+button { background: var(--deep); color: white; border: 0; border-radius: 25px; padding: 9px 18px; font-size: 22px; cursor: pointer; transition: background .2s; }
+button:hover { background: var(--track); color: var(--bg); } button:focus-visible { outline: 2px solid var(--yellow); }
+@media (max-width: 600px) { .slide { padding: 24px 16px 110px; } pre { padding: 14px; } }
+@media print { nav { display: none; } .slide,.slide.active { display: block; min-height: auto; break-after: page; } }
+</style></head><body><main><section class="slide active" id="slide-1"><span class="chip">OPS · 1</span><h1>Сохрани историю</h1><p>Две версии своего <code>dialogue.py</code>.<br>Без файлов <code>final-final.py</code>.</p></section>
+<section class="slide" id="slide-2"><span class="chip">OPS · 2</span><h2>Git и GitHub</h2><div class="card"><strong>Git</strong> хранит версии на твоём компьютере.<br><strong>GitHub</strong> — сайт для удалённых репозиториев.</div><p>Коммит сам не отправляет файл в интернет.</p></section>
+<section class="slide" id="slide-3"><span class="chip">OPS · 3</span><h2>Своя учебная папка</h2><p>Создай <code>git-lab</code>, скопируй туда свой файл.<br>Открой терминал в этой папке.</p><pre>git init
+git status</pre><p>Репозиторий (repository) — проект с историей.</p></section>
+<section class="slide" id="slide-4"><span class="chip">OPS · 4</span><h2>Первая версия</h2><pre>git add dialogue.py
+git status
+git commit -m "Add dialogue"
+git log --oneline</pre><p>Выбрать → сохранить версию → увидеть историю.</p></section>
+<section class="slide" id="slide-5"><span class="chip">OPS · 5</span><h2>Сделай вторую</h2><p>Измени приветствие. Сохрани файл. Запусти его.</p><pre>git add dialogue.py
+git commit -m "Change greeting"
+git log --oneline</pre><p>Чем отличаются две версии?</p></section>
+<section class="slide" id="slide-6"><span class="chip">OPS · 6</span><h2>Код на GitHub</h2><p>Открой свой закрытый репозиторий по ссылке преподавателя.<br>Сохрани файл через сайт:</p><pre>hw/python-02-input/dialogue.py</pre><p>Открой файл и History.<br>Локальную историю перенесём отдельным шагом.</p></section>
+<section class="slide" id="slide-7"><span class="chip">OPS · 7</span><h2>Что ты умеешь</h2><div class="card">Сохранить файл в редакторе.<br>Сохранить две версии в Git.<br>Отличить Git от GitHub.</div><p>Нет доступа к GitHub? Сохрани локально и назови проблему.</p></section></main><nav aria-label="Слайды"><button id="previous" aria-label="Предыдущий слайд">←</button><span id="counter" aria-live="polite">1 / 7</span><button id="next" aria-label="Следующий слайд">→</button></nav><script>const slides = [...document.querySelectorAll('.slide')];
+let current = 0;
+function show(index) {
+  current = (index + slides.length) % slides.length;
+  slides.forEach((slide, position) => slide.classList.toggle('active', position === current));
+  document.getElementById('counter').textContent = `${current + 1} / ${slides.length}`;
+}
+document.getElementById('previous').addEventListener('click', () => show(current - 1));
+document.getElementById('next').addEventListener('click', () => show(current + 1));
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowRight' || event.key === ' ') { event.preventDefault(); show(current + 1); }
+  if (event.key === 'ArrowLeft') { event.preventDefault(); show(current - 1); }
+});
+show(0);</script></body></html>
