@@ -10,6 +10,7 @@ def make_hw(root: Path, hw_id="python-01-first-run"):
         "# Домашка: первая программа\n\nК модулю **python-01**.\n\n## Что делать\n\n"
         "1. Создай `hello.py`\n2. Запусти\n\n```python\nprint('hi')\n```\n", encoding="utf-8")
     (d / "broken.py").write_text("print('x)\n", encoding="utf-8")
+    (d / "README.md").write_text("# Назначение каталога\n", encoding="utf-8")
     (d / "tests" / "test_hello.py").write_text("def test_x():\n    pass\n", encoding="utf-8")
     return d
 
@@ -28,7 +29,7 @@ def test_render_without_attachments_has_no_section():
     assert "Вложения" not in html
 
 
-def test_attachments_exclude_task_tests_and_hidden(tmp_path):
+def test_attachments_exclude_task_readme_tests_and_hidden(tmp_path):
     d = make_hw(tmp_path)
     (d / ".DS_Store").write_bytes(b"")
     assert [p.name for p in pages.attachments_for(d)] == ["broken.py"]
@@ -42,6 +43,8 @@ def test_build_writes_page_and_copies_attachments(tmp_path):
     assert written == [page]
     assert page.is_file() and (page.parent / "broken.py").read_text(encoding="utf-8") == "print('x)\n"
     assert not (page.parent / "tests").exists() and not (page.parent / "task.md").exists()
+    assert not (page.parent / "README.md").exists()
+    assert "README.md" not in page.read_text(encoding="utf-8")
     assert "Создай <code>hello.py</code>" in page.read_text(encoding="utf-8")
 
 

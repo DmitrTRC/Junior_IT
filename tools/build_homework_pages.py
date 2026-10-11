@@ -13,7 +13,7 @@ from pathlib import Path
 
 import markdown
 
-SKIP_FILES = {"task.md", "index.html"}
+SKIP_FILES = {"task.md", "index.html", "README.md"}
 SKIP_DIRS = {"tests"}
 SITE_URL = "https://dmitrtrc.github.io/Junior_IT/"
 
