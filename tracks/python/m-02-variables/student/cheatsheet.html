@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Ввод (input) · Junior_IT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+  --yellow: #ffd60a; --orange: #ff5722; --green: #00e676;
+  --cyan: #00ffc8; --magenta: #ff0096; --bg-light: #faf7f2;
+  --track: #00ffc8; --track-ink: #00806a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 28px 18px; background: var(--bg); color: #fff; font-family: Manrope, system-ui, sans-serif; line-height: 1.55; }
+main { max-width: 780px; margin: auto; }
+h1, h2 { font-family: Rubik, system-ui, sans-serif; } h1 { color: var(--track); font-size: 30px; margin-bottom: 8px; } h2 { font-size: 19px; margin-top: 0; }
+.chip { background: var(--track); color: var(--bg); padding: 4px 8px; border-radius: 5px; font: 700 14px "JetBrains Mono", monospace; }
+.sub { color: rgba(255,255,255,.75); }
+section { background: var(--card); border-left: 4px solid var(--track); border-radius: 14px; padding: 18px 22px; margin: 16px 0; }
+code, pre { font-family: "JetBrains Mono", monospace; } code { font-size: .92em; }
+pre { padding: 16px; background: #15151c; border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; }
+.kw { color: #8be9fd; } .str { color: #f1fa8c; } .out { color: #7fd0ff; }
+.rescue { border-left-color: var(--yellow); }
+li { margin: 7px 0; } a { color: var(--track); }
+footer { font-size: 13px; color: rgba(255,255,255,.75); }
+@media print {
+  @page { margin: 12mm; }
+  body { padding: 0; background: var(--bg-light); color: var(--bg); font-size: 11pt; }
+  h1, a { color: var(--track-ink); } .chip { color: #fff; background: var(--track-ink); }
+  .sub, footer { color: var(--bg); } section { background: #fff; border-color: var(--track-ink); break-inside: avoid; margin: 10px 0; padding: 12px 16px; }
+  pre { background: var(--bg-light); color: var(--bg); } .kw, .str, .out { color: var(--bg); }
+}
+</style>
+</head>
+<body>
+<main>
+  <span class="chip">PY</span>
+  <h1>Программа разговаривает</h1>
+  <p class="sub">Ввод (input) и вывод (output) · §5.2, 8 класс · Junior_IT</p>
+  <section>
+    <h2>Один вопрос и ответ</h2>
+    <pre>name = <span class="kw">input</span>(<span class="str">"Твой ник: "</span>)
+<span class="kw">print</span>(<span class="str">"Привет,"</span>, name)</pre>
+    <p><code>input</code> показывает вопрос и ждёт. Напечатай ответ
+    <strong>в консоли</strong> и нажми <strong>Enter</strong>.</p>
+    <p>Ответ сохранится в переменной (variable) <code>name</code>.
+    Затем <code>print</code> выведет его вместе с приветствием.</p>
+  </section>
+  <section>
+    <h2>Что писать в кавычках</h2>
+    <p><code>"Твой ник: "</code> — готовый текст вопроса.
+    <code>name</code> без кавычек — значение переменной.</p>
+    <p>При вводе ответа кавычки не нужны: просто напечатай ник и Enter.</p>
+    <p>Ответ <code>input</code> — строка (string). Даже <code>42</code>
+    здесь остаётся текстом; сегодня вычисления из ввода не нужны.</p>
+  </section>
+  <section>
+    <h2>Сохранить → запустить → ответить</h2>
+    <pre>python3 dialogue.py</pre>
+    <p>На Windows используй <code>python dialogue.py</code>, если так
+    запускал на занятии. Команду запуска вводи в терминале, код — в редакторе.</p>
+    <p>Новый запуск с другими ответами меняет результат без изменения файла.</p>
+  </section>
+  <section class="rescue">
+    <h2>Если программа ждёт или ругается</h2>
+    <ul><li>Вопрос есть, дальше тишина → введи ответ и нажми Enter.</li>
+    <li>Старый вопрос → сохрани файл и запусти именно его.</li>
+    <li>Ошибка → последняя строка, затем номер строки; проверь кавычки и скобки.</li>
+    <li>Видишь <code>&gt;&gt;&gt;</code> → <code>exit()</code>, затем команда запуска файла.</li></ul>
+  </section>
+  <footer>Домашка: «Диалог с программой», два вопроса и два вывода.
+  До 14.10.2026, 20:00 МСК. Сохрани <code>hw/python-02-input/dialogue.py</code>
+  в закрытом репозитории преподавателя с выданным доступом.</footer>
+</main>
+</body>
+</html>

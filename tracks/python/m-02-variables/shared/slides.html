@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ввод: программа разговаривает · Junior_IT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+  --yellow: #ffd60a; --orange: #ff5722; --green: #00e676;
+  --cyan: #00ffc8; --magenta: #ff0096; --bg-light: #faf7f2;
+  --track: #00ffc8; --track-ink: #00806a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: #fff; font-family: Manrope, system-ui, sans-serif; }
+.deck { min-height: 100vh; display: flex; flex-direction: column; max-width: 1200px; margin: auto; padding: clamp(20px, 4vw, 52px); }
+header { display: flex; gap: 16px; align-items: center; color: var(--yellow); font-size: 14px; }
+.chip { background: var(--track); color: var(--bg); padding: 5px 10px; border-radius: 6px; font-family: "JetBrains Mono", monospace; font-weight: 700; }
+main { flex: 1; display: grid; align-items: center; padding: 24px 0; }
+.slide[hidden] { display: none; }
+h1, h2 { font-family: Rubik, system-ui, sans-serif; font-size: clamp(30px, 4.8vw, 64px); line-height: 1.12; margin: 0 0 24px; }
+.accent { color: var(--track); }
+p, li { font-size: clamp(18px, 2.1vw, 28px); line-height: 1.5; }
+.sub { color: rgba(255,255,255,.75); }
+.panel { background: linear-gradient(135deg, var(--card), var(--card-2)); border-radius: 20px; padding: clamp(18px, 3vw, 36px); box-shadow: 0 16px 40px #0005; }
+pre { background: #15151c; padding: 24px; border-radius: 14px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: clamp(17px, 2.2vw, 30px); line-height: 1.7; }
+code, pre { font-family: "JetBrains Mono", monospace; }
+.kw { color: #8be9fd; } .str { color: #f1fa8c; } .out { color: #7fd0ff; }
+.flow { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 24px; font-size: clamp(18px, 2vw, 26px); }
+.flow span { border: 1px solid var(--track); border-radius: 12px; padding: 14px; }
+.prompt { border-left: 4px solid var(--yellow); padding-left: 20px; }
+nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+button { border: 1px solid var(--track); background: var(--card); color: #fff; padding: 12px 20px; border-radius: 12px; font: 600 16px Manrope, system-ui, sans-serif; cursor: pointer; transition: background .2s; }
+button:hover { background: var(--card-2); } button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+button:disabled { opacity: .4; cursor: default; }
+#counter { font-family: "JetBrains Mono", monospace; color: var(--track); }
+@media (max-width: 600px) { pre { padding: 16px; } header { flex-wrap: wrap; } }
+@media print { body { background: var(--bg-light); color: var(--bg); } .deck { display: block; padding: 0; } main { display: block; } .slide, .slide[hidden] { display: block; break-after: page; } nav { display: none; } .accent, .sub, header { color: var(--track-ink); } pre, .panel { background: #fff; color: var(--bg); box-shadow: none; } .kw, .str, .out { color: var(--bg); } }
+</style>
+</head>
+<body>
+<div class="deck">
+  <header><span class="chip">PY</span><span>Junior_IT · Ввод (input) · 25 минут</span></header>
+  <main>
+    <section class="slide" aria-label="Цель">
+      <h1>Программа<br><span class="accent">разговаривает с тобой</span></h1>
+      <div class="panel"><p>В прошлый раз текст задавал автор программы.</p><p>Сегодня ответы задаёт тот, кто её запускает.</p></div>
+      <p class="prompt">Вопрос → твой ответ → сообщение с твоими данными.</p>
+    </section>
+    <section class="slide" hidden aria-label="От знакомого к новому">
+      <h2>Ник уже записан <span class="accent">в коде</span></h2>
+      <pre>name = <span class="str">"Лис"</span>
+<span class="kw">print</span>(<span class="str">"Привет,"</span>, name)</pre>
+      <p class="prompt">Как получить ник другого человека, сохранив этот файл?</p>
+      <p class="sub">Переменная (variable) и вывод (output) уже знакомы.</p>
+    </section>
+    <section class="slide" hidden aria-label="Первый ввод">
+      <h2><span class="accent">input</span> ждёт твой ответ</h2>
+      <pre>name = <span class="kw">input</span>(<span class="str">"Твой ник: "</span>)
+<span class="kw">print</span>(<span class="str">"Привет,"</span>, name)</pre>
+      <p>Запусти. Введи ник в консоли. Нажми <strong>Enter</strong>.</p>
+      <div class="flow"><span>Ввод (input)</span>→<span>name</span>→<span>Вывод (output)</span></div>
+    </section>
+    <section class="slide" hidden aria-label="Второй вопрос">
+      <h2>Теперь <span class="accent">ещё один вопрос</span></h2>
+      <pre>favorite_game = <span class="kw">input</span>(<span class="str">"Любимая игра: "</span>)
+<span class="kw">print</span>(<span class="str">"Твоя игра:"</span>, favorite_game)</pre>
+      <p>Добавь после приветствия. Сохрани файл. Запусти снова.</p>
+      <p class="prompt">В какой строке программа будет ждать второй ответ?</p>
+    </section>
+    <section class="slide" hidden aria-label="Два запуска">
+      <h2>Один файл → <span class="accent">разные ответы</span></h2>
+      <div class="panel"><p><strong>Запуск 1:</strong> Лис · Minecraft</p><p><strong>Запуск 2:</strong> придумай другой ник и другую игру.</p></div>
+      <p class="prompt">Код не менялся. Почему изменилось сообщение?</p>
+      <p class="sub">Ответ input — строка (string): текст. Даже если ввёл 42.</p>
+    </section>
+    <section class="slide" hidden aria-label="Самостоятельная работа">
+      <h2>Теперь <span class="accent">твой диалог</span></h2>
+      <ul><li>Спроси ник и любимый жанр.</li><li>Придумай две подписи в print.</li><li>Сохрани и запусти дважды с разными ответами.</li></ul>
+      <p class="prompt">Покажи: где данные вводятся, хранятся и выводятся?</p>
+      <p class="sub">Завис? Ответ + Enter. Кавычки в коде. Сохрани файл.</p>
+    </section>
+  </main>
+  <nav aria-label="Переключение слайдов"><button id="previous" type="button">← Назад</button><span id="counter" aria-live="polite"></span><button id="next" type="button">Дальше →</button></nav>
+</div>
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+const previous = document.getElementById('previous');
+const next = document.getElementById('next');
+const counter = document.getElementById('counter');
+let current = 0;
+function showSlide(index) {
+  current = Math.max(0, Math.min(slides.length - 1, index));
+  slides.forEach((slide, position) => { slide.hidden = position !== current; });
+  counter.textContent = `${current + 1} / ${slides.length}`;
+  previous.disabled = current === 0;
+  next.disabled = current === slides.length - 1;
+}
+previous.addEventListener('click', () => showSlide(current - 1));
+next.addEventListener('click', () => showSlide(current + 1));
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+    event.preventDefault();
+    showSlide(current + (event.key === 'ArrowRight' ? 1 : -1));
+  }
+});
+showSlide(0);
+</script>
+</body>
+</html>

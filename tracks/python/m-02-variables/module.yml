@@ -1,0 +1,13 @@
+id: python/m-02-variables
+title: "Ввод: программа разговаривает (input)"
+track: python
+level: core
+minutes: 25
+textbook: ["8:5.2"]
+requires: [python/m-01-first-run]
+terms:
+  - {ru: ввод, en: input}
+  - {ru: вывод, en: output}
+  - {ru: переменная, en: variable}
+  - {ru: строка, en: string}
+homework: homework/python-02-input
