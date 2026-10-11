@@ -1,15 +1,31 @@
 import subprocess
-from datetime import date, timedelta
+import os
+import signal
+import tempfile
+from datetime import date, datetime, timedelta, timezone
 from importlib import resources
 
 from zoom_pipeline.anonymize import anonymize
-from zoom_pipeline.config import (CLAUDE_TIMEOUT, NOTIFY_TIMEOUT,
+from zoom_pipeline.analysis import AnalysisError, analyze
+from zoom_pipeline.config import (NOTIFY_TIMEOUT,
                                   RSYNC_TIMEOUT, WHISPER_TIMEOUT)
 
 
-def default_runner(cmd, *, timeout, stdin_text=None):
-    return subprocess.run(cmd, input=stdin_text, capture_output=True,
-                          text=True, timeout=timeout)
+def default_runner(cmd, *, timeout, stdin_text=None, env=None):
+    # CLI launchers can spawn a native child; stop the whole group on timeout.
+    with subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, text=True, env=env,
+                          start_new_session=True) as process:
+        try:
+            stdout, stderr = process.communicate(stdin_text, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            process.communicate()
+            raise
+        return subprocess.CompletedProcess(cmd, process.returncode, stdout, stderr)
 
 
 def _meeting_date(meeting):
@@ -117,21 +133,60 @@ def _analyze(cfg, meeting, transcript_path, runner, log):
     template = (resources.files("zoom_pipeline") / "analysis_prompt.md") \
         .read_text(encoding="utf-8")
     prompt = template.format(
-        date=_meeting_date(meeting), topic=meeting.topic,
-        share_url=meeting.share_url, passcode=meeting.passcode,
-        session_yaml=_session_yaml(cfg, meeting),
+        date=_meeting_date(meeting), topic=anonymize(meeting.topic, cfg.student_stems),
+        share_url="[RECORDING_URL]", passcode="[RECORDING_PASSCODE]",
+        session_yaml=anonymize(_session_yaml(cfg, meeting), cfg.student_stems),
         transcript=anonymize(
             transcript_path.read_text(encoding="utf-8"), cfg.student_stems),
     )
-    result = runner(cfg.claude_cmd, timeout=CLAUDE_TIMEOUT, stdin_text=prompt)
-    if result.returncode != 0 or not result.stdout.strip():
-        log(f"анализ: claude -p упал ({result.returncode})")
-        return None
+    result = analyze(cfg, prompt, runner)
+    before, marker, message = result.partition("## Сообщение в MAX")
+    message = message.replace("[RECORDING_URL]", meeting.share_url or "ссылка недоступна")
+    message = message.replace("[RECORDING_PASSCODE]", meeting.passcode or "код недоступен")
+    result = before + marker + message
     cfg.drafts_dir.mkdir(parents=True, exist_ok=True)
     hhmm = _meeting_time_hhmm(meeting)
     draft = cfg.drafts_dir / f"lesson-{_meeting_date(meeting)}-{hhmm}-analysis.md"
-    draft.write_text(result.stdout, encoding="utf-8")
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8",
+                                         dir=cfg.drafts_dir, delete=False) as handle:
+            temporary = handle.name
+            handle.write(result + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, draft)
+    finally:
+        if temporary and os.path.exists(temporary):
+            os.unlink(temporary)
     return draft
+
+
+def analyze_recording(cfg, state, runner, meeting, log, *, now=None):
+    fixed_clock = now is not None
+    now = now or datetime.now(timezone.utc)
+    if state.phase(meeting.uuid) != "transcribed" or not state.analysis_allowed(meeting.uuid, now):
+        return False
+    state.begin_analysis(meeting.uuid, now)
+    try:
+        draft = _analyze(cfg, meeting, _transcript_path(cfg, meeting), runner, log)
+    except AnalysisError as exc:
+        failure_time = now if fixed_clock else datetime.now(timezone.utc)
+        state.fail_analysis(meeting.uuid, exc.code, failure_time,
+                            retryable=exc.retryable, global_block=exc.global_block,
+                            retry_at=exc.retry_at)
+        log(f"анализ: {exc.code}")
+        return False
+    except OSError:
+        state.fail_analysis(meeting.uuid, "local_io", now)
+        log("анализ: local_io")
+        return False
+    state.complete_analysis(meeting.uuid)
+    try:
+        _notify(draft, runner)
+    except (OSError, subprocess.SubprocessError):
+        log("анализ готов; уведомление недоступно")
+    return True
 
 
 def _notify(draft, runner):
@@ -156,7 +211,7 @@ def _retention(cfg, api, state, today, log):
             log(f"retention: запись {meta['date']} удалена из облака")
 
 
-def run_tick(cfg, api, state, runner, today, log):
+def run_tick(cfg, api, state, runner, today, log, *, now=None):
     since = (today - timedelta(days=7)).isoformat()
     try:
         meetings = api.list_recordings(since)
@@ -165,20 +220,22 @@ def run_tick(cfg, api, state, runner, today, log):
         return
     for meeting in meetings:
         try:
-            _process(cfg, api, state, runner, meeting, log)
+            _process(cfg, api, state, runner, meeting, log, now=now)
         except Exception as exc:
             log(f"встреча {meeting.uuid}: {exc}")
     _retention(cfg, api, state, today, log)
 
 
-def _process(cfg, api, state, runner, meeting, log):
+def _process(cfg, api, state, runner, meeting, log, *, now=None):
     phase = state.phase(meeting.uuid)
     day, topic = _meeting_date(meeting), meeting.topic
     if phase == "new":
         if _download(cfg, api, meeting) == 0:
             log(f"встреча {meeting.uuid}: файлы записи ещё готовятся в Zoom, жду следующего тика")
             return
-        state.advance(meeting.uuid, "downloaded", date=day, topic=topic)
+        state.advance(meeting.uuid, "downloaded", date=day, topic=topic,
+                      share_url=meeting.share_url, passcode=meeting.passcode,
+                      start_time=meeting.start_time)
         phase = "downloaded"
     if phase == "downloaded":
         if not _backup(cfg, meeting, runner, log):
@@ -194,9 +251,4 @@ def _process(cfg, api, state, runner, meeting, log):
         state.advance(meeting.uuid, "transcribed", date=day, topic=topic)
         phase = "transcribed"
     if phase == "transcribed":
-        transcript = _transcript_path(cfg, meeting)
-        draft = _analyze(cfg, meeting, transcript, runner, log)
-        if draft is None:
-            return
-        state.advance(meeting.uuid, "analyzed", date=day, topic=topic)
-        _notify(draft, runner)
+        analyze_recording(cfg, state, runner, meeting, log, now=now)

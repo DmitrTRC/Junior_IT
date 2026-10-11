@@ -9,3 +9,9 @@ retention_days = 30
 # Элемент — либо строка-стем, либо список ТОЧНЫХ словоформ одного
 # ребёнка (для диминутивов: «Маши» как точная форма не съест «машину»).
 student_stems = ["placeholder_stem", ["Имярек", "Имярека", "Имяреку"]]
+
+[analysis]
+engine = "codex"
+command = "/Users/dmitrymorozov/.npm-global/bin/codex"
+model = "gpt-6-astra"
+reasoning_effort = "medium"

@@ -39,3 +39,31 @@ def test_missing_toml_raises(tmp_path):
     _, env_path = write_files(tmp_path)
     with pytest.raises(ConfigError):
         load_config(tmp_path / "нет.toml", env_path)
+
+
+def test_loads_analysis_settings_without_zoom_credentials(tmp_path):
+    toml_path, env_path = write_files(tmp_path)
+    with toml_path.open('a') as handle:
+        handle.write('\n[analysis]\nengine="codex"\ncommand="/bin/codex"\nmodel="chosen-model"\nreasoning_effort="high"\n')
+    env_path.unlink()
+    cfg = load_config(toml_path, env_path, require_zoom=False)
+    assert cfg.analysis_command == '/bin/codex'
+    assert cfg.analysis_model == 'chosen-model'
+    assert cfg.analysis_reasoning_effort == 'high'
+    assert not cfg.zoom_client_secret
+
+
+@pytest.mark.parametrize('extra', [
+    '\nclaude_cmd=["claude"]\n',
+    '\n[analysis]\nengine="claude"\n',
+    '\n[analysis]\ncommand=["codex"]\n',
+    '\n[analysis]\nmodel=""\n',
+    '\n[analysis]\nreasoning_effort="unlimited"\n',
+    '\n[analysis]\nallow_tools=true\n',
+])
+def test_rejects_unsafe_or_legacy_analysis_config(tmp_path, extra):
+    toml_path, env_path = write_files(tmp_path)
+    with toml_path.open('a') as handle:
+        handle.write(extra)
+    with pytest.raises(ConfigError):
+        load_config(toml_path, env_path)

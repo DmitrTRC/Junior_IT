@@ -15,7 +15,7 @@
   <key>EnvironmentVariables</key>
   <dict>
     <key>PATH</key>
-    <string>/opt/homebrew/bin:/Users/dmitrymorozov/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <string>/opt/homebrew/bin:/Users/dmitrymorozov/.npm-global/bin:/Users/dmitrymorozov/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
     <key>PYTHONPATH</key>
     <string>/Users/dmitrymorozov/Projects/Junior_IT/tools</string>
   </dict>

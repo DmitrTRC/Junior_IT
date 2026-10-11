@@ -1,7 +1,10 @@
 import subprocess
-from datetime import date
+import json
+import pytest
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+from zoom_pipeline.analysis import HEADINGS
 from zoom_pipeline.config import Config
 from zoom_pipeline.phases import run_tick
 from zoom_pipeline.state import State
@@ -47,7 +50,7 @@ class FakeApi:
 
 
 def ok_runner(calls):
-    def runner(cmd, *, timeout, stdin_text=None):
+    def runner(cmd, *, timeout, stdin_text=None, env=None):
         calls.append(cmd)
         if cmd[0] == "uvx":
             # mlx_whisper пишет <аудио>.txt в --output-dir — эмулируем
@@ -55,14 +58,18 @@ def ok_runner(calls):
             audio = Path(cmd[-1])
             (out_dir / (audio.stem + ".txt")).write_text(
                 "Настя молодец", encoding="utf-8")
-        # claude -p печатает markdown анализа в stdout
-        out = "# Анализ\n" if cmd[0] == "claude" else ""
+        out = ''
+        if cmd[1:4] == ['debug', 'models', '--bundled']:
+            out = json.dumps({'models': [{'slug': 'gpt-6-astra'}]})
+        if cmd[:2] == ['codex', 'exec']:
+            Path(cmd[cmd.index('-o') + 1]).write_text(
+                '\n\n'.join('## ' + title + '\nАнализ.' for title in HEADINGS))
         return subprocess.CompletedProcess(cmd, 0, stdout=out, stderr="")
     return runner
 
 
 def failing_rsync_runner(calls):
-    def runner(cmd, *, timeout, stdin_text=None):
+    def runner(cmd, *, timeout, stdin_text=None, env=None):
         calls.append(cmd)
         code = 23 if cmd[0] == "rsync" else 0
         return subprocess.CompletedProcess(cmd, code, stdout="", stderr="нет шары")
@@ -86,7 +93,7 @@ def test_full_pass_reaches_analyzed(tmp_path):
     assert len(api.downloaded) == 2
     assert any(c[0] == "rsync" for c in calls)
     assert any(c[0] == "uvx" for c in calls)
-    assert any(c[0] == "claude" for c in calls)
+    assert any(c[:2] == ["codex", "exec"] for c in calls)
     draft = cfg.drafts_dir / "lesson-2026-09-16-1700-analysis.md"
     assert draft.is_file()
     assert "Анализ" in draft.read_text(encoding="utf-8")
@@ -203,3 +210,132 @@ def test_processing_recording_does_not_advance(tmp_path):
     assert state.phase("u5") == "new"
     assert api.downloaded == []
     assert any("готовятся" in line for line in logs)
+
+
+@pytest.fixture(autouse=True)
+def local_auth(tmp_path, monkeypatch):
+    home = tmp_path / 'codex-home'
+    home.mkdir()
+    (home / 'auth.json').write_text('{}')
+    monkeypatch.setenv('CODEX_HOME', str(home))
+
+
+def prepare_transcribed(cfg, uuid='u1'):
+    state = State.load(cfg.state_path)
+    state.advance(uuid, 'transcribed', date='2026-09-16', topic='Занятие')
+    folder = cfg.recordings_dir / '2026-09-16'
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / (uuid + '-transcript.txt')).write_text('Настя пишет код')
+    return state
+
+
+def test_global_block_stops_other_meetings_and_later_ticks(tmp_path):
+    cfg = make_cfg(tmp_path)
+    prepare_transcribed(cfg)
+    state = prepare_transcribed(cfg, 'u2')
+    calls = []
+    success = ok_runner(calls)
+    def runner(cmd, **kwargs):
+        if cmd[:2] == ['codex', 'exec']:
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 1, '', 'Your account has been suspended')
+        return success(cmd, **kwargs)
+    api = FakeApi([meeting(), meeting('u2')])
+    for _ in range(2):
+        state, logs = run(cfg, api, runner)
+    assert len([c for c in calls if c[:2] == ['codex', 'exec']]) == 1
+    assert state.engine_block == 'account_blocked'
+    assert state.phase('u1') == state.phase('u2') == 'transcribed'
+
+
+def test_retry_schedule_survives_ticks(tmp_path):
+    cfg = make_cfg(tmp_path)
+    prepare_transcribed(cfg)
+    calls = []
+    success = ok_runner(calls)
+    def runner(cmd, **kwargs):
+        if cmd[:2] == ['codex', 'exec']:
+            calls.append(cmd)
+            raise subprocess.TimeoutExpired(cmd, kwargs['timeout'])
+        return success(cmd, **kwargs)
+    now = datetime(2026, 9, 16, tzinfo=timezone.utc)
+    for hour in [0, 0.5, 1, 2, 4, 5, 100]:
+        state = State.load(cfg.state_path)
+        run_tick(cfg, FakeApi([meeting()]), state, runner, date(2026, 9, 16),
+                 lambda s: None, now=now + timedelta(hours=hour))
+    assert len([c for c in calls if c[:2] == ['codex', 'exec']]) == 3
+    assert state.analysis('u1')['status'] == 'exhausted'
+
+
+def test_invalid_output_preserves_draft_and_no_retention(tmp_path):
+    cfg = make_cfg(tmp_path)
+    prepare_transcribed(cfg)
+    cfg.drafts_dir.mkdir(parents=True)
+    draft = cfg.drafts_dir / 'lesson-2026-09-16-1700-analysis.md'
+    draft.write_text('existing draft')
+    success = ok_runner([])
+    def runner(cmd, **kwargs):
+        result = success(cmd, **kwargs)
+        if cmd[:2] == ['codex', 'exec']:
+            Path(cmd[cmd.index('-o') + 1]).write_text('Account suspended')
+        return result
+    api = FakeApi([meeting()])
+    state, _ = run(cfg, api, runner, today=date(2026, 11, 16))
+    assert state.analysis('u1')['last_error_code'] == 'invalid_output'
+    assert draft.read_text() == 'existing draft'
+    assert api.deleted == []
+
+
+def test_notification_failure_does_not_repeat_analysis(tmp_path):
+    cfg = make_cfg(tmp_path)
+    prepare_transcribed(cfg)
+    calls = []
+    success = ok_runner(calls)
+    def runner(cmd, **kwargs):
+        if cmd[0] == 'osascript':
+            raise subprocess.TimeoutExpired(cmd, 10)
+        return success(cmd, **kwargs)
+    api = FakeApi([meeting()])
+    state, _ = run(cfg, api, runner)
+    run(cfg, api, runner)
+    assert state.phase('u1') == 'analyzed'
+    assert len([c for c in calls if c[:2] == ['codex', 'exec']]) == 1
+
+
+def test_prompt_anonymizes_all_context_and_restores_recording_locally(tmp_path):
+    cfg = make_cfg(tmp_path)
+    prepare_transcribed(cfg)
+    day = cfg.playground_dir / '2026-09-16'
+    day.mkdir(parents=True)
+    (day / 'session.yml').write_text('student: Настя')
+    m = Meeting(uuid='u1', topic='Настя учится', start_time='2026-09-16T17:00:00Z',
+                share_url='https://example.test/private-recording', passcode='private-passcode', files=[])
+    success = ok_runner([])
+    def runner(cmd, **kwargs):
+        if cmd[:2] == ['codex', 'exec']:
+            prompt = kwargs['stdin_text']
+            assert 'Настя' not in prompt
+            assert 'private-recording' not in prompt
+            assert 'private-passcode' not in prompt
+        result = success(cmd, **kwargs)
+        if cmd[:2] == ['codex', 'exec']:
+            answer = Path(cmd[cmd.index('-o') + 1])
+            answer.write_text(answer.read_text() + '\n[RECORDING_URL] [RECORDING_PASSCODE]')
+        return result
+    state, _ = run(cfg, FakeApi([m]), runner)
+    draft = cfg.drafts_dir / 'lesson-2026-09-16-1700-analysis.md'
+    assert m.share_url in draft.read_text()
+    assert m.passcode in draft.read_text()
+
+
+def test_timeout_stops_cli_child_process(tmp_path):
+    import sys
+    import time
+    from zoom_pipeline.phases import default_runner
+    marker = tmp_path / 'unexpected-child-output'
+    child = "import time,pathlib; time.sleep(1); pathlib.Path(" + repr(str(marker)) + ").touch()"
+    parent = "import subprocess,sys,time; subprocess.Popen([sys.executable,'-c'," + repr(child) + "]); time.sleep(5)"
+    with pytest.raises(subprocess.TimeoutExpired):
+        default_runner([sys.executable, '-c', parent], timeout=0.2)
+    time.sleep(1.1)
+    assert not marker.exists()
