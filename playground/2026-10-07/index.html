@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Материалы занятия 07.10 · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-book-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+</style></head><body><main><header><span class="chip">Junior_IT · 07.10.2026</span><h1>Учебник. Диалог. История кода.</h1><p>План: среда, 20:00–21:15 МСК. Занятие завершено; учебник и Python разобраны, практический Git перенесён.</p><a class="button" href="teacher-notes.html">Сценарий всего занятия</a><a class="button" href="../../meta/lesson-2026-10-07-postmortem.html">Разбор занятия</a><a href="session.yml">План и факт YAML</a> · <a href="teacher-notes.md">Сценарий Markdown</a></header><p>Факт: запись 61 минута, учебник около 31 мин, Python около 20 мин. Личная практика по аудио не подтверждена; подробности — в разборе. Ниже сохранён исходный план.</p><p><strong>20:00–20:05:</strong> короткий показ прошлых файлов, без полного повторения. <strong>20:25–20:28:</strong> пауза. <strong>21:13–21:15:</strong> домашка вслух.</p><div class="grid"><section class="card book"><span class="chip">BOOK · 12 мин</span><p class="time">20:05–20:17</p><h2>Информационные процессы</h2><p>Сбор, хранение, обработка, передача; источник, канал, приёмник.</p><a class="button" href="../../tracks/book/m-02-information-processes/shared/slides.html" target="_blank" rel="noopener">Открыть слайды</a><a href="../../tracks/book/m-02-information-processes/student/cheatsheet.html" target="_blank" rel="noopener">Шпаргалка</a><p><a href="../../tracks/book/m-02-information-processes/shared/live-code.md">Шаги практики</a> · <a href="../../tracks/book/m-02-information-processes/teacher/scenario.md">Сценарий блока</a></p></section><section class="card book"><span class="chip">BOOK · 8 мин</span><p class="time">20:17–20:25</p><h2>Представление информации</h2><p>Знаки и общий код; естественный и формальный язык.</p><a class="button" href="../../tracks/book/m-03-representation/shared/slides.html" target="_blank" rel="noopener">Открыть слайды</a><a href="../../tracks/book/m-03-representation/student/cheatsheet.html" target="_blank" rel="noopener">Шпаргалка</a><p><a href="../../tracks/book/m-03-representation/shared/live-code.md">Шаги практики</a> · <a href="../../tracks/book/m-03-representation/teacher/scenario.md">Сценарий блока</a></p></section><section class="card python"><span class="chip">PY · 25 мин</span><p class="time">20:28–20:53</p><h2>Программа разговаривает</h2><p>Два вопроса через input(), свои ответы, два запуска.</p><a class="button" href="../../tracks/python/m-02-variables/shared/slides.html" target="_blank" rel="noopener">Открыть слайды</a><a href="../../tracks/python/m-02-variables/student/cheatsheet.html" target="_blank" rel="noopener">Шпаргалка</a><p><a href="../../tracks/python/m-02-variables/shared/live-code.md">Шаги практики</a> · <a href="../../tracks/python/m-02-variables/teacher/scenario.md">Сценарий блока</a></p></section><section class="card ops"><span class="chip">OPS · 20 мин</span><p class="time">20:53–21:13</p><h2>Git и GitHub · перенесено</h2><p>Два локальных коммита; файл на GitHub при готовом доступе.</p><a class="button" href="../../tracks/devops/m-02-git-first-commit/shared/slides.html" target="_blank" rel="noopener">Открыть слайды</a><a href="../../tracks/devops/m-02-git-first-commit/student/cheatsheet.html" target="_blank" rel="noopener">Шпаргалка</a><p><a href="../../tracks/devops/m-02-git-first-commit/shared/live-code.md">Шаги практики</a> · <a href="../../tracks/devops/m-02-git-first-commit/teacher/scenario.md">Сценарий блока</a></p></section></div><section class="card python"><span class="chip">Домашка · до 11.10, 20:00</span><h2>Свой dialogue.py</h2><p>Два вопроса, вывод своих ответов, два запуска с разными данными. Путь сдачи: <code>hw/python-02-input/dialogue.py</code>.</p><a class="button" href="../../_site/homework/python-02-input/index.html" target="_blank" rel="noopener">Собранная страница домашки</a><a href="../../homework/python-02-input/task.md">Исходное условие</a><p>Собранная страница находится в локальном <code>_site/</code>. Публикация на сайте курса выполняется отдельно.</p></section><p>Для учебника на сегодня подготовлена основа §1.2 и следующий блок §1.3. Факт проведения блоков отмечен в session.yml. Личное освоение и домашние работы требуют отдельного показа; §1.3.5 не засчитан.</p></main></body></html>

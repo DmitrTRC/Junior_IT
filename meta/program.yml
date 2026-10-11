@@ -29,12 +29,12 @@ blocks:
   - month: "2026-10"
     title: "Программа спрашивает и решает"
     modules:
-      - {id: python/m-02-variables, title: "Переменные и ввод (variables, input)", track: python}
+      - python/m-02-variables
       - {id: python/m-03-conditions, title: "Программа решает: условия (conditions)", track: python}
-      - {id: devops/m-02-git-first-commit, title: "Git: первый коммит (commit)", track: devops}
+      - devops/m-02-git-first-commit
       - {id: devops/m-03-github, title: "GitHub: репозиторий домашек (remote)", track: devops}
-      - {id: book/m-02-information-processes, title: "Информационные процессы (information processes)", track: book}
-      - {id: book/m-03-representation, title: "Представление информации (representation)", track: book}
+      - book/m-02-information-processes
+      - book/m-03-representation
     outcome: "Программа-диалог: спрашивает, считает и отвечает по-разному в зависимости от ответа. Домашки сдаются в своём репозитории на GitHub."
     textbook: ["7:1.2", "7:1.3", "8:5.2", "8:5.3", "8:5.4"]
     why: "Условия — первое место, где программа перестаёт быть списком команд. Git и GitHub здесь же, чтобы каждая следующая домашка уже жила в репозитории."
