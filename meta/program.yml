@@ -30,7 +30,7 @@ blocks:
     title: "Программа спрашивает и решает"
     modules:
       - python/m-02-variables
-      - {id: python/m-03-conditions, title: "Программа решает: условия (conditions)", track: python}
+      - python/m-03-branching
       - devops/m-02-git-first-commit
       - {id: devops/m-03-github, title: "GitHub: репозиторий домашек (remote)", track: devops}
       - book/m-02-information-processes

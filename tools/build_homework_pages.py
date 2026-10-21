@@ -49,7 +49,7 @@ PAGE = """<!DOCTYPE html>
   main p, main li {{ margin-bottom: 10px; }}
   main ul, main ol {{ padding-left: 24px; }}
   main blockquote {{ border-left: 4px solid #ffd60a; padding: 8px 14px; background: #fff8dc; border-radius: 8px; margin: 14px 0; }}
-  code {{ font-family: 'JetBrains Mono', monospace; font-size: .92em; background: #eee9e0; padding: 1px 5px; border-radius: 5px; }}
+  code {{ font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-size: .92em; background: #eee9e0; padding: 1px 5px; border-radius: 5px; }}
   pre {{ background: #15151c; color: #7fd0ff; padding: 14px 16px; border-radius: 12px; overflow-x: auto; margin: 14px 0; }}
   pre code {{ background: none; color: inherit; padding: 0; }}
   table {{ border-collapse: collapse; margin: 14px 0; }}

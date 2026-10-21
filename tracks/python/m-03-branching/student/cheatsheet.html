@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шпаргалка · Ветвление (branching) · Junior_IT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a14; --card: #1a1a2e; --card-2: #16213e; --deep: #0f3460;
+  --yellow: #ffd60a; --orange: #ff5722; --green: #00e676;
+  --cyan: #00ffc8; --magenta: #ff0096; --bg-light: #faf7f2;
+  --track: #00ffc8; --track-ink: #00806a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 28px 18px; background: var(--bg); color: #fff; font-family: Manrope, system-ui, sans-serif; line-height: 1.55; }
+main { max-width: 780px; margin: auto; }
+h1, h2 { font-family: Rubik, system-ui, sans-serif; } h1 { color: var(--track); font-size: 30px; margin-bottom: 8px; } h2 { font-size: 19px; margin-top: 0; }
+.chip { background: var(--track); color: var(--bg); padding: 4px 8px; border-radius: 5px; font: 700 14px "JetBrains Mono", monospace; }
+.sub { color: rgba(255,255,255,.75); }
+section { background: var(--card); border-left: 4px solid var(--track); border-radius: 14px; padding: 18px 22px; margin: 16px 0; }
+code, pre { font-family: "JetBrains Mono", monospace; } code { font-size: .92em; }
+pre { padding: 16px; background: #15151c; border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; }
+.kw { color: #8be9fd; } .str { color: #f1fa8c; } .out { color: #7fd0ff; }
+.rescue { border-left-color: var(--yellow); }
+li { margin: 7px 0; } a { color: var(--track); }
+footer { font-size: 13px; color: rgba(255,255,255,.75); }
+@media print {
+  @page { margin: 12mm; }
+  body { padding: 0; background: var(--bg-light); color: var(--bg); font-size: 11pt; }
+  h1, a { color: var(--track-ink); } .chip { color: #fff; background: var(--track-ink); }
+  .sub, footer { color: var(--bg); } section { background: #fff; border-color: var(--track-ink); break-inside: avoid; margin: 10px 0; padding: 12px 16px; }
+  pre { background: var(--bg-light); color: var(--bg); } .kw, .str, .out { color: var(--bg); }
+}
+code, pre { font-variant-ligatures: none; }
+</style>
+</head>
+<body>
+<main>
+  <span class="chip">PY</span>
+  <h1>Программа выбирает</h1>
+  <p class="sub">Ветвление (branching) · Junior_IT</p>
+  <section>
+    <h2>Две ветки и общий финал</h2>
+    <pre>place = <span class="kw">input</span>(<span class="str">'Куда идём: лес или море? '</span>)
+<span class="kw">if</span> place == <span class="str">'лес'</span>:
+    <span class="kw">print</span>(<span class="str">'Берём фонарик'</span>)
+<span class="kw">else</span>:
+    <span class="kw">print</span>(<span class="str">'Выбран другой маршрут'</span>)
+<span class="kw">print</span>(<span class="str">'Маршрут готов'</span>)</pre>
+    <p><code>if</code> выбирает первую ветку, когда условие (condition) верно.
+    <code>else</code> выбирает вторую при любом другом ответе.</p>
+    <p>Последний <code>print</code> без отступа стоит после ветвления:
+    «Маршрут готов» появляется в обоих случаях.</p>
+  </section>
+  <section>
+    <h2>Не путай знаки</h2>
+    <p><code>=</code> — присваивание (assignment): сохранить значение в переменной.<br>
+    <code>==</code> — сравнение (comparison): совпадают ли значения?</p>
+    <p>После условия <code>if</code> и слова <code>else</code> ставь <code>:</code>.
+    Отступ (indentation) перед каждой командой внутри ветки — <strong>4 пробела</strong>.
+    <code>if</code> и <code>else</code> начинаются на одном уровне.</p>
+  </section>
+  <section>
+    <h2>Три ответа одному файлу</h2>
+    <ul><li><code>лес</code> → «Берём фонарик».</li>
+    <li><code>море</code> → «Выбран другой маршрут».</li>
+    <li><code>Лес</code> → «Выбран другой маршрут».</li></ul>
+    <p><code>else</code> означает все прочие ответы, а не только «море».
+    Регистр и пробелы значимы: <code>'лес '</code> с пробелом в конце не совпадает с <code>'лес'</code>.</p>
+    <p>Сохрани <code>route.py</code> и запусти <code>python3 route.py</code>
+    или знакомой командой <code>python route.py</code> на Windows.
+    Ответ вводи в консоли без кавычек, затем Enter.</p>
+  </section>
+  <section class="rescue">
+    <h2>Если результат удивил</h2>
+    <ul><li>Всегда вторая ветка → сравни ответ с текстом условия, включая буквы и пробелы.</li>
+    <li>Ошибка → прочитай последнюю строку сообщения и найди номер строки; сверь <code>==</code>, двоеточия, кавычки и отступы.</li>
+    <li>Общий финал появляется только иногда → убери отступ у последнего <code>print</code>.</li>
+    <li>После правки старый результат → сохрани и запусти нужный файл заново.</li></ul>
+  </section>
+  <footer>Домашка: <a href="../../../../homework/python-03-branching/">«Свой маршрут»</a>.
+  Придумай своё условие и обе реплики; покажи три запуска.</footer>
+</main>
+</body>
+</html>

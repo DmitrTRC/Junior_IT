@@ -1,0 +1,14 @@
+id: python/m-03-branching
+title: "Ветвление: программа выбирает (branching)"
+track: python
+level: core
+minutes: 37
+textbook: []
+requires: [python/m-02-variables]
+terms:
+  - {ru: ветвление, en: branching}
+  - {ru: условие, en: condition}
+  - {ru: сравнение, en: comparison}
+  - {ru: присваивание, en: assignment}
+  - {ru: отступ, en: indentation}
+homework: homework/python-03-branching

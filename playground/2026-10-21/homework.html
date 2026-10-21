@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Домашка · Программа выбирает маршрут · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-book-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+@media print { h1,h2,h3,a { color: var(--track-py-ink); } }code, pre { font-variant-ligatures: none; }
+</style></head><body><main><header><span class="chip">PY · ДО 25.10 · 20:00 МСК</span><p>Junior_IT · после занятия 21 октября</p></header><h1>Программа выбирает маршрут</h1>
+<p>После занятия 21.10. <strong>10–15 минут</strong>. Продолжай свой <code>route.py</code>:
+заново переписывать работающую программу не нужно.</p>
+<h2>Что сделать</h2>
+<ol>
+<li>Придумай свой выбор: место путешествия, жанр игры или занятие на выходной.</li>
+<li>Спроси ответ через <code>input</code> и сохрани в переменной.</li>
+<li>Сравни ответ с одной выбранной строкой через <code>==</code>. В ветке <code>if</code> выведи
+   подходящее сообщение, в <code>else</code> — сообщение для <strong>любого другого ответа</strong>.</li>
+<li>После обеих веток добавь общий <code>print</code> без отступа: он должен срабатывать
+   при любом ответе. Внутри веток используй четыре пробела.</li>
+<li>Сохрани файл и выполни три запуска: точное совпадение, другой ответ,
+   тот же ответ с другой заглавной/строчной буквой. До запуска предскажи ветку.</li>
+<li>В <code>runs.txt</code> запиши три пары «ввёл → увидел» и одной фразой объясни,
+   чем <code>=</code> отличается от <code>==</code>. Если прогноз не совпал — укажи, что выяснил.</li>
+</ol>
+<p>Например, для условия <code>place == "лес"</code>: <code>лес</code> включает первую ветку,
+<code>море</code> и <code>Лес</code> — вторую. Точное сравнение различает регистр и пробелы.
+Не пиши во второй ветке «Ты выбрал море»: человек мог ввести что угодно.</p>
+<p>Запуск: <code>python3 route.py</code> или знакомая <code>python route.py</code> на Windows.
+Для готовой программы с урока достаточно своего изменения и трёх запусков.</p>
+<h2>Если застрял</h2>
+<p>Сначала оставь <code>input</code> и <code>print</code> с ответом и запусти. Потом верни ветвление
+(branching). Посмотри двоеточия после <code>if</code> и <code>else</code>, одинаковые отступы
+и прямые кавычки. <code>else</code> стоит на одном уровне с <code>if</code>.</p>
+<p><a href="../../tracks/python/m-03-branching/student/cheatsheet.html">Шпаргалка по ветвлению</a>.</p>
+<h2>Сдача</h2>
+<p>До <strong>воскресенья, 25.10.2026, 20:00 МСК</strong> подготовь <code>route.py</code> и <code>runs.txt</code>
+в своей знакомой папке <code>git-lab</code>. При рабочем Git сохрани версию после
+запуска: из этой же папки выполни <code>git add route.py runs.txt</code>, затем
+<code>git commit -m "Add route choice"</code>. Уже сохранённая версия не требует
+лишнего коммита.</p>
+<p>Если доступ к выделенному тебе <strong>закрытому репозиторию преподавателя</strong> готов,
+передай оба файла через знакомый интерфейс сайта в <code>hw/python-03-branching/</code>.
+После сохранения открой <code>route.py</code> заново и найди своё условие.
+Локальный commit сам по себе не отправляет файл на GitHub.</p>
+<p>Если доступа нет — оставь оба файла в <code>git-lab</code> к тому же сроку и сообщи
+преподавателю. Путь <code>hw/python-03-branching/</code> понадобится при загрузке
+на сайт; локальные файлы перемещать не нужно. Срок загрузки согласуем после подключения. Если Git не готов,
+достаточно файлов; настройки наугад не меняй. Нужен код, скриншот его не заменяет.</p>
+<h2>Если хочется ещё</h2>
+<p>В отдельном <code>greetings.py</code> создай список (list) из трёх вымышленных ников
+и выведи каждый через <code>for</code>. Затем добавь четвёртый ник и запусти снова.
+Эта часть необязательна; основной результат — твои две ветки.</p><p><a href="practice.html">Практика</a> · <a href="index.html">К плану занятия</a></p></main></body></html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Практика 21.10 · Твой маршрут · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-book-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+</style></head><body><main>
+<header><span class="chip">PY · 21.10</span><h1>Какую ветку выберет Python?</h1><p>Сначала предскажи. Потом набери, запусти и покажи свой результат.</p><a class="button" href="#input">Ввод</a><a class="button" href="#branches">Две ветки</a><a class="button" href="#own">Свой маршрут</a><a class="button" href="#save">Сохранить</a></header>
+<section class="card python" id="input"><span class="chip">1 · 8 МИНУТ</span><h2>Начни с того, что знакомо</h2><p>В своей учебной папке создай <code>route.py</code>. Набери две строки:</p><pre><code>place = input("Куда идём: лес или море? ")
+print(place)</code></pre><p>Сохрани и запусти <code>python3 route.py</code> или знакомую <code>python route.py</code> на Windows. Ответ вводи в консоли, затем Enter. Появился именно твой ответ?</p></section>
+<section class="card python" id="compare"><span class="chip">2 · 10 МИНУТ</span><h2>Совпало или нет?</h2><p>Замени второй <code>print</code>:</p><pre><code>print(place == "лес")</code></pre><p>Прежде чем запускать: что получится для <code>лес</code>, <code>море</code>, <code>Лес</code>? Сохраняй один и тот же код, меняй только ответ при запуске.</p><details><summary>Сверить наблюдение</summary><p><code>True</code>, <code>False</code>, <code>False</code>. Сравнение точное: регистр и пробелы имеют значение.</p></details><p><code>=</code> — присвоить (assignment). <code>==</code> — сравнить на равенство (equality).</p></section>
+<section class="card python" id="branches"><span class="chip">3 · 12 МИНУТ</span><h2>Ветвление (branching)</h2><p>Оставь свой ввод. Вместо вывода сравнения набери:</p><pre><code>if place == "лес":
+    print("Берём фонарик")
+else:
+    print("Выбран другой маршрут")</code></pre><p>Двоеточие после <code>if</code> и <code>else</code>. В каждой ветке — четыре пробела перед <code>print</code>. <code>else</code> на одном уровне с <code>if</code>.</p><p>Три запуска: <strong>лес → море → Лес</strong>. Какая ветка сработала? Почему вторая ветка не должна обещать, что ты выбрал именно море?</p><details><summary>Если Python сообщает об ошибке</summary><p>Сначала прочитай последнюю строку ошибки. Посмотри двоеточия, кавычки и одинаковые отступы. После правки сохрани и снова запусти файл.</p></details></section>
+<section class="card python" id="own"><span class="chip">4 · ПОСЛЕ ПАУЗЫ · 15 МИНУТ</span><h2>Придумай своё решение</h2><ol><li>Выбери свой сюжет: другая локация, жанр игры или план на выходной.</li><li>Измени вопрос, строку в сравнении и обе реплики. В <code>else</code> нужен ответ на любой другой ввод.</li><li>После двух веток добавь общий финал <strong>без отступа</strong>:</li></ol><pre><code>print("Маршрут готов")</code></pre><p>Запусти с совпадающим ответом и с любым другим. Почему финал появился оба раза? Покажи свой файл и объясни, какая строка выбирает путь.</p></section>
+<section class="card book" id="book"><span class="chip">BOOK · 7 МИНУТ</span><h2>Что происходит с информацией?</h2><p>Ты вводишь ответ, программа сравнивает его с условием, ты сохраняешь код на диск и передаёшь файл преподавателю.</p><p>Найди сбор (collection), обработку (processing), хранение (storage) и передачу (transmission). Придумай свой пример для соседа.</p><p>Сохраняет ли <code>input</code> твой ответ в файл на диске? Нет: значение доступно программе во время её работы. Сохранение исходного кода — другое действие.</p></section>
+<section class="card ops" id="save"><span class="chip">OPS · 10 МИНУТ</span><h2>Сначала запусти новую версию</h2><p>Сохрани <code>route.py</code>, запусти обе ветки. В терминале своей знакомой <code>git-lab</code> покажи путь и <code>git status</code>. Если Git уже настроен:</p><pre><code>git add route.py
+git commit -m "Add route choice"
+git log --oneline</code></pre><p>Ничего не изменилось после прошлого коммита? Новый не нужен. Если Git не готов, сохрани файлы локально и попроси подсказку после занятия.</p><p>Создай <code>runs.txt</code>, запиши первую пару «ввёл → увидел». При готовом доступе передай свои файлы в <code>hw/python-03-branching/</code> своего закрытого репозитория преподавателя. Повторно открой файл на сайте. Нет доступа — оставь оба файла в своей <code>git-lab</code>; путь <code>hw/python-03-branching/</code> понадобится при загрузке на сайт.</p><p>Save сохраняет файл, commit — его версию в локальной истории. Отправка на GitHub — отдельный шаг.</p></section>
+<section class="card python" id="bonus"><span class="chip">БОНУС · 5 МИНУТ</span><h2>Один привет каждому</h2><p>Открываем только после двух работающих веток у каждого. В отдельном <code>greetings.py</code>:</p><pre><code>names = ["Comet", "Pixel", "Nova"]
+for name in names:
+    print("Привет,", name)</code></pre><p><code>names</code> — список (list). Цикл (loop) <code>for</code> берёт его элементы по одному. Предскажи число приветствий, затем запусти. Сам добавь четвёртый ник и повтори запуск.</p></section>
+<p><a href="homework.html">Домашка до 25 октября</a> · <a href="../../tracks/python/m-03-branching/student/cheatsheet.html">Шпаргалка</a> · <a href="index.html">К плану занятия</a></p>
+</main></body></html>
