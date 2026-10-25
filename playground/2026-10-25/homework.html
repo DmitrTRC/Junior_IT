@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Домашка 25.10 · Типы и ветвление · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Домашка 25.10 · Типы и ввод · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
    Источник истины для материалов и агента brand-guardian.
    HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
    а не подключается ссылкой. */
@@ -65,54 +65,57 @@ main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor:
 code, pre { font-variant-ligatures: none; }
 @media print { h1,h2,h3,a { color: var(--track-py-ink); } }
 </style></head><body><main>
-<header><span class="chip">PY · ДО 28.10 · 20:00 МСК</span><p>Junior_IT · после занятия 25 октября</p></header><h1>Два пути и разные типы</h1>
+<header><span class="chip">PY · ДО 28.10 · 20:00 МСК</span><p>Junior_IT · после занятия 25 октября</p></header><h1>Типы и ввод: строка или число?</h1>
 <p>После занятия 25.10. <strong>10–15 минут</strong>, до <strong>среды, 28 октября, 20:00 МСК</strong>.
-Продолжай свои файлы с урока. Работающие части переписывать не нужно.</p>
-<h2>Твой маршрут</h2>
-<ol>
-<li>В <code>route.py</code> оставь вопрос через <code>input</code>, сравнение через <code>==</code> и две ветки <code>if/else</code>.</li>
-<li>Измени вопрос и ответы под свой сюжет. В <code>else</code> нужен ответ для любого другого ввода.</li>
-<li>Добавь общий <code>print</code> без отступа после веток.</li>
-<li>Запусти с точным ответом, другим ответом и тем же словом с другой заглавной буквой.
-   Перед каждым запуском предскажи ветку. Общий финал должен появляться каждый раз.</li>
-</ol>
-<h2>Опыт с типами</h2>
-<p>В <code>types_lab.py</code> придумай свою пару цифр и выполни сложение сначала строк,
-потом целых чисел. Образец для другой пары:</p>
-<pre><code class="language-python">print(&quot;5&quot; + &quot;2&quot;)
-print(5 + 2)
-print(type(&quot;5&quot;))
-print(type(5))
-print(type(2.5))
-print(type(5 == 2))
+Закрепляем типы данных и ввод. Ветвление (branching) — <code>if/else</code> —
+разберём вместе на следующем занятии; в этой домашке оно не требуется.</p>
+<h2>Четыре типа</h2>
+<p>Создай <code>types_lab.py</code> в своей учебной папке. Если уже есть свой файл
+с опытом по типам, продолжай его — имя менять не нужно.</p>
+<p>Перед запуском предскажи тип каждого значения, затем набери и выполни:</p>
+<pre><code class="language-python">print(type(10))
+print(type(5.7))
+print(type(&quot;Привет&quot;))
+print(type(True))
 </code></pre>
-<p>В <code>runs.txt</code> запиши три пары «ввёл → увидел» для маршрута и объясни одной фразой,
-почему сложение строк отличается от сложения чисел. Подпиши типы:
-<code>str</code> — строка (string), <code>int</code> — целое число (integer),
+<p>Сверь названия: <code>int</code> — целое число (integer),
 <code>float</code> — число с плавающей точкой (floating-point number),
-<code>bool</code> — логическое значение (boolean): <code>True</code> или <code>False</code>.
-В дробном числе Python использует точку: <code>2.5</code>.</p>
+<code>str</code> — строка (string), <code>bool</code> — логическое значение (boolean).
+В дробном числе нужна точка. У <code>True</code> нет кавычек.
+Замени число и текст своими примерами, а <code>True</code> — на <code>False</code>. Запусти снова:
+изменились значения или типы?</p>
+<h2>Ввёл цифры — получил строку</h2>
+<p>В тот же файл добавь:</p>
+<pre><code class="language-python">answer = input(&quot;Введи целое число: &quot;)
+print(type(answer))
+number = int(answer)
+print(type(number))
+print(answer * 3)
+print(number * 3)
+</code></pre>
+<p>Сохрани и запусти <code>python3 types_lab.py</code> или знакомую <code>python types_lab.py</code>
+на Windows. Если твой файл называется иначе, подставь его имя.
+Ответ вводи в терминале, затем нажми Enter.</p>
+<p>Сделай два запуска: введи <code>5</code>, затем <code>12</code>. Перед каждым запуском предскажи
+две последние строки вывода. Объясни: где повторяется текст, а где
+умножается число? <code>input</code> возвращает строку даже при вводе цифр;
+<code>int(answer)</code> создаёт целое число, сам <code>answer</code> остаётся строкой.</p>
+<p>В <code>runs.txt</code> запиши два наблюдения: «ввёл → тип до преобразования → тип после
+преобразования → повтор текста → числовой результат». Добавь одну фразу:
+зачем здесь нужен <code>int</code>?</p>
 <h2>Если застрял</h2>
-<p>Сначала запусти только <code>input</code> и вывод ответа. Затем добавь ветки:
-двоеточия после <code>if</code> и <code>else</code>, по четыре пробела перед командами внутри веток.
-<code>=</code> присваивает значение, <code>==</code> сравнивает. Сравнение строк различает регистр.</p>
-<p><a href="../../tracks/python/m-03-branching/student/cheatsheet.html">Шпаргалка по ветвлению</a>.</p>
-<h2>Если числовой ввод уже получился на уроке</h2>
-<p>Необязательно: в конце <code>types_lab.py</code> спроси целое число через <code>input</code>,
-отдельной строкой преобразуй его через <code>int</code>, выведи число на единицу больше.
-Запусти с <code>5</code> и <code>12</code>: должны получиться <code>6</code> и <code>13</code>.
-<code>input</code> возвращает строку даже при вводе цифр. Для этого опыта вводи целое число:
-слово и <code>2.5</code> не подходят для <code>int</code> и вызовут <code>ValueError</code>.
-Если эту часть не успели вместе — оставь её до следующего занятия.</p>
+<p>Сначала оставь только <code>input</code> и <code>print(answer)</code>, сохрани и запусти.
+Потом добавь <code>type</code>, преобразование и умножение по одному шагу.
+Для этого опыта вводи целые числа: слово, пустой ответ и <code>2.5</code> вызовут
+<code>ValueError</code> при преобразовании через <code>int</code>. Повтори запуск с <code>5</code>.
+Обработку ошибок писать пока не нужно. Если дальше не получается,
+сохрани работающую часть и запиши вопрос преподавателю.</p>
 <h2>Сдача</h2>
-<p>Сохрани <code>route.py</code>, <code>types_lab.py</code> и <code>runs.txt</code> в своей учебной папке.
-При готовом Git сохрани версию после запуска из папки с этими файлами:
-<code>git add route.py types_lab.py runs.txt</code>, затем
-<code>git commit -m "Practice types and branches"</code>. Если версия уже сохранена,
-лишний коммит не нужен. Локальный commit сам по себе не отправляет файлы на GitHub.</p>
-<p>При готовом доступе к своему закрытому репозиторию преподавателя передай
-три файла в <code>hw/python-04-types-and-branches/</code> через знакомый интерфейс сайта.
-Заново открой файлы и найди своё изменение. Если доступа или Git нет —
-сохрани файлы локально к тому же сроку и сообщи преподавателю; срок загрузки
-согласуем после подключения. Нужен код, скриншот его не заменяет.</p><p><a href="practice.html">Практика</a> · <a href="index.html">К плану занятия</a></p>
+<p>Сохрани свой Python-файл и <code>runs.txt</code> в учебной папке к указанному сроку.
+Коммиты разберём вместе; для этой домашки достаточно двух файлов.</p>
+<p>Если доступ к своему закрытому репозиторию преподавателя уже готов
+и способ загрузки знаком, передай оба файла в <code>hw/python-04-types-and-branches/</code>.
+Заново открой их на сайте и найди своё изменение. Если доступа нет —
+оставь файлы локально и сообщи преподавателю; срок загрузки согласуем
+после подключения. Нужен код, скриншот его не заменяет.</p><p><a href="practice.html#types">Практика типов</a> · <a href="practice.html#numbers">Числовой ввод</a> · <a href="index.html">К плану занятия</a></p>
 </main></body></html>
