@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Практика 25.10 · Ветвление и типы · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-book-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+.python h3 { color: var(--accent); }
+</style></head><body><main>
+
+<header><span class="chip">PY · 25.10</span><h1>Строка или число?<br>Какой путь выберет программа?</h1><p>Сначала твой прогноз. Потом твой код и запуск.</p><a class="button" href="#input">Ввод</a><a class="button" href="#types">Типы</a><a class="button" href="#branches">Две ветки</a><a class="button" href="#numbers">Число из ввода</a><a class="button" href="homework.html">Домашка</a></header>
+<section class="card python" id="input"><span class="chip">1 · 8 МИНУТ</span><h2>Продолжай свой маршрут</h2><p>Открой прошлый файл. Что уже запускается? Если кода нет, создай <code>route.py</code> в своей учебной папке и набери:</p><pre><code>place = input("Куда идём: лес или море? ")
+print(place)</code></pre><p>Сохрани и запусти <code>python3 route.py</code> или знакомую <code>python route.py</code> на Windows. Ответ вводи в терминале, затем Enter. Покажи свой результат.</p></section>
+<section class="card python" id="types"><span class="chip">2 · 12 МИНУТ</span><h2>Одинаковые цифры — разные действия</h2><p>Создай отдельный <code>types_lab.py</code>. Прежде чем набирать, предскажи оба ответа:</p><pre><code>print("5" + "2")
+print(5 + 2)</code></pre><p>Запусти <code>python3 types_lab.py</code> или <code>python types_lab.py</code>. Затем выбери свою пару чисел и повтори опыт. Что меняют кавычки?</p><details><summary>Сверить результат</summary><p><code>52</code> и <code>7</code>. Для строк <code>+</code> соединяет текст, для чисел — складывает значения.</p></details>
+<h3>Спроси Python о типе значения</h3><pre><code>print(type("5"))
+print(type(5))
+print(type(2.5))
+print(type(5 == 2))</code></pre><p><code>type()</code> показывает тип (type). В выводе <code>&lt;class 'int'&gt;</code> нам пока нужно только имя <code>int</code>.</p>
+<table><thead><tr><th>Тип</th><th>Что хранит</th><th>Пример</th></tr></thead><tbody><tr><td><code>str</code></td><td>Строка (string)</td><td><code>"5"</code>, <code>"лес"</code></td></tr><tr><td><code>int</code></td><td>Целое число (integer)</td><td><code>5</code>, <code>-2</code></td></tr><tr><td><code>float</code></td><td>Число с плавающей точкой (floating-point number)</td><td><code>2.5</code></td></tr><tr><td><code>bool</code></td><td>Логическое значение (boolean)</td><td><code>True</code>, <code>False</code></td></tr></tbody></table>
+<p>В дробном числе — точка. <code>True</code> без кавычек — логическое значение, <code>"True"</code> — строка. Предскажи тип каждого, затем убедись через <code>type()</code>.</p></section>
+<section class="card python" id="branches"><span class="chip">3 · 10 МИНУТ</span><h2>Ветвление (branching)</h2><p>Вернись в <code>route.py</code>. Сначала замени вывод ответа на <code>print(place == "лес")</code>: какое логическое значение получится? <code>=</code> присваивает, <code>==</code> сравнивает.</p><p>Теперь вместо временного вывода сравнения набери:</p><pre><code>if place == "лес":
+    print("Берём фонарик")
+else:
+    print("Выбран другой маршрут")</code></pre><p>Внутри каждой ветки четыре пробела. <code>else</code> на одном уровне с <code>if</code>; после обоих — двоеточие. Запусти с <strong>лес → море → Лес</strong>. Сначала назови ожидаемую ветку.</p><details><summary>Почему «Лес» — другой маршрут?</summary><p>Сравнение строк точное: заглавная буква отличается от строчной. <code>else</code> срабатывает при любом несовпадении, даже если введено не «море».</p></details></section>
+<section class="card python" id="own"><span class="chip">4 · ПОСЛЕ ПАУЗЫ · 15 МИНУТ</span><h2>Теперь твой сюжет</h2><ol><li>Выбери другой маршрут, жанр игры или занятие на выходной.</li><li>Измени вопрос, строку в сравнении и обе реплики.</li><li>После веток добавь общий финал без отступа:</li></ol><pre><code>print("Маршрут готов")</code></pre><p>Сохрани и запусти с совпадающим ответом и любым другим. Почему финал появляется оба раза? Покажи обе ветки своей версии.</p></section>
+<section class="card python" id="numbers"><span class="chip">5 · 7 МИНУТ</span><h2>Ввёл 5. Почему это строка?</h2><p>В конец <code>types_lab.py</code> допиши две строки, запусти и введи <code>5</code>:</p><pre><code>answer = input("Введи целое число: ")
+print(type(answer))</code></pre><p><code>input</code> возвращает строку (string), даже если ты ввёл цифры. Добавь преобразование (conversion) отдельным шагом:</p><pre><code>number = int(answer)
+print(type(number))
+print(number + 1)</code></pre><p>Запусти с <code>5</code> и <code>12</code>: получатся <code>6</code> и <code>13</code>. В <code>answer</code> остаётся строка; в <code>number</code> — целое число.</p><p>В этом опыте вводи целое число. Слово, пустой ввод или <code>2.5</code> вызовут <code>ValueError</code>: такую строку <code>int</code> не преобразует. Повтори запуск с целым числом.</p><details><summary>Когда два шага понятны: короткая запись</summary><pre><code>number = int(input("Введи целое число: "))
+print(number + 1)</code></pre><p>Сначала работает внутренний <code>input</code>, затем <code>int</code>. Две отдельные строки тоже правильны.</p></details></section>
+<section class="card ops" id="save"><span class="chip">BOOK + OPS · 10 МИНУТ</span><h2>Твой код и его история</h2><p>Где в твоих действиях сбор (collection), обработка (processing), хранение (storage) и передача (transmission) информации? Ответ в переменной во время работы — не файл на диске.</p><p>Сохрани и запусти оба файла. В своей папке с файлами при уже настроенном Git:</p><pre><code>git status
+git add route.py types_lab.py
+git commit -m "Practice types and branches"
+git log --oneline</code></pre><p>Если версия уже сохранена, новый commit не нужен. Если Git не готов — достаточно локальных файлов. Отдельный репозиторий на каждое занятие не создавай.</p><p>Начни <code>runs.txt</code> с одной пары «ввёл → увидел». Save сохраняет файл; commit сохраняет версию локально. Передача на GitHub — отдельное действие. Путь сдачи указан в <a href="homework.html">домашке</a>.</p></section>
+<section class="card python" id="bonus"><span class="chip">РЕЗЕРВ · 5 МИНУТ</span><h2>Число выбирает ветку</h2><p>Только если у всех готовы маршрут и преобразование ввода. После строки <code>number = int(answer)</code> добавь:</p><pre><code>if number &gt;= 10:
+    print("Большой запас")
+else:
+    print("Запас меньше десяти")</code></pre><p><code>&gt;=</code> — больше или равно (greater than or equal). Предскажи ветки для <code>9</code>, <code>10</code>, <code>11</code>, затем запусти. Что происходит ровно на границе?</p></section>
+<p><a href="homework.html">Начать домашку · до 28.10, 20:00</a> · <a href="index.html">К плану занятия</a></p>
+
+</main></body></html>
