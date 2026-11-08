@@ -1,0 +1,66 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Сценарий преподавателя · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-py-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+.python h3 { color: var(--accent); }
+</style></head><body><main><header><span class="chip">PYTHON · 04.11.2026 · 20:00–21:15 МСК</span><h1>Сценарий преподавателя</h1></header><nav><a class="button" href="index.html">Пульт</a><a class="button" href="practice.html">Практика</a><a class="button" href="homework.html">Домашка</a><a class="button" href="teacher-notes.html">Сценарий</a></nav><section class="card"><h2>Исправление: две минуты</h2><p>«На прошлом занятии я по привычке перенёс конструкцию из C в Python. В Python нет синтаксиса do…while, и убирать его оттуда не собираются. Есть while с условием перед телом. Если сначала нужно выполнить действие, а потом решить, повторять ли его, используем while True и условный break после действия».</p><p>while True с понятным выходом допустим. for перебирает элементы; количество заранее знать не нужно.</p></section><table><tr><th>Минуты</th><th>Преподаватель и ученик</th></tr><tr><td>00–07</td><td>Каждый открывает прошлый файл, сохраняет изменение и запускает. Предсказывает результат; технические неполадки — не дольше минуты.</td></tr><tr><td>07–10</td><td>Коротко исправить do…while и комментарий Very bad idea. Дети объясняют: где условие, где выход.</td></tr><tr><td>10–23</td><td>Каждый набирает counter.py: 0, 1, 2. Меняет начальное значение на 3: тело не выполняется. Возвращает 0.</td></tr><tr><td>23–30</td><td>Каждый пишет commands.py с exit. Два запуска: exit сразу; read, exit. Показывает общий финал.</td></tr><tr><td>30–33</td><td>Пауза без экрана.</td></tr><tr><td>33–48</td><td>Каждый пишет letters.py: for по строке. Прогноз → запуск для кот, Я и пустой строки.</td></tr><tr><td>48–58</td><td>Каждый демонстрирует свой файл и объясняет отступы. Если готовы все — счётчик символов; иначе повторить базовый for.</td></tr><tr><td>58–65</td><td>Записать результаты в runs.txt. Git только при готовом доступе и успешных запусках у всех; иначе сохранить локально.</td></tr><tr><td>65–75</td><td>Открыть домашку и начать первый опыт. Каждый называет, чем while отличается от for. Завершение в 21:15.</td></tr></table><section class="card"><h2>Если отстаём</h2><p>Убираем commands.py, затем счётчик символов и Git. Сохраняем личный запуск, паузу, начало домашки и финиш 21:15.</p><p>continue и while…else — резерв. Полные заметки: <a href="teacher-notes.md">teacher-notes.md</a>.</p></section></main></body></html>

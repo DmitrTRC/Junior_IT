@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Сценарий · 28 октября · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-book-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+.python h3 { color: var(--accent); }
+</style></head><body><main><p><a href="index.html">← Пульт занятия</a> · <a href="practice.html">Практика</a></p><h1>Занятие 28.10 · Программа выбирает</h1>
+<p><strong>Среда, 20:00–21:15 МСК.</strong> <a href="index.html">Пульт</a> · <a href="practice.html">Практика</a> ·
+<a href="homework.html">Домашка</a> · <a href="announcement.md">Анонс</a>.</p>
+<p>Основание — <a href="../2026-10-25/actual-review.md">факт 25.10</a>: показаны типы,
+<code>input</code>, отдельное преобразование <code>int</code>, <code>=</code> и <code>==</code>. До <code>if/else</code> не дошли.
+Самостоятельные запуски учеников по аудио не подтверждены: начать с их файлов.
+Исправленная домашка по типам опубликована; её наличие не означает выполнение.</p>
+<p>Главный результат: <strong>каждый сам написал и запустил обе ветки <code>route.py</code></strong>,
+показал общий финал и объяснил, почему <code>else</code> — любой несовпавший ответ.
+Второй результат — личный опыт <code>input → type → int</code> в <code>types_lab.py</code>.</p>
+<h2>Перед встречей</h2>
+<ul>
+<li>Открыть пульт и практику, включить запись Zoom; вслух уточнить, что ученики видят окно редактора.</li>
+<li>Живой код писать в <code>~/code/junior-it/2026-10-28/</code>: по одному файлу на задачу.
+  Предыдущие даты оставить снимками. Ученикам сохранить привычные папки.</li>
+<li>Базовые файлы подготовлены: <code>types_lab.py</code> — неизменённая копия фактического
+  <code>python_types.py</code> с показа 25.10; <code>route.py</code> — пустая заготовка новой задачи.
+  В копии используются <code>age</code> и <code>int_age</code>, множитель 10. На этапе опыта можно
+  сохранить эти имена, заменить множитель на 3 и добавить <code>print(int_age * 3)</code>;
+  строки <code>type</code> уже есть. Не вставлять пример с <code>answer</code> и <code>number</code> поверх
+  старого кода без согласования имён. На старте открыть оба подготовленных файла.</li>
+<li>Логины GitHub собрать лично до/после урока. Установку и приглашения не делать
+  общим блоком: практику Python начинать вовремя.</li>
+<li>Менять ученика, который показывает экран, каждые 3–5 минут. Пока один
+  показывает, остальные набирают и запускают у себя. Теория — максимум 2 минуты.
+  Для трёх участников делить 10 минут личных показов на три коротких слота.</li>
+</ul>
+<h2>Режиссура</h2>
+<table>
+<thead>
+<tr>
+<th>Время</th>
+<th>Действие преподавателя и ученика</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20:00–20:08</td>
+<td>Каждый показывает прошлый файл и запускает. Спросить: «Где ввод? Что вернул input?» Если файла нет, вместе набрать ввод и вывод. Не превращать начало в длинный разбор невыполненного.</td>
+</tr>
+<tr>
+<td>20:08–20:18</td>
+<td><code>types_lab.py</code>: ввод → <code>type</code> → отдельный <code>int</code> → два умножения. Сначала прогноз для 5, затем личный запуск; повторить с 12. Спросить: «Изменился ли answer после int?»</td>
+</tr>
+<tr>
+<td>20:18–20:30</td>
+<td><code>route.py</code>: вопрос, <code>print(place == "лес")</code>, затем <code>if/else</code>. Дети набирают. Запуски лес/море/Лес; обратить внимание на двоеточия и четыре пробела. В 20:22 и 20:26 сменить экран.</td>
+</tr>
+<tr>
+<td>20:30–20:33</td>
+<td>Пауза без экрана.</td>
+</tr>
+<tr>
+<td>20:33–20:48</td>
+<td>Свой вопрос и обе реплики. Добавить общий <code>print</code> без отступа. В 20:38 увидеть своё условие, в 20:43 — два исхода; в 20:48 — объяснение финала.</td>
+</tr>
+<tr>
+<td>20:48–20:58</td>
+<td>Каждый показывает оба запуска своей программы. Другой ученик предсказывает исход. Разобрать один реальный сбой, если есть; не подменять ученический запуск показом преподавателя.</td>
+</tr>
+<tr>
+<td>20:58–21:05</td>
+<td>Сохранить оба файла. Только при готовом Git — <code>status → add → commit → log</code>. Если Git не готов, остаются локальные файлы. Save, commit и передача на GitHub — разные действия.</td>
+</tr>
+<tr>
+<td>21:05–21:15</td>
+<td>Открыть домашку, записать первое наблюдение в <code>runs.txt</code>, проговорить ещё два ввода. Каждый отвечает: «Что будет при другом ответе?» Срок 01.11, 20:00 МСК. Завершить в 21:15.</td>
+</tr>
+</tbody>
+</table>
+<h2>Если темп ниже</h2>
+<ol>
+<li>К 20:18 не готов ввод: завершить опыт с 5; второй ввод — повтор дома.</li>
+<li>К 20:30 не готовы ветки: после паузы закончить общий маршрут, убрать собственный сюжет.</li>
+<li>К 20:58 не все показали результат: убрать Git. На техническую неполадку — максимум минута.</li>
+<li>Сохранить личные запуски, паузу, начало домашки и время окончания.</li>
+</ol>
+<p>Если все закончили раньше: числовое условие <code>number &gt;= 10</code>, прогноз и запуски
+9/10/11. Это бонус внутри резерва, не обязательная домашка. Циклы и <code>elif</code> отложены.
+Учебник не добавлять отдельным блоком; хранение и передачу можно назвать на своём действии.</p>
+<h2>После встречи</h2>
+<p>До занятия оставить <code>completed: []</code>. После — внести только фактически проведённое,
+индивидуальные результаты хранить в игнорируемом <code>students/</code>.
+Если ветки не состоялись, не выдавать их как самостоятельную домашку:
+оставить повтор типов по прежнему заданию и согласовать новый срок.
+Пульт и сегодняшний пакет подготовлены локально; публикация — после отдельного <code>push</code>.</p></main></body></html>

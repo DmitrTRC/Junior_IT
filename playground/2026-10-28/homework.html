@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Домашка · Твой маршрут · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-book-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+.python h3 { color: var(--accent); }
+</style></head><body><main><p><a href="index.html">← Пульт занятия</a> · <a href="practice.html">Практика</a></p><h1>Твой маршрут: два ответа и общий финал</h1>
+<p>После занятия <strong>28 октября</strong>. <strong>10–15 минут</strong>, до <strong>воскресенья,
+1 ноября, 20:00 МСК</strong>. Продолжай <code>route.py</code>, который запускал на занятии.</p>
+<h2>Что сделать</h2>
+<ol>
+<li>Придумай свой вопрос: куда отправиться, во что играть или чем заняться.
+   Сохрани ответ <code>input</code> в переменной.</li>
+<li>Сравни его с одним выбранным словом через <code>==</code>. В <code>if</code> напиши ответ
+   для совпадения, в <code>else</code> — для любого другого ввода.</li>
+<li>После обеих веток добавь общий <code>print</code> без отступа. Он должен появляться
+   при любом ответе. Внутри веток используй четыре пробела.</li>
+<li>Сохрани и запусти три раза: точное совпадение, другое слово, то же слово
+   с изменённой заглавной/строчной буквой. Перед запуском предскажи результат.</li>
+<li>В <code>runs.txt</code> запиши три строки «ввёл → ожидал → увидел» и одну фразу:
+   чем <code>=</code> отличается от <code>==</code>? Отметь, появился ли общий финал во всех запусках.</li>
+</ol>
+<p>Для условия <code>place == "лес"</code> ввод <code>лес</code> даёт <code>True</code>, а <code>море</code> и <code>Лес</code> —
+<code>False</code>. Сравнение учитывает регистр и пробелы. В <code>else</code> лучше написать
+«Выберем другой маршрут», а не «Ты выбрал море»: введено могло быть что угодно.</p>
+<p>Если свой сюжет уже готов, достаточно изменить одну реплику и сделать три запуска.
+Запускай знакомой командой <code>python3 route.py</code> или <code>python route.py</code> на Windows.</p>
+<h2>Если застрял</h2>
+<p>Посмотри двоеточия после <code>if</code> и <code>else</code>, прямые кавычки и одинаковые отступы.
+<code>else</code> стоит на одном уровне с <code>if</code>. Сохрани файл перед повторным запуском.
+<a href="../../tracks/python/m-03-branching/student/cheatsheet.html">Шпаргалка по ветвлению (branching)</a>.</p>
+<p>Если на занятии не успел запустить обе ветки, продолжи работающую часть с
+<code>input</code> и <code>print</code>, запиши вопрос преподавателю. Достраивать незнакомую
+конструкцию самостоятельно не нужно.</p>
+<h2>Как сохранить результат</h2>
+<p>Нужны <strong><code>route.py</code> и <code>runs.txt</code></strong> в твоей учебной папке к указанному сроку.
+Обязательного коммита нет.</p>
+<p>Если доступ к своему закрытому репозиторию преподавателя уже готов и способ
+загрузки знаком, передай файлы в <code>hw/python-05-route-choice/</code>. Заново открой
+их на сайте и найди своё изменение. Если доступа нет, оставь файлы локально
+и сообщи преподавателю; срок загрузки согласуем после подключения.
+Скриншот не заменяет Python-файл.</p>
+<h2>По желанию: вспомни типы</h2>
+<p>В своём <code>types_lab.py</code> снова введи <code>5</code> и <code>12</code>. Объясни, почему <code>answer * 3</code>
+повторяет текст, а <code>number * 3</code> умножает число после <code>number = int(answer)</code>.
+<code>answer</code> остаётся строкой. В этом опыте вводи целые числа: слово, пустой
+ввод или <code>2.5</code> не преобразуются через <code>int</code> и вызовут <code>ValueError</code>.</p></main></body></html>

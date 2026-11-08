@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Практика · Число выбирает путь · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-py-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+.python h3 { color: var(--accent); }
+</style></head><body><main><header><span class="chip">PY · 01.11 · ПРАКТИКА</span><h1>Сначала предскажи.<br>Потом запусти.</h1><p>Сегодня твоя программа отличит отрицательное число от неотрицательного. Каждый пишет у себя и показывает свой экран.</p><a class="button" href="../index.html">План занятия</a><a class="button" href="../homework/python-06-number-sign/">Домашка</a></header>
+<section class="card python" id="start"><span class="chip">20:00–20:08</span><h2>Открой → сохрани → запусти</h2><p>Открой свою учебную папку в VS Code и прошлый Python-файл. Измени текст одного <code>print</code>, сохрани и запусти. Покажи новую реплику в терминале.</p><p>Код набираем в файле; команду запуска — в терминале этой папки. На macOS обычно <code>python3 types_lab.py</code>, на Windows — <code>python types_lab.py</code>. Используй имя своего файла и знакомую рабочую команду.</p><details><summary>Если прошлого файла нет</summary><p>Создай <code>types_lab.py</code> и набери:</p><pre><code>age = input("Введи целое число: ")
+print(age)</code></pre><p>Сохрани файл, запусти, введи <code>12</code>. Пока один показывает, остальные запускают свой код.</p></details></section>
+<section class="card python" id="types"><span class="chip">20:08–20:18</span><h2>Один ввод — два результата</h2><p>Продолжай свой файл с вводом. В примере имена <code>age</code> и <code>int_age</code>; если у тебя <code>answer</code> и <code>number</code>, сохрани их и используй последовательно.</p><pre><code>age = input("Введи целое число: ")
+print(type(age))
+int_age = int(age)
+print(type(int_age))
+print(age * 3)
+print(int_age * 3)</code></pre><p>Если эти строки уже есть, не дублируй ввод: замени множитель <code>10</code> на <code>3</code> и добавь умножение числа. Предскажи вывод для <code>12</code>, затем сохрани и запусти.</p><details><summary>Сверить после своего запуска</summary><p><code>121212</code> — строка повторилась; <code>36</code> — число умножилось. <code>input</code> возвращает строку (string), <code>int</code> создаёт целое число (integer). В <code>age</code> по-прежнему строка. <code>type</code> возвращает объект типа; <code>print(type(age))</code> показывает <code>&lt;class 'str'&gt;</code>.</p></details><p>Вводи только целые числа: слово, пустая строка и <code>2.5</code> не подходят для <code>int</code>. При ошибке повтори запуск с <code>12</code>.</p></section>
+<section class="card python" id="branches"><span class="chip">20:18–20:30</span><h2>Ветвление (branching): два пути</h2><p>Создай новый <code>sign.py</code>. Если такой файл уже есть, сохрани прежнюю версию. Набери ввод и преобразование:</p><pre><code>answer = input("Введи целое число: ")
+number = int(answer)</code></pre><p>Добавь <code>print(number &lt; 0)</code>. Предскажи и посмотри результат для <code>-3</code> и <code>5</code>: это логические значения (boolean) <code>True</code> и <code>False</code>.</p><p>Вместо временного <code>print(number &lt; 0)</code> набери условие (condition):</p><pre><code>if number &lt; 0:
+    print("Отрицательное число")
+else:
+    print("Неотрицательное число")</code></pre><p>После <code>if</code> и <code>else</code> — двоеточие. Внутри веток отступ (indentation) — четыре пробела. <code>if</code> и <code>else</code> стоят на одном уровне. Каждый сохраняет и запускает <code>-3</code> и <code>5</code>.</p></section>
+<section class="card" id="break"><span class="chip">20:30–20:33</span><h2>Три минуты без экрана</h2><p>Встань, потянись, посмотри вдаль. Продолжим с нуля — буквально.</p></section>
+<section class="card python" id="finish-line"><span class="chip">20:33–20:48</span><h2>Ноль — куда?</h2><p>Ноль не положительный и не отрицательный. Для условия <code>number &lt; 0</code> ветка <code>else</code> включает и ноль, и положительные числа: это <strong>неотрицательные</strong> числа.</p><p>После обеих веток, без отступа, добавь:</p><pre><code>print("Готово")</code></pre><p>Перед каждым запуском предскажи весь вывод. Запусти с <code>-3</code>, <code>0</code>, <code>5</code>. Общий финал должен появиться каждый раз.</p><table><thead><tr><th>Ввод</th><th>number &lt; 0</th><th>Ветка</th></tr></thead><tbody><tr><td>−3</td><td>True</td><td>if</td></tr><tr><td>0</td><td>False</td><td>else</td></tr><tr><td>5</td><td>False</td><td>else</td></tr></tbody></table><p>Сдвинь общий <code>print</code> внутрь <code>else</code>. Предскажи, при каком вводе «Готово» исчезнет, проверь на <code>-3</code>. Верни строку без отступа и снова запусти. Смена экрана каждые 3–5 минут.</p></section>
+<section class="card python" id="show"><span class="chip">20:48–20:58</span><h2>Твоя программа, твой запуск</h2><p>Покажи код и оба исхода. Другой участник сначала предсказывает вывод. Объясни: почему ноль попал в <code>else</code> и почему финал общий?</p><details><summary>Сверить две ветки после своих попыток</summary><pre><code>answer = input("Введи целое число: ")
+number = int(answer)
+if number &lt; 0:
+    print("Отрицательное число")
+else:
+    print("Неотрицательное число")
+print("Готово")</code></pre></details><details id="bonus"><summary>У всех работают две ветки? Выдели ноль отдельно</summary><p>В той же программе между <code>if</code> и <code>else</code> добавь <code>elif number == 0:</code> с выводом «Ноль». В последнем <code>else</code> теперь можно написать «Положительное число».</p><pre><code>if number &lt; 0:
+    print("Отрицательное число")
+elif number == 0:
+    print("Ноль")
+else:
+    print("Положительное число")
+print("Готово")</code></pre><p><code>=</code> присваивает, <code>==</code> сравнивает. Python выбирает первую подходящую ветку. Повтори −3 / 0 / 5. Этот шаг необязательный; если времени мало, сохрани две работающие ветки.</p></details></section>
+<section class="card ops" id="save"><span class="chip">20:58–21:05</span><h2>Сохрани файлы</h2><p>Сохрани <code>sign.py</code> и файл опыта с типами. На следующий раз останется твоя работа.</p><details><summary>Git уже настроен и всё работает?</summary><pre><code>git status
+git add sign.py types_lab.py
+git commit -m "Practice number sign branches"
+git log --oneline</code></pre><p>В <code>git add</code> укажи настоящие имена своих файлов. Коммит сохраняет локальную версию; загрузка на GitHub — отдельное действие. Если нет изменений, новый коммит не нужен.</p></details><p>На неполадку Git — максимум минута, затем возвращаемся к сохранённым файлам.</p></section>
+<section class="card python" id="homework"><span class="chip">21:05–21:15</span><h2>Начни домашку сейчас</h2><p>Открой <a href="../homework/python-06-number-sign/">задание</a>. В <code>runs.txt</code> запиши результат своего первого запуска: «ввёл → ожидал → увидел». Укажи, появился ли общий финал.</p><p>Ещё два ввода — дома. Срок: среда, <strong>4 ноября, 20:00 МСК</strong>. Если обе ветки пока не заработали, сохрани рабочие ввод и вывод, запиши вопрос преподавателю.</p><p>В 21:15 заканчиваем. Назови одну вещь, которую теперь запускаешь сам.</p></section><p><a href="../index.html">К плану</a> · <a href="../tracks/python/m-03-branching/student/cheatsheet.html">Шпаргалка</a> · <a href="../homework/python-06-number-sign/">Домашка</a></p></main></body></html>

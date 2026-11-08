@@ -1,0 +1,94 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Сценарий преподавателя · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-py-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+summary { color: var(--track-py-ink); }
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+.python h3 { color: var(--accent); }
+@media print { summary { color: var(--track-py-ink); } }
+.table-scroll { max-width: 100%; overflow-x: auto; }
+@media (max-width: 600px) { .card { padding: 18px 16px; } }
+</style></head><body><main><header><span class="chip">PYTHON · 08.11.2026 · 20:00–21:15 МСК</span><h1>Сценарий преподавателя</h1></header><nav><a class="button" href="index.html">Пульт</a><a class="button" href="practice.html">Практика</a><a class="button" href="homework.html">Домашка</a><a class="button" href="teacher-notes.html">Сценарий</a></nav><h1>Занятие 08.11 — while: границы и выход через break</h1>
+<p>20:00–21:15 МСК, 75 минут. Основание — запись 04.11: успешный счётчик 1–5 на одном ученическом экране; общий результат остальных не подтверждён. Условие <code>&lt; 3</code> вызвало трудности. <code>break/continue</code> прямо отложены. <code>for</code>, <code>range</code>, вложенные циклы и <code>while…else</code> сегодня не вводим.</p>
+<h2>Практический результат</h2>
+<p>Каждый лично набирает и запускает <code>counter.py</code>, показывает 1–5, 1–2 и ноль повторений с общим финалом. Затем пишет <code>commands.py</code> и получает понятный выход через <code>break</code>: <code>exit</code> сразу и <code>read → exit</code>. Показ преподавателя не заменяет личные запуски.</p>
+<h2>Режиссура</h2>
+<ul>
+<li>00–07: Преподаватель помогает открыть терминал; каждый сохраняет и запускает свой counter.py. На техническую неполадку — до минуты.</li>
+<li>07–20: Каждый набирает счётчик 1–5, затем меняет условие на &lt; 3: прогноз → запуск → объяснение вывода 1, 2.</li>
+<li>20–28: Начало 3 и условие &lt; 3: ноль повторений. Каждый показывает общий финал и записывает опыт.</li>
+<li>28–31: Пауза без экрана.</li>
+<li>31–48: Короткий пример break; каждый пишет commands.py и пробует exit сразу, затем read → exit.</li>
+<li>48–60: Каждый показывает два запуска и объясняет переход после break. Если готовы все — skip и continue.</li>
+<li>60–68: Сохранить результаты в runs.txt. Git только если уже работает; иначе файлы остаются локально.</li>
+<li>68–75: Открыть домашку, начать первый опыт, назвать условие выхода. Завершение в 21:15.</li>
+</ul>
+<p>Объяснение — до двух минут; каждые 3–5 минут смена действия: прогноз, набор, запуск, рассказ ученика. Подсказки в практике открывать после своей попытки. При 1:1 сохранить личные запуски и паузу; свободное время отдать вариантам ввода, не новым темам.</p>
+<h2>Если отстаём</h2>
+<p>К 20:20 не получились 1, 2 — разобрать таблицу «значение → условие → строка», убрать continue и Git. После паузы закончить счётчик; commands.py предложить только после личного запуска каждого. Если break не успели, домашка — запасной вариант со счётчиком. Сохранить паузу, начало домашки и окончание 21:15.</p>
+<h2>До встречи</h2>
+<p>Живая папка преподавателя <code>~/code/junior-it/2026-11-08/</code>: counter.py, commands.py — продолжения стартовых файлов 04.11; loops.py — точная историческая копия для справки, не открывать как основной пример; runs.txt — новый журнал. В исходном loops.py старые комментарии не исправлены задним числом. Готовые решения доступны в раскрываемых подсказках практики.</p>
+<p>Ученики продолжают свои файлы, сохранив копию прошлого занятия. Проверить запуск в терминале: Code Runner Output не принимает input. На неполадку максимум минута, затем знакомый запуск из терминала. Установки, аккаунты и настройку Git вынести за занятие. Материалы ученика публикуются отдельно от локального пульта.</p>
+<h2>Точность формулировок</h2>
+<p>У while условие до тела; break выходит из ближайшего цикла; continue пропускает остаток текущей итерации. while True с понятным выходом допустим. В Python нет do…while — достаточно короткого напоминания по вопросу. Не говорить, что любое число или строка истинны: 0 и пустая строка ложны. for получает элементы последовательно, строка — последовательность символов; это пояснение только если вернутся к прошлому обсуждению.</p>
+<h2>После встречи</h2>
+<p>Зафиксировать личные запуски каждого в приватных заметках. Уточнить домашку по факту. completed остаётся [] до подтверждения результата; освоение целого модуля из одного примера не выводить.</p></main></body></html>

@@ -1,0 +1,86 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Цикл с понятным выходом · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><style>/* Junior_IT — канон токенов оформления.
+   Источник истины для материалов и агента brand-guardian.
+   HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
+   а не подключается ссылкой. */
+
+:root {
+  --bg: #0a0a14;
+  --card: #1a1a2e;
+  --card-2: #16213e;
+  --deep: #0f3460;
+  --yellow: #ffd60a;
+  --orange: #ff5722;
+  --green: #00e676;
+  --cyan: #00ffc8;
+  --magenta: #ff0096;
+  --bg-light: #faf7f2;
+
+  /* Направления курса. Первый цвет — тёмный фон материалов,
+     второй (-ink) — печать шпаргалок на --bg-light. */
+  --track-book: #7aa2ff;
+  --track-book-ink: #2b4fa8;
+  --track-py: #00ffc8;
+  --track-py-ink: #00806a;
+  --track-pas: #ff5722;
+  --track-pas-ink: #b3350f;
+  --track-ops: #00e676;
+  --track-ops-ink: #00803d;
+  --track-cs: #ff0096;
+  --track-cs-ink: #a8005f;
+  --track-web: #8892b0;
+  --track-web-ink: #4a5568;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: white; font: 17px/1.65 Manrope, sans-serif; }
+main { width: min(1080px,100%); margin: auto; padding: 40px 24px 60px; }
+h1,h2,h3 { font-family: Rubik,sans-serif; line-height: 1.2; } h1 { font-size: clamp(30px,4vw,52px); }
+h2 { color: var(--yellow); margin-top: 32px; } h3 { color: var(--track-book); }
+a { color: var(--cyan); text-underline-offset: 4px; } a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+code,pre,.chip,.time { font-family: "JetBrains Mono",monospace; }
+pre { background: #15151c; color: #7fd0ff; padding: 18px 22px; border-radius: 14px; overflow-x: auto; }
+code { overflow-wrap: anywhere; } pre code { overflow-wrap: normal; }
+header { background: linear-gradient(120deg,var(--card),var(--card-2)); border-radius: 24px; padding: 28px 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 18px; margin: 24px 0; }
+.card { background: var(--card); border-top: 4px solid var(--accent,var(--yellow)); border-radius: 18px; padding: 20px 24px; }
+.card h2 { margin: 12px 0; color: var(--accent,var(--yellow)); font-size: 24px; }
+.card p { margin: 10px 0; } .book { --accent: var(--track-book); } .python { --accent: var(--track-py); } .ops { --accent: var(--track-ops); }
+.chip { display: inline-block; border-radius: 5px; padding: 3px 9px; background: var(--accent,var(--yellow)); color: var(--bg); font-weight: 700; font-size: 13px; }
+.time { color: var(--yellow); font-size: 14px; } .button { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--deep); color: white; text-decoration: none; margin: 4px 8px 4px 0; transition: background .2s; }
+.button:hover { background: var(--accent,var(--yellow)); color: var(--bg); }
+li { margin: 8px 0; } table { border-collapse: collapse; width: 100%; } td,th { text-align: left; padding: 9px; border-bottom: 1px solid var(--track-web); }
+@media (max-width: 600px) { main { padding: 20px 14px; } header { padding: 22px; } }
+@media print { body { color: var(--bg); background: var(--bg-light); font-size: 10pt; } header,.card { background: transparent; box-shadow: none; } h2,a,.time { color: var(--track-py-ink); } pre { color: var(--bg); background: transparent; white-space: pre-wrap; } .grid { display: block; } .card { break-inside: avoid; margin-bottom: 12px; } .button { background: transparent; color: var(--bg); } }
+@media print {
+summary { color: var(--track-py-ink); }
+.python { --accent: var(--track-py-ink); }
+.ops { --accent: var(--track-ops-ink); }
+.book { --accent: var(--track-book-ink); }
+.chip { background: var(--accent,var(--bg)); color: white; }
+.card h2,.card a { color: var(--accent,var(--bg)); }
+}
+
+main > .card { margin-top: 24px; } details { margin: 16px 0; } summary { cursor: pointer; color: var(--cyan); } summary:hover { color: var(--yellow); }
+code, pre { font-variant-ligatures: none; }
+.python h3 { color: var(--accent); }
+@media print { summary { color: var(--track-py-ink); } }
+.table-scroll { max-width: 100%; overflow-x: auto; }
+@media (max-width: 600px) { .card { padding: 18px 16px; } }
+</style></head><body><main><header><span class="chip">PYTHON · 08.11.2026 · 20:00–21:15 МСК</span><h1>Цикл с понятным выходом</h1></header><nav><a class="button" href="index.html">Пульт</a><a class="button" href="practice.html">Практика</a><a class="button" href="homework.html">Домашка</a><a class="button" href="teacher-notes.html">Сценарий</a></nav><h1>Цикл с понятным выходом</h1>
+<p>После занятия <strong>8 ноября</strong>. <strong>10–15 минут</strong>, до <strong>среды, 11 ноября, 20:00 МСК</strong>.</p>
+<p><a href="practice.html">Практика занятия: while и break</a>.</p>
+<h2>Если на занятии заработал commands.py</h2>
+<ol>
+<li>Продолжи свой <code>commands.py</code>: <code>while True</code> повторяет вопрос, <code>input</code> получает команду, условный <code>break</code> завершает цикл по точному слову <code>exit</code>.</li>
+<li>Для другой команды выведи «Получено:» и саму команду. После цикла без отступа выведи «Готово».</li>
+<li>Сделай два запуска: сразу <code>exit</code>; затем отдельным запуском <code>read</code>, <code>exit</code>.</li>
+<li>Перед каждым запуском предскажи число вопросов и весь вывод. В <code>runs.txt</code> запиши «ввод → ожидал → увидел». В первом опыте один вопрос и финал; во втором — два вопроса, «Получено: read» и финал. Строки «Получено: exit» быть не должно.</li>
+<li>Одной фразой объясни, куда переходит программа после <code>break</code>.</li>
+</ol>
+<p>Сохраняй файл перед запуском. Команда — <code>python3 commands.py</code> или знакомая <code>python commands.py</code> на Windows. Отвечай в терминале. Если цикл не останавливается — <code>Ctrl+C</code>.</p>
+<h2>Если break на занятии не успели</h2>
+<p>Продолжи свой <code>counter.py</code>: начало 1, условие <code>&lt; 6</code>, увеличение на 1 — вывод 1–5. Измени условие на <code>&lt; 3</code>: ожидаются 1, 2. Если вместе пробовали начало 3 при <code>&lt; 3</code>, повтори и этот опыт: тело не выполняется. Во всех случаях общий финал стоит без отступа. Сохрани работающий код, результаты и вопрос преподавателю. Новую конструкцию самостоятельно достраивать не нужно.</p>
+<h2>Что сохранить</h2>
+<p><code>commands.py</code> <strong>или</strong> запасной <code>counter.py</code>, а также <code>runs.txt</code>. Обязательного коммита нет. При уже готовом доступе и знакомом способе передачи используй свой закрытый учебный репозиторий, <code>hw/python-08-loop-exit/</code>; иначе сохрани локально и покажи на следующей встрече.</p>
+<p>Дополнительно, только если вместе делали на уроке: команда <code>skip</code> с <code>continue</code>. Опыт <code>skip → read → exit</code>: три вопроса, только «Получено: read», один общий финал. <code>for</code> и <code>while…else</code> в этой домашке не нужны.</p></main></body></html>
