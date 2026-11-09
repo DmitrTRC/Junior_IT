@@ -1,4 +1,4 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Цикл с понятным выходом · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><style>/* Junior_IT — канон токенов оформления.
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Месяцы: от while к for · Junior_IT</title><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><style>/* Junior_IT — канон токенов оформления.
    Источник истины для материалов и агента brand-guardian.
    HTML-материалы самодостаточны: этот блок вставляется в <style> страницы,
    а не подключается ссылкой. */
@@ -67,20 +67,26 @@ code, pre { font-variant-ligatures: none; }
 @media print { summary { color: var(--track-py-ink); } }
 .table-scroll { max-width: 100%; overflow-x: auto; }
 @media (max-width: 600px) { .card { padding: 18px 16px; } }
-</style></head><body><main><header><span class="chip">PYTHON · 08.11.2026 · 20:00–21:15 МСК</span><h1>Цикл с понятным выходом</h1></header><nav><a class="button" href="index.html">Пульт</a><a class="button" href="practice.html">Практика</a><a class="button" href="homework.html">Домашка</a><a class="button" href="teacher-notes.html">Сценарий</a></nav><h1>Цикл с понятным выходом</h1>
-<p>После занятия <strong>8 ноября</strong>. <strong>10–15 минут</strong>, до <strong>среды, 11 ноября, 20:00 МСК</strong>.</p>
-<p><a href="practice.html">Практика занятия: while и break</a>.</p>
-<h2>Если на занятии заработал commands.py</h2>
+</style></head><body><main><header><span class="chip">PYTHON · 08.11.2026 · 20:00–21:15 МСК</span><h1>Месяцы: от while к for</h1></header><nav><a class="button" href="index.html">Пульт</a><a class="button" href="practice.html">Практика</a><a class="button" href="homework.html">Домашка</a><a class="button" href="teacher-notes.html">Сценарий</a></nav><p>После занятия <strong>8 ноября</strong>. <strong>15–20 минут</strong>, до <strong>среды, 11 ноября, 20:00 МСК</strong>.</p>
+<p><a href="practice.html">Примеры занятия и подсказки</a>.</p>
+<p>На занятии разбирали список месяцев, индексы и два способа перебора. Теперь набери и запусти свой пример. Если пока трудно — начни с подсказки в практике; все дополнительные опыты делать не обязательно.</p>
+<h2>1. Список и индексы</h2>
+<p>Создай <code>months.py</code>. Список можно скопировать, остальной код набери сам:</p>
+<pre><code class="language-python">months = [&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
+          &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;]
+</code></pre>
+<p>Выведи <code>months[0]</code>, <code>months[3]</code> и <code>len(months)</code>. Перед запуском предскажи результат. Ожидаются <code>Jan</code>, <code>Apr</code>, <code>12</code>. Объясни, почему у апреля индекс 3, а у декабря — 11.</p>
+<h2>2. Два способа вывести месяцы</h2>
 <ol>
-<li>Продолжи свой <code>commands.py</code>: <code>while True</code> повторяет вопрос, <code>input</code> получает команду, условный <code>break</code> завершает цикл по точному слову <code>exit</code>.</li>
-<li>Для другой команды выведи «Получено:» и саму команду. После цикла без отступа выведи «Готово».</li>
-<li>Сделай два запуска: сразу <code>exit</code>; затем отдельным запуском <code>read</code>, <code>exit</code>.</li>
-<li>Перед каждым запуском предскажи число вопросов и весь вывод. В <code>runs.txt</code> запиши «ввод → ожидал → увидел». В первом опыте один вопрос и финал; во втором — два вопроса, «Получено: read» и финал. Строки «Получено: exit» быть не должно.</li>
-<li>Одной фразой объясни, куда переходит программа после <code>break</code>.</li>
+<li>Ниже списка набери <code>while</code>: начальное значение <code>index = 0</code>, условие <code>index &lt; len(months)</code>, внутри — вывод <code>months[index]</code> и увеличение <code>index += 1</code>. После цикла без отступа напечатай «Готово».</li>
+<li>Запусти: после трёх строк первого задания должны появиться все 12 месяцев от <code>Jan</code> до <code>Dec</code> и один финал «Готово».</li>
+<li>Замени только цикл <code>while</code> на <code>for month in months:</code> с выводом <code>month</code> внутри. Убери <code>index = 0</code> и прежний цикл <code>while</code>. Список и три строки вывода первого задания оставь. Общий финал оставь после цикла. Снова запусти: вывод должен совпасть.</li>
+<li>В <code>runs.txt</code> запиши результаты обоих запусков: «способ → ожидал → увидел». Объясни одной фразой, чем <code>month</code> отличается от <code>index</code>.</li>
 </ol>
-<p>Сохраняй файл перед запуском. Команда — <code>python3 commands.py</code> или знакомая <code>python commands.py</code> на Windows. Отвечай в терминале. Если цикл не останавливается — <code>Ctrl+C</code>.</p>
-<h2>Если break на занятии не успели</h2>
-<p>Продолжи свой <code>counter.py</code>: начало 1, условие <code>&lt; 6</code>, увеличение на 1 — вывод 1–5. Измени условие на <code>&lt; 3</code>: ожидаются 1, 2. Если вместе пробовали начало 3 при <code>&lt; 3</code>, повтори и этот опыт: тело не выполняется. Во всех случаях общий финал стоит без отступа. Сохрани работающий код, результаты и вопрос преподавателю. Новую конструкцию самостоятельно достраивать не нужно.</p>
+<p>Сохраняй файл перед запуском: <code>python3 months.py</code> или знакомая <code>python months.py</code> на Windows. Если цикл не останавливается — <code>Ctrl+C</code> в терминале.</p>
+<h2>По желанию: пропуск или выход</h2>
+<p>Внутри <code>for</code>, <strong>перед выводом месяца</strong>, добавь условие <code>if month == "Jun":</code> и вложенный <code>continue</code>. Ожидаются 11 месяцев: после <code>May</code> сразу <code>Jul</code>, затем остальные до <code>Dec</code> и финал.</p>
+<p>Отдельным опытом замени <code>continue</code> на <code>break</code>: теперь выведутся только <code>Jan</code>–<code>May</code> и финал. Сам <code>Jun</code> не печатается в обоих опытах. Объясни, почему оставшиеся месяцы появляются только с <code>continue</code>.</p>
 <h2>Что сохранить</h2>
-<p><code>commands.py</code> <strong>или</strong> запасной <code>counter.py</code>, а также <code>runs.txt</code>. Обязательного коммита нет. При уже готовом доступе и знакомом способе передачи используй свой закрытый учебный репозиторий, <code>hw/python-08-loop-exit/</code>; иначе сохрани локально и покажи на следующей встрече.</p>
-<p>Дополнительно, только если вместе делали на уроке: команда <code>skip</code> с <code>continue</code>. Опыт <code>skip → read → exit</code>: три вопроса, только «Получено: read», один общий финал. <code>for</code> и <code>while…else</code> в этой домашке не нужны.</p></main></body></html>
+<p><code>months.py</code> с последним работающим вариантом и <code>runs.txt</code> с результатами. Если за 20 минут получилось только первое задание или один цикл — сохрани это и запиши, где возник вопрос; разберём вместе. Обязательного коммита нет. При готовом доступе и знакомом способе передачи используй свой закрытый учебный репозиторий, <code>hw/python-08-loop-exit/</code>; иначе сохрани локально и покажи на следующей встрече.</p>
+<p><code>commands.py</code>, <code>range</code>, <code>while…else</code> и списковые включения (list comprehensions) в этой домашке не требуются.</p></main></body></html>

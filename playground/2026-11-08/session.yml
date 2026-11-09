@@ -48,3 +48,10 @@ goals:
 - Личный счётчик с тремя опытами у каждого
 - Два запуска commands.py и объяснение break
 - Сохранённые файлы и runs.txt
+
+actual:
+  review: playground/2026-11-08/actual-basis.md
+  summary: "Разобраны while со шагом и границами, чётность через %, break, зависание из-за continue, списки, индексы от нуля, len(), обход месяцев через while в обе стороны и for с пропуском Jun."
+  evidence: "Запись 08.11 и counter.py преподавателя подтверждают показ примеров; в записи есть ответы и вопросы учеников, но личные запуски каждого не зафиксированы. commands.py и runs.txt остались заготовками."
+  homework_adjustment: "python-08-loop-exit: months.py с индексами, while и for; continue/break — по желанию. Исторический план rotation сохранён."
+  deferred: "range, while…else, вложенные циклы; list comprehensions упомянуты, отложены до уверенного for."
