@@ -1,0 +1,18 @@
+date: '2026-11-25'
+time: '20:00'
+duration: 75
+theme: 'Архитектура компьютера: от включения до ОС'
+playlist:
+- module: cs/m-01-computer
+  minutes: 25
+- module: cs/m-02-layers
+  minutes: 27
+buffer: 23
+completed: []
+basis:
+  review: playground/2026-11-15/actual-basis.md
+  scenario: playground/2026-11-15/scenario.md
+  slides: docs/hardware-2026-11-15.html
+goals:
+- Каждый рисует цепочку запуска и объясняет передачу управления от прошивки к ОС.
+- Каждый показывает условие выхода на собственной блок-схеме.
